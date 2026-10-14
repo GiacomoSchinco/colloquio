@@ -1,0 +1,181 @@
+{
+  "meta": {
+    "tecnologia": "Git e Versioning",
+    "slug": "git",
+    "schema": 2,
+    "versione": 1,
+    "aggiornato": "2026-10-14",
+    "totale_domande": 10
+  },
+  "argomenti": [
+    {
+      "nome": "Fondamentali",
+      "domande": [
+        {
+          "id": "git-001",
+          "priorita": "ALTA",
+          "domanda": "A cosa serve Git e quali sono i comandi che usi di più?",
+          "risposta": "Git è un sistema di controllo versione distribuito: registra la storia delle modifiche al codice e permette di lavorare in parallelo e tornare indietro quando serve. I comandi che uso di più sono git clone per scaricare un repository, git add e git commit per salvare le modifiche, git push e git pull per sincronizzarsi col remoto, git branch e git checkout per lavorare su rami separati, e git merge per unire i rami. Senza versioning, lo sviluppo in team sarebbe caotico e rischioso.",
+          "parole_chiave": [
+            "Git",
+            "commit",
+            "branch",
+            "merge",
+            "pull"
+          ],
+          "follow_up": {
+            "domanda": "Come risolvi un conflitto di merge?",
+            "risposta": "Git segnala i file con modifiche in conflitto e li marca con sezioni da scegliere. Leggo le due versioni, decido cosa tenere, rimuovo i marcatori e completo il merge con un commit. L'importante è capire l'intento di entrambe le modifiche, non cancellare alla cieca."
+          }
+        },
+        {
+          "id": "git-002",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra Git e piattaforme come GitHub o Bitbucket?",
+          "risposta": "Git è lo strumento locale che gestisce le versioni del codice; GitHub e Bitbucket sono servizi online che ospitano i repository Git e aggiungono collaborazione: pull request, code review, issue e integrazione con le pipeline. Potresti usare Git anche senza di loro, ma condivideresti il codice molto più faticosamente. In pratica Git è il motore, le piattaforme sono il luogo dove i team si incontrano e collaborano.",
+          "parole_chiave": [
+            "Git",
+            "GitHub",
+            "Bitbucket",
+            "remoto"
+          ],
+          "follow_up": {
+            "domanda": "A cosa serve una pull request?",
+            "risposta": "È una richiesta di integrare le tue modifiche in un ramo condiviso, e soprattutto è il luogo della code review: i colleghi guardano il codice, commentano e approvano prima del merge. È lo strumento che garantisce qualità e condivisione della conoscenza nel team."
+          }
+        },
+        {
+          "id": "git-003",
+          "priorita": "ALTA",
+          "domanda": "Come usi Git nel lavoro quotidiano?",
+          "risposta": "Lavoro su branch dedicati per ogni feature, così il codice in sviluppo non si mischia con quello stabile. Faccio commit piccoli e frequenti, con messaggi chiari che spiegano cosa ho fatto e perché. Poi apro una merge request su GitLab per la review del team. Seguo un modello tipo Gitflow, con main per la produzione, develop per lo sviluppo e branch feature per le nuove funzionalità.",
+          "parole_chiave": [
+            "branch",
+            "commit",
+            "merge request",
+            "Gitflow"
+          ],
+          "follow_up": {
+            "domanda": "Cosa fai prima di aprire una MR?",
+            "risposta": "Prima di aprire la MR aggiorno il mio branch con develop, facendo un rebase o un merge per risolvere eventuali conflitti. Poi lancio i test, rileggo il diff per controllare che non ci siano refusi o codice di debug, e scrivo una descrizione chiara di cosa ho fatto e perché. Così chi fa la review parte già con il contesto giusto."
+          }
+        },
+        {
+          "id": "git-004",
+          "priorita": "ALTA",
+          "domanda": "Cosa è Gitflow?",
+          "risposta": "Gitflow è un modello di branching che organizza il lavoro su branch con ruoli precisi: main contiene solo il codice in produzione, develop è il ramo di integrazione, feature per le nuove funzionalità, release per preparare una versione e hotfix per correggere urgentemente la produzione. È un modo per tenere ordinato il flusso di lavoro quando il team è grande.",
+          "parole_chiave": [
+            "Gitflow",
+            "main",
+            "develop",
+            "feature",
+            "release",
+            "hotfix"
+          ],
+          "follow_up": {
+            "domanda": "Lo usi sempre?",
+            "risposta": "Dipende dal team e dal progetto. Su progetti grandi e con rilasci pianificati è utile, perché dà struttura. Su progetti piccoli o con rilascio continuo può essere troppo macchinoso, e spesso si preferisce un modello più semplice. L'importante è che il team sia allineato su un modello e lo segua."
+          }
+        },
+        {
+          "id": "git-005",
+          "priorita": "MEDIA",
+          "domanda": "A cosa servono git stash e git cherry-pick?",
+          "risposta": "git stash mette da parte le modifiche non committate, così puoi cambiare branch o fare altro e poi recuperarle. git cherry-pick prende un singolo commit da un altro branch e lo applica sul tuo, utile per portare una correzione specifica senza mergiare tutto. Sono due strumenti che uso quando devo gestire situazioni particolari senza sporcare la storia.",
+          "parole_chiave": [
+            "stash",
+            "cherry-pick",
+            "commit",
+            "branch"
+          ],
+          "follow_up": {
+            "domanda": "Esempio di cherry-pick?",
+            "risposta": "Se su develop c'è un hotfix che serve anche sulla mia feature, invece di mergiare tutto il branch faccio cherry-pick di quel commit solo. Così porto la correzione e nient'altro. Bisogna solo stare attenti, perché crea un commit duplicato con hash diverso."
+          }
+        },
+        {
+          "id": "git-006",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è il versionamento semantico e come gestisci le dipendenze NPM?",
+          "risposta": "Il semver è la convenzione major.minor.patch: la major cambia per modifiche incompatibili, la minor per funzionalità nuove retrocompatibili, la patch per i fix. Con NPM gestisco le dipendenze nel package.json e blocco le versioni esatte nel package-lock.json, così tutti installano le stesse versioni. Capire il semver aiuta a evitare sorprese quando si aggiornano i pacchetti.",
+          "parole_chiave": [
+            "semver",
+            "NPM",
+            "package.json",
+            "lock",
+            "major"
+          ],
+          "follow_up": {
+            "domanda": "Perché il package-lock è importante?",
+            "risposta": "Perché congela le versioni esatte di ogni dipendenza e delle sue sotto-dipendenze. Così due sviluppatori o la pipeline installano esattamente la stessa cosa, e non capita che funzioni sulla tua macchina e non su quella di un altro per una differenza di versione."
+          }
+        },
+        {
+          "id": "git-007",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è un repository condiviso e perché è importante lavorarci in team?",
+          "risposta": "È una copia centrale del codice, di solito su una piattaforma remota, a cui tutto il team accede e contribuisce. Serve come unica fonte di verità: ognuno lavora su un ramo, poi integra le proprie modifiche, e il repository tiene traccia di chi ha fatto cosa e quando. È ciò che rende possibile lo sviluppo parallelo senza pestarsi i piedi, e garantisce che ci sia sempre una versione consistente del progetto.",
+          "parole_chiave": [
+            "repository",
+            "remoto",
+            "team",
+            "sorgente di verità"
+          ],
+          "follow_up": {
+            "domanda": "Che workflow di rami usi?",
+            "risposta": "Un modello semplice è avere un ramo principale stabile e creare un ramo per ogni funzionalità o correzione, da integrare tramite pull request. Così il principale resta sempre funzionante e ogni modifica è isolata e revisionabile prima di entrare."
+          }
+        },
+        {
+          "id": "git-008",
+          "priorita": "MEDIA",
+          "domanda": "Differenza tra merge e rebase?",
+          "risposta": "Merge unisce due branch creando un commit di merge: la storia resta completa e fedele, ma si riempie di commit di unione. Rebase invece prende i tuoi commit e li riscrive come se fossero stati fatti sopra l'ultimo stato dell'altro branch: la storia diventa lineare e pulita, ma cambiano gli hash dei commit. Sono due modi diversi di integrare il lavoro.",
+          "parole_chiave": [
+            "merge",
+            "rebase",
+            "storia",
+            "commit"
+          ],
+          "follow_up": {
+            "domanda": "Quando usi rebase?",
+            "risposta": "Uso rebase per aggiornare il mio branch con develop prima di aprire la MR, così la storia resta pulita e senza commit di merge inutili. Ma mai su branch condivisi con altri, perché riscrivere gli hash può creare problemi a chi ci sta lavorando. Su branch condivisi meglio il merge."
+          }
+        },
+        {
+          "id": "git-009",
+          "priorita": "MEDIA",
+          "domanda": "Come risolvi un conflitto di merge?",
+          "risposta": "Quando Git non riesce a unire due modifiche da solo, mi segna i file in conflitto. Li apro, cerco i marker che separano le due versioni, scelgo quali modifiche tenere, li rimuovo e poi committo la risoluzione. Se il conflitto è complesso uso il tool visuale di VS Code, che rende molto più facile capire e scegliere.",
+          "parole_chiave": [
+            "conflitto",
+            "merge",
+            "marker",
+            "commit"
+          ],
+          "follow_up": {
+            "domanda": "Come lo eviti?",
+            "risposta": "Facendo pull frequenti da develop, così il mio branch non resta troppo indietro, e lavorando su branch piccoli che durano poco. Meno tempo un branch vive, meno è probabile che qualcun altro abbia toccato le stesse righe. La prevenzione è la parte più importante."
+          }
+        },
+        {
+          "id": "git-010",
+          "priorita": "MEDIA",
+          "domanda": "Cosa fai se hai committato qualcosa di sbagliato ma non hai ancora pushato?",
+          "risposta": "Se non ho ancora pushato, posso sistemare tutto in locale senza problemi. Uso git reset --soft per annullare il commit ma tenere le modifiche in stage, o --mixed per toglierle anche dallo stage. Se devo solo correggere il messaggio, uso git commit --amend. In ogni caso non tocco la storia condivisa, quindi è sicuro.",
+          "parole_chiave": [
+            "reset",
+            "amend",
+            "stage",
+            "commit"
+          ],
+          "follow_up": {
+            "domanda": "E se hai già pushato?",
+            "risposta": "Se ho già pushato, dipende dal branch. Se è condiviso, meglio evitare di riscrivere la storia: faccio un nuovo commit di fix e lascio tutto tracciato. Se il branch è solo mio, posso usare git push --force-with-lease per riscrivere, che è più sicuro del force push semplice perché controlla che nessun altro abbia pushato nel frattempo."
+          }
+        }
+      ]
+    }
+  ]
+}

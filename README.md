@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Colloquio — domande per colloqui tecnici
 
-## Getting Started
+Raccolta di domande e risposte per preparare colloqui da sviluppatore, con un'app per studiarle e stamparle in PDF.
 
-First, run the development server:
+## Come è organizzato
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+public/data/
+  index.json          catalogo: argomenti, ordine di studio, conteggi
+  angular.json        un file per argomento
+  java.json
+  react.json
+  ...
+app/
+  tecnologie/page.tsx         elenco degli argomenti (l'unica pagina di ingresso)
+  tecnologie/[slug]/page.tsx  la pagina del singolo argomento (stampabile)
+  _components/TechList.tsx    la vista riusata dalle pagine
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`/` rimanda a `/tecnologie` e `/tecnologia/<slug>` rimanda a `/tecnologie/<slug>`, così i vecchi link continuano a funzionare (vedi `next.config.ts`).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+L'ordine di studio e la suddivisione in argomenti stanno in `index.json`: le pagine lo leggono, quindi **aggiungere un file in `public/data` non richiede modifiche al codice**.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Formato di un file
 
-## Learn More
+```json
+{
+  "meta": { "tecnologia": "Java", "slug": "java", "schema": 2, "versione": 1,
+            "aggiornato": "2026-10-14", "totale_domande": 54 },
+  "argomenti": [
+    {
+      "nome": "Fondamentali",
+      "domande": [
+        {
+          "id": "java-001",
+          "priorita": "ALTA",
+          "domanda": "…",
+          "risposta": "…",
+          "parole_chiave": ["…"],
+          "follow_up": { "domanda": "…", "risposta": "…" }
+        }
+      ]
+    }
+  ]
+}
+```
 
-To learn more about Next.js, take a look at the following resources:
+- `priorita` vale `ALTA`, `MEDIA` o `BASSA`
+- gli id sono progressivi per file (`java-001`) e vengono rinumerati dagli script di manutenzione
+- il follow-up è opzionale ma tutte le domande attuali lo hanno
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Comandi
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm install
+npm run dev      # sviluppo su http://localhost:3000
+npm run build    # build di produzione
+npm run start    # avvia la build
+npm run lint
+```
 
-## Deploy on Vercel
+## La stampa
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Ogni argomento è una pagina: apri l'argomento, premi **🖨️ Stampa / PDF** e salvi il PDF.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+La stampa è tarata su A4 — una domanda per foglio, con lo spazio per gli appunti — e il follow-up viene mostrato sempre, anche se a schermo era chiuso.
+
+## Aggiungere o unire argomenti
+
+- **Un argomento nuovo**: aggiungi il JSON in `public/data` e la voce corrispondente nella lista degli argomenti dello script che genera `index.json`.
+- **Unire più temi in una pagina sola**: nella stessa lista, un argomento può elencare più file (per esempio `HTML, JavaScript e TypeScript` unisce `html-css`, `javascript` e `typescript`).
+- Ogni file deve comparire in **un solo** argomento: così studiando non ripeti lo stesso tema in due pagine.

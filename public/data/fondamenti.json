@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "tecnologia": "Fondamenti di Informatica",
+    "slug": "fondamenti",
+    "schema": 2,
+    "versione": 1,
+    "aggiornato": "2026-10-14",
+    "totale_domande": 5
+  },
+  "argomenti": [
+    {
+      "nome": "Fondamentali",
+      "domande": [
+        {
+          "id": "fondamenti-001",
+          "priorita": "ALTA",
+          "domanda": "Cos'è un algoritmo e perché il legame tra algoritmi e strutture dati è così importante?",
+          "risposta": "Un algoritmo è una sequenza finita e ordinata di passi che, partendo da un input, produce un output in modo deterministico. Le strutture dati sono il modo in cui organizziamo i dati in memoria. La scelta della struttura giusta cambia radicalmente l'efficienza di un algoritmo: cercare in una lista è diverso da cercare in una hash map, e capire questa relazione è ciò che distingue un buon programmatore da uno che scrive solo codice che funziona a caso.",
+          "parole_chiave": [
+            "algoritmo",
+            "strutture dati",
+            "efficienza",
+            "input"
+          ],
+          "follow_up": {
+            "domanda": "Come si misura l'efficienza di un algoritmo?",
+            "risposta": "Con la complessità computazionale, di solito espressa con la notazione Big-O: indica come cresce il tempo o la memoria al crescere dell'input. Per esempio una ricerca lineare è O(n), una ricerca binaria su dati ordinati è O(log n), molto più veloce su grandi quantità di dati."
+          }
+        },
+        {
+          "id": "fondamenti-002",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra linguaggi compilati e linguaggi interpretati?",
+          "risposta": "Un linguaggio compilato viene tradotto tutto in codice macchina da un compilatore prima dell'esecuzione, producendo un file eseguibile: di solito è più veloce a runtime. Un linguaggio interpretato viene eseguito riga per riga da un interprete, senza una fase di compilazione esplicita: è più flessibile e comodo per lo sviluppo, ma tendenzialmente più lento. Java è un caso interessante, perché compila in bytecode che poi la JVM interpreta o compila just-in-time.",
+          "parole_chiave": [
+            "compilato",
+            "interpretato",
+            "compilatore",
+            "bytecode"
+          ],
+          "follow_up": {
+            "domanda": "Dove si colloca Java in questa distinzione?",
+            "risposta": "Java compila il sorgente in bytecode, un linguaggio intermedio indipendente dalla piattaforma, che viene poi eseguito dalla JVM. Questo unisce i vantaggi: una sola compilazione produce codice portabile ovunque, e la JVM lo ottimizza a runtime con la compilazione just-in-time."
+          }
+        },
+        {
+          "id": "fondamenti-003",
+          "priorita": "ALTA",
+          "domanda": "Quali sono i principi fondamentali del GDPR e della tutela dei dati personali?",
+          "risposta": "Il GDPR stabilisce che i dati personali vanno trattati in modo lecito, trasparente e per finalità determinate, raccogliendo solo il minimo necessario e conservandoli per il tempo indispensabile. I principi chiave sono la minimizzazione, la limitazione della finalità, l'esattezza, l'integrità e la riservatezza. Per chi sviluppa significa progettare applicazioni che rispettino questi principi fin dall'inizio, non aggiungerli dopo.",
+          "parole_chiave": [
+            "GDPR",
+            "dati personali",
+            "minimizzazione",
+            "consenso"
+          ],
+          "follow_up": {
+            "domanda": "Quali diritti ha l'interessato?",
+            "risposta": "Diritto di accesso ai propri dati, di rettifica, di cancellazione, di opposizione al trattamento e di portabilità. Chi sviluppa deve prevedere questi meccanismi nell'applicazione, per esempio la possibilità di esportare o eliminare i propri dati."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Programmazione",
+      "domande": [
+        {
+          "id": "fondamenti-004",
+          "priorita": "ALTA",
+          "domanda": "Cos'è una variabile e cosa significa che un linguaggio è tipizzato?",
+          "risposta": "Una variabile è un contenitore con un nome che fa riferimento a un valore in memoria: il nome è per noi umani, il valore è ciò che il programma elabora. Un linguaggio è tipizzato quando a ogni variabile è associato un tipo, come numero o stringa, che determina quali operazioni sono lecite. La tipizzazione forte sposta molti errori dal runtime alla scrittura: se provi a sommare un numero e una stringa, il compilatore te lo segnala subito.",
+          "parole_chiave": [
+            "variabile",
+            "tipo",
+            "tipizzazione",
+            "memoria"
+          ],
+          "follow_up": {
+            "domanda": "Che differenza c'è tra tipizzazione statica e dinamica?",
+            "risposta": "Nella statica, come Java, il tipo è verificato a compile time e non cambia; nella dinamica, come JavaScript, il tipo è associato al valore a runtime e può variare. La statica dà più sicurezza e aiuti dell'editor, la dinamica più flessibilità ma più errori scoperti tardi."
+          }
+        },
+        {
+          "id": "fondamenti-005",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra passaggio di parametri per valore e per riferimento?",
+          "risposta": "Nel passaggio per valore la funzione riceve una copia del dato: le modifiche fatte dentro la funzione non toccano l'originale. Nel passaggio per riferimento la funzione riceve un rimando alla variabile originale, quindi le modifiche si riflettono fuori. In Java i tipi primitivi si passano per valore, mentre gli oggetti si passano per valore del riferimento: non puoi riassegnare l'oggetto del chiamante, ma puoi modificarne lo stato interno.",
+          "parole_chiave": [
+            "valore",
+            "riferimento",
+            "parametri",
+            "copia"
+          ],
+          "follow_up": {
+            "domanda": "Come si comporta Java con gli oggetti?",
+            "risposta": "Passa una copia del riferimento, non una copia dell'oggetto. Quindi dentro il metodo puoi cambiare i campi dell'oggetto e il chiamante vedrà le modifiche, ma se riassegni il parametro a un nuovo oggetto, il chiamante continua a vedere quello vecchio. È una distinzione che confonde molti, ma è fondamentale capirla."
+          }
+        }
+      ]
+    }
+  ]
+}

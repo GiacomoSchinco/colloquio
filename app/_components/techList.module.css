@@ -1,0 +1,798 @@
+.pageWrapper {
+  background: #f6f5fb;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  padding: 2rem 1.5rem;
+  color: #1e293b;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 2rem;
+  box-shadow: 0 20px 40px -10px rgba(60, 20, 100, 0.15);
+  overflow: hidden;
+  padding: 2rem 2.5rem 3.5rem;
+}
+
+/* ── HEADER ── */
+.header {
+  margin-bottom: 1.5rem;
+}
+
+.headerTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.homeLink {
+  color: #6d28d9;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.homeLink:hover {
+  text-decoration: underline;
+}
+
+.printBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f5f3ff;
+  border: 1px solid #ddd6fe;
+  color: #5b21b6;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.45rem 1.1rem;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.printBtn:hover {
+  background: #ede9fe;
+  border-color: #c4b5fd;
+}
+
+.h1 {
+  font-size: 1.9rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  background: linear-gradient(145deg, #3b0764, #7c3aed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.4rem;
+  border-left: 6px solid #7c3aed;
+  padding-left: 1.2rem;
+}
+
+.subhead {
+  font-size: 0.95rem;
+  color: #6b7280;
+  padding-left: 1.8rem;
+  margin-bottom: 1.2rem;
+}
+
+/* ── METADATA ── */
+.metaBox {
+  background: linear-gradient(135deg, #faf5ff, #f3e8ff);
+  border: 1px solid #e9d5ff;
+  border-radius: 1.1rem;
+  padding: 1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 0 0 1.4rem;
+}
+
+.metaItem {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  font-size: 0.88rem;
+  color: #4c1d95;
+}
+
+.metaIcon {
+  flex-shrink: 0;
+}
+
+.metaText {
+  line-height: 1.5;
+}
+
+/* ── STATISTICHE / PRIORITÀ ── */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.statCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  background: #fafafa;
+  border: 2px solid #e5e7eb;
+  border-radius: 1.2rem;
+  padding: 1rem 0.5rem;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+  font-family: inherit;
+}
+
+.statCard:hover {
+  transform: translateY(-2px);
+}
+
+.statCardActive {
+  border-color: #7c3aed;
+  background: #f5f3ff;
+  box-shadow: 0 6px 16px -6px rgba(124, 58, 237, 0.35);
+}
+
+.statEmoji {
+  font-size: 1.4rem;
+}
+
+.statLabel {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #374151;
+}
+
+.statCount {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+/* ── BARRA PROGRESSO ── */
+.progressBar {
+  background: #fafafa;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  padding: 0.9rem 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.progressInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.progressPercent {
+  font-weight: 700;
+  color: #7c3aed;
+}
+
+.progressTrack {
+  height: 10px;
+  background: #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #7c3aed, #a78bfa);
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
+
+.resetBtn {
+  margin-top: 0.7rem;
+  background: transparent;
+  border: 1px solid #fca5a5;
+  color: #dc2626;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.3rem 0.9rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.resetBtn:hover {
+  background: #fef2f2;
+}
+
+/* ── CONTROLLI ── */
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.controlGroup {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.controlLabel {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #6b7280;
+  min-width: 90px;
+}
+
+.checkLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+
+.checkbox {
+  accent-color: #7c3aed;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.filterPills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.pill {
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  color: #4b5563;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.35rem 0.9rem;
+  border-radius: 30px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.pill:hover {
+  background: #e5e7eb;
+}
+
+.pillActive {
+  background: #7c3aed;
+  border-color: #7c3aed;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.35rem 0.9rem;
+  border-radius: 30px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.pillActive:hover {
+  background: #6d28d9;
+}
+
+/* ── EMPTY STATE ── */
+.emptyState {
+  text-align: center;
+  color: #6b7280;
+  padding: 2rem;
+  font-size: 0.95rem;
+}
+
+/* ── CARDS ── */
+.cardList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-left: 5px solid #c4b5fd;
+  border-radius: 1.2rem;
+  padding: 1.3rem 1.4rem;
+  box-shadow: 0 4px 14px -6px rgba(60, 20, 100, 0.12);
+  transition: opacity 0.2s, border-color 0.2s;
+}
+
+.cardDone {
+  border-left-color: #4ade80;
+  opacity: 0.72;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.8rem;
+}
+
+.cardBadges {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.badgeALTA {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.badgeMEDIA {
+  background: #fffbeb;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.badgeBASSA {
+  background: #f0fdf4;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.badgeArgomento {
+  background: #f5f3ff;
+  color: #6d28d9;
+  border: 1px solid #ddd6fe;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.8rem;
+  border-radius: 20px;
+}
+
+.cardRight {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.cardNum {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #9ca3af;
+}
+
+.checkBtn {
+  background: transparent;
+  border: 1px solid #d1d5db;
+  color: #6b7280;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.3rem 0.9rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.checkBtn:hover {
+  background: #f3f4f6;
+}
+
+.checkBtnDone {
+  background: #dcfce7;
+  border-color: #86efac;
+  color: #15803d;
+}
+
+.checkBtnDone:hover {
+  background: #bbf7d0;
+}
+
+.questionText {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.9rem;
+  line-height: 1.5;
+}
+
+/* ── DEFINIZIONE CHIAVE ── */
+.definitionBox {
+  background: #faf5ff;
+  border: 1px dashed #c4b5fd;
+  border-radius: 0.9rem;
+  padding: 0.8rem 1rem;
+  margin-bottom: 0.9rem;
+}
+
+.definitionLabel {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #7c3aed;
+  margin-bottom: 0.3rem;
+}
+
+.definitionText {
+  margin: 0;
+  font-size: 0.92rem;
+  color: #4c1d95;
+}
+
+/* ── PAROLE CHIAVE ── */
+.keywords {
+  margin-bottom: 0.9rem;
+}
+
+.keywordsLabel {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #6b7280;
+  margin-bottom: 0.4rem;
+}
+
+.keywordChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.keywordChip {
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  color: #374151;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.25rem 0.7rem;
+  border-radius: 8px;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* ── FOLLOW-UP ── */
+.followUp {
+  margin-top: 0.2rem;
+}
+
+.followUpToggle {
+  background: #f5f3ff;
+  border: 1px solid #ddd6fe;
+  color: #6d28d9;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.4rem 1rem;
+  border-radius: 24px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.followUpToggle:hover {
+  background: #ede9fe;
+}
+
+.followUpContent {
+  margin-top: 0.8rem;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 0.9rem;
+  padding: 0.9rem 1.1rem;
+}
+
+.followUpQuestion {
+  margin: 0 0 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #92400e;
+}
+
+.followUpAnswer {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #78350f;
+  line-height: 1.5;
+}
+
+.followUpHidden {
+  display: none;
+}
+
+/* ── ELEMENTI SOLO STAMPA (nascosti a schermo) ── */
+.printCategoryLabel,
+.printNotes,
+.printNotesLabel,
+.printNotesLines {
+  display: none;
+}
+
+/* ── FOOTER ── */
+.hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 2rem 0 1rem;
+}
+
+.footer {
+  text-align: center;
+  color: #9ca3af;
+  font-size: 0.85rem;
+}
+
+/* ── BACK TO TOP ── */
+.backToTopBtn {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: none;
+  background: #7c3aed;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 20px -4px rgba(124, 58, 237, 0.5);
+  transition: transform 0.15s, background 0.15s;
+}
+
+.backToTopBtn:hover {
+  background: #6d28d9;
+  transform: translateY(-3px);
+}
+
+/* ── STAMPA: una domanda per pagina, stile slide ── */
+@media print {
+  :global(*) {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .pageWrapper {
+    background: white;
+    padding: 0;
+    min-height: 0;
+  }
+
+  .container {
+    max-width: 100%;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+  }
+
+  /* Nascondi tutto il chrome dell'app */
+  .backToTopBtn,
+  .printBtn,
+  .homeLink,
+  .stats,
+  .progressBar,
+  .controls,
+  .metaBox,
+  .header,
+  .hr,
+  .footer,
+  .emptyState,
+  .followUpToggle {
+  display: none !important;
+  }
+
+  .cardList {
+    gap: 0;
+  }
+
+  /* ── CARD = UNA PAGINA ── */
+  .card,
+  .cardDone {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(297mm - 2.4cm);
+    box-shadow: none;
+    border: none;
+    border-radius: 0;
+    background: white !important;
+    padding: 0.9cm 1.3cm 0.6cm;
+    margin: 0;
+    opacity: 1;
+    page-break-after: always;
+    break-after: page;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* I titoli di blocco non servono: ogni card porta gia' tecnologia e blocco
+     nella propria etichetta. Lasciandoli, un titolo da solo in cima alla pagina
+     spinge la card (alta un foglio intero) al foglio successivo e resta un
+     foglio quasi vuoto. */
+  .blockGroup {
+    margin-bottom: 0;
+  }
+
+  .blockTitle {
+    display: none !important;
+  }
+
+  /* L'ultima card non deve forzare un'interruzione: creerebbe un foglio bianco
+     in coda al PDF. */
+  .blockGroup:last-of-type .cardList > .card:last-child {
+    page-break-after: auto;
+    break-after: auto;
+  }
+
+  .cardHeader {
+    margin-bottom: 0.5rem;
+  }
+
+  .cardBadges,
+  .cardNum,
+  .checkBtn {
+    display: none !important;
+  }
+
+  /* Etichetta in cima alla card */
+  .printCategoryLabel {
+    display: block;
+    font-size: 11pt;
+    font-weight: 700;
+    color: #7c3aed;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    background: #f5f3ff;
+    border-left: 3px solid #7c3aed;
+    padding: 0.2rem 0.7rem;
+    border-radius: 3px;
+    margin-bottom: 0.9rem;
+  }
+
+  .questionText {
+    font-size: 16pt;
+    font-weight: 700;
+    color: #0b2b40;
+    line-height: 1.35;
+    margin-bottom: 0.9rem;
+    border-bottom: 1.5px solid #e2e8f0;
+    padding-bottom: 0.6rem;
+  }
+
+  /* Definizione chiave */
+  .definitionBox {
+    background: #faf5ff !important;
+    border: 1px solid #c4b5fd;
+    border-radius: 4px;
+    padding: 0.7rem 1rem;
+    margin-bottom: 0.9rem;
+    break-inside: avoid;
+  }
+
+  .definitionText {
+    font-size: 11.5pt;
+    line-height: 1.45;
+    color: #1e293b;
+  }
+
+  /* Parole chiave */
+  .keywords {
+    margin-bottom: 1rem;
+    break-inside: avoid;
+  }
+
+  .keywordChip {
+    font-size: 10.5pt;
+    padding: 0.25rem 0.7rem;
+  }
+
+  /* Mostra sempre il follow-up in stampa */
+  .followUpContent,
+  .followUpHidden {
+    display: block !important;
+  }
+
+  .followUpContent {
+    background: #fffbeb !important;
+    border: 1px solid #fde68a;
+    border-radius: 4px;
+    padding: 0.7rem 1rem;
+    margin-top: 0.8rem;
+    break-inside: avoid;
+  }
+
+  .followUpQuestion {
+    font-size: 11.5pt;
+  }
+
+  .followUpAnswer {
+    font-size: 11pt;
+  }
+
+  /* ── AREA APPUNTI ── */
+  .printNotes {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin-top: 1.2rem;
+    border-top: 1.5px solid #cbd5e1;
+    padding-top: 0.6rem;
+  }
+
+  .printNotesLabel {
+    display: block;
+    font-size: 11pt;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.4rem;
+  }
+
+  .printNotesLines {
+    display: block;
+    flex: 1;
+    min-height: 2.4cm;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 23px,
+      #d0dae8 23px,
+      #d0dae8 24px
+    );
+    background-size: 100% 24px;
+  }
+
+  @page {
+    margin: 1.2cm 1.4cm;
+    size: A4;
+  }
+}
+
+/* --- aggiunte per la vista a blocchi --- */
+.blockTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 1.75rem 0 0.75rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.18);
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.blockTitleCount { font-weight: 400; font-size: 0.85rem; opacity: 0.7; }
+.techNav { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+.techCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 10px;
+  text-decoration: none;
+  min-width: 210px;
+  flex: 1 1 210px;
+}
+.techCardName { font-weight: 700; }
+.techCardMeta { font-size: 0.85rem; opacity: 0.75; }

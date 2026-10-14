@@ -1,0 +1,114 @@
+{
+  "meta": {
+    "tecnologia": "Metodologie di Sviluppo",
+    "slug": "metodologie",
+    "schema": 2,
+    "versione": 1,
+    "aggiornato": "2026-10-14",
+    "totale_domande": 6
+  },
+  "argomenti": [
+    {
+      "nome": "Ciclo di sviluppo",
+      "domande": [
+        {
+          "id": "metodologie-001",
+          "priorita": "ALTA",
+          "domanda": "Quali sono le fasi del ciclo di vita del software?",
+          "risposta": "Le fasi classiche sono analisi, progettazione, programmazione, test, deployment e manutenzione. Nell'analisi si individuano requisiti e funzionalità, nella progettazione si definisce l'architettura e i moduli, nella programmazione si scrive il codice, nel test si verifica rispetto ai requisiti, nel deployment si rende il software disponibile agli utenti, e nella manutenzione lo si corregge o adegua nel tempo. È un ciclo, non una linea retta: la manutenzione spesso genera nuove analisi.",
+          "parole_chiave": [
+            "analisi",
+            "progettazione",
+            "test",
+            "deployment",
+            "manutenzione"
+          ],
+          "follow_up": {
+            "domanda": "Perché l'analisi è la fase più delicata?",
+            "risposta": "Perché un errore nei requisiti si propaga a tutte le fasi successive e costa sempre di più correggerlo più tardi lo scopri. Capire davvero cosa serve all'utente prima di progettare evita di costruire la cosa giusta nel modo sbagliato, o peggio la cosa sbagliata."
+          }
+        },
+        {
+          "id": "metodologie-002",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra modello a cascata e modello iterativo-incrementale?",
+          "risposta": "Il modello a cascata prevede fasi rigide e sequenziali: si passa alla fase successiva solo quando la precedente è completa, e si torna indietro con difficoltà. Il modello iterativo-incrementale spezza il lavoro in cicli brevi, ognuno dei quali produce un pezzo funzionante e si migliora col feedback. Il primo è prevedibile ma poco flessibile, il secondo si adatta ai cambiamenti ed è la base delle metodologie agili, che oggi dominano lo sviluppo.",
+          "parole_chiave": [
+            "cascata",
+            "iterativo",
+            "incrementale",
+            "agile"
+          ],
+          "follow_up": {
+            "domanda": "Quando il modello a cascata ha ancora senso?",
+            "risposta": "Quando i requisiti sono stabili e ben definiti, i vincoli normativi sono forti e le modifiche in corsa sono costose, come in certi ambiti industriali o pubblici. Lì la prevedibilità vale più della flessibilità. Nel software applicativo moderno, invece, il cambiamento è la norma e i modelli iterativi vincono."
+          }
+        },
+        {
+          "id": "metodologie-003",
+          "priorita": "ALTA",
+          "domanda": "Come si raccolgono e formalizzano i requisiti nella fase di analisi?",
+          "risposta": "Si parte dall'ascolto degli stakeholder: interviste, osservazione sul campo, analisi dei processi esistenti e della documentazione. I requisiti emersi si formalizzano in modo strutturato, distinguendo quelli funzionali, cioè cosa deve fare il sistema, da quelli non funzionali, come prestazioni e sicurezza. Il risultato è un documento di specifica condiviso e validato con il committente, che diventa il riferimento per tutto il progetto.",
+          "parole_chiave": [
+            "requisiti",
+            "stakeholder",
+            "funzionali",
+            "non funzionali"
+          ],
+          "follow_up": {
+            "domanda": "Che differenza c'è tra requisiti funzionali e non funzionali?",
+            "risposta": "I funzionali descrivono le funzioni che il sistema deve offrire, come registrare un ordine o inviare una notifica. I non funzionali descrivono come deve comportarsi: tempo di risposta, numero di utenti, sicurezza, disponibilità. Trascurare i secondi è un errore classico, perché un sistema corretto ma lento o insicuro non è utilizzabile."
+          }
+        },
+        {
+          "id": "metodologie-004",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è il project management applicato allo sviluppo software e quali metodologie conosci?",
+          "risposta": "È l'insieme di tecniche per pianificare, organizzare e controllare un progetto software: definire obiettivi, tempi, risorse e rischi, e coordinare il team. Le metodologie più note sono quelle agili, come Scrum con i suoi sprint e ruoli, e Kanban con il flusso visualizzato su una lavagna, contrapposte agli approcci più tradizionali e predittivi. Lo scopo è sempre lo stesso: consegnare valore nel tempo, rispettando vincoli e aspettative.",
+          "parole_chiave": [
+            "project management",
+            "Scrum",
+            "Kanban",
+            "pianificazione"
+          ],
+          "follow_up": {
+            "domanda": "Come funziona uno sprint in Scrum?",
+            "risposta": "È un ciclo di lavoro breve e fisso, di solito una o due settimane, in cui il team si impegna a completare una selezione di attività dal backlog. Si apre con la pianificazione, si chiude con la review e la retrospettiva, e ogni giorno c'è una breve riunione di allineamento. Il risultato è un incremento potenzialmente rilasciabile."
+          }
+        },
+        {
+          "id": "metodologie-005",
+          "priorita": "MEDIA",
+          "domanda": "Che differenza c'è tra verifica e validazione del software?",
+          "risposta": "La verifica risponde alla domanda 'stiamo costruendo il prodotto nel modo giusto?': controlla che ogni fase rispetti le specifiche, per esempio che il codice soddisfi il progetto. La validazione risponde a 'stiamo costruendo il prodotto giusto?': controlla che il risultato finale soddisfi davvero i bisogni dell'utente. Puoi aver verificato tutto alla perfezione e aver comunque costruito una cosa che all'utente non serve: per questo servono entrambe.",
+          "parole_chiave": [
+            "verifica",
+            "validazione",
+            "specifiche",
+            "bisogni"
+          ],
+          "follow_up": {
+            "domanda": "Come si legano ai test?",
+            "risposta": "I test di verifica controllano la conformità tecnica, come i test unitari sui moduli; quelli di validazione, come i test di accettazione con l'utente, controllano che il sistema faccia ciò che serve nel mondo reale. Il piano di test ideale li prevede entrambi, partendo dai criteri definiti nell'analisi dei requisiti."
+          }
+        },
+        {
+          "id": "metodologie-006",
+          "priorita": "MEDIA",
+          "domanda": "Cosa si intende per manutenzione del software e quali tipi esistono?",
+          "risposta": "La manutenzione è la fase, spesso la più lunga in termini di costi, in cui il software viene corretto o adeguato dopo il rilascio. Si distingue in correttiva, per i difetti, adattativa, per adeguarlo a nuovi ambienti o normative, evolutiva, per aggiungere funzionalità, e preventiva, per migliorare la struttura ed evitare problemi futuri. È un errore pensare che il lavoro finisca con il deploy: è lì che spesso comincia la parte più consistente.",
+          "parole_chiave": [
+            "manutenzione",
+            "correttiva",
+            "adattativa",
+            "evolutiva"
+          ],
+          "follow_up": {
+            "domanda": "Perché la manutenzione costa tanto?",
+            "risposta": "Perché il software vive a lungo, e ogni modifica richiede di capire codice esistente, testare e rilasciare senza rompere nulla. Un codice scritto male moltiplica questi costi. Per questo investire in qualità e documentazione durante lo sviluppo ripaga enormemente in manutenzione."
+          }
+        }
+      ]
+    }
+  ]
+}

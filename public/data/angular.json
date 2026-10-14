@@ -1,0 +1,1352 @@
+{
+  "meta": {
+    "tecnologia": "Angular",
+    "slug": "angular",
+    "schema": 2,
+    "versione": 1,
+    "aggiornato": "2026-10-14",
+    "totale_domande": 78
+  },
+  "argomenti": [
+    {
+      "nome": "Fondamentali",
+      "domande": [
+        {
+          "id": "angular-001",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra AngularJS e Angular?",
+          "risposta": "Sono due framework diversi con lo stesso nome. AngularJS è la versione 1.x, basata su controller, scope e dirty checking, ed è in end of life dal 2021. Angular dalla 2 in poi è un rewrite completo: componenti, TypeScript obbligatorio, dependency injection gerarchica e un motore di rendering nuovo. Se in un annuncio leggi AngularJS, si parla di manutenzione di legacy, non di sviluppo nuovo.",
+          "parole_chiave": [
+            "AngularJS 1.x",
+            "rewrite",
+            "TypeScript",
+            "end of life"
+          ],
+          "follow_up": {
+            "domanda": "Cosa ti chiederebbero se lavorassi su un progetto AngularJS?",
+            "risposta": "Soprattutto la strategia di migrazione: AngularJS e Angular possono convivere con ngUpgrade e in genere si procede per feature, non con un big bang. Poi quanto sia complicato testare uno scope e gestire i digest cycle, perché è proprio il tipo di problema che spinge al rewrite."
+          }
+        },
+        {
+          "id": "angular-002",
+          "priorita": "ALTA",
+          "domanda": "Come è strutturata un'applicazione Angular?",
+          "risposta": "In componenti che formano un albero, più servizi iniettati dove servono. Un componente ha template, stile e la logica della sua parte di UI; un servizio contiene stato o logica condivisa e non sa nulla della view. Sopra c'è il router che decide quale componente mostrare per ogni URL, e gli interceptor HTTP che centralizzano tutto ciò che riguarda le richieste. È la stessa separazione di React, ma con la dependency injection che arriva dal framework invece che dal contesto.",
+          "parole_chiave": [
+            "componenti",
+            "servizi",
+            "dependency injection",
+            "router",
+            "interceptor"
+          ],
+          "follow_up": {
+            "domanda": "Perché la dependency injection di Angular è considerata un vantaggio?",
+            "risposta": "Perché i servizi non si istanziano a mano: li chiedi e il framework risolve le dipendenze, con uno scope che puoi controllare. Questo rende banale sostituire un servizio reale con un fake nei test, e permette di avere istanze diverse per sottoalberi diversi, cosa che con un semplice import statico non avresti."
+          }
+        },
+        {
+          "id": "angular-003",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono i componenti standalone e perché sono diventati il default?",
+          "risposta": "Un componente standalone dichiara da sé le proprie dipendenze con imports, invece di essere dichiarato dentro un NgModule. È diventato il default dalla v17 perché elimina la burocrazia dei moduli nel caso normale: un componente, i suoi import, fatto. I moduli restano utili per organizzare domini grandi o quando serve uno scope di provider condiviso, ma per il codice nuovo non li usi più.",
+          "parole_chiave": [
+            "standalone",
+            "imports",
+            "NgModule",
+            "bootstrapApplication"
+          ],
+          "follow_up": {
+            "domanda": "Come si fa il bootstrap senza NgModule?",
+            "risposta": "Con bootstrapApplication(RootComponent, { providers: [...] }) nel main. Passi il componente radice e un oggetto con i provider globali, tipo il router o il client HTTP. È la stessa cosa che faceva AppModule, ma senza la classe in mezzo da tenere allineata."
+          }
+        },
+        {
+          "id": "angular-004",
+          "priorita": "ALTA",
+          "domanda": "A cosa serve davvero il CLI di Angular?",
+          "risposta": "A generare e gestire il progetto: ng new, ng generate per componenti, servizi e guard, poi ng build, ng test e ng serve. Il valore non è risparmiare battute, ma il fatto che gli schematics generano codice coerente con la versione che stai usando, quindi eviti di incollare snippet vecchi di tre major. In più con ng update aggiorna anche le configurazioni, che è la parte che normalmente costa giorni di lavoro.",
+          "parole_chiave": [
+            "CLI",
+            "schematics",
+            "ng generate",
+            "ng update"
+          ],
+          "follow_up": {
+            "domanda": "Cosa fa ng update oltre a cambiare i numeri di versione?",
+            "risposta": "Applica le migration automatiche: se una API è stata rinominata o rimossa, ti riscrive le occorrenze nel codice dove può farlo in modo sicuro. Non copre tutto, quindi dopo lanci build e test per trovare quel che resta, ma ti evita gran parte delle sostituzioni manuali."
+          }
+        },
+        {
+          "id": "angular-005",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra componente container e presentazionale?",
+          "risposta": "Il container recupera i dati, gestisce stato e coordina; il presentazionale riceve input ed emette eventi, senza sapere da dove arrivano i dati. Il vantaggio principale è la testabilità: il presentazionale lo testi con tre input e un output, senza mockare HTTP né router. Non è un obbligo, ma è il motivo per cui dividere un componente da mille righe in due funziona sempre.",
+          "parole_chiave": [
+            "container",
+            "presentazionale",
+            "@Input",
+            "@Output",
+            "testabilità"
+          ],
+          "follow_up": {
+            "domanda": "Quando questa separazione diventa controproducente?",
+            "risposta": "Quando la applichi per abitudine e ti ritrovi con presentazionali che hanno dieci input e otto output, cioè un contenitore di passaggio travestito. Se un componente fa solo da ponte tra dati e template senza logica propria, è più leggibile lasciarlo unico finché non serve davvero."
+          }
+        },
+        {
+          "id": "angular-006",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è un decoratore in Angular?",
+          "risposta": "È una funzione che aggiunge metadati a una classe o a un suo membro, ed è così che Angular capisce cosa sei: @Component dice che è un componente con quel template, @Injectable che può essere iniettato, @Input e @Output che quella proprietà è un canale verso il genitore. TypeScript supporta i decoratori da anni e Angular li usa come pilastro del suo modello. Nelle versioni recenti alcune cose prima affidate ai decoratori si fanno con le funzioni, per esempio input() e output().",
+          "parole_chiave": [
+            "decoratore",
+            "metadati",
+            "@Component",
+            "input()"
+          ],
+          "follow_up": {
+            "domanda": "Meglio input() o @Input?",
+            "risposta": "Nel codice nuovo input(), perché è tipizzato meglio, gestisce required e transform in modo naturale e si integra con i Signal. @Input resta valido e lo trovi ovunque nel codice esistente, quindi devi saperlo leggere; la migrazione la fai dove tocchi il componente."
+          }
+        },
+        {
+          "id": "angular-007",
+          "priorita": "MEDIA",
+          "domanda": "Quando usi ancora un NgModule al posto di standalone?",
+          "risposta": "Quando ti serve uno scope di provider condiviso da più componenti, per esempio una feature che fornisce servizi a un sottoalbero, o quando integri una libreria terza non ancora standalone. Nel codice nuovo non li scrivi quasi mai: anche le rotte si caricano in modo lazy dichiarando direttamente l'array di rotte. La regola pratica è usarli solo se hai un problema di scope o di compatibilità, non per abitudine.",
+          "parole_chiave": [
+            "NgModule",
+            "provider scope",
+            "lazy loading",
+            "compatibilità"
+          ],
+          "follow_up": {
+            "domanda": "Come condividi provider con lo scope di un sottoalbero in standalone?",
+            "risposta": "Con l'opzione providers su una rotta lazy, oppure creando un componente che fornisce il servizio nel proprio array di providers. In quel modo l'istanza vive con quel sottoalbero: quando esce dalla navigazione viene distrutta, esattamente come faceva un modulo di feature."
+          }
+        },
+        {
+          "id": "angular-008",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisce Angular la configurazione tra ambienti diversi?",
+          "risposta": "Con i file di environment sostituiti in build: environment.ts per lo sviluppo e environment.prod.ts per la produzione, mappati nei fileReplacements di angular.json. Il codice importa sempre lo stesso percorso e il valore cambia in fase di build. Se un valore deve cambiare senza ricompilare, però, la strada è la configurazione a runtime, per esempio un JSON caricato all'avvio, perché gli environment finiscono dentro il bundle.",
+          "parole_chiave": [
+            "environment",
+            "fileReplacements",
+            "angular.json",
+            "configurazione a runtime"
+          ],
+          "follow_up": {
+            "domanda": "Perché mettere una API key negli environment è pericoloso?",
+            "risposta": "Perché finisce nel bundle JavaScript, quindi chiunque apra il browser può leggerla. Gli environment servono per URL e flag, non per segreti. Se ti serve una chiave, deve stare su un backend che la usi al posto tuo."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Componenti e Lifecycle",
+      "domande": [
+        {
+          "id": "angular-009",
+          "priorita": "ALTA",
+          "domanda": "Quali lifecycle hook usi davvero e quando?",
+          "risposta": "Nel quotidiano ngOnInit per caricare i dati iniziali, ngOnChanges per reagire a un input che cambia, ngOnDestroy per pulire, e ngAfterViewInit quando ti serve il DOM già disponibile. Gli altri li usi raramente ma devi saperli nominare: ngDoCheck per controlli custom, ngAfterViewChecked e ngAfterContentChecked per casi di misurazione. Il consiglio pratico è non riempirli tutti: molto di quello che prima stava in ngOnInit oggi si risolve con un resolver o con un effect.",
+          "parole_chiave": [
+            "ngOnInit",
+            "ngOnChanges",
+            "ngOnDestroy",
+            "ngAfterViewInit"
+          ],
+          "follow_up": {
+            "domanda": "Qual è l'ordine di esecuzione di ngOnInit, ngAfterContentInit e ngAfterViewInit?",
+            "risposta": "Prima ngOnChanges per ogni input, poi ngOnInit, poi ngAfterContentInit quando il contenuto proiettato è pronto, e infine ngAfterViewInit quando la view del componente e i figli sono inizializzati. Sapere l'ordine serve quando leggi qualcosa dal DOM o da un figlio: se lo fai in ngOnInit ottieni undefined."
+          }
+        },
+        {
+          "id": "angular-010",
+          "priorita": "ALTA",
+          "domanda": "Perché ngOnDestroy è così importante?",
+          "risposta": "Perché è dove rilasci quello che hai aperto: subscription, timer, listener su window o document, e in generale tutto ciò che vive fuori dal componente. Se non lo fai, dopo qualche navigazione hai decine di sottoscrizioni attive che continuano a leggere dati e a scrivere su un componente che non esiste più. È la causa più comune di perdite di memoria nelle applicazioni Angular, e oggi si risolve con takeUntilDestroyed() invece di tenere un Subject di distruzione a mano.",
+          "parole_chiave": [
+            "ngOnDestroy",
+            "unsubscribe",
+            "memory leak",
+            "takeUntilDestroyed"
+          ],
+          "follow_up": {
+            "domanda": "takeUntilDestroyed dove va chiamato?",
+            "risposta": "Dentro un contesto di iniezione, perché ha bisogno di sapere a quale componente o servizio legarsi: tipicamente in un costruttore, oppure passandogli esplicitamente un DestroyRef. Se lo chiami fuori da quel contesto lancia un errore, ed è il motivo per cui i vecchi helper richiedevano un Subject passato dall'esterno."
+          }
+        },
+        {
+          "id": "angular-011",
+          "priorita": "ALTA",
+          "domanda": "Come comunicano un componente padre e uno figlio?",
+          "risposta": "Con @Input dal padre al figlio e @Output con EventEmitter dal figlio al padre: è il canale esplicito e va preferito, perché il flusso dei dati resta leggibile. Quando però sono coinvolti fratelli o rami lontani dell'albero, passi a un servizio condiviso con stato reattivo, oggi tipicamente dei Signal. La scelta la guida la distanza: più sono vicini, più conviene l'input; più sono lontani, più conviene il servizio.",
+          "parole_chiave": [
+            "@Input",
+            "@Output",
+            "EventEmitter",
+            "servizio condiviso"
+          ],
+          "follow_up": {
+            "domanda": "Perché evitare di passare dati attraverso cinque livelli di componenti?",
+            "risposta": "Perché ogni livello intermedio deve solo rigirare l'input e diventa un imbuto: se un giorno cambia un dato, devi toccare tutti i componenti di mezzo. Quel caso si chiama prop drilling ed è esattamente il segnale che lo stato dovrebbe stare in un servizio iniettato."
+          }
+        },
+        {
+          "id": "angular-012",
+          "priorita": "ALTA",
+          "domanda": "Come interagisci con un componente figlio dal padre?",
+          "risposta": "Con le query: @ViewChild, @ViewChildren, oppure nella forma nuova viewChild() e viewChildren(). Ottenuto il riferimento puoi chiamare metodi pubblici o leggerne lo stato. È legittimo ma da usare con criterio: se il padre deve pilotare continuamente il figlio, probabilmente lo stato dovrebbe stare altrove. Il caso d'uso sano è quando ti serve il DOM o un'istanza tecnica, non quando stai ricostruendo a mano una comunicazione che gli input farebbero meglio.",
+          "parole_chiave": [
+            "@ViewChild",
+            "viewChild()",
+            "riferimenti",
+            "DOM"
+          ],
+          "follow_up": {
+            "domanda": "Che differenza c'è tra viewChild e contentChild?",
+            "risposta": "viewChild cerca nel template del componente stesso, quindi nei figli dichiarati lì. contentChild cerca in quello che il genitore ha proiettato dentro di te tramite ng-content. Sono due alberi diversi e confonderli è un classico errore da undefined."
+          }
+        },
+        {
+          "id": "angular-013",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è la content projection e come funziona ng-content?",
+          "risposta": "Ti permette di passare contenuto dentro un componente come se fosse un tag HTML: metti ng-content nel template del figlio e quello che scrivi tra i suoi tag viene proiettato lì. Con l'attributo select decidi dove va ciascun pezzo, per esempio un'area per il titolo e una per il corpo. È così che si costruiscono componenti riutilizzabili come una card o un modal, senza riempirli di input che finiscono in un template pieno di condizioni.",
+          "parole_chiave": [
+            "ng-content",
+            "content projection",
+            "select",
+            "slot"
+          ],
+          "follow_up": {
+            "domanda": "Quando conviene ng-content invece di un input?",
+            "risposta": "Quando il contenuto non è un dato ma struttura: se devi inserire markup arbitrario, con gli input dovresti passare template o HTML come stringa, che è fragile e insicuro. Con ng-content il chiamante scrive normale template Angular, quindi binding e direttive continuano a funzionare."
+          }
+        },
+        {
+          "id": "angular-014",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci alias, obbligatorietà e trasformazione negli input?",
+          "risposta": "Con @Input({ alias, required, transform }) oppure con input() e le sue opzioni. Il transform è la parte più utile: ti permette di accettare una forma comoda nel template e lavorare con un tipo più comodo dentro, per esempio ricevere una stringa di numeri separati da virgola e ritrovarti un array. Così chi usa il componente scrive il template in modo naturale e tu non spargi conversioni in giro.",
+          "parole_chiave": [
+            "alias",
+            "required",
+            "transform",
+            "input()"
+          ],
+          "follow_up": {
+            "domanda": "Perché required sugli input è utile?",
+            "risposta": "Perché sposta un errore dal runtime di chi usa il componente al compile time: se dimentichi di passare la proprietà lo scopri subito, invece di vedere undefined in pagina. Con i Signal è ancora più evidente, perché senza valore iniziale il tipo te lo impone il compilatore."
+          }
+        },
+        {
+          "id": "angular-015",
+          "priorita": "MEDIA",
+          "domanda": "Come si forza l'aggiornamento di una view e perché spesso è la risposta sbagliata?",
+          "risposta": "Si forza con ChangeDetectorRef: markForCheck() dice che il componente va ricontrollato al prossimo giro, detectChanges() esegue subito il controllo in modo sincrono sul sottoalbero. Nella pratica usi markForCheck e lasci fare al framework. detectChanges chiamato a mano è quasi sempre il sintomo che l'aggiornamento arriva da fuori dalla zona reattiva, e la causa va sistemata lì, non zittita nel componente.",
+          "parole_chiave": [
+            "ChangeDetectorRef",
+            "markForCheck",
+            "detectChanges",
+            "zone"
+          ],
+          "follow_up": {
+            "domanda": "In quali casi un aggiornamento arriva fuori dalla zona di Angular?",
+            "risposta": "Tipicamente con callback di librerie terze, WebSocket gestiti a mano, o dentro un runOutsideAngular. In quei casi riporti il lavoro dentro con NgZone.run oppure, meglio, aggiorni uno stato reattivo con i Signal, che notificano Angular senza dipendere dalla zona."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Signals",
+      "domande": [
+        {
+          "id": "angular-016",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono i Signal in Angular e perché sono stati introdotti?",
+          "risposta": "Sono un modo per rappresentare lo stato reattivo: un Signal contiene un valore e notifica chi lo legge quando cambia, così Angular sa esattamente quali parti della view aggiornare invece di ricontrollare tutto l'albero. Il vantaggio rispetto a RxJS è la granularità e la semplicità: per un contatore o un valore derivato non serve un Observable con subscribe e unsubscribe. Nella pratica convivono: Signal per lo stato locale, RxJS per i flussi asincroni come le chiamate HTTP.",
+          "parole_chiave": [
+            "reattività fine",
+            "computed",
+            "effect",
+            "zoneless",
+            "convivenza con RxJS"
+          ],
+          "follow_up": {
+            "domanda": "I Signal sostituiscono RxJS?",
+            "risposta": "No, e chi dice il contrario non ha lavorato su flussi veri. I Signal gestiscono stato sincrono e derivato; RxJS resta insostituibile per tutto ciò che è temporale: debounce, annullamento, concorrenza controllata, ritenti. La divisione sana è Signal per lo stato che leggi nel template, RxJS per il tempo."
+          }
+        },
+        {
+          "id": "angular-017",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra signal e computed?",
+          "risposta": "Un signal è la sorgente che puoi scrivere, un computed è derivato e si ricalcola solo quando una delle sue dipendenze cambia, tenendo il risultato in cache. Non puoi scrivere su un computed: se ti sembra di averne bisogno, stai descrivendo male il modello e probabilmente ti serve un signal scrivibile a monte, o linkedSignal. Il vantaggio del computed è che il valore derivato non può disallinearsi, perché non lo aggiorni tu.",
+          "parole_chiave": [
+            "signal",
+            "computed",
+            "cache",
+            "sola lettura",
+            "dipendenze"
+          ],
+          "follow_up": {
+            "domanda": "Il computed viene ricalcolato a ogni lettura?",
+            "risposta": "No: viene ricalcolato alla prima lettura successiva a un cambiamento delle dipendenze, poi resta in cache. Se le dipendenze non sono cambiate, leggerlo mille volte costa come leggerlo una. Questo lo rende sicuro da usare direttamente nel template, dove le letture avvengono molte volte per ciclo."
+          }
+        },
+        {
+          "id": "angular-018",
+          "priorita": "ALTA",
+          "domanda": "Cosa fa effect() e quando lo usi?",
+          "risposta": "Registra una funzione che viene rieseguita automaticamente quando uno dei signal che legge cambia: è il watcher dei Signal. Lo usi per gli effetti collaterali verso l'esterno, come scrivere su localStorage, loggare o sincronizzarsi con qualcosa che non è Angular. Non lo usi per calcolare stato derivato, perché per quello c'è computed, che è sincrono e non ha effetti. Va chiamato in un contesto di iniezione, altrimenti devi passargli un injector.",
+          "parole_chiave": [
+            "effect()",
+            "effetti collaterali",
+            "injector",
+            "computed"
+          ],
+          "follow_up": {
+            "domanda": "Perché mettere una chiamata HTTP dentro un effect è sconsigliato?",
+            "risposta": "Perché gli effect non sono pensati per orchestrare dati: rischi di far ripartire la richiesta a ogni minimo cambiamento, senza controllo su annullamento e concorrenza. Per i dati usi resource() oppure un servizio con switchMap, che gestiscono lo stato di caricamento e l'annullamento in modo esplicito."
+          }
+        },
+        {
+          "id": "angular-019",
+          "priorita": "ALTA",
+          "domanda": "Come fa Angular a sapere quali viste aggiornare quando un signal cambia?",
+          "risposta": "Perché leggere un signal dentro un template registra una dipendenza: Angular tiene traccia di chi legge cosa. Quando il valore cambia, marca come da ricontrollare esattamente i componenti che lo leggono, non tutto l'albero. È il motivo per cui i Signal rendono possibile la modalità zoneless: non serve più un meccanismo globale che intercetti ogni evento asincrono per accorgersi che qualcosa è cambiato.",
+          "parole_chiave": [
+            "dependency tracking",
+            "granularità",
+            "zoneless",
+            "markForCheck"
+          ],
+          "follow_up": {
+            "domanda": "Cosa cambia concretamente con il zoneless?",
+            "risposta": "Che non c'è più zone.js a intercettare setTimeout, Promise e listener per decidere quando ricontrollare: Angular si fida delle notifiche dei Signal e degli eventi che conosce. Il vantaggio è meno lavoro a ogni tick e stack trace leggibili; il rovescio è che se aggiorni stato fuori dai canali noti la view non si aggiorna, e devi usare i Signal correttamente."
+          }
+        },
+        {
+          "id": "angular-020",
+          "priorita": "MEDIA",
+          "domanda": "Come si aggiorna un signal e perché usare update() invece di set()?",
+          "risposta": "Con set() sostituisci il valore, con update() ricevi il valore precedente e restituisci quello nuovo. update() serve quando il nuovo valore dipende dal vecchio, come incrementare un contatore o aggiungere un elemento a una lista: così non leggi e non scrivi in due passaggi separati, e non rischi di perdere un aggiornamento. È la stessa differenza che c'è tra assegnare una variabile e usare una funzione di aggiornamento in useState di React.",
+          "parole_chiave": [
+            "set()",
+            "update()",
+            "valore precedente",
+            "atomicità"
+          ],
+          "follow_up": {
+            "domanda": "Un signal è mutabile?",
+            "risposta": "Il contenitore sì, quello che contiene no: se dentro ci metti un oggetto e lo modifichi, il signal non se ne accorge perché il riferimento non è cambiato. È il motivo per cui, con i Signal come con OnPush, conviene trattare i dati come immutabili e sostituire l'oggetto con uno nuovo."
+          }
+        },
+        {
+          "id": "angular-021",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci stato derivato e filtri con i Signal?",
+          "risposta": "Tieni i signal come sorgente di verità e ne derivi il resto con computed: la lista filtrata, il totale, il valore formattato. Così l'aggiornamento segue un solo percorso e non hai copie di stato che si disallineano, perché il derivato non lo scrivi mai a mano. Se hai un valore che deve resettarsi quando cambia una sorgente, linkedSignal è lo strumento giusto e sostituisce il vecchio pattern con un effect che riscriveva la variabile.",
+          "parole_chiave": [
+            "sorgente di verità",
+            "computed",
+            "linkedSignal",
+            "stato derivato"
+          ],
+          "follow_up": {
+            "domanda": "Quando un computed diventa un problema di performance?",
+            "risposta": "Quando fa un lavoro pesante ed è letto in molti punti: il valore è in cache, ma il calcolo riparte alla prima lettura dopo un cambiamento. Se è davvero costoso conviene spostarlo su un signal aggiornato da un evento, oppure ridurre la granularità, così ricalcoli solo la parte che dipende dal dato cambiato."
+          }
+        },
+        {
+          "id": "angular-022",
+          "priorita": "MEDIA",
+          "domanda": "Come converti un Observable in Signal e viceversa?",
+          "risposta": "Con toSignal() per passare da Observable a Signal e toObservable() per il contrario, dentro un contesto di iniezione perché serve gestire la sottoscrizione e la sua chiusura. toSignal richiede un initialValue quando l'Observable non emette subito, altrimenti il template avrebbe un undefined da gestire. Il pattern che vedo più spesso è un servizio che espone Observable per gli eventi e Signal per lo stato che il template legge.",
+          "parole_chiave": [
+            "toSignal",
+            "toObservable",
+            "initialValue",
+            "injector"
+          ],
+          "follow_up": {
+            "domanda": "Perché serve initialValue in toSignal?",
+            "risposta": "Perché toSignal si sottoscrive e basta: non sa quando arriverà il primo valore. Senza valore iniziale il tipo è Signal con dentro anche undefined e devi gestirlo nel template; dando un initialValue hai un tipo pulito. Se la sorgente è un BehaviorSubject, che ha già un valore corrente, l'initialValue non serve."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "RxJS",
+      "domande": [
+        {
+          "id": "angular-023",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra un Observable e una Promise?",
+          "risposta": "Una Promise rappresenta un singolo valore futuro e non è annullabile: nasce già in esecuzione e l'unica cosa che puoi fare è attendere. Un Observable è un flusso: può emettere zero, uno o molti valori, puoi annullarlo con unsubscribe e puoi comporlo con operatori come mappa, filtro o debounce. È per questo che in Angular gli HTTP tornano Observable: non ti serve solo il risultato, ti serve poter annullare la richiesta quando l'utente cambia pagina o digita altro.",
+          "parole_chiave": [
+            "Promise",
+            "flusso",
+            "lazy",
+            "unsubscribe",
+            "composizione"
+          ],
+          "follow_up": {
+            "domanda": "Un Observable è eager o lazy?",
+            "risposta": "Lazy: non emette niente finché qualcuno non si sottoscrive. Una Promise invece è già partita nel momento in cui la crei. Questa differenza spiega perché una chiamata HTTP definita in un servizio non parte finché il componente non fa subscribe, o non la consuma con l'async pipe."
+          }
+        },
+        {
+          "id": "angular-024",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra switchMap, mergeMap, concatMap ed exhaustMap?",
+          "risposta": "Decidono cosa fare quando arriva un nuovo valore mentre il precedente è ancora in corso. switchMap annulla il precedente ed è il default per le ricerche e per le rotte, dove vuoi solo l'ultimo risultato. concatMap li accoda in ordine, mergeMap li esegue tutti in parallelo, exhaustMap ignora i nuovi finché il corrente non finisce, ed è quello giusto per un pulsante di login per evitare doppi invii. Sbagliare operatore qui è la causa tipica di risultati fuori ordine o di richieste duplicate.",
+          "parole_chiave": [
+            "switchMap",
+            "mergeMap",
+            "concatMap",
+            "exhaustMap",
+            "concorrenza"
+          ],
+          "follow_up": {
+            "domanda": "Perché per un salvataggio al click conviene exhaustMap o concatMap?",
+            "risposta": "Perché non vuoi perdere il secondo salvataggio né sovrascrivere il primo: con switchMap annulleresti una scrittura a metà, che su un salvataggio è pericoloso. concatMap li esegue in ordine, exhaustMap tiene il primo e scarta i successivi finché non ha finito."
+          }
+        },
+        {
+          "id": "angular-025",
+          "priorita": "ALTA",
+          "domanda": "Come gestisci la distruzione delle sottoscrizioni?",
+          "risposta": "Oggi con takeUntilDestroyed() nella pipe, che si aggancia automaticamente al ciclo di vita del componente o del servizio. Le alternative sono l'async pipe nel template, che si disiscrive da sola, o il vecchio pattern con un Subject e takeUntil in ngOnDestroy. L'importante è non lasciare subscribe a mano senza chiusura: è la perdita di memoria più frequente in Angular.",
+          "parole_chiave": [
+            "takeUntilDestroyed",
+            "async pipe",
+            "ngOnDestroy",
+            "memory leak"
+          ],
+          "follow_up": {
+            "domanda": "Le sottoscrizioni HTTP vanno chiuse a mano?",
+            "risposta": "Le chiamate HTTP di Angular si completano da sole e la sottoscrizione si chiude: per un singolo GET non serve disiscriversi. Il problema sono i flussi che non completano mai, come valueChanges di un form, un Subject di un servizio o gli eventi del router: quelli restano attivi per sempre se non li chiudi."
+          }
+        },
+        {
+          "id": "angular-026",
+          "priorita": "ALTA",
+          "domanda": "Cosa fa l'async pipe e perché è meglio di una subscribe manuale?",
+          "risposta": "Si sottoscrive all'Observable nel template, espone il valore e si disiscrive automaticamente quando il componente viene distrutto. In più, quando l'Observable cambia riferimento, gestisce la nuova sottoscrizione senza che tu scriva nulla. Con subscribe manuale invece devi gestire tu la variabile, il ciclo di aggiornamento e la chiusura, e sono tre occasioni di sbagliare. Il limite è che l'async pipe non ti dà un punto comodo per gestire gli errori, ed è lì che serve un catchError a monte.",
+          "parole_chiave": [
+            "async pipe",
+            "auto-unsubscribe",
+            "template",
+            "change detection"
+          ],
+          "follow_up": {
+            "domanda": "Con la strategia OnPush l'async pipe funziona?",
+            "risposta": "Sì, ed è una delle poche cose che marca da sola il componente come da ricontrollare quando arriva un nuovo valore. È uno dei motivi per cui OnPush e async pipe vanno d'accordo: l'aggiornamento non dipende dallo stato mutato a mano."
+          }
+        },
+        {
+          "id": "angular-027",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono Subject, BehaviorSubject e ReplaySubject?",
+          "risposta": "Un Subject è sia Observable sia observer: ci emetti valori e chi è sottoscritto li riceve, ma chi arriva dopo non vede nulla di quanto già passato. BehaviorSubject tiene l'ultimo valore e lo consegna subito a chi si sottoscrive, quindi è quello giusto per uno stato con un valore iniziale. ReplaySubject conserva gli ultimi n valori e li ripete ai nuovi iscritti, utile quando l'ultimo valore da solo non basta.",
+          "parole_chiave": [
+            "Subject",
+            "BehaviorSubject",
+            "ReplaySubject",
+            "stato iniziale"
+          ],
+          "follow_up": {
+            "domanda": "Perché BehaviorSubject è comodo per lo stato condiviso?",
+            "risposta": "Perché chi si sottoscrive riceve subito lo stato corrente, senza attendere la prossima emissione. Con un Subject semplice un componente che si monta dopo non vedrebbe il valore e resterebbe vuoto finché non cambia qualcosa, che è esattamente il bug delle liste che si popolano solo al secondo click."
+          }
+        },
+        {
+          "id": "angular-028",
+          "priorita": "MEDIA",
+          "domanda": "Come implementi una ricerca mentre l'utente digita?",
+          "risposta": "Prendi il valueChanges del campo e applichi una catena: debounceTime per aspettare che smetta di digitare, distinctUntilChanged per non ripetere la stessa query, e switchMap per chiamare il servizio annullando la richiesta precedente. Così non generi una chiamata per lettera e non rischi che una risposta lenta arrivi dopo una più recente e sovrascriva il risultato giusto. È il caso d'uso che spiega meglio perché switchMap e non mergeMap.",
+          "parole_chiave": [
+            "valueChanges",
+            "debounceTime",
+            "distinctUntilChanged",
+            "switchMap"
+          ],
+          "follow_up": {
+            "domanda": "Perché mergeMap qui sarebbe un errore?",
+            "risposta": "Perché eseguirebbe tutte le chiamate in parallelo senza garantire l'ordine di arrivo: la risposta di una ricerca vecchia potrebbe arrivare dopo quella nuova e sovrascriverla. Il risultato è che digitando veloce vedi i risultati di una lettera che hai già cancellato."
+          }
+        },
+        {
+          "id": "angular-029",
+          "priorita": "MEDIA",
+          "domanda": "Cosa fanno catchError e retry?",
+          "risposta": "catchError intercetta l'errore nel flusso e ti permette di restituire un valore di fallback o di rilanciare: è il punto in cui decidi se l'errore è locale o va propagato. retry ritenta la sorgente un numero di volte, e puoi configurarlo per aggiungere un ritardo crescente tra i tentativi. La combinazione tipica è retry per i guasti transitori di rete e catchError per trasformare quello che resta in uno stato gestibile dall'interfaccia.",
+          "parole_chiave": [
+            "catchError",
+            "retry",
+            "fallback",
+            "backoff"
+          ],
+          "follow_up": {
+            "domanda": "Su quali errori non ha senso fare retry?",
+            "risposta": "Su quelli che non cambiano ritentando: un 400 o un 401 non migliorano al secondo tentativo, e ritentare un 401 ti fa solo sbattere più volte contro l'autenticazione. Il retry ha senso su timeout, 502 e 503, in generale sui guasti temporanei."
+          }
+        },
+        {
+          "id": "angular-030",
+          "priorita": "MEDIA",
+          "domanda": "A cosa servono of, from, combineLatest e forkJoin?",
+          "risposta": "Ti permettono di costruire flussi da cose che non lo sono, e di combinarli. of crea un flusso da valori fissi, from converte array o Promise in Observable. combineLatest emette ogni volta che una delle sorgenti cambia, dandoti l'ultimo valore di ciascuna, quindi è quello giusto quando hai filtri indipendenti che devono comporre una vista. forkJoin aspetta che tutte completino e ti dà solo l'ultimo valore di ognuna, come un Promise.all: si usa per caricare più dati insieme prima di mostrare la pagina.",
+          "parole_chiave": [
+            "of",
+            "from",
+            "combineLatest",
+            "forkJoin",
+            "Promise.all"
+          ],
+          "follow_up": {
+            "domanda": "Che differenza c'è tra combineLatest e forkJoin?",
+            "risposta": "combineLatest emette a ogni cambiamento di una sorgente, quindi è reattivo e resta vivo. forkJoin emette una volta sola, quando tutte hanno completato, e non emette nulla se una non completa mai: per questo non lo usi su un Subject o su un flusso continuo, ma su chiamate HTTP finite."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Change Detection e Performance",
+      "domande": [
+        {
+          "id": "angular-031",
+          "priorita": "ALTA",
+          "domanda": "Come funziona la change detection con strategia OnPush?",
+          "risposta": "Con OnPush Angular ricontrolla il componente solo su eventi espliciti: un @Input che cambia per riferimento, un evento del template, un async pipe che emette, o una notifica dei Signal. Non parte più un giro globale dopo ogni evento asincrono, ma solo dai componenti che hanno davvero un motivo di cambiare. È quello che usi quasi sempre in produzione, perché con la strategia Default i cicli diventano il collo di bottiglia sulle applicazioni grandi. La trappola classica è mutare l'oggetto invece di sostituirlo: il riferimento non cambia e la view non si aggiorna.",
+          "parole_chiave": [
+            "OnPush",
+            "immutabilità",
+            "riferimenti",
+            "async pipe",
+            "Default vs OnPush"
+          ],
+          "follow_up": {
+            "domanda": "Come faresti a debuggare una view che non si aggiorna?",
+            "risposta": "Prima verifico se sto mutando l'input invece di sostituirlo, perché è la causa nella grande maggioranza dei casi. Se lì è tutto corretto, controllo se l'aggiornamento arriva fuori dalla zona di Angular o da un dato non osservato, e in quel caso uso markForCheck() sul punto giusto invece di forzare detectChanges() ovunque."
+          }
+        },
+        {
+          "id": "angular-032",
+          "priorita": "ALTA",
+          "domanda": "Perché il track nei cicli @for è importante?",
+          "risposta": "Perché dice ad Angular come identificare ogni elemento della lista, così quando la lista cambia sa quali nodi riusare e quali creare o distruggere. Senza track, o con un track basato sull'indice, un inserimento in testa può far ricostruire tutto e perdere lo stato dei componenti figli, per esempio un campo di input che si svuota. Con un identificatore stabile, tipicamente l'id dell'elemento, Angular sposta i nodi esistenti e ne crea solo quelli nuovi. Nelle liste grandi la differenza si misura in secondi, non in millisecondi.",
+          "parole_chiave": [
+            "@for",
+            "track",
+            "trackBy",
+            "riconciliazione",
+            "stato dei figli"
+          ],
+          "follow_up": {
+            "domanda": "Perché usare l'indice come identificatore è rischioso?",
+            "risposta": "Perché l'indice identifica la posizione, non l'elemento: se inserisci qualcosa in testa tutti gli indici cambiano e Angular crede che ogni elemento sia diverso. Il risultato è che ricostruisce i nodi, e perdi stato locale e focus oltre a fare lavoro inutile."
+          }
+        },
+        {
+          "id": "angular-033",
+          "priorita": "ALTA",
+          "domanda": "Come fai il lazy loading di una feature e cosa cambia nel bundle?",
+          "risposta": "Nel router carichi le rotte con loadChildren, oppure usi loadComponent per un singolo componente: sono import dinamici, quindi il bundler spezza quei pezzi in chunk separati che vengono scaricati quando la rotta si attiva. Il risultato è che il bundle iniziale resta piccolo e l'utente scarica solo la parte che visita. Con le rotte standalone si scrive in modo più diretto, perché carichi l'array di rotte senza creare un NgModule che faccia solo da contenitore.",
+          "parole_chiave": [
+            "loadChildren",
+            "loadComponent",
+            "chunk",
+            "bundle iniziale"
+          ],
+          "follow_up": {
+            "domanda": "Come verifichi che il lazy loading funzioni davvero?",
+            "risposta": "Guardi i chunk nella build: se la feature è davvero separata compare come file a sé e non dentro il bundle principale. Poi nella scheda Network controlli che venga scaricata solo navigando su quella rotta. È un controllo che vale la pena fare, perché un import statico sfuggito da qualche parte riporta tutto nel bundle iniziale senza che nessuno se ne accorga."
+          }
+        },
+        {
+          "id": "angular-034",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è @defer e quando conviene usarlo?",
+          "risposta": "È un blocco di template che Angular carica in modo differito: il contenuto viene recuperato solo quando si verifica una condizione, come entrare nel viewport, passare il mouse o dopo un timer. È la versione template del lazy loading, e serve per i pezzi pesanti che non sono visibili subito: grafici, editor, mappe. Ha anche i placeholder, quindi puoi mostrare uno skeleton mentre il blocco arriva, e questo migliora la percezione di velocità senza che tu debba costruire la logica a mano.",
+          "parole_chiave": [
+            "@defer",
+            "trigger",
+            "placeholder",
+            "chunk",
+            "skeleton"
+          ],
+          "follow_up": {
+            "domanda": "Che trigger useresti per un grafico che sta sotto la piega?",
+            "risposta": "on viewport, perché il blocco si scarica quando l'utente ci arriva scorrendo. Se invece è qualcosa che appare al click, per esempio un modal con un editor, usi on interaction, che aspetta il primo segnale dell'utente invece di scaricare tutto all'avvio."
+          }
+        },
+        {
+          "id": "angular-035",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è zone.js e perché si tende a rimuoverlo?",
+          "risposta": "zone.js è la libreria che permette ad Angular di sapere quando è successo qualcosa di asincrono: intercetta setTimeout, Promise e listener, e alla fine di ogni attività decide di avviare un controllo della change detection. Funziona, ma paga un costo: intercetta tutto, anche attività che non hanno niente a che vedere con la view, e rende gli stack trace difficili da leggere. Con i Signal il framework non ha più bisogno di quel meccanismo globale, perché sa esattamente chi dipende da cosa.",
+          "parole_chiave": [
+            "zone.js",
+            "zoneless",
+            "change detection",
+            "performance"
+          ],
+          "follow_up": {
+            "domanda": "Il zoneless è già utilizzabile in produzione?",
+            "risposta": "Nelle versioni recenti è uscito dallo stato sperimentale, quindi un'applicazione nuova può nascere senza zone.js. Il vincolo reale sono le librerie di terze parti che si aspettano la zona per funzionare: se ne hai una, va verificata prima, altrimenti ti ritrovi aggiornamenti che non arrivano a schermo nei punti gestiti da quella libreria."
+          }
+        },
+        {
+          "id": "angular-036",
+          "priorita": "MEDIA",
+          "domanda": "Quando usi runOutsideAngular e perché?",
+          "risposta": "Quando hai un lavoro che non tocca la view e non vuoi che faccia scattare un ciclo di change detection: per esempio un calcolo pesante, un listener su uno scroll, o un timer molto frequente. Con NgZone.runOutsideAngular il codice gira fuori dalla zona, quindi Angular non ricontrolla nulla. Se a un certo punto quel lavoro deve aggiornare la view, rientri con NgZone.run oppure, meglio, aggiorni un Signal che notifica da solo.",
+          "parole_chiave": [
+            "NgZone",
+            "runOutsideAngular",
+            "scroll",
+            "performance"
+          ],
+          "follow_up": {
+            "domanda": "Perché è meglio aggiornare un Signal che rientrare con NgZone.run?",
+            "risposta": "Perché il Signal notifica solo i componenti che lo leggono, mentre NgZone.run fa ripartire un controllo che può coinvolgere molto più albero. Con la zona in via di uscita, affidarti ai Signal ti allinea anche al modello futuro invece di legarti a un meccanismo che sta sparendo."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Routing",
+      "domande": [
+        {
+          "id": "angular-037",
+          "priorita": "ALTA",
+          "domanda": "Come definisci una rotta e cosa sono i parametri di rotta?",
+          "risposta": "Dichiari un array di oggetti con path e component, e i due punti nel path indicano un parametro: dettaglio/:id. Nell'URL reale diventa dettaglio/42, e il componente legge quel 42 come stringa, quindi la conversione a numero la fai tu. Accanto ai parametri di rotta ci sono i parametri di query, che non fanno parte del path ma seguono il punto interrogativo: quelli sono la scelta giusta per filtri e stato condivisibile, mentre i parametri di rotta identificano la risorsa.",
+          "parole_chiave": [
+            "path",
+            "parametri di rotta",
+            "query params",
+            "stringhe"
+          ],
+          "follow_up": {
+            "domanda": "Perché i parametri arrivano sempre come stringa?",
+            "risposta": "Perché nell'URL sono testo, e Angular te li consegna come stringa anche se scrivi un numero. Se ti serve un numero lo converti esplicitamente, e se lo usi in una chiamata HTTP controlli il caso in cui non sia valido: con un id non numerico stai chiamando una risorsa che non esiste."
+          }
+        },
+        {
+          "id": "angular-038",
+          "priorita": "ALTA",
+          "domanda": "Cos'è una guardia e quali tipi esistono?",
+          "risposta": "È una funzione che decide se una navigazione può avvenire, o se devi essere mandato altrove. Le più usate sono canActivate per l'accesso, canDeactivate per le modifiche non salvate, canMatch per decidere se una rotta si applica, e le resolve per i dati. Nelle versioni recenti si scrivono come funzioni, quindi un inject dentro la guardia ti dà i servizi che servono. La regola pratica è tenerle sottili: se contengono logica di business, quella logica sta in un servizio.",
+          "parole_chiave": [
+            "canActivate",
+            "canDeactivate",
+            "canMatch",
+            "guardie funzionali"
+          ],
+          "follow_up": {
+            "domanda": "Perché canDeactivate è quella che si dimentica sempre?",
+            "risposta": "Perché si pensa all'entrata e non all'uscita: l'utente compila un form, clicca indietro e perde tutto. Con canDeactivate chiedi conferma prima di lasciare la rotta. È un dettaglio che separa una demo da un prodotto, e in colloquio notarlo fa sempre una buona impressione."
+          }
+        },
+        {
+          "id": "angular-039",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra ActivatedRoute e ActivatedRouteSnapshot?",
+          "risposta": "ActivatedRoute è un osservabile: i parametri li segui con params o paramMap, quindi reagisci anche quando passi da dettaglio/1 a dettaglio/2 senza che il componente venga ricreato. ActivatedRouteSnapshot è una fotografia del momento: comodo per leggere un valore subito, ma non ti avvisa se quel valore cambia. L'errore classico è leggere lo snapshot in ngOnInit e poi chiedersi perché navigando da un dettaglio all'altro la pagina non si aggiorna.",
+          "parole_chiave": [
+            "ActivatedRoute",
+            "snapshot",
+            "paramMap",
+            "riuso del componente"
+          ],
+          "follow_up": {
+            "domanda": "Perché il componente non viene ricreato cambiando solo il parametro?",
+            "risposta": "Perché Angular riusa la stessa rotta quando cambiano solo i parametri, quindi ngOnInit non viene rieseguito. Se carichi i dati lì, resti con quelli vecchi. Le strade sono sottoscriversi a paramMap, usare un input legato al parametro con withComponentInputBinding, o spostare il caricamento su un flusso reattivo."
+          }
+        },
+        {
+          "id": "angular-040",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è un resolver e quando conviene usarlo?",
+          "risposta": "È una funzione che carica i dati prima che la rotta si attivi, così il componente trova già quello che gli serve e non mostra stati vuoti. Il vantaggio è che la navigazione attende i dati e la pagina appare completa, il che dà una sensazione di solidità. Il costo è che se la chiamata è lenta l'utente resta sulla pagina precedente senza feedback, quindi per i casi interattivi conviene caricare nel componente e mostrare uno skeleton.",
+          "parole_chiave": [
+            "resolve",
+            "prefetch",
+            "navigazione in attesa",
+            "skeleton"
+          ],
+          "follow_up": {
+            "domanda": "Resolve o caricamento nel componente: come scegli?",
+            "risposta": "Se il dato è indispensabile per mostrare la pagina e la chiamata è veloce, resolve. Se l'utente deve vedere qualcosa subito e i dati possono arrivare dopo, carichi nel componente con uno skeleton e gestisci l'errore lì. La cosa sbagliata è mettere un resolve su una chiamata lenta: l'utente crede che l'applicazione si sia bloccata."
+          }
+        },
+        {
+          "id": "angular-041",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci i parametri di query e il loro cambiamento?",
+          "risposta": "Con ActivatedRoute.queryParamMap, che è un osservabile, quindi combinandolo con gli altri flussi dello schermo ottieni filtri che funzionano anche cambiando l'URL a mano o tornando indietro con il browser. L'approccio che consiglio è tenere lo stato dei filtri nell'URL e derivarne la vista: così la pagina è condivisibile e il tasto indietro si comporta come l'utente si aspetta. Se tieni i filtri solo in memoria, ogni ricaricamento li perde e i link che mandi a un collega non portano allo stesso risultato.",
+          "parole_chiave": [
+            "queryParamMap",
+            "filtri nell URL",
+            "condivisibile",
+            "tasto indietro"
+          ],
+          "follow_up": {
+            "domanda": "Perché mettere i filtri nell'URL è considerato buona pratica?",
+            "risposta": "Perché rende lo stato condivisibile e la navigazione coerente: il link porta esattamente alla vista che stai guardando e il tasto indietro funziona. In più ti risolve la persistenza senza codice, perché l'URL è già lì quando ricarichi la pagina."
+          }
+        },
+        {
+          "id": "angular-042",
+          "priorita": "MEDIA",
+          "domanda": "Come condividi dati tra una rotta padre e le sue figlie?",
+          "risposta": "Il caso normale è che la rotta padre esponga un componente con un router-outlet e che il dato condiviso stia in un servizio fornito da quella rotta, così vive finché sei dentro la sezione. In alternativa il padre può risolvere il dato e le figlie leggerlo dalla rotta genitore con ActivatedRoute.parent. La prima strada è più chiara nella maggior parte dei casi, perché il servizio è esplicito e testabile, mentre leggere dal genitore lega le figlie alla struttura delle rotte.",
+          "parole_chiave": [
+            "router-outlet",
+            "rotta padre",
+            "servizio di feature",
+            "ActivatedRoute.parent"
+          ],
+          "follow_up": {
+            "domanda": "Perché un servizio fornito sulla rotta è comodo?",
+            "risposta": "Perché la sua istanza vive esattamente quanto la sezione: entri, il servizio nasce, esci e viene distrutto. Questo evita due estremi: uno stato globale che resta in memoria per sempre, oppure uno stato ricreato a ogni componente figlio che perde quello già caricato."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Forms",
+      "domande": [
+        {
+          "id": "angular-043",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra form template-driven e reactive?",
+          "risposta": "Nei template-driven metti ngModel nel template e Angular costruisce il modello dietro le quinte: si scrive in fretta ed è comodo per form piccoli. Nei reactive definisci il FormGroup nel codice, con controlli e validatori, e il template si limita a collegarsi: è più verboso, ma la logica è testabile senza rendering e i flussi di valore e stato sono osservabili. La scelta pratica è reactive per tutto ciò che ha validazioni, campi dinamici o dipendenze tra campi, template-driven solo per form banali.",
+          "parole_chiave": [
+            "ngModel",
+            "FormGroup",
+            "validatori",
+            "testabilità",
+            "Observable"
+          ],
+          "follow_up": {
+            "domanda": "Perché i reactive sono preferibili nei test?",
+            "risposta": "Perché il form esiste come oggetto nel componente: puoi chiamare setValue, leggere valid e controllare gli errori senza montare nulla. Con i template-driven devi renderizzare il template e interagire con il DOM, quindi il test diventa più lento e più fragile."
+          }
+        },
+        {
+          "id": "angular-044",
+          "priorita": "ALTA",
+          "domanda": "Come costruisci un FormGroup con i validatori?",
+          "risposta": "Con FormBuilder raggruppi i controlli: fb.group con i campi e un array di validatori per ciascuno, più i validatori a livello di gruppo per le regole che coinvolgono più campi, come la conferma password. Nel template colleghi tutto con formGroup e formControlName, e Angular si occupa di propagare valori e stato. La parte da non dimenticare è che gli errori li leggi da controls.nome.errors, non da una variabile tua, altrimenti perdi la sincronizzazione.",
+          "parole_chiave": [
+            "FormBuilder",
+            "fb.group",
+            "validatori di gruppo",
+            "formControlName"
+          ],
+          "follow_up": {
+            "domanda": "Come validi una regola che dipende da due campi?",
+            "risposta": "Con un validatore a livello di gruppo, che riceve il FormGroup e può confrontare i valori dei figli, restituendo l'errore sul gruppo o sul campo che vuoi evidenziare. Metterlo su un singolo controllo non funziona, perché lì vedi solo il valore di quel controllo."
+          }
+        },
+        {
+          "id": "angular-045",
+          "priorita": "ALTA",
+          "domanda": "Come scrivi un validatore custom?",
+          "risposta": "È una funzione che riceve il controllo e restituisce null se il valore va bene, oppure un oggetto con la chiave dell'errore. Quell'oggetto è quello che poi leggi nel template per mostrare il messaggio giusto, quindi il nome della chiave è parte del contratto. Se il controllo è di tipo diverso, tipicamente un FormControl, tipizzi la funzione e accedi a value senza cast.",
+          "parole_chiave": [
+            "ValidatorFn",
+            "oggetto di errore",
+            "null",
+            "tipizzazione"
+          ],
+          "follow_up": {
+            "domanda": "Perché il validatore deve restituire null quando è valido?",
+            "risposta": "Perché Angular considera valido un controllo quando il risultato è null o undefined, e non valido quando c'è un oggetto. Restituire false o una stringa vuota è l'errore che rende valido un campo sbagliato, ed è facile commetterlo se non tipizzi la funzione."
+          }
+        },
+        {
+          "id": "angular-046",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci i validatori asincroni?",
+          "risposta": "Sono funzioni che restituiscono un Observable o una Promise, e li passi come terzo argomento di un controllo oppure come validatori asincroni di gruppo. Angular li esegue dopo quelli sincroni, solo se quelli sono passati, e intanto il controllo ha stato pending: è lì che mostri l'indicatore di verifica. Il dettaglio importante è l'annullamento: se il valore cambia, Angular annulla la richiesta precedente, quindi la validazione asincrona non va usata per operazioni che non puoi annullare.",
+          "parole_chiave": [
+            "AsyncValidatorFn",
+            "pending",
+            "annullamento",
+            "debounce"
+          ],
+          "follow_up": {
+            "domanda": "Perché la validazione asincrona di un username è il caso tipico?",
+            "risposta": "Perché la disponibilità di un username si sa solo chiedendolo al server. Il pattern è debounce sulla digitazione, poi la chiamata, con lo stato pending che mostra il controllo in corso. Va ricordato che la regola vera deve stare anche lato server: la validazione sul client è cortesia verso l'utente, non sicurezza."
+          }
+        },
+        {
+          "id": "angular-047",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci campi dinamici o ripetuti?",
+          "risposta": "Con FormArray: un controllo che contiene una lista di controlli e cresce o si riduce con push e removeAt. Serve per i campi che l'utente aggiunge da sé, come più indirizzi o più righe di una fattura. Nel template cicli sull'array di controls e indicizzi i formControlName, e alla rimozione ti conviene togliere dal modello invece di nascondere l'elemento, perché i campi nascosti continuano a essere validati.",
+          "parole_chiave": [
+            "FormArray",
+            "push",
+            "removeAt",
+            "campi dinamici"
+          ],
+          "follow_up": {
+            "domanda": "Qual è l'errore tipico con FormArray?",
+            "risposta": "Usare l'indice come unica chiave e poi rimuovere un elemento a metà: gli indici si spostano e i valori finiscono nel campo sbagliato. Serve un identificatore stabile per ogni riga, così il modello segue l'elemento e non la sua posizione."
+          }
+        },
+        {
+          "id": "angular-048",
+          "priorita": "MEDIA",
+          "domanda": "Come colleghi un form reattivo a uno store o a un Signal?",
+          "risposta": "Tratti il form come stato locale dello schermo e ne esponi i cambiamenti con valueChanges, combinati con debounce e distinctUntilChanged, per aggiornare lo store o un Signal. In uscita, quando lo store cambia dall'esterno, usi patchValue con emitEvent a false per non rientrare nel ciclo e riavviare la propagazione. Se invece ti serve un flusso puramente reattivo, puoi derivare i Signal dallo stato del form con toSignal su valueChanges.",
+          "parole_chiave": [
+            "valueChanges",
+            "patchValue",
+            "emitEvent",
+            "flusso unidirezionale"
+          ],
+          "follow_up": {
+            "domanda": "Perché serve emitEvent a false in patchValue?",
+            "risposta": "Perché senza, l'aggiornamento programmatico emette su valueChanges e sembra un cambiamento dell'utente: se quel flusso aggiorna di nuovo lo store, entri in un ciclo che si autoalimenta. Con emitEvent a false aggiorni il form senza far finta che l'utente abbia digitato."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "HTTP e Interceptors",
+      "domande": [
+        {
+          "id": "angular-049",
+          "priorita": "ALTA",
+          "domanda": "Come si usa HttpClient in un progetto moderno?",
+          "risposta": "Inietti HttpClient in un servizio e chiami i metodi get, post, put e delete, che restituiscono Observable con il corpo tipizzato. Lo abiliti con provideHttpClient nei provider dell'applicazione, al posto del vecchio HttpClientModule, e con withInterceptors o withFetch attivi le funzionalità accessorie. Fornirlo a livello di applicazione conta, perché ogni fornitore separato avrebbe i suoi interceptor e perderesti la catena comune.",
+          "parole_chiave": [
+            "HttpClient",
+            "provideHttpClient",
+            "tipizzazione",
+            "Observable"
+          ],
+          "follow_up": {
+            "domanda": "Perché non si inietta HttpClient nel componente?",
+            "risposta": "Perché mescoli trasporto e presentazione: il componente non dovrebbe sapere se i dati arrivano da HTTP, da cache o da un mock. Mettendo le chiamate in un servizio il componente riceve dati, e nei test sostituisci il servizio senza simulare il livello HTTP."
+          }
+        },
+        {
+          "id": "angular-050",
+          "priorita": "ALTA",
+          "domanda": "Cos'è un interceptor e quando ne scrivi uno?",
+          "risposta": "È una funzione che si inserisce nella catena delle richieste in uscita e delle risposte in entrata, e può modificarle o convertirne gli errori. Lo scrivi quando c'è una logica trasversale: aggiungere il token di autenticazione, propagare un identificativo di correlazione, mostrare un caricamento globale o centralizzare il retry sui guasti transitori. Con provideHttpClient li registri con withInterceptors, e l'ordine conta perché la catena è sequenziale: ogni interceptor riceve la richiesta come l'ha lasciata il precedente.",
+          "parole_chiave": [
+            "interceptor",
+            "catena",
+            "token",
+            "withInterceptors",
+            "ordine"
+          ],
+          "follow_up": {
+            "domanda": "Perché l'ordine degli interceptor è importante?",
+            "risposta": "Perché ognuno vede la richiesta come l'ha lasciata il precedente e la risposta come l'ha rimandata quello dopo. Se metti il logging prima del rinnovamento del token, logghi richieste senza token aggiornato e ti sembra un bug di autenticazione. La convenzione è autenticazione all'esterno, poi logging e gestione errori verso l'interno."
+          }
+        },
+        {
+          "id": "angular-051",
+          "priorita": "ALTA",
+          "domanda": "Come gestisci gli errori di una chiamata HTTP?",
+          "risposta": "Con catchError dentro la pipe della chiamata, dove decidi se restituire un fallback, rilanciare un errore tipizzato o far vedere un messaggio. L'errore di Angular porta lo status, quindi puoi distinguere un problema di rete da un 403 o da un 500, e questa distinzione cambia il messaggio che mostri. La cosa importante è non lasciare che un errore non gestito arrivi fino in fondo: un errore inghiottito senza traccia è il modo più rapido per passare mezza giornata a capire perché la pagina è vuota.",
+          "parole_chiave": [
+            "catchError",
+            "HttpErrorResponse",
+            "status",
+            "errore tipizzato"
+          ],
+          "follow_up": {
+            "domanda": "Dove metteresti la gestione degli errori, nel servizio o nel componente?",
+            "risposta": "La trasformazione tecnica nel servizio, per esempio normalizzare lo status in un tipo tuo; la decisione su cosa mostrare all'utente nel componente, perché dipende dalla schermata. Se metti i messaggi nel servizio, poi li devi duplicare ovunque serva un testo diverso."
+          }
+        },
+        {
+          "id": "angular-052",
+          "priorita": "MEDIA",
+          "domanda": "Come aggiungi il token di autenticazione a tutte le richieste?",
+          "risposta": "Con un interceptor funzionale che clona la richiesta aggiungendo l'header Authorization. La richiesta non si modifica sul posto, va clonata, perché gli oggetti HttpRequest sono immutabili. Se il token può scadere, lo stesso interceptor gestisce il rinnovo: quando riceve un 401 rinnova una volta sola e riprova la richiesta originale, con l'accortezza di non lanciare dieci rinnovi in parallelo se sono fallite più richieste insieme.",
+          "parole_chiave": [
+            "Authorization",
+            "clone",
+            "immutabilità",
+            "rinnovo",
+            "401"
+          ],
+          "follow_up": {
+            "domanda": "Perché non si modifica la richiesta sul posto?",
+            "risposta": "Perché HttpRequest è immutabile: se la cambi non ottieni l'effetto sperato e rischi di contaminare la richiesta anche per altri. Il clone con le modifiche è il modo corretto, e ti rende anche esplicito cosa cambia rispetto alla richiesta originale."
+          }
+        },
+        {
+          "id": "angular-053",
+          "priorita": "MEDIA",
+          "domanda": "Come si testa un servizio che usa HttpClient?",
+          "risposta": "Con provideHttpClientTesting, che sostituisce il backend con un controller sul quale definisci le risposte attese: expectOne per l'URL, flush per il corpo, error per simulare un guasto. Così verifichi metodo, URL, header e gestione degli errori senza rete e senza un server finto. È anche il posto giusto dove testare gli interceptor, perché sono logica trasversale che altrimenti nessun test copre.",
+          "parole_chiave": [
+            "provideHttpClientTesting",
+            "HttpTestingController",
+            "expectOne",
+            "flush",
+            "interceptor"
+          ],
+          "follow_up": {
+            "domanda": "Cosa verifichi con expectOne oltre all'URL?",
+            "risposta": "Il metodo HTTP, gli header e il corpo inviato, e con verify() alla fine che non siano rimaste richieste inattese appese. È il controllo che intercetta gli errori di duplicazione: una chiamata fatta due volte da un doppio click si vede subito."
+          }
+        },
+        {
+          "id": "angular-054",
+          "priorita": "MEDIA",
+          "domanda": "Come annulli una richiesta HTTP in Angular?",
+          "risposta": "Le richieste fatte con HttpClient sono annullabili: se la sottoscrizione viene chiusa, la richiesta viene abortita. In pratica ti affidi agli operatori: switchMap chiude la precedente quando ne arriva una nuova, timeout evita di restare appesi, takeUntilDestroyed chiude tutto all'uscita dal componente. Il caso da evitare è la risposta lenta che arriva dopo che l'utente ha cambiato schermata e sovrascrive dati nuovi con vecchi.",
+          "parole_chiave": [
+            "annullamento",
+            "unsubscribe",
+            "switchMap",
+            "timeout",
+            "takeUntilDestroyed"
+          ],
+          "follow_up": {
+            "domanda": "Come annulli tutte le richieste in corso quando l'utente cambia pagina?",
+            "risposta": "Con takeUntilDestroyed nella pipe: quando il componente viene distrutto la sottoscrizione si chiude e le richieste in corso vengono abortite. È meglio che gestire un array di sottoscrizioni da chiudere a mano, perché non può dimenticarsene nessuno."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Dependency Injection",
+      "domande": [
+        {
+          "id": "angular-055",
+          "priorita": "ALTA",
+          "domanda": "Come funziona la dependency injection in Angular?",
+          "risposta": "Non istanzi i servizi a mano: li dichiari come dipendenze e Angular te li fornisce, risolvendo anche le loro dipendenze. Il servizio si marca con @Injectable e il framework decide se creare una nuova istanza o riusarne una esistente, in base a dove è fornito. Questo è quello che rende i test semplici, perché al posto del servizio reale puoi fornirne uno finto senza toccare il codice che lo usa.",
+          "parole_chiave": [
+            "@Injectable",
+            "iniezione",
+            "istanza",
+            "testabilità"
+          ],
+          "follow_up": {
+            "domanda": "Cosa succede se dimentichi @Injectable su un servizio?",
+            "risposta": "Da qualche versione il compilatore è più permissivo, quindi in alcuni casi funziona anche senza. La convenzione resta metterlo sempre: documenta il ruolo della classe, e nel caso dei servizi con dipendenze è ciò che permette al framework di risolverle."
+          }
+        },
+        {
+          "id": "angular-056",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra providedIn root e i providers di un componente?",
+          "risposta": "providedIn root significa che il servizio è un singleton a livello di applicazione: una sola istanza condivisa da tutti. Se invece lo metti nei providers di un componente, ogni istanza di quel componente ha la sua copia, che vive finché vive il componente. La scelta determina se due parti dell'applicazione condividono lo stato o ne hanno uno separato, ed è la causa di parecchi bug da stato condiviso per errore.",
+          "parole_chiave": [
+            "providedIn root",
+            "providers",
+            "singleton",
+            "scope",
+            "istanza per componente"
+          ],
+          "follow_up": {
+            "domanda": "Quando vuoi un servizio per istanza e non singleton?",
+            "risposta": "Quando il servizio rappresenta uno stato locale di quella parte di UI: per esempio una tabella con selezione, filtri e paginazione propri, dove due tabelle nella stessa pagina non devono influenzarsi. Se lo lasciassi singleton, selezionare una riga nella prima tabella cambierebbe anche la seconda."
+          }
+        },
+        {
+          "id": "angular-057",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono gli InjectionToken e quando servono?",
+          "risposta": "Sono chiavi di iniezione per valori che non sono classi: configurazioni, funzioni, stringhe. Ti servono quando vuoi iniettare un oggetto di configurazione tipizzato senza creare una classe che lo contenga solo per poterlo iniettare. Il token si crea con new InjectionToken e una descrizione, poi si fornisce con useValue o useFactory, e il tipo generico ti dà sicurezza su cosa ottieni.",
+          "parole_chiave": [
+            "InjectionToken",
+            "useValue",
+            "useFactory",
+            "configurazione"
+          ],
+          "follow_up": {
+            "domanda": "Che differenza c'è tra useValue, useFactory e useClass?",
+            "risposta": "useValue fornisce un valore già pronto, useFactory chiama una funzione che può avere sue dipendenze e restituisce il valore, useClass dice quale classe istanziare. useFactory è quella che serve quando il valore dipende da altro, per esempio una configurazione che richiede un servizio."
+          }
+        },
+        {
+          "id": "angular-058",
+          "priorita": "MEDIA",
+          "domanda": "Come funziona la gerarchia degli injector?",
+          "risposta": "Angular cerca la dipendenza partendo dall'injector più vicino al punto di iniezione e risale verso la radice finché non la trova. Questo permette di sovrascrivere un servizio solo in un sottoalbero, fornendone una versione diversa a livello di componente o di rotta. È lo stesso meccanismo che sfrutti nei test quando fornisci un doppio al posto del servizio reale.",
+          "parole_chiave": [
+            "gerarchia",
+            "injector",
+            "risalita",
+            "override",
+            "sottoalbero"
+          ],
+          "follow_up": {
+            "domanda": "Come sovrascrivi un servizio solo per una parte dell'applicazione?",
+            "risposta": "Lo fornisci nei providers di quel componente o di quella rotta: l'injector più vicino vince, quindi quel sottoalbero riceve l'istanza nuova mentre il resto continua a usare quella globale. Ricorda che la sovrascrittura vale anche per i figli, quindi devi essere consapevole di quanto è ampio il sottoalbero."
+          }
+        },
+        {
+          "id": "angular-059",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è inject() e perché si usa al posto del costruttore?",
+          "risposta": "inject() è la funzione che ti dà una dipendenza in un contesto di iniezione, quindi in un campo inizializzato del componente o dentro una funzione eseguita in quel contesto. Il vantaggio rispetto ai parametri del costruttore è che puoi creare funzioni riutilizzabili che ottengono da sole ciò che serve, ed è così che sono scritte guardie, interceptor e validatori funzionali. Fuori dal contesto di iniezione non funziona: se la chiami in una callback asincrona, devi catturare la dipendenza prima.",
+          "parole_chiave": [
+            "inject()",
+            "contesto di iniezione",
+            "funzioni riutilizzabili",
+            "guardie funzionali"
+          ],
+          "follow_up": {
+            "domanda": "Perché inject() non funziona dentro una callback asincrona?",
+            "risposta": "Perché quando la callback viene eseguita non c'è più un contesto di iniezione attivo, e Angular non sa a quale injector riferirsi. La soluzione è chiamare inject() all'inizio salvando il risultato in una variabile, e usare quella nella callback."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Direttive e Pipes",
+      "domande": [
+        {
+          "id": "angular-060",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra direttiva di attributo e direttiva strutturale?",
+          "risposta": "La direttiva di attributo modifica l'aspetto o il comportamento di un elemento esistente: si applica come attributo e cambia classi, stili o gestisce eventi. Quella strutturale invece modifica il DOM, aggiungendo o togliendo elementi: ngIf, ngFor e ngSwitch sono di questo tipo e sotto il cappello usano un template e una ViewContainerRef. Con la sintassi nuova il controllo di flusso si scrive con @if e @for direttamente nel template, quindi le direttive strutturali built-in le trovi ormai come sintassi nativa.",
+          "parole_chiave": [
+            "direttiva di attributo",
+            "strutturale",
+            "ngIf",
+            "@if",
+            "ViewContainerRef"
+          ],
+          "follow_up": {
+            "domanda": "Perché la nuova sintassi di controllo di flusso è preferibile a *ngIf?",
+            "risposta": "Perché è nativa del template, quindi non richiede l'import del modulo, ed è tipizzata meglio: con @if il compilatore sa che dentro il blocco la variabile non è più opzionale. In più evita il template wrapper che le direttive strutturali creavano dietro le quinte."
+          }
+        },
+        {
+          "id": "angular-061",
+          "priorita": "MEDIA",
+          "domanda": "Come scrivi una direttiva che reagisce a eventi e modifica l'elemento?",
+          "risposta": "Con un decoratore @Directive che seleziona un attributo, l'ElementRef per accedere all'elemento e HostListener per gli eventi, oppure la proprietà host nel decoratore per collegare proprietà e listener. Per cambiare classi e stili usi Renderer2 o i binding dell'host, ed è meglio che toccare element.nativeElement direttamente perché resta compatibile con il rendering lato server. Il caso d'uso tipico è un attributo che aggiunge un comportamento a un elemento esistente, come un gestore di scorciatoie da tastiera.",
+          "parole_chiave": [
+            "@Directive",
+            "ElementRef",
+            "HostListener",
+            "Renderer2",
+            "host"
+          ],
+          "follow_up": {
+            "domanda": "Perché non conviene toccare nativeElement direttamente?",
+            "risposta": "Perché bypassi l'astrazione di Renderer2 e rompi il rendering lato server, dove non esiste un DOM vero. In più perdi la compatibilità con le strategie di rendering future. Se ti serve solo cambiare una classe, il binding dell'host è ancora più diretto."
+          }
+        },
+        {
+          "id": "angular-062",
+          "priorita": "MEDIA",
+          "domanda": "Che differenza c'è tra pipe pure e impure?",
+          "risposta": "Una pipe pura viene rieseguita solo quando cambia il valore in ingresso o uno degli argomenti: è veloce ed è il comportamento predefinito. Una pipe impura viene rieseguita a ogni ciclo di change detection, quindi se la usi su una lista grande diventa un problema di prestazioni. Nella pratica scrivi pipe pure e, se il calcolo dipende da più fattori, lo esprimi negli argomenti invece di dichiararla impura per comodità.",
+          "parole_chiave": [
+            "pipe pura",
+            "impura",
+            "change detection",
+            "prestazioni"
+          ],
+          "follow_up": {
+            "domanda": "Perché la pipe async è impura?",
+            "risposta": "Perché deve sottoscriversi a un flusso e aggiornarsi quando arriva un nuovo valore: non c'è un ingresso che cambia a segnalarlo. È un caso legittimo di impurità ed è gestita in modo efficiente dal framework, ma è anche il motivo per cui non conviene moltiplicarla nei template."
+          }
+        },
+        {
+          "id": "angular-063",
+          "priorita": "MEDIA",
+          "domanda": "Come scrivi una pipe custom?",
+          "risposta": "Con @Pipe con un nome e una classe che implementa transform: riceve il valore e gli eventuali argomenti e restituisce il risultato trasformato. La dichiari standalone oppure la importi dove serve, e nel template la usi con il simbolo della barra verticale seguito dagli argomenti separati da due punti. È utile per formattazioni e conversioni riusabili, ma se la logica serve a un solo componente valuta se non sia più chiaro un metodo.",
+          "parole_chiave": [
+            "@Pipe",
+            "transform",
+            "standalone",
+            "riuso"
+          ],
+          "follow_up": {
+            "domanda": "Quando una pipe è la scelta sbagliata?",
+            "risposta": "Quando diventa uno schermo di logica applicativa invece di una trasformazione di presentazione. Una pipe che chiama un servizio o fa più cose è difficile da testare e poco riusabile. Se la logica serve a un solo componente, un metodo o un computed sono più leggibili di una pipe dedicata."
+          }
+        },
+        {
+          "id": "angular-064",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è una host directive?",
+          "risposta": "È una direttiva che un componente dichiara di usare sul proprio host, così chi consuma il componente non deve saperlo. Serve quando un componente ha bisogno di comportamenti da direttiva su sé stesso, per esempio gestire il focus o le classi: li dichiari nel componente invece di lasciare al chiamante il compito di aggiungere l'attributo. È la versione esplicita di quello che prima si faceva con l'array host nei metadati.",
+          "parole_chiave": [
+            "hostDirectives",
+            "incapsulamento",
+            "componente ospite",
+            "API del componente"
+          ],
+          "follow_up": {
+            "domanda": "Perché hostDirectives migliora l'incapsulamento?",
+            "risposta": "Perché il chiamante non deve conoscere e ripetere la direttiva giusta per far funzionare il componente: l'API pubblica resta il solo input che gli interessa. Se un giorno cambi la direttiva interna, i consumatori non se ne accorgono."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "State Management",
+      "domande": [
+        {
+          "id": "angular-065",
+          "priorita": "ALTA",
+          "domanda": "Quando hai davvero bisogno di una libreria di gestione dello stato?",
+          "risposta": "Quando lo stato è condiviso da parti dell'applicazione che non hanno una relazione nell'albero dei componenti, e le regole che lo modificano sono complesse o dipendono da più eventi. In quel caso un servizio con Signal o BehaviorSubject diventa un accumulo di logica senza struttura, e una libreria come NgRx ti dà un percorso tracciabile: ogni cambiamento passa da un'azione e si vede nello strumento di debug. Se invece lo stato è locale a uno schermo, la libreria è peso inutile.",
+          "parole_chiave": [
+            "stato condiviso",
+            "complessità",
+            "tracciabilità",
+            "NgRx",
+            "overkill"
+          ],
+          "follow_up": {
+            "domanda": "Qual è il segnale che una libreria non ti serve?",
+            "risposta": "Quando lo stato vive dentro una rotta e muore con essa, e le modifiche sono locali a un componente. Altro segnale è un servizio che ha solo un BehaviorSubject e un metodo get e set: lì stai usando una libreria per risolvere un problema che non hai."
+          }
+        },
+        {
+          "id": "angular-066",
+          "priorita": "ALTA",
+          "domanda": "Come funziona NgRx e quali sono i suoi pezzi?",
+          "risposta": "C'è uno store che contiene lo stato, e lo stato si modifica solo attraverso azioni: un componente invia un'azione che descrive cosa è successo, un reducer calcola la nuova versione dello stato in modo puro, e i selector leggono porzioni dello stato in modo memorizzato. Gli effect gestiscono le operazioni asincrone, come la chiamata HTTP che poi invia un'azione di successo o di errore. Il vantaggio è che ogni cambiamento è esplicito e ricostruibile, il costo è la quantità di codice per aggiungere una funzionalità.",
+          "parole_chiave": [
+            "store",
+            "action",
+            "reducer",
+            "selector",
+            "effect"
+          ],
+          "follow_up": {
+            "domanda": "Perché il reducer deve essere una funzione pura?",
+            "risposta": "Perché la prevedibilità di NgRx si basa su questo: dato lo stesso stato e la stessa azione, il risultato è sempre lo stesso, senza effetti collaterali. È ciò che rende possibile il debug nel tempo e i test sui reducer, che sono facili proprio perché non fanno altro che trasformare dati."
+          }
+        },
+        {
+          "id": "angular-067",
+          "priorita": "MEDIA",
+          "domanda": "Quando preferisci i Signal a NgRx?",
+          "risposta": "Quando lo stato è piccolo, condiviso tra pochi schermi e con regole semplici: con un servizio che espone signal e computed ottieni la stessa reattività senza action, reducer ed effect. Il punto di non ritorno verso NgRx è quando ti serve ricostruire la sequenza di eventi che ha portato a uno stato, o quando la stessa azione deve scatenare più conseguenze coordinate. Un'alternativa intermedia è un servizio con Signal per lo stato e RxJS per gli effetti, che copre molti casi senza l'impalcatura.",
+          "parole_chiave": [
+            "Signal",
+            "servizio",
+            "semplicità",
+            "punto di non ritorno"
+          ],
+          "follow_up": {
+            "domanda": "Si possono usare Signal e NgRx insieme?",
+            "risposta": "Sì, ed è una combinazione sensata: lo store resta la sorgente di verità e i componenti derivano porzioni in Signal, così il template non dipende dall'async pipe. Le versioni recenti di NgRx integrano i Signal anche nei selector, quindi la lettura diventa più naturale."
+          }
+        },
+        {
+          "id": "angular-068",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è un facade service e perché lo usi?",
+          "risposta": "È un servizio che nasconde lo store dietro un'API con i metodi che servono alla tua funzionalità: caricaLista, aggiungi, elimina, più i signal da leggere. Il vantaggio è che i componenti non conoscono action e selector, quindi se decidi di cambiare approccio o di sostituire NgRx con Signal il resto del codice non si tocca. Il rischio è la facciata che diventa un contenitore di tutto: va tenuta per funzionalità, non globale.",
+          "parole_chiave": [
+            "facade",
+            "incapsulamento",
+            "API di funzionalità",
+            "disaccoppiamento"
+          ],
+          "follow_up": {
+            "domanda": "Qual è il rischio di un facade globale?",
+            "risposta": "Che diventa un servizio gigantesco che tutti iniettano e nessuno possiede: ogni nuova funzionalità aggiunge metodi e i conflitti di merge aumentano. Meglio un facade per funzionalità, così il confine è chiaro e quei file cambiano solo quando cambia quella parte dell'applicazione."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Testing",
+      "domande": [
+        {
+          "id": "angular-069",
+          "priorita": "ALTA",
+          "domanda": "Come si testa un componente con TestBed?",
+          "risposta": "Configuri il TestBed dichiarando il componente e i suoi doppi, poi lo crei con createComponent e lavori sulla fixture: il debugElement per interagire con il DOM, componentInstance per lo stato e detectChanges per propagare i cambiamenti. I doppi li fornisci al posto dei servizi reali, così il test non dipende dalla rete né dal timing. Il consiglio è testare quello che l'utente vede e fa, non i dettagli interni: un test che conosce una variabile privata si rompe a ogni refactoring.",
+          "parole_chiave": [
+            "TestBed",
+            "ComponentFixture",
+            "debugElement",
+            "doppi di test"
+          ],
+          "follow_up": {
+            "domanda": "Perché non conviene testare i dettagli interni?",
+            "risposta": "Perché il test diventa ostaggio del refactoring: rinomini una variabile privata e si rompe anche se il comportamento è identico. Testando input, output e DOM, il test sopravvive ai cambi interni e documenta il contratto pubblico del componente, che è ciò che conta."
+          }
+        },
+        {
+          "id": "angular-070",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra detectChanges e whenStable?",
+          "risposta": "detectChanges esegue il controllo della change detection in modo sincrono, quindi subito dopo il DOM riflette lo stato corrente: è quello che serve quando cambi una proprietà e vuoi vedere il risultato. whenStable invece aspetta che le operazioni asincrone in sospeso siano concluse, quindi lo usi quando c'è una Promise o un Observable di mezzo. Il pattern tipico è detectChanges per il primo render, poi aggiorni, poi whenStable per far completare le chiamate simulate.",
+          "parole_chiave": [
+            "detectChanges",
+            "whenStable",
+            "sincrono",
+            "asincrono"
+          ],
+          "follow_up": {
+            "domanda": "Perché il primo detectChanges è sempre necessario?",
+            "risposta": "Perché createComponent non renderizza subito: costruisce il componente ma il template non viene valutato finché non forzi il controllo. Senza quella chiamata le query sul DOM non trovano nulla e sembra che il componente non funzioni, mentre in realtà non è ancora stato disegnato."
+          }
+        },
+        {
+          "id": "angular-071",
+          "priorita": "MEDIA",
+          "domanda": "Come testi una guardia o un interceptor funzionale?",
+          "risposta": "Essendo funzioni, le testi direttamente: per la guardia prepari uno snapshot di rotta e uno di stato finti e verifichi il valore di ritorno, per l'interceptor chiami la funzione passando una richiesta e una funzione next controllabile e verifichi cosa esce. Se dentro usano inject, le esegui dentro un contesto di iniezione con i provider configurati, oppure le testi attraverso una navigazione o una chiamata reale simulata. È molto più semplice di quando erano classi con dipendenze da istanziare.",
+          "parole_chiave": [
+            "contesto di iniezione",
+            "next controllabile",
+            "snapshot finto",
+            "funzione pura"
+          ],
+          "follow_up": {
+            "domanda": "Perché le guardie funzionali sono più facili da testare?",
+            "risposta": "Perché non devi istanziare una classe né configurare un TestBed per il suo costruttore: chiami la funzione con gli argomenti e controlli il risultato. Le dipendenze le risolvi con il contesto di iniezione, quindi il test resta corto e leggibile anche quando la logica è articolata."
+          }
+        },
+        {
+          "id": "angular-072",
+          "priorita": "MEDIA",
+          "domanda": "Come eviti test fragili sugli effetti asincroni?",
+          "risposta": "Controllando il tempo e le sorgenti invece di attendere il mondo reale: usi fakeAsync con tick per avanzare in modo deterministico, oppure flush del controller HTTP per far arrivare la risposta quando decidi tu. Eviti setTimeout e attese arbitrarie, che producono test che passano o falliscono a caso. Per gli Observable la tecnica più solida è sottoscrivere, far emettere valori controllati e verificare le emissioni con una lista di attese.",
+          "parole_chiave": [
+            "fakeAsync",
+            "tick",
+            "flush",
+            "deterministico"
+          ],
+          "follow_up": {
+            "domanda": "Cosa c'è di sbagliato in un test con attese a tempo?",
+            "risposta": "Che introduce una dipendenza dalla velocità della macchina: in locale passa e in pipeline fallisce, o il contrario. Un test che aspetta due secondi sperando che la risposta arrivi è un test che non sa cosa sta verificando. Meglio controllare esplicitamente il momento in cui l'operazione si conclude."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "SSR e Hydration",
+      "domande": [
+        {
+          "id": "angular-073",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra rendering lato server, prerendering e hydration?",
+          "risposta": "Il rendering lato server genera l'HTML a ogni richiesta, quindi puoi personalizzare la risposta con i dati dell'utente: serve per pagine dinamiche o che dipendono dall'autenticazione. Il prerendering genera l'HTML in fase di build e lo serve statico: va bene per pagine uguali per tutti, come una pagina di contenuti. L'hydration è la fase in cui il JavaScript prende quell'HTML già presente e lo rende interattivo, riattaccando gli eventi senza ricostruire il DOM da zero.",
+          "parole_chiave": [
+            "SSR",
+            "prerendering",
+            "hydration",
+            "HTML statico",
+            "interattività"
+          ],
+          "follow_up": {
+            "domanda": "Perché il prerendering non va bene per pagine personalizzate?",
+            "risposta": "Perché l'HTML viene generato una volta in build, quindi non conosce l'utente: mostrerebbe contenuto di un altro o uno stato vuoto. Per le pagine che dipendono dalla sessione serve il rendering a richiesta, oppure le rendi lato client dopo l'idratazione."
+          }
+        },
+        {
+          "id": "angular-074",
+          "priorita": "MEDIA",
+          "domanda": "Quali problemi devi aspettarti con il codice che gira anche sul server?",
+          "risposta": "Il primo è che non esiste il DOM: window, document e localStorage non ci sono, quindi vanno usati solo dopo l'idratazione, tipicamente controllando la piattaforma o dentro un hook che gira nel browser. Il secondo è che il codice del server è condiviso tra le richieste, quindi non ci puoi mettere stato globale mutabile: è il modo classico per far trapelare i dati di un utente in un'altra risposta. Terzo, le API che esistono solo nel browser vanno isolate dietro un servizio che si comporta diversamente sui due lati.",
+          "parole_chiave": [
+            "window",
+            "isPlatformBrowser",
+            "stato condiviso",
+            "trapelare tra richieste"
+          ],
+          "follow_up": {
+            "domanda": "Come proteggi un componente che usa localStorage?",
+            "risposta": "Metti gli accessi dopo l'idratazione, per esempio in un hook che gira nel browser, oppure controlli la piattaforma con isPlatformBrowser prima di usare l'API. In alternativa incapsuli l'accesso in un servizio che sul server restituisce un valore neutro: così il componente resta pulito e il comportamento condizionale sta in un solo punto."
+          }
+        },
+        {
+          "id": "angular-075",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci le chiamate HTTP con il rendering lato server?",
+          "risposta": "Con lo stesso HttpClient, ma con due attenzioni: le richieste fatte sul server devono concludersi prima che l'HTML venga restituito, altrimenti la pagina esce senza dati, e l'indirizzo di base deve puntare a un URL raggiungibile dal server e non a un percorso relativo del browser. Angular attende le operazioni in sospeso se le gestisci in modo compatibile, per esempio tramite resolver. Un'alternativa robusta è trasferire lo stato dal server al client, così il client non rifà le stesse chiamate dopo l'idratazione.",
+          "parole_chiave": [
+            "URL di base",
+            "stato trasferito",
+            "doppia richiesta",
+            "attesa delle operazioni"
+          ],
+          "follow_up": {
+            "domanda": "Perché senza trasferimento di stato il client rifà le chiamate?",
+            "risposta": "Perché l'istanza del client parte con uno store vuoto e ricarica tutto quello che il server aveva già recuperato. Il risultato è una doppia chiamata per ogni dato, con il doppio del carico sull'API e un contenuto che si svuota e si ripopola. Trasferendo lo stato serializzato nella pagina, il client lo adotta e non rifà nulla."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Migrazione e Versioni",
+      "domande": [
+        {
+          "id": "angular-076",
+          "priorita": "ALTA",
+          "domanda": "Come affronti l'aggiornamento di una versione major di Angular?",
+          "risposta": "Un major alla volta, senza saltare: ng update applica le migration di quel passaggio e ti mostra cosa resta da fare. Prima di iniziare verifico che la pipeline sia verde, poi aggiorno anche le librerie di terze parti, perché sono la causa più frequente di blocco. Dopo ogni salto lancio build, lint e test, così se qualcosa si rompe so a quale versione attribuirlo invece di trovarmi con dieci problemi insieme.",
+          "parole_chiave": [
+            "ng update",
+            "un major alla volta",
+            "dipendenze di terze parti",
+            "pipeline verde"
+          ],
+          "follow_up": {
+            "domanda": "Perché conviene non saltare i major?",
+            "risposta": "Perché ogni versione porta le sue migration, che conoscono il codice della versione precedente: saltando due major quelle automatiche non coprono tutti i casi e resti con modifiche da fare a mano che non sai dove siano. Inoltre perdi la possibilità di capire a quale passaggio è stato introdotto un problema."
+          }
+        },
+        {
+          "id": "angular-077",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono gli schematics di migrazione?",
+          "risposta": "Sono script di trasformazione che ng update esegue quando passi a una versione nuova: rinominano le API cambiate, sostituiscono le importazioni e a volte riscrivono interi pattern, come il passaggio ai componenti standalone. Il valore è che fanno in secondi quello che a mano richiederebbe giorni su un codice grande, mantenendo il codice compilabile mentre procedi. Non sono infallibili: dove non sanno decidere non toccano il file, quindi build e test restano la verifica finale.",
+          "parole_chiave": [
+            "schematics",
+            "ng update",
+            "trasformazione automatica",
+            "codice compilabile"
+          ],
+          "follow_up": {
+            "domanda": "Cosa fai se uno schematic non riesce a migrare un punto?",
+            "risposta": "Lo cerco nella lista finale che ng update stampa, dove i casi non gestiti vengono elencati con il file. Lì decido caso per caso guardando cosa faceva quel codice, e se il pattern è cambiato in modo sostanziale lo riscrivo seguendo la documentazione della nuova versione invece di tradurlo a memoria."
+          }
+        },
+        {
+          "id": "angular-078",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci una libreria di componenti che non supporta ancora la versione nuova?",
+          "risposta": "Prima verifico se esiste una versione compatibile o una prerelease: spesso la compatibilità c'è prima del rilascio ufficiale. Se non c'è, le opzioni sono rimandare quella parte dell'aggiornamento oppure isolare la libreria dietro un wrapper, in modo da poterla sostituire dopo. Quello che non farei è forzare l'installazione aggirando i controlli: ottieni un progetto che compila per caso e che si rompe nel momento meno opportuno.",
+          "parole_chiave": [
+            "compatibilità",
+            "peer dependencies",
+            "wrapper",
+            "isolamento"
+          ],
+          "follow_up": {
+            "domanda": "Perché forzare le peer dependencies è pericoloso?",
+            "risposta": "Perché dichiari una compatibilità che non è verificata: la libreria potrebbe usare API rimosse e funzionare finché non tocchi quel punto. Meglio restare su una versione che non rompe nulla e pianificare la sostituzione, invece di avere una build verde che nasconde un problema."
+          }
+        }
+      ]
+    }
+  ]
+}

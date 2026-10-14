@@ -1,0 +1,196 @@
+{
+  "meta": {
+    "tecnologia": "JPA e Hibernate",
+    "slug": "jpa",
+    "schema": 2,
+    "versione": 1,
+    "aggiornato": "2026-10-14",
+    "totale_domande": 11
+  },
+  "argomenti": [
+    {
+      "nome": "Fondamentali",
+      "domande": [
+        {
+          "id": "jpa-001",
+          "priorita": "ALTA",
+          "domanda": "JPA e Hibernate: sono la stessa cosa?",
+          "risposta": "No: la prima è la specifica, la seconda è l'implementazione. La specifica definisce le annotazioni, l'interfaccia di gestione delle entità e le regole del gioco, mentre quella concreta è il motore che esegue davvero le query e gestisce la sessione. La separazione esiste perché così il tuo codice non dipende dalla libreria specifica: se domani vuoi cambiare motore, la parte di codice scritta usando solo la specifica resta valida.",
+          "parole_chiave": [
+            "specifica",
+            "implementazione",
+            "annotazioni",
+            "portabilità",
+            "motore di persistenza"
+          ],
+          "follow_up": {
+            "domanda": "Perché esiste questa separazione?",
+            "risposta": "Per non legare il codice a una libreria sola e per standardizzare: le stesse annotazioni funzionano con motori diversi, quindi le competenze sono trasferibili e le librerie possono essere confrontate. Nella pratica si resta quasi sempre sullo stesso motore, ma la separazione continua a convenire perché ti impedisce di usare da subito API specifiche che poi ti legano. Il codice scritto sulla specifica è più facile da testare e da migrare."
+          }
+        },
+        {
+          "id": "jpa-002",
+          "priorita": "ALTA",
+          "domanda": "Cos'è il problema N+1 e come lo risolvi?",
+          "risposta": "Hai una lista di 100 post, ognuno con commenti. Invece di 1 query per tutto, ne vengono fatte 101: una per i post e 100 per i commenti di ciascun post. Una follia. Si risolve con JOIN FETCH che carica tutto in una volta sola.",
+          "parole_chiave": [
+            "N+1 query",
+            "lazy loading",
+            "JOIN FETCH",
+            "EntityGraph"
+          ],
+          "follow_up": {
+            "domanda": "Come fai JOIN FETCH?",
+            "risposta": "Nella query JPQL: `SELECT p FROM Post p JOIN FETCH p.comments`. Così i commenti vengono caricati insieme ai post."
+          }
+        },
+        {
+          "id": "jpa-003",
+          "priorita": "ALTA",
+          "domanda": "Come si definiscono le relazioni tra entità in JPA?",
+          "risposta": "Le relazioni si mappano con annotazioni come @OneToMany, @ManyToOne, @OneToOne e @ManyToMany. In una relazione uno-a-molti, la tabella lato molti ha la chiave esterna e usa @ManyToOne con @JoinColumn; il lato uno può avere @OneToMany con mappedBy per indicare che il proprietario della relazione è l'altro lato. Sui molti-a-molti serve di solito una tabella di collegamento, gestita con @JoinTable.",
+          "parole_chiave": [
+            "OneToMany",
+            "ManyToOne",
+            "JoinColumn",
+            "mappedBy"
+          ],
+          "follow_up": {
+            "domanda": "Chi è il lato proprietario della relazione?",
+            "risposta": "È il lato che ha la chiave esterna e che controlla l'aggiornamento nel database, di solito il @ManyToOne. L'altro lato usa mappedBy, così Hibernate sa che non deve gestire lui la colonna di collegamento e si evitano aggiornamenti duplicati."
+          }
+        },
+        {
+          "id": "jpa-004",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono il lazy e l'eager loading e cos'è il problema N+1?",
+          "risposta": "Il lazy loading carica i dati collegati solo quando li usi, l'eager li carica subito insieme all'entità principale. Il lazy è quello consigliato di default, perché evita di caricare dati che non servono. Il problema N+1 nasce quando, per una lista di N entità, il codice scatena N query aggiuntive per caricare le relazioni: una query per la lista e una per ogni elemento. Si risolve con le fetch join o con caricamenti espliciti mirati.",
+          "parole_chiave": [
+            "caricamento differito",
+            "caricamento immediato",
+            "problema N+1",
+            "fetch join",
+            "grafo di entità"
+          ],
+          "follow_up": {
+            "domanda": "Come ti accorgi del problema N+1?",
+            "risposta": "Guardando le query SQL generate, per esempio abilitando i log di Hibernate: vedi una query iniziale e poi decine di query uguali ripetute. Oppure notando prestazioni che peggiorano al crescere dei dati. La soluzione tipica è una join fetch nella query JPQL."
+          }
+        },
+        {
+          "id": "jpa-005",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è il dirty checking?",
+          "risposta": "Hibernate tiene una 'fotografia' dell'oggetto quando lo carica. Se lo modifichi, al flush confronta la fotografia con lo stato attuale e genera automaticamente l'UPDATE. Non devi chiamare save() esplicitamente.",
+          "parole_chiave": [
+            "snapshot",
+            "update automatico",
+            "flush"
+          ],
+          "follow_up": {
+            "domanda": "Serve chiamare save() dopo una modifica?",
+            "risposta": "No, se l'entità è gestita (managed). Hibernate lo fa da solo. save() serve solo per nuove entità o entità detached."
+          }
+        },
+        {
+          "id": "jpa-006",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono le query derivate?",
+          "risposta": "Sono query che il framework genera dal nome del metodo: scrivi che vuoi cercare per nome e cognome e ottieni la clausola corrispondente, senza scrivere nulla. Il vantaggio è che la maggior parte delle ricerche non richiede codice e il nome del metodo documenta cosa fa. Il limite è la leggibilità: superate due o tre condizioni il nome diventa una frase incomprensibile, ed è il punto in cui conviene passare a una query esplicita.",
+          "parole_chiave": [
+            "query derivate",
+            "nome del metodo",
+            "generazione automatica",
+            "leggibilità",
+            "limite di complessità"
+          ],
+          "follow_up": {
+            "domanda": "Quando passi a una query esplicita?",
+            "risposta": "Quando il nome diventa una frase lunga che nessuno ricostruisce a mente, o quando servono join e proiezioni che la derivazione non esprime in modo naturale. In quel caso la query scritta a mano è più chiara e si controlla meglio. La derivazione resta ottima per i casi semplici, l'errore è piegarla a quelli complessi."
+          }
+        },
+        {
+          "id": "jpa-007",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è il lazy loading e quando dà problemi?",
+          "risposta": "Lazy = carichi i dati solo quando ti servono. Se hai un Post con 100 Commenti, i commenti non vengono caricati finché non li chiami. Il problema è se li chiami dopo che la sessione è chiusa: LazyInitializationException.",
+          "parole_chiave": [
+            "caricamento differito",
+            "proxy",
+            "sessione chiusa"
+          ],
+          "follow_up": {
+            "domanda": "Come risolvi LazyInitializationException?",
+            "risposta": "Con JOIN FETCH nella query, @Transactional più ampio, o @EntityGraph per definire cosa caricare."
+          }
+        },
+        {
+          "id": "jpa-008",
+          "priorita": "MEDIA",
+          "domanda": "Ottimistic vs pessimistic locking",
+          "risposta": "Ottimistico: non blocchi nulla, aggiungi un campo @Version. Se due persone modificano lo stesso record, il secondo che salva riceve un errore. Pessimistico: blocchi la riga appena la leggi, nessun altro può toccarla finché non hai finito.",
+          "parole_chiave": [
+            "@Version",
+            "blocco",
+            "conflitto"
+          ],
+          "follow_up": {
+            "domanda": "Quale usi di default?",
+            "risposta": "Ottimistico. Meno invasivo, funziona bene quando i conflitti sono rari."
+          }
+        },
+        {
+          "id": "jpa-009",
+          "priorita": "BASSA",
+          "domanda": "Cos'è il first-level cache?",
+          "risposta": "È la cache che vive dentro una sessione: se nella stessa sessione carichi due volte la stessa entità, la seconda volta il framework non interroga il database, te la restituisce dalla memoria. Serve a evitare query ripetute quando attraversi relazioni o rileggi lo stesso oggetto, ed è anche il motivo per cui due letture della stessa entità ti danno la stessa istanza. Si svuota quando la sessione finisce, quindi non sopravvive alla richiesta.",
+          "parole_chiave": [
+            "cache di primo livello",
+            "sessione",
+            "stessa istanza",
+            "query evitate",
+            "vita della sessione"
+          ],
+          "follow_up": {
+            "domanda": "E la cache di secondo livello?",
+            "risposta": "È condivisa tra sessioni diverse e va configurata esplicitamente con un gestore esterno, perché non è attiva di default. Serve per dati letti molto spesso e modificati di rado, come tabelle di riferimento. Il costo è la coerenza: quando il dato cambia, tutte le istanze dell'applicazione devono invalidare la propria copia, e se la configurazione è sbagliata servi valori vecchi."
+          }
+        },
+        {
+          "id": "jpa-010",
+          "priorita": "BASSA",
+          "domanda": "Cosa sono le JPQL?",
+          "risposta": "Sono query scritte sulle entità invece che sulle tabelle: interroghi il nome dell'oggetto e delle sue proprietà, e il motore le traduce nel dialetto del database. La cosa che le rende utili è che restano valide se cambi database o rinomini la tabella nella mappatura, perché non conoscono i nomi fisici. Il limite è che non puoi usare tutto ciò che offre il tuo database specifico.",
+          "parole_chiave": [
+            "linguaggio di interrogazione",
+            "entità anziché tabelle",
+            "portabilità",
+            "traduzione",
+            "limiti"
+          ],
+          "follow_up": {
+            "domanda": "E le query native?",
+            "risposta": "Sono SQL puro, quindi hai accesso a tutto ciò che il database offre, comprese le sue funzioni specifiche e le ottimizzazioni non esprimibili altrimenti. Il costo è che leghi il codice a quel database e perdi la verifica della mappatura: se rinomini un campo nell'entità, la query nativa non se ne accorge e fallisce a runtime. Si usano quando il guadagno è misurabile, isolandole in un punto solo."
+          }
+        },
+        {
+          "id": "jpa-011",
+          "priorita": "BASSA",
+          "domanda": "Cosa sono i projection?",
+          "risposta": "Sono selezioni parziali: invece di caricare l'entità intera con tutte le sue colonne e relazioni, leggi solo i campi che ti servono. Il guadagno si vede sulle entità grandi o con relazioni pesanti, dove caricare tutto significa molte query e memoria sprecata, e sulle letture di elenco dove mostri tre colonne. La differenza con una lettura completa è che non ottieni un'entità gestita, quindi non puoi modificarla e salvarla: ottieni dati da mostrare.",
+          "parole_chiave": [
+            "proiezioni",
+            "selezione parziale",
+            "entità grandi",
+            "letture di elenco",
+            "sola lettura"
+          ],
+          "follow_up": {
+            "domanda": "Come le usi?",
+            "risposta": "Con interfacce che dichiarano solo i metodi di lettura dei campi che ti servono, oppure con tipi di trasporto dedicati se devi comporre più campi insieme. Nel primo caso il motore costruisce la query in modo automatico, nel secondo hai più controllo sulla forma del risultato. Entrambi evitano di caricare l'entità completa, che è il vero guadagno."
+          }
+        }
+      ]
+    }
+  ]
+}

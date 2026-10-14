@@ -1,0 +1,276 @@
+{
+  "meta": {
+    "tecnologia": "CI/CD",
+    "slug": "ci-cd",
+    "schema": 2,
+    "versione": 1,
+    "aggiornato": "2026-10-14",
+    "totale_domande": 15
+  },
+  "argomenti": [
+    {
+      "nome": "Fondamentali",
+      "domande": [
+        {
+          "id": "ci-cd-001",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra integrazione continua, delivery continua e deployment continuo?",
+          "risposta": "L'integrazione continua è il fatto che ogni modifica viene integrata nel ramo principale e verificata automaticamente da build e test, più volte al giorno. La delivery continua aggiunge che il risultato di quella pipeline è sempre pronto al rilascio, quindi il deploy diventa una decisione e non un progetto. Il deployment continuo va oltre: ogni modifica che passa le verifiche arriva in produzione senza intervento umano. La differenza tra gli ultimi due non è tecnica, è di fiducia nelle verifiche.",
+          "parole_chiave": [
+            "integrazione continua",
+            "delivery",
+            "deployment",
+            "automaticità",
+            "fiducia nei test"
+          ],
+          "follow_up": {
+            "domanda": "Perché il deployment continuo richiede test molto solidi?",
+            "risposta": "Perché togli il passaggio umano che decide cosa arriva in produzione, quindi l'unica rete è la pipeline: se i test non coprono i casi reali, gli errori arrivano direttamente agli utenti. Serve anche la capacità di accorgersi subito di un rilascio problematico e annullarlo in fretta, perché l'automatismo senza visibilità è solo un modo più rapido di rompere le cose."
+          }
+        },
+        {
+          "id": "ci-cd-002",
+          "priorita": "ALTA",
+          "domanda": "Cosa deve fare una pipeline prima di poter rilasciare?",
+          "risposta": "Compilare e verificare che il progetto si costruisca, eseguire i test automatici con una soglia sensata, analizzare il codice con lint e controlli di sicurezza sulle dipendenze, costruire l'artefatto una volta sola e pubblicarlo con un identificativo univoco. Ogni passaggio deve fallire in modo rumoroso e veloce: una pipeline che segnala ma non blocca è decorativa. Il tempo totale conta, perché una pipeline lenta porta a raggruppare i merge e a bypassarla.",
+          "parole_chiave": [
+            "build",
+            "test",
+            "analisi",
+            "artefatto",
+            "identificativo univoco"
+          ],
+          "follow_up": {
+            "domanda": "Perché una pipeline lenta è un problema organizzativo?",
+            "risposta": "Perché spinge a raggruppare più modifiche in un solo merge per ridurre le attese, e i merge grandi sono quelli che si rompono di più e sono difficili da attribuire a una causa. Alla fine qualcuno impara a bypassare i controlli, e la pipeline perde la sua funzione. La velocità della pipeline è una leva sulla qualità, non solo sul tempo."
+          }
+        },
+        {
+          "id": "ci-cd-003",
+          "priorita": "ALTA",
+          "domanda": "Cos'è un artefatto e perché si costruisce una volta sola?",
+          "risposta": "L'artefatto è il risultato compilato e identificato che viene promosso tra gli ambienti: un pacchetto, un'immagine, un eseguibile. Costruirlo una volta sola è il principio che garantisce la corrispondenza tra ciò che hai testato e ciò che rilasci: la stessa identica cosa passa da test a produzione, cambiando solo la configurazione. Se ricostruisci per ogni ambiente, stai rilasciando un artefatto che nessuno ha testato, anche se il codice sorgente è lo stesso.",
+          "parole_chiave": [
+            "artefatto",
+            "build una volta sola",
+            "promozione",
+            "corrispondenza con i test"
+          ],
+          "follow_up": {
+            "domanda": "Cosa significa promuovere un artefatto?",
+            "risposta": "Che lo stesso artefatto, con lo stesso identificativo, viene spostato o riferito dall'ambiente di test a quello di produzione, senza essere ricostruito. La configurazione è ciò che cambia, e sta fuori dall'artefatto. È quello che permette di dire con certezza che la versione in produzione è la stessa che ha passato i test."
+          }
+        },
+        {
+          "id": "ci-cd-004",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci i segreti in una pipeline?",
+          "risposta": "Non li scrivi nel file di pipeline né nei log: li metti in variabili protette o in un gestore di segreti, e li inietti solo nei job che ne hanno bisogno. I job devono stare attenti a non stamparli, perché un segreto finito nei log è compromesso, e molti sistemi mascherano i valori noti proprio per limitare il danno. In più i permessi vanno limitati: un job che esegue codice di una pull request esterna non deve avere accesso ai segreti di produzione.",
+          "parole_chiave": [
+            "variabili protette",
+            "gestore di segreti",
+            "log",
+            "pull request esterne",
+            "permessi"
+          ],
+          "follow_up": {
+            "domanda": "Perché un job su pull request esterna è pericoloso?",
+            "risposta": "Perché il codice della pull request non è tuo e potrebbe contenere qualsiasi cosa, compreso qualcosa che legge i segreti e li invia altrove. Se quel job ha accesso alle credenziali, chi apre la pull request può prenderle. Serve separare i job che girano su codice non fidato, senza segreti, da quelli che girano dopo il merge."
+          }
+        },
+        {
+          "id": "ci-cd-005",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è un quality gate e quando deve bloccare?",
+          "risposta": "È una condizione che la pipeline verifica e che impedisce il passaggio allo step successivo se non è soddisfatta: copertura sotto soglia, analisi con problemi critici, vulnerabilità note, test falliti. Deve bloccare sui casi oggettivi e gravi, mentre i valori di stile conviene segnalarli senza impedire il rilascio, altrimenti la pipeline diventa un ostacolo che si impara ad aggirare. La regola è che un gate che blocca deve indicare con precisione cosa fare per passare.",
+          "parole_chiave": [
+            "quality gate",
+            "soglia",
+            "blocco",
+            "oggettività",
+            "messaggi chiari"
+          ],
+          "follow_up": {
+            "domanda": "Cosa succede se un quality gate blocca troppo spesso?",
+            "risposta": "Che le persone cercano il modo di aggirarlo: disabilitano il controllo, aggiungono esclusioni o approvano forzando. Quando succede, il problema non è il gate ma la soglia o il modo in cui è stato introdotto. Conviene partire da pochi controlli condivisi e stringere dopo che la squadra ne ha visto il valore."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Pipeline",
+      "domande": [
+        {
+          "id": "ci-cd-006",
+          "priorita": "ALTA",
+          "domanda": "Come funziona una pipeline CI/CD su GitLab?",
+          "risposta": "Descrivi stage e job in un file di configurazione dentro il repository, e GitLab li esegue sui runner, macchine che registri al progetto: ogni job dichiara in che stage gira, gli stage procedono in sequenza e i job dello stesso stage possono girare in parallelo. Le regole decidono quando un job deve partire, per esempio solo su un certo ramo o quando cambiano certi file, e i risultati passano da uno stage all'altro come artefatti. I job girano in container, quindi ogni esecuzione parte da un ambiente pulito e riproducibile.",
+          "parole_chiave": [
+            "stage",
+            "job",
+            "runner",
+            "regole",
+            "artefatti"
+          ],
+          "follow_up": {
+            "domanda": "Perché far girare i job in container è un vantaggio?",
+            "risposta": "Perché ogni esecuzione parte dallo stesso ambiente, quindi non hai differenze tra la tua macchina e il runner e non ti porti dietro dipendenze installate a mano che un giorno non ci saranno più. In più puoi usare immagini diverse per linguaggi diversi, e la pulizia tra un job e l'altro è garantita."
+          }
+        },
+        {
+          "id": "ci-cd-007",
+          "priorita": "MEDIA",
+          "domanda": "Come funzionano cache e artefatti nella pipeline?",
+          "risposta": "Gli artefatti sono i risultati che servono agli stage successivi o che vuoi conservare, come un pacchetto compilato o un report di test: hanno un tempo di conservazione e vengono scaricati da chi li usa. La cache è materiale che serve per velocizzare, come le dipendenze scaricate, e non è un risultato: si riusa se c'è, ma la pipeline deve funzionare anche senza. Confonderli è un errore comune, e si vede quando la pipeline passa solo se la cache è piena.",
+          "parole_chiave": [
+            "artefatti",
+            "cache",
+            "conservazione",
+            "velocità",
+            "indipendenza dalla cache"
+          ],
+          "follow_up": {
+            "domanda": "Perché la pipeline deve funzionare anche senza cache?",
+            "risposta": "Perché la cache è un'ottimizzazione e può essere invalidata, scadere o non esistere sul runner che ti tocca, per esempio su una configurazione nuova. Se il funzionamento dipende dalla cache, la pipeline fallisce in modo casuale e difficile da spiegare. La cache deve solo rendere le cose più veloci, non essere una condizione di correttezza."
+          }
+        },
+        {
+          "id": "ci-cd-008",
+          "priorita": "MEDIA",
+          "domanda": "Quando usi job in parallelo e quando in sequenza?",
+          "risposta": "In parallelo metti i job indipendenti, come i test di linguaggi diversi o l'analisi statica accanto ai test, così il tempo totale resta quello del job più lento. In sequenza vanno i passaggi con dipendenze reali: prima compili, poi testi, poi costruisci l'artefatto, poi pubblichi. Un caso tipico in cui il parallelismo serve è spezzare i test in gruppi, perché la suite di test è quasi sempre il collo di bottiglia della pipeline.",
+          "parole_chiave": [
+            "parallelismo",
+            "dipendenze",
+            "colli di bottiglia",
+            "suite di test"
+          ],
+          "follow_up": {
+            "domanda": "Perché la suite di test è il collo di bottiglia tipico?",
+            "risposta": "Perché cresce con il progetto e raramente qualcuno la rivede: ci si aggiunge sempre e si toglie poco, quindi passa da due minuti a venti. Le strade sono parallelizzare i gruppi, eliminare i test ridondanti o lenti e spostare i test più pesanti in una pipeline notturna. È lavoro noioso, ma è quello che decide se la pipeline resta utilizzabile."
+          }
+        },
+        {
+          "id": "ci-cd-009",
+          "priorita": "MEDIA",
+          "domanda": "Che differenza c'è tra GitLab CI e GitHub Actions?",
+          "risposta": "GitLab CI ha il concetto di stage e job in un file di configurazione, con i runner registrati al progetto: il modello è una pipeline classica e lineare. GitHub Actions ragiona per workflow legati a eventi e riusa azioni pubblicate dalla community, quindi è più orientato alla composizione di passaggi già pronti. Concettualmente fanno la stessa cosa: cambia il modello di configurazione e il modo in cui si riusano i passaggi, non il mestiere.",
+          "parole_chiave": [
+            "GitLab CI",
+            "GitHub Actions",
+            "runner",
+            "workflow",
+            "riuso di azioni"
+          ],
+          "follow_up": {
+            "domanda": "Cosa guardi nella scelta tra i due?",
+            "risposta": "Dove sta già il codice, perché l'integrazione con il repository e i permessi sono la parte più comoda, e quanto personale conosce lo strumento. Le differenze tecniche si imparano in una settimana, il costo vero è migrare il catalogo di passaggi e i segreti. Se il codice sta su una piattaforma e la pipeline su un'altra, aggiungi un punto di rottura senza un guadagno reale."
+          }
+        },
+        {
+          "id": "ci-cd-010",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci le pipeline su più rami e ambienti?",
+          "risposta": "Con regole che legano il ramo all'ambiente: sul ramo principale la pipeline che costruisce e pubblica l'artefatto, sui rami di feature i controlli veloci, e il deploy verso produzione solo da un ramo protetto. Ogni ambiente ha le sue variabili e i suoi permessi, così la stessa pipeline si comporta diversamente senza copie. Il punto da non sbagliare è che l'approvazione per la produzione vada a chi ha responsabilità, non a chi ha scritto il codice.",
+          "parole_chiave": [
+            "rami",
+            "ambienti",
+            "regole",
+            "ramo protetto",
+            "approvazioni"
+          ],
+          "follow_up": {
+            "domanda": "Perché l'approvazione non dovrebbe essere dello stesso autore della modifica?",
+            "risposta": "Perché il codice lo ha scritto lui, quindi è difficile che veda i propri punti deboli, e in caso di incidente l'approvazione serve a distinguere chi ha deciso da chi ha eseguito. Separare le due responsabilità è un principio di controllo, non una sfiducia: è quello che permette di ricostruire cosa è successo e perché."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Deployment",
+      "domande": [
+        {
+          "id": "ci-cd-011",
+          "priorita": "ALTA",
+          "domanda": "Cos'è un workflow di deployment e perché serve?",
+          "risposta": "È la sequenza definita di passi che porta il codice dalla pipeline alla produzione: build, test, pubblicazione dell'artefatto, deploy e verifica. Averlo definito lo rende ripetibile e uguale per tutti, in modo che il rilascio non dipenda da chi lo esegue né da comandi ricordati a memoria. È anche ciò che rende possibile il rollback, perché ogni passo lascia un artefatto identificabile a cui tornare.",
+          "parole_chiave": [
+            "pipeline",
+            "ripetibilità",
+            "artefatto",
+            "rollback"
+          ],
+          "follow_up": {
+            "domanda": "Cosa distingue un deploy manuale da uno automatico?",
+            "risposta": "Nel manuale la sequenza vive nella testa di chi lo esegue, quindi varia e non è verificabile. Nell'automatico i passi sono codice, hanno lo stesso esito ogni volta e lasciano una traccia. Il passaggio vero non è togliere l'uomo dall'approvazione, ma toglierlo dall'esecuzione dei comandi."
+          }
+        },
+        {
+          "id": "ci-cd-012",
+          "priorita": "ALTA",
+          "domanda": "Quali strategie di rilascio conosci e come scegli?",
+          "risposta": "Nel rilascio progressivo sostituisci le istanze a poco a poco, quindi non hai interruzioni ma due versioni convivono per qualche minuto. Nel blu-verde tieni due ambienti completi e sposti il traffico tutto insieme: il rollback è immediato ma raddoppi le risorse. Nel canary porti la versione nuova a una piccola parte del traffico e la allarghi se le metriche tengono, ed è la scelta migliore quando il rischio è alto e hai buona osservabilità. La scelta dipende da quanto è costoso sbagliare e da quanto sai misurare.",
+          "parole_chiave": [
+            "rolling",
+            "blu-verde",
+            "canary",
+            "risorse",
+            "osservabilità"
+          ],
+          "follow_up": {
+            "domanda": "Perché il canary richiede metriche affidabili?",
+            "risposta": "Perché il suo valore è decidere sulla realtà e non sulle sensazioni: se non sai misurare errori e latenza della versione nuova, non vedi il problema finché non ha colpito tutti, e il canary diventa solo un rilascio più lento. Servono metriche separate per versione e la capacità di confrontarle, altrimenti conviene una strategia più semplice."
+          }
+        },
+        {
+          "id": "ci-cd-013",
+          "priorita": "ALTA",
+          "domanda": "Come gestisci dati e migrazioni durante un deployment?",
+          "risposta": "Con migrazioni compatibili: prima aggiungi la colonna nuova e scrivi in entrambe, poi passi a leggere dalla nuova, e solo alla fine rimuovi la vecchia. Così durante il rilascio le due versioni dell'applicazione convivono senza rompersi e il rollback resta possibile. Le migrazioni le esegui come passo separato e controllato, non all'avvio dell'applicazione, altrimenti con più repliche partono in parallelo e si pestano i piedi.",
+          "parole_chiave": [
+            "migrazione compatibile",
+            "espansione e contrazione",
+            "rollback",
+            "passo controllato"
+          ],
+          "follow_up": {
+            "domanda": "Perché non eseguire le migrazioni all'avvio dell'applicazione?",
+            "risposta": "Perché con più repliche ognuna le esegue contemporaneamente e le migrazioni non sono pensate per la concorrenza: si blocca la tabella o si applica due volte. In più, se la migrazione fallisce l'applicazione non parte, quindi il rilascio diventa un disservizio. Va eseguita come passo controllato prima del deploy."
+          }
+        },
+        {
+          "id": "ci-cd-014",
+          "priorita": "MEDIA",
+          "domanda": "Come funziona il rollback e cosa lo rende possibile?",
+          "risposta": "Il rollback è il ritorno alla versione precedente, e funziona solo se quella versione è ancora disponibile come artefatto identificato e se lo schema dei dati è compatibile con entrambe. Per questo le migrazioni si fanno in modo compatibile e le immagini non si sovrascrivono mai con lo stesso tag. Va anche deciso prima come accorgersi che serve: senza metriche e allarmi, il rollback avviene quando gli utenti protestano, che è tardi.",
+          "parole_chiave": [
+            "rollback",
+            "artefatto precedente",
+            "compatibilità di schema",
+            "allarmi"
+          ],
+          "follow_up": {
+            "domanda": "Perché non si sovrascrive un'immagine con lo stesso tag?",
+            "risposta": "Perché se il tag punta sempre all'ultima build, il rollback non sa cosa riportare: la revisione precedente riferisce lo stesso nome, che ora contiene codice diverso. Sovrascrivere i tag distrugge la possibilità di tornare indietro e rende impossibile capire cosa girava in un certo momento. Ogni build deve avere il suo identificativo immutabile."
+          }
+        },
+        {
+          "id": "ci-cd-015",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è un rilascio con feature flag?",
+          "risposta": "È mettere il codice in produzione spento dietro un interruttore e attivarlo separatamente dalla distribuzione: così il rilascio tecnico e il rilascio funzionale diventano due momenti distinti. Serve a ridurre il rischio, perché puoi attivare per pochi utenti, misurare e spegnere in un secondo senza fare un deploy. Il costo è che i flag accumulano debito: vanno rimossi quando la funzionalità è stabile, altrimenti dopo un anno nessuno sa più quali siano attivi e perché.",
+          "parole_chiave": [
+            "feature flag",
+            "distribuzione separata",
+            "spegnimento immediato",
+            "debito tecnico"
+          ],
+          "follow_up": {
+            "domanda": "Perché i feature flag vanno rimossi?",
+            "risposta": "Perché ogni flag è una diramazione nel codice che raddoppia i percorsi da testare, e con venti flag le combinazioni diventano ingestibili. In più il codice morto dietro un flag che non verrà mai più acceso resta lì e confonde chi legge. La pratica sana è assegnare a ogni flag una scadenza e una persona che lo rimuove."
+          }
+        }
+      ]
+    }
+  ]
+}

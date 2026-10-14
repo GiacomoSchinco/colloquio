@@ -1,0 +1,340 @@
+{
+  "meta": {
+    "tecnologia": "SEO",
+    "slug": "seo",
+    "schema": 2,
+    "versione": 1,
+    "aggiornato": "2026-10-14",
+    "totale_domande": 19
+  },
+  "argomenti": [
+    {
+      "nome": "Fondamentali",
+      "domande": [
+        {
+          "id": "seo-001",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono i canonical tags e perché sono importanti?",
+          "risposta": "È l'indicazione che dichiara quale indirizzo è quello principale di una pagina, quando lo stesso contenuto è raggiungibile da più indirizzi. Serve a evitare che il motore di ricerca tratti le varianti come pagine distinte e ne scelga una arbitrariamente, diluendo la rilevanza tra duplicati. Il caso tipico è un contenuto raggiungibile con e senza parametri di tracciamento, o con e senza barra finale, dove senza quella dichiarazione il motore vede più pagine uguali.",
+          "parole_chiave": [
+            "canonical",
+            "indirizzo principale",
+            "contenuti duplicati",
+            "diluizione della rilevanza",
+            "varianti di URL"
+          ],
+          "follow_up": {
+            "domanda": "Perché non basta il reindirizzamento?",
+            "risposta": "Perché il reindirizzamento funziona quando la variante non deve esistere e vuoi mandare l'utente altrove, mentre la dichiarazione dell'indirizzo principale serve quando entrambe le varianti devono restare funzionanti, per esempio per distinguere una versione ordinata da una filtrata. Sono strumenti per situazioni diverse: il primo elimina, il secondo indica la preferenza lasciando tutto accessibile."
+          }
+        },
+        {
+          "id": "seo-002",
+          "priorita": "ALTA",
+          "domanda": "Spiega la differenza tra robots.txt e sitemap.xml.",
+          "risposta": "Il primo è un file di regole che dice ai crawler cosa non esplorare, e serve a tenerli fuori da aree private o da pagine senza valore per la ricerca. Il secondo è un elenco degli indirizzi che vuoi vengano indicizzati, con eventuali indicazioni su frequenza e priorità, e serve ad aiutare la scoperta dei contenuti. Non si escludono a vicenda: una pagina esclusa dalle regole non ha senso nella mappa, e la mappa serve proprio a indicare ciò che vale la pena esplorare.",
+          "parole_chiave": [
+            "robots.txt",
+            "mappa del sito",
+            "esclusione",
+            "scoperta dei contenuti",
+            "complementari"
+          ],
+          "follow_up": {
+            "domanda": "Perché un'esclusione nel file delle regole non protegge i dati?",
+            "risposta": "Perché è una richiesta di cortesia che i crawler rispettano, non un controllo di accesso: chiunque conosca l'indirizzo può raggiungerlo, e il file stesso è pubblico. Per proteggere davvero dei contenuti servono autenticazione e autorizzazione. Usare quel file come se fosse una barriera è un errore con conseguenze concrete."
+          }
+        },
+        {
+          "id": "seo-003",
+          "priorita": "ALTA",
+          "domanda": "Come influisce l'SSR sulla SEO rispetto a CSR?",
+          "risposta": "Con il rendering lato server il crawler riceve l'HTML già completo dei dati, quindi legge il contenuto immediatamente. Con il rendering lato client riceve una pagina quasi vuota e il contenuto compare solo dopo l'esecuzione dello script: i motori moderni lo eseguono, ma con un ritardo e con un budget di risorse limitato per sito, quindi le pagine importanti rischiano di essere lette più tardi o non complete. La conseguenza pratica è che per le pagine da posizionare conviene servire l'HTML con i dati dentro.",
+          "parole_chiave": [
+            "rendering lato server",
+            "rendering lato client",
+            "crawler e JavaScript",
+            "ritardo di indicizzazione",
+            "contenuto immediato"
+          ],
+          "follow_up": {
+            "domanda": "Un contenuto client-side è quindi invisibile ai motori?",
+            "risposta": "Non invisibile, ma meno affidabile: l'esecuzione avviene in una fase successiva e non è garantita per ogni pagina e in ogni momento, e il budget di risorse per sito è finito. Sui contenuti che ti interessa posizionare non è un rischio che vale la pena correre. Il compromesso ragionevole è servire sul server le pagine di contenuto e lasciare client-side le aree personalizzate o dietro autenticazione, che non devono essere indicizzate."
+          }
+        },
+        {
+          "priorita": "ALTA",
+          "domanda": "Cosa fa un motore di ricerca, in sintesi?",
+          "risposta": "Tre passaggi: scopre le pagine, le analizza e le conserva in un indice, e poi quando qualcuno cerca ne sceglie e ordina le più pertinenti. La scoperta avviene seguendo i link e leggendo la mappa del sito, l'analisi consiste nel capire di cosa parla la pagina e nel salvarla, e il posizionamento confronta centinaia di fattori. La conseguenza pratica è che la SEO lavora su due fronti: rendere la pagina comprensibile al motore, e renderla la migliore risposta possibile a una domanda.",
+          "parole_chiave": [
+            "scansione",
+            "indicizzazione",
+            "posizionamento",
+            "pertinenza",
+            "due fronti"
+          ],
+          "follow_up": {
+            "domanda": "Quale dei tre passaggi si sbaglia più spesso?",
+            "risposta": "Il secondo, cioè l'analisi: si dà per scontato che se una pagina esiste il motore la capisca. In realtà se il contenuto arriva solo dopo l'esecuzione dello script, o se il titolo non dice di cosa parla la pagina, il motore la indicizza male o non la indicizza affatto. È un problema invisibile, perché il sito funziona benissimo per chi lo visita."
+          },
+          "id": "seo-004"
+        },
+        {
+          "priorita": "ALTA",
+          "domanda": "SEO on-page e off-page: che differenza c'è?",
+          "risposta": "Il lavoro sulla pagina riguarda quello che controlli tu: contenuto, titoli, struttura, velocità, dati strutturati. Il lavoro fuori dalla pagina riguarda la reputazione, cioè quanti e quali siti ti linkano e quanto parli di te vengono riconosciuti come autorevoli. La differenza conta perché sono leve diverse: sulla prima puoi intervenire subito e da solo, sulla seconda servono tempo e relazioni. Un sito tecnicamente perfetto ma senza reputazione resta invisibile.",
+          "parole_chiave": [
+            "lavoro sulla pagina",
+            "reputazione",
+            "link in entrata",
+            "tempi diversi",
+            "controllo diretto"
+          ],
+          "follow_up": {
+            "domanda": "Da quale delle due conviene partire?",
+            "risposta": "Sempre dalla pagina, perché è l'unica su cui hai controllo immediato e senza costi di relazione. Se il contenuto non risponde a una domanda reale o la struttura rende impossibile capire di cosa parla, nessun link ti salva. La reputazione moltiplica quello che hai: se il punto di partenza è debole, la moltiplicazione non serve a nulla."
+          },
+          "id": "seo-005"
+        },
+        {
+          "priorita": "ALTA",
+          "domanda": "Come si scrive un buon tag title?",
+          "risposta": "Deve dire in poche parole di cosa parla quella pagina specifica, con il termine che le persone userebbero davvero cercando, e distinguersi dalle altre pagine dello stesso sito. Va scritto pensando a chi lo legge nei risultati: è il primo elemento che convince al clic, più della descrizione. L'errore comune è lasciare il titolo generico uguale su tutte le pagine, che è come non averlo.",
+          "parole_chiave": [
+            "titolo unico",
+            "termine cercato",
+            "distinzione tra pagine",
+            "convinzione al clic",
+            "non generico"
+          ],
+          "follow_up": {
+            "domanda": "Quanto deve essere lungo?",
+            "risposta": "Abbastanza da dire la cosa principale, sapendo che oltre una certa lunghezza il motore lo taglia e mostra i puntini. La regola pratica è mettere la parte che conta all'inizio, perché se viene troncata almeno il senso resta. Meglio un titolo più corto che rinuncia a una parola di riempimento, che uno lungo dove la parte importante finisce fuori."
+          },
+          "id": "seo-006"
+        },
+        {
+          "priorita": "ALTA",
+          "domanda": "A cosa serve la meta description e cosa non fa?",
+          "risposta": "È il testo che compare sotto il titolo nei risultati, e serve a convincere al clic: non è un fattore di posizionamento, quindi non ti fa salire. Il motore può anche decidere di mostrare un estratto diverso preso dalla pagina, se lo ritiene più pertinente alla ricerca. Va scritta quindi come un invito, non come un elenco di parole chiave: riassume il valore della pagina e dà un motivo per aprirla.",
+          "parole_chiave": [
+            "descrizione",
+            "non influisce sul posizionamento",
+            "invito al clic",
+            "estratto alternativo",
+            "riassunto utile"
+          ],
+          "follow_up": {
+            "domanda": "Se non influenza il posizionamento, perché curarla?",
+            "risposta": "Perché influenza quello che succede dopo, cioè quanti clic ricevi rispetto a quante volte compari. Due pagine nella stessa posizione possono avere tassi di clic molto diversi, e quello dipende da come si presentano. È la stessa logica per cui curi l'immagine di anteprima quando condividi un link: non cambia il contenuto, cambia se qualcuno lo apre."
+          },
+          "id": "seo-007"
+        },
+        {
+          "priorita": "ALTA",
+          "domanda": "Perché la struttura dei titoli della pagina conta?",
+          "risposta": "Perché i titoli interni danno la gerarchia del contenuto, e sia chi legge sia il motore capiscono in che ordine stanno le cose. Il titolo principale deve essere uno solo e dire di cosa parla la pagina, mentre i sottotitoli organizzano gli argomenti dentro. Saltare i livelli, o usare i sottotitoli solo per renderli più grandi, toglie quell'informazione e rende la pagina più difficile da interpretare.",
+          "parole_chiave": [
+            "gerarchia",
+            "titolo principale unico",
+            "sottotitoli",
+            "non saltare i livelli",
+            "scelta per struttura non per stile"
+          ],
+          "follow_up": {
+            "domanda": "Perché usare i titoli per lo stile è un errore?",
+            "risposta": "Perché stai usando un'etichetta che significa \"questo è un titolo di secondo livello\" solo per ottenere un testo più grande, e così dichiari una struttura che non esiste. Il risultato è una pagina piatta o incoerente per chi la scorre con un lettore schermo o con un sommario. La dimensione del testo si decide con lo stile, il livello del titolo con il significato."
+          },
+          "id": "seo-008"
+        },
+        {
+          "priorita": "ALTA",
+          "domanda": "Cosa sono l'intento di ricerca e le parole chiave?",
+          "risposta": "L'intento è cosa vuole ottenere chi scrive quella ricerca: informarsi, confrontare, comprare o trovare un sito specifico. Le parole chiave sono le espressioni usate, ma senza capire l'intento non sai che tipo di pagina servirebbe. È l'errore più costoso della SEO: scrivere una pagina di vendita per una ricerca informativa, o il contrario, e non posizionarsi mai nonostante il contenuto sia buono.",
+          "parole_chiave": [
+            "intento di ricerca",
+            "parole chiave",
+            "informativo o commerciale",
+            "tipo di pagina",
+            "allineamento"
+          ],
+          "follow_up": {
+            "domanda": "Come si capisce l'intento di una ricerca?",
+            "risposta": "Guardando cosa il motore mostra già per quella ricerca: se i primi risultati sono guide, l'intento è informativo e una pagina di prodotto non vincerà; se sono schede prodotto, vale il contrario. È il modo più diretto, perché stai leggendo la risposta del sistema che devi convincere. Farlo prima di scrivere evita di produrre contenuto che non incontrerà mai il suo pubblico."
+          },
+          "id": "seo-009"
+        },
+        {
+          "priorita": "ALTA",
+          "domanda": "Come si cambiano gli indirizzi di un sito senza perdere posizionamento?",
+          "risposta": "Con una catena di reindirizzamenti permanenti uno a uno, dal vecchio indirizzo al nuovo, mantenendo la corrispondenza tra pagine equivalenti invece di mandare tutto alla home. Così il valore accumulato dalla vecchia pagina si trasferisce alla nuova, mentre un reindirizzamento generico verso la home disperde quel valore. Va anche aggiornata la mappa del sito e controllato che i vecchi indirizzi non restino raggiungibili in due versioni, altrimenti crei duplicati.",
+          "parole_chiave": [
+            "reindirizzamento permanente",
+            "uno a uno",
+            "corrispondenza tra pagine",
+            "non tutto alla home",
+            "duplicati"
+          ],
+          "follow_up": {
+            "domanda": "Perché non mandare tutto alla home?",
+            "risposta": "Perché il motore interpreta quel reindirizzamento come una pagina che non esiste più e una home che non è il suo sostituto: il valore non si trasferisce e chi cercava quel contenuto finisce in un posto che non risponde alla sua domanda. Con la corrispondenza uno a uno, invece, l'utente trova la stessa cosa in un indirizzo diverso e il segnale passa. È la differenza tra spostare e disperdere."
+          },
+          "id": "seo-010"
+        },
+        {
+          "priorita": "ALTA",
+          "domanda": "Come si misura se la SEO sta funzionando?",
+          "risposta": "Guardando le metriche della ricerca e non quelle del sito. Le impression dicono quante volte sei comparso, il tasso di clic dice quanto convince la tua presentazione, la posizione media dice dove sei, e il tasso di conversione dice se chi arriva trova quello che cercava. L'errore tipico è osservare solo le visite: così non distingui se il problema è che non compari, che compari ma non ti cliccano, o che ti cliccano ma poi escono.",
+          "parole_chiave": [
+            "impression",
+            "tasso di clic",
+            "posizione media",
+            "conversione",
+            "non solo visite"
+          ],
+          "follow_up": {
+            "domanda": "Da quale dato partiresti per capire cosa sistemare?",
+            "risposta": "Dalle impression: se hai molte comparse e pochi clic il problema è la presentazione, cioè titolo e descrizione, mentre se hai poche comparse il problema è il contenuto o l'autorità. La Quarta metrica utile è la pagina di destinazione, perché ti dice su quale pagina concentrarti. È una diagnosi rapida che ti evita di ottimizzare la cosa sbagliata."
+          },
+          "id": "seo-011"
+        },
+        {
+          "id": "seo-012",
+          "priorita": "MEDIA",
+          "domanda": "Spiega l'importanza delle meta tags Open Graph per SEO e social media.",
+          "risposta": "È un insieme di metadati che descrive come una pagina deve apparire quando viene condivisa su una piattaforma sociale: titolo, descrizione e immagine di anteprima. Non influisce sul posizionamento nei motori di ricerca, ma sulla resa del link quando qualcuno lo condivide, quindi sulla probabilità che venga aperto. Il dettaglio pratico è che, se mancano, la piattaforma sceglie da sé, e il risultato è spesso un'anteprima senza immagine o con un testo tagliato male.",
+          "parole_chiave": [
+            "Open Graph",
+            "anteprima di condivisione",
+            "metadati social",
+            "immagine di anteprima",
+            "non è posizionamento"
+          ],
+          "follow_up": {
+            "domanda": "Serve anche per le anteprime nelle chat e nei messaggi?",
+            "risposta": "Sì, ed è spesso il caso più visibile: quando incolli un link in una chat, l'anteprima che compare viene da quegli stessi metadati. Se sono assenti o sbagliati, il link appare come un indirizzo nudo e questo riduce i clic. Va considerato parte del lavoro di pubblicazione, non un dettaglio grafico del sito."
+          }
+        },
+        {
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono i dati strutturati e a cosa servono?",
+          "risposta": "Sono informazioni aggiunte alla pagina in un formato che il motore capisce senza ambiguità, e descrivono il contenuto: che è un articolo con autore e data, un prodotto con prezzo e disponibilità, una domanda con la sua risposta. Servono a far comparire la pagina in forme arricchite nei risultati, come le stelle di valutazione o le domande frequenti, che occupano più spazio e attirano più clic. Non aumentano il posizionamento in sé: migliorano il modo in cui la pagina viene presentata.",
+          "parole_chiave": [
+            "dati strutturati",
+            "formato standard",
+            "risultati arricchiti",
+            "non è posizionamento",
+            "presentazione"
+          ],
+          "follow_up": {
+            "domanda": "Se non influiscono sul posizionamento, conviene sempre?",
+            "risposta": "Conviene quando esiste un tipo di risultato arricchito adatto al tuo contenuto, come valutazioni, ricette, eventi o domande frequenti, perché il guadagno in visibilità è misurabile. Va invece evitato di marcare cose che non ci sono davvero: dichiarare valutazioni inesistenti porta a una penalizzazione manuale, e il danno è molto maggiore del beneficio. La regola è che i dati strutturati descrivono ciò che la pagina contiene già."
+          },
+          "id": "seo-013"
+        },
+        {
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono i link in entrata e perché contano?",
+          "risposta": "Sono i collegamenti che altri siti fanno verso di te, e valgono come segnali di fiducia: se un sito autorevole ti linka, il motore lo interpreta come una conferma. Contano la pertinenza e l'autorevolezza della fonte, non il numero: dieci link da siti attinenti al tuo settore valgono più di mille da directory generiche. Per questo i link comprati o scambiati in massa sono rischiosi, perché sono riconoscibili e vengono ignorati o penalizzati.",
+          "parole_chiave": [
+            "link in entrata",
+            "segnale di fiducia",
+            "pertinenza della fonte",
+            "autorevolezza",
+            "link artificiali"
+          ],
+          "follow_up": {
+            "domanda": "Come si ottengono link in modo sostenibile?",
+            "risposta": "Producendo qualcosa che vale la pena citare: un dato originale, uno strumento utile, una spiegazione più chiara di quelle esistenti. È lento, ma è l'unico metodo che non si rompe quando il motore aggiorna i criteri. Un secondo canale legittimo è farsi conoscere dove il tuo pubblico già discute, dove i link arrivano come conseguenza e non come scambio."
+          },
+          "id": "seo-014"
+        },
+        {
+          "priorita": "MEDIA",
+          "domanda": "Che differenza c'è tra escludere una pagina con noindex e bloccarla in robots.txt?",
+          "risposta": "L'esclusione dichiarata nella pagina chiede di non mostrarla nei risultati mantenendo la possibilità di leggerla, mentre il blocco nel file delle regole impedisce la lettura. La differenza ha una conseguenza concreta: se blocchi la lettura di una pagina che vuoi escludere, il motore non può vedere l'istruzione di esclusione, quindi la pagina può comunque comparire nei risultati senza descrizione. La combinazione va evitata, e l'ordine corretto è prima togliere il blocco, poi lasciar leggere l'esclusione.",
+          "parole_chiave": [
+            "esclusione dichiarata",
+            "blocco della lettura",
+            "ordine delle operazioni",
+            "pagina nei risultati",
+            "errore comune"
+          ],
+          "follow_up": {
+            "domanda": "Quando usi il blocco invece dell'esclusione?",
+            "risposta": "Il blocco serve per aree che non vuoi far leggere affatto, tipicamente per non sprecare la capacità di scansione: pannelli di amministrazione, risultati di ricerca interna, parametri di ordinamento senza valore. L'esclusione serve invece per pagine che possono essere lette ma non devono comparire, come una pagina di ringraziamento. Sono due intenti diversi, e usarne uno per l'altro produce il problema descritto."
+          },
+          "id": "seo-015"
+        },
+        {
+          "priorita": "MEDIA",
+          "domanda": "Come si gestisce la paginazione per la SEO?",
+          "risposta": "Le pagine di un elenco paginato devono essere raggiungibili da link normali e ognuna deve indicare il proprio indirizzo come riferimento, così il motore non le tratta come duplicati della prima pagina. La pagina uno è quella che raccoglie l'interesse, mentre le successive servono soprattutto a far scoprire e raggiungere i contenuti in fondo all'elenco. L'errore da evitare è caricare i risultati successivi solo tramite uno script che i link non espongono: quei contenuti restano fuori.",
+          "parole_chiave": [
+            "paginazione",
+            "link raggiungibili",
+            "riferimento per pagina",
+            "scoperta dei contenuti",
+            "caricamento solo da script"
+          ],
+          "follow_up": {
+            "domanda": "Il caricamento a scorrimento è un problema?",
+            "risposta": "Non di per sé, ma solo se i contenuti che aggiunge non sono raggiungibili in nessun altro modo, perché allora restano invisibili ai motori. La soluzione tipica è affiancare dei link veri, per esempio alle pagine successive, e magari una mappa o un archivio degli elementi. Il requisito non è rinunciare all'esperienza fluida, è garantire che ogni contenuto abbia un indirizzo raggiungibile."
+          },
+          "id": "seo-016"
+        },
+        {
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono i contenuti duplicati e come si risolvono?",
+          "risposta": "Sono pagine con contenuto uguale o molto simile raggiungibili da indirizzi diversi: la stessa pagina con e senza parametri, la versione con e senza barra finale, lo stesso prodotto in più varianti. Non sono una penalizzazione automatica, ma creano confusione sul fatto di considerare più pagine quando la buona è una sola. Si risolvono dichiarando quale indirizzo è quello di riferimento, oppure reindirizzando quando la variante non deve esistere affatto.",
+          "parole_chiave": [
+            "contenuti duplicati",
+            "varianti di indirizzo",
+            "riferimento preferito",
+            "reindirizzamento",
+            "non è penalizzazione automatica"
+          ],
+          "follow_up": {
+            "domanda": "Riferimento o reindirizzamento: come scegli?",
+            "risposta": "Reindirizzi quando la variante non ha motivo di esistere e vuoi mandare l'utente su un indirizzo solo. Dichiari il riferimento quando entrambe le versioni devono restare accessibili, per esempio una pagina con parametri di ordinamento che sono comunque utili all'utente. In caso di dubbio il reindirizzamento è più netto: elimina l'ambiguità invece di dichiarare una preferenza che il motore può non seguire."
+          },
+          "id": "seo-017"
+        },
+        {
+          "priorita": "MEDIA",
+          "domanda": "A cosa serve hreflang e quando ti serve?",
+          "risposta": "Serve a indicare che più pagine sono la stessa cosa in lingue o per Paesi diversi, così il motore mostra a ciascuno la versione giusta. Senza, un utente italiano può finire sulla versione inglese e viceversa, e le due pagine si fanno concorrenza a vicenda. Si usa quando il sito esiste in più lingue o quando differenzi per mercato, e va dichiarato in modo reciproco: ogni versione elenca tutte le altre.",
+          "parole_chiave": [
+            "hreflang",
+            "versioni linguistiche",
+            "mercati diversi",
+            "dichiarazione reciproca",
+            "concorrenza tra versioni"
+          ],
+          "follow_up": {
+            "domanda": "Cosa va storto se la dichiarazione non è reciproca?",
+            "risposta": "Che il motore la ignora o la interpreta a metà: se la versione italiana punta a quella inglese ma non viceversa, il segnale non è coerente e non viene applicato. Per questo va generata dal codice, non scritta a mano pagina per pagina, altrimenti basta una dimenticanza per romperla. È uno di quei casi in cui l'errore non si vede finché non confronti i risultati per Paese."
+          },
+          "id": "seo-018"
+        },
+        {
+          "priorita": "MEDIA",
+          "domanda": "Perché i link interni contano per la SEO?",
+          "risposta": "Perché sono il modo in cui il motore scopre le pagine e capisce quali consideri importanti: una pagina linkata da molte altre sezioni è, nella tua stessa struttura, una pagina centrale. Servono anche a indirizzare il valore che ricevi dall'esterno verso le pagine che ti interessa posizionare, invece di disperderlo. Il testo del link conta, perché descrive la pagina di destinazione: un \"clicca qui\" non dice nulla.",
+          "parole_chiave": [
+            "link interni",
+            "scoperta delle pagine",
+            "importanza relativa",
+            "testo del link",
+            "distribuzione del valore"
+          ],
+          "follow_up": {
+            "domanda": "Come si sfruttano concretamente?",
+            "risposta": "Dai contenuti più visitati linki quelli che ti interessa far crescere, e ogni pagina nuova la colleghi da almeno una pagina già indicizzata, altrimenti rischia di restare isolata. Il testo del link lo scrivi descrittivo, come se stessi dicendo a voce dove porta. E vale la pena controllare che non ci siano pagine raggiungibili solo da una posizione marginale, perché la loro scoperta sarà lenta."
+          },
+          "id": "seo-019"
+        }
+      ]
+    }
+  ]
+}

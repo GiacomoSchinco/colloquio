@@ -1,0 +1,148 @@
+{
+  "meta": {
+    "tecnologia": "HTML e CSS",
+    "slug": "html-css",
+    "schema": 2,
+    "versione": 1,
+    "aggiornato": "2026-10-14",
+    "totale_domande": 8
+  },
+  "argomenti": [
+    {
+      "nome": "Fondamentali",
+      "domande": [
+        {
+          "id": "html-css-001",
+          "priorita": "ALTA",
+          "domanda": "Perché è importante usare HTML semantico?",
+          "risposta": "Perché tag come header, nav, main, section e article danno significato alla struttura, e questo aiuta sia i motori di ricerca sia le tecnologie assistive come gli screen reader. Un div non dice nulla sul contenuto, un tag semantico sì. In più il codice è più leggibile e manutenibile, e l'accessibilità parte proprio da lì.",
+          "parole_chiave": [
+            "semantica",
+            "header",
+            "main",
+            "accessibilità",
+            "SEO"
+          ],
+          "follow_up": {
+            "domanda": "Esempio concreto?",
+            "risposta": "Un menù di navigazione dentro nav permette a chi usa uno screen reader di saltarci direttamente, e un main identifica il contenuto principale. Se uso solo div, perdo queste informazioni e devo ricostruirle a mano con aria, facendo più fatica per un risultato peggiore."
+          }
+        },
+        {
+          "id": "html-css-002",
+          "priorita": "ALTA",
+          "domanda": "Cosa significa responsive design?",
+          "risposta": "Significa che l'interfaccia si adatta a schermi diversi, dal telefono al desktop, senza rompersi e senza bisogno di versioni separate. Si ottiene combinando media query, unità relative e layout flessibili come flexbox e grid. L'obiettivo è che l'esperienza sia buona su qualsiasi dispositivo, perché oggi la maggior parte del traffico arriva da mobile.",
+          "parole_chiave": [
+            "responsive",
+            "media query",
+            "flexbox",
+            "grid",
+            "mobile"
+          ],
+          "follow_up": {
+            "domanda": "Approccio mobile first o desktop first?",
+            "risposta": "Mobile first: parto dal caso più limitato, lo schermo piccolo, e aggiungo complessità man mano che lo spazio cresce. È più semplice perché costruisci prima l'essenziale e poi arricchisci, e spesso risulta più performante perché eviti di caricare tutto il peso del desktop su mobile."
+          }
+        },
+        {
+          "id": "html-css-003",
+          "priorita": "MEDIA",
+          "domanda": "Come funziona la specificità nei CSS?",
+          "risposta": "È il meccanismo con cui il browser decide quale regola vince quando più regole si applicano allo stesso elemento. Si calcola in base ai selettori: l'id pesa più della classe, che pesa più dell'elemento, e gli stili inline battono tutto. Capirla serve a evitare il classico 'non capisco perché questo stile non si applica' e a non risolvere tutto con !important.",
+          "parole_chiave": [
+            "specificità",
+            "id",
+            "classe",
+            "inline",
+            "!important"
+          ],
+          "follow_up": {
+            "domanda": "Come eviti conflitti?",
+            "risposta": "Usando classi con nomi chiari, evitando gli id per lo styling e tenendo bassa la specificità. Con approcci come i CSS modules o una convenzione tipo BEM i selettori restano semplici e prevedibili, e non devi combattere con regole che si pestano tra loro."
+          }
+        },
+        {
+          "id": "html-css-004",
+          "priorita": "MEDIA",
+          "domanda": "Differenza tra position relative, absolute, fixed e sticky?",
+          "risposta": "relative sposta l'elemento rispetto alla sua posizione normale, absolute lo posiziona rispetto al primo antenato posizionato, fixed rispetto alla finestra, e sticky si comporta da relative finché non raggiunge una soglia nello scroll, poi resta ancorato. Ognuno serve a un caso diverso, e saperli usare evita layout fragili.",
+          "parole_chiave": [
+            "relative",
+            "absolute",
+            "fixed",
+            "sticky"
+          ],
+          "follow_up": {
+            "domanda": "Quando usi sticky?",
+            "risposta": "Per le barre di navigazione o le intestazioni di tabella che devono restare visibili durante lo scroll. È comodissimo perché non richiede JavaScript: definisci la soglia con top e l'elemento si ancora da solo quando la raggiunge."
+          }
+        },
+        {
+          "id": "html-css-005",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono le CSS variables e quando le usi?",
+          "risposta": "Sono variabili definite con --nome e usate con var(--nome), spesso dichiarate sulla root. Servono per centralizzare colori, spaziature e dimensioni, così cambi un valore in un punto solo e si aggiorna ovunque. Sono la base dei design token e permettono anche di fare theming, per esempio il dark mode cambiando le variabili in un punto.",
+          "parole_chiave": [
+            "CSS variables",
+            "var",
+            "design token",
+            "theming"
+          ],
+          "follow_up": {
+            "domanda": "Come gestisci il dark mode?",
+            "risposta": "Definisco le variabili di colore sulla root e le cambio in un selettore come [data-theme='dark'], oppure con le media query prefers-color-scheme. L'interfaccia usa solo var(...), quindi al cambio di tema si adatta da sola senza toccare i componenti."
+          }
+        },
+        {
+          "id": "html-css-006",
+          "priorita": "MEDIA",
+          "domanda": "Differenza tra flexbox e grid?",
+          "risposta": "Flexbox è monodimensionale: gestisce gli elementi lungo una sola direzione alla volta, una riga o una colonna, ed è perfetto per allineare e distribuire lo spazio. Grid è bidimensionale: gestisce righe e colonne insieme, e ti permette di definire un'intera griglia di pagina. In pratica uso flex per i componenti e gli allineamenti interni, grid per il layout generale della pagina.",
+          "parole_chiave": [
+            "flexbox",
+            "grid",
+            "monodimensionale",
+            "bidimensionale"
+          ],
+          "follow_up": {
+            "domanda": "Esempio dove usi grid?",
+            "risposta": "Per esempio un layout a card tutte uguali, o una dashboard con aree ben definite come sidebar, header e contenuto. In questi casi grid ti dà il controllo su righe e colonne insieme, e il risultato è molto più pulito di tanti flex annidati. È lo strumento giusto per le strutture complesse."
+          }
+        },
+        {
+          "id": "html-css-007",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono le media query?",
+          "risposta": "Le media query sono regole CSS che si applicano solo quando una certa condizione è vera, tipicamente la larghezza dello schermo. Ti permettono di cambiare layout, dimensioni o nascondere elementi in base al dispositivo su cui viene vista la pagina. Sono il cuore del responsive design: la stessa pagina si comporta diversamente su mobile e su desktop.",
+          "parole_chiave": [
+            "media query",
+            "breakpoint",
+            "schermo",
+            "layout"
+          ],
+          "follow_up": {
+            "domanda": "Quali breakpoint usi?",
+            "risposta": "Di solito 576, 768, 992 e 1200px, che sono i breakpoint classici di Bootstrap. Ma se il progetto ha un design system, uso i breakpoint definiti lì, così restano coerenti in tutta l'app. L'importante è non inventarne uno diverso per ogni pagina."
+          }
+        },
+        {
+          "id": "html-css-008",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono le unità relative rem ed em?",
+          "risposta": "Sono unità relative: rem è relativa alla font-size dell'elemento root, cioè di solito l'html, mentre em è relativa alla font-size dell'elemento padre. Questo significa che em si accumula quando annidi elementi, e può diventare imprevedibile. rem è più stabile e lo uso di più, soprattutto per font e spaziature.",
+          "parole_chiave": [
+            "rem",
+            "em",
+            "root",
+            "font-size"
+          ],
+          "follow_up": {
+            "domanda": "Perché preferisci rem?",
+            "risposta": "Perché non dipende dal contesto in cui si trova: un rem vale sempre la stessa cosa ovunque, mentre em cambia in base al padre. Se l'utente aumenta la font-size di base del browser, con rem tutto scala in modo coerente, e questo è meglio anche per l'accessibilità."
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,214 @@
+{
+  "meta": {
+    "tecnologia": "Testing",
+    "slug": "testing",
+    "schema": 2,
+    "versione": 1,
+    "aggiornato": "2026-10-14",
+    "totale_domande": 12
+  },
+  "argomenti": [
+    {
+      "nome": "Fondamentali",
+      "domande": [
+        {
+          "id": "testing-001",
+          "priorita": "ALTA",
+          "domanda": "Unit, integration, E2E: che differenza c'è?",
+          "risposta": "Unit test = testi una singola classe da sola, con le dipendenze finte (mock). Integration = testi più classi insieme o il collegamento col database. E2E = testi l'intero flusso come farebbe un utente reale.",
+          "parole_chiave": [
+            "isolamento",
+            "componenti reali",
+            "flusso completo",
+            "piramide"
+          ],
+          "follow_up": {
+            "domanda": "Quanti test di ogni tipo?",
+            "risposta": "Tanti unit test (veloci, economici), meno integration, pochissimi E2E (lenti, fragili). È la piramide dei test."
+          }
+        },
+        {
+          "id": "testing-002",
+          "priorita": "ALTA",
+          "domanda": "Quali sono i livelli di test e cosa verifica ciascuno?",
+          "risposta": "Il test unitario verifica una singola unità, come un metodo o una classe, in isolamento. Il test di integrazione verifica che più moduli collaborino correttamente. Il test di sistema verifica l'intera applicazione nel suo insieme, e il test di accettazione verifica che soddisfi i bisogni dell'utente. Salendo di livello si amplia l'ambito e si riduce la velocità: per questo la piramide dei test consiglia molti test unitari, meno di integrazione e pochi di sistema.",
+          "parole_chiave": [
+            "unitario",
+            "integrazione",
+            "sistema",
+            "accettazione"
+          ],
+          "follow_up": {
+            "domanda": "Cos'è la piramide dei test?",
+            "risposta": "È il principio per cui si scrivono molti test unitari veloci, un numero minore di test di integrazione e pochi test end-to-end, più lenti e fragili. Bilanciare così i livelli dà la massima copertura con il minimo costo di manutenzione dei test stessi."
+          }
+        },
+        {
+          "id": "testing-003",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono i test di regressione e perché sono importanti?",
+          "risposta": "I test di regressione verificano che le funzionalità già esistenti continuino a funzionare dopo una modifica al codice. Quando cambi qualcosa, il rischio è di rompere ciò che prima andava: la regressione è proprio questo, un peggioramento introdotto da una modifica. Averli ed eseguirli a ogni cambiamento è ciò che permette di evolvere il software con fiducia, sapendo che se qualcosa si rompe il test lo segnala subito.",
+          "parole_chiave": [
+            "regressione",
+            "modifica",
+            "automazione",
+            "fiducia"
+          ],
+          "follow_up": {
+            "domanda": "Perché vanno automatizzati?",
+            "risposta": "Perché manualmente è impossibile riprovare tutto a ogni modifica: servirebbero giorni e nessuno lo farebbe davvero. Automatizzati, i test girano in pochi minuti a ogni commit o nella pipeline, e il team scopre subito cosa si è rotto invece di scoprirlo in produzione."
+          }
+        },
+        {
+          "id": "testing-004",
+          "priorita": "ALTA",
+          "domanda": "Come si progetta un piano di test e i casi di test?",
+          "risposta": "Il piano di test parte dai requisiti e definisce cosa testare, con quali tecniche, in che ordine e con quali criteri di accettazione. I casi di test descrivono il singolo scenario: precondizioni, input, passi e risultato atteso, derivati dai requisiti e dai casi limite. L'obiettivo è la copertura sistematica e la ripetibilità: un test è utile solo se può essere rieseguito e se il suo esito è oggettivo, confrontando atteso ed effettivo.",
+          "parole_chiave": [
+            "piano di test",
+            "casi di test",
+            "requisiti",
+            "ripetibilità"
+          ],
+          "follow_up": {
+            "domanda": "Come scegli i dati di un caso di test?",
+            "risposta": "Includo i casi normali, i casi limite e i casi non validi: per una funzione che divide, testo i valori tipici, lo zero e gli input sbagliati. L'analisi dei valori limite e delle classi di equivalenza è la tecnica classica per coprire il comportamento con pochi test mirati."
+          }
+        },
+        {
+          "id": "testing-005",
+          "priorita": "ALTA",
+          "domanda": "Come si testano le API Spring Boot?",
+          "risposta": "Si usano test che avviano il contesto di Spring con @SpringBootTest e chiamano gli endpoint con MockMvc, verificando status code, header e corpo della risposta in JSON. Per i test più veloci si può usare @WebMvcTest, che carica solo il livello web, con i service sostituiti da mock. Il test end-to-end con un database reale, magari su Testcontainers, copre l'integrazione completa quando serve.",
+          "parole_chiave": [
+            "SpringBootTest",
+            "MockMvc",
+            "WebMvcTest",
+            "Testcontainers"
+          ],
+          "follow_up": {
+            "domanda": "Differenza tra @SpringBootTest e @WebMvcTest?",
+            "risposta": "@SpringBootTest carica l'intero contesto applicativo, quindi è più realistico ma più lento; @WebMvcTest carica solo il livello web, con controller e filtri, e mocka il resto, quindi è veloce e mirato sul comportamento HTTP. Uso il primo per l'integrazione e il secondo per i dettagli del controller."
+          }
+        },
+        {
+          "id": "testing-006",
+          "priorita": "MEDIA",
+          "domanda": "Come testi un controller Spring?",
+          "risposta": "Con uno strumento che simula le richieste HTTP senza avviare un server vero, e con un contesto ridotto che carica solo il livello web: gli altri componenti li sostituisci con doppi che rispondono come decidi tu. Così verifichi le annotazioni, la conversione dei dati e la gestione degli errori in modo veloce e isolato. Per i casi in cui ti serve il sistema intero, come la configurazione di sicurezza o le query reali, usi invece il contesto completo e accetti che sia più lento.",
+          "parole_chiave": [
+            "simulazione delle richieste",
+            "contesto ridotto",
+            "doppi",
+            "isolamento",
+            "contesto completo"
+          ],
+          "follow_up": {
+            "domanda": "Come sostituisci le dipendenze?",
+            "risposta": "Dichiari nel test quali bean devono essere finti al posto di quelli reali del contesto, e il doppio risponde quello che decidi. Un consiglio pratico è sostituire i doppi con i casi che contano: servono a verificare che il controller chiami il servizio giusto con gli argomenti giusti, non a riprodurre il comportamento reale del servizio, che testi altrove."
+          }
+        },
+        {
+          "id": "testing-007",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è TestContainers e perché è utile?",
+          "risposta": "Ti permette di avviare un'istanza reale del database, in un container, per la durata dei test. La differenza con un database in memoria è che stai testando contro lo stesso motore che usi in produzione, quindi emergono incompatibilità di dialetto, comportamenti sulle date e vincoli che la versione in memoria non riproduce. Il costo è il tempo di avvio, che si ammortizza riusando il container tra test e classi diverse.",
+          "parole_chiave": [
+            "database in container",
+            "motore reale",
+            "falso senso di sicurezza",
+            "riuso del container",
+            "test di integrazione"
+          ],
+          "follow_up": {
+            "domanda": "È lento?",
+            "risposta": "L'avvio iniziale costa qualche secondo, poi il container resta in piedi per tutta l'esecuzione, quindi il peso reale è basso. Il costo vero è in sviluppo, quando vuoi un ciclo rapido: lì i test veloci con il database in memoria restano utili, mentre quelli contro il database reale li tieni per la pipeline. La combinazione sensata è avere entrambi e usare il secondo dove il motore conta davvero."
+          }
+        },
+        {
+          "id": "testing-008",
+          "priorita": "MEDIA",
+          "domanda": "Come testi un repository Spring Data?",
+          "risposta": "Con un contesto che carica solo la parte di persistenza e configura un database, così non avvii tutta l'applicazione: verifichi le query e la mappatura in isolamento. È il posto giusto per controllare che le tue query derivate facciano quello che intendevi e che le relazioni siano mappate come credi. Il limite è che un database diverso da quello di produzione non ti avvisa delle differenze di dialetto.",
+          "parole_chiave": [
+            "contesto di persistenza",
+            "query in isolamento",
+            "mappatura",
+            "database di test",
+            "differenze di dialetto"
+          ],
+          "follow_up": {
+            "domanda": "Il database in memoria è sufficiente?",
+            "risposta": "Per verificare la logica delle query e la mappatura sì, ed è veloce, quindi va usato per la maggior parte dei casi. Per la sicurezza di andare in produzione no: le differenze di dialetto, i tipi e i vincoli emergono solo sul motore reale. La soluzione pratica è usare quello in memoria nel ciclo di sviluppo e aggiungere qualche test contro il database reale per le query più delicate."
+          }
+        },
+        {
+          "id": "testing-009",
+          "priorita": "MEDIA",
+          "domanda": "Che differenza c'è tra tecniche di test statiche e dinamiche?",
+          "risposta": "Le tecniche statiche analizzano il codice senza eseguirlo: revisioni, ispezioni e analisi statica automatica cercano difetti, violazioni di stile e problemi di sicurezza a compile time. Le tecniche dinamiche eseguono il programma con input e verificano i risultati, come i test unitari e funzionali. Sono complementari: le statiche trovano certi errori presto e a basso costo, le dinamiche verificano il comportamento reale a runtime.",
+          "parole_chiave": [
+            "statiche",
+            "dinamiche",
+            "ispezione",
+            "esecuzione"
+          ],
+          "follow_up": {
+            "domanda": "Cosa fa l'analisi statica del codice?",
+            "risposta": "Strumenti automatici esaminano il sorgente alla ricerca di errori noti, codice morto, complessità eccessiva e vulnerabilità, senza eseguirlo. Trova problemi che i test potrebbero non coprire mai, ed è un controllo rapido da integrare nella pipeline."
+          }
+        },
+        {
+          "id": "testing-010",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono l'alpha test e il beta test?",
+          "risposta": "Sono le fasi di test che coinvolgono utenti reali prima del rilascio definitivo. L'alpha test avviene dentro l'organizzazione, in ambiente controllato, con utenti interni o selezionati che provano il software vicino agli sviluppatori. Il beta test avviene dopo, con utenti esterni che usano il software in un ambiente più realistico, fornendo feedback su usabilità e problemi reali. Servono a validare il prodotto nel mondo reale, non solo in laboratorio.",
+          "parole_chiave": [
+            "alpha",
+            "beta",
+            "utenti",
+            "feedback"
+          ],
+          "follow_up": {
+            "domanda": "Cosa distingue un beta test da un test di accettazione?",
+            "risposta": "L'accettazione verifica che il software soddisfi i requisiti concordati, con criteri formali. Il beta test è più aperto: utenti esterni usano il prodotto liberamente e si raccolgono impressioni e problemi. Spesso il beta prepara o accompagna l'accettazione finale."
+          }
+        },
+        {
+          "id": "testing-011",
+          "priorita": "MEDIA",
+          "domanda": "Come scrivi un buon test?",
+          "risposta": "Un buon test è indipendente dagli altri, quindi non dipende dall'ordine di esecuzione e non richiede che un altro test abbia girato prima. Poi è veloce, perché una suite lenta viene eseguita di rado e perde il suo valore. Infine ha un nome che spiega cosa verifica e fallisce per una sola ragione: se fallisce, devi capire subito cosa si è rotto senza andare a leggere il corpo. Il test verifica il comportamento, non i dettagli interni, altrimenti si rompe a ogni rifattorizzazione.",
+          "parole_chiave": [
+            "indipendenza",
+            "velocità",
+            "nome esplicativo",
+            "un solo motivo di fallimento",
+            "comportamento non dettagli"
+          ],
+          "follow_up": {
+            "domanda": "Quante asserzioni metti in un test?",
+            "risposta": "Poche, idealmente una sola: se te ne servono molte, probabilmente stai verificando più cose insieme e il fallimento non ti dice quale. Non è una regola rigida, perché a volte verificare uno stato composto richiede più controlli. La domanda utile è se quel test fallirebbe per una sola ragione: se sì, puoi avere più asserzioni senza problemi."
+          }
+        },
+        {
+          "id": "testing-012",
+          "priorita": "BASSA",
+          "domanda": "Cos'è il test coverage?",
+          "risposta": "È la percentuale di codice eseguito dai test, quindi un indicatore di quanto è stato attraversato, non di quanto è stato verificato: puoi eseguire una riga senza controllare nulla del suo esito e la copertura sale comunque. Serve a trovare le zone completamente scoperte, che è il suo uso più utile, e a notare quando una modifica fa scendere la copertura senza motivo. Come obiettivo numerico da raggiungere è pericoloso, perché spinge a scrivere test che eseguono invece di test che verificano.",
+          "parole_chiave": [
+            "copertura",
+            "codice eseguito non verificato",
+            "zone scoperte",
+            "obiettivo numerico",
+            "qualità del test"
+          ],
+          "follow_up": {
+            "domanda": "Qual è un buon valore?",
+            "risposta": "Dipende dal codice: la logica di dominio e i calcoli meritano copertura alta, mentre i getter e il codice di configurazione non ne hanno bisogno. Un numero come obiettivo aziendale porta a test inutili pur di raggiungerlo. L'uso sano è guardare il report per trovare i rami mai eseguiti, e decidere caso per caso se quello è un buco da coprire o codice che si può eliminare."
+          }
+        }
+      ]
+    }
+  ]
+}

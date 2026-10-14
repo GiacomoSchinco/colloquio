@@ -1,0 +1,726 @@
+{
+  "meta": {
+    "schema": 2,
+    "versione": 4,
+    "aggiornato": "2026-10-14",
+    "totale_domande": 608,
+    "totale_argomenti": 22,
+    "totale_file": 24
+  },
+  "argomenti": [
+    {
+      "slug": "html-js-ts",
+      "nome": "HTML, JavaScript e TypeScript",
+      "ordine": 1,
+      "files": [
+        "html-css",
+        "javascript",
+        "typescript"
+      ],
+      "file": null,
+      "totale": 56,
+      "blocchi": 4,
+      "con_follow_up": 56,
+      "priorita": {
+        "ALTA": 19,
+        "MEDIA": 37,
+        "BASSA": 0
+      }
+    },
+    {
+      "slug": "react",
+      "nome": "React",
+      "ordine": 2,
+      "files": [
+        "react"
+      ],
+      "file": "react.json",
+      "totale": 59,
+      "blocchi": 2,
+      "con_follow_up": 59,
+      "priorita": {
+        "ALTA": 27,
+        "MEDIA": 27,
+        "BASSA": 5
+      }
+    },
+    {
+      "slug": "angular",
+      "nome": "Angular",
+      "ordine": 3,
+      "files": [
+        "angular"
+      ],
+      "file": "angular.json",
+      "totale": 78,
+      "blocchi": 14,
+      "con_follow_up": 78,
+      "priorita": {
+        "ALTA": 39,
+        "MEDIA": 39,
+        "BASSA": 0
+      }
+    },
+    {
+      "slug": "accessibility",
+      "nome": "Accessibilità",
+      "ordine": 4,
+      "files": [
+        "accessibility"
+      ],
+      "file": "accessibility.json",
+      "totale": 14,
+      "blocchi": 1,
+      "con_follow_up": 14,
+      "priorita": {
+        "ALTA": 4,
+        "MEDIA": 7,
+        "BASSA": 3
+      }
+    },
+    {
+      "slug": "web-performance",
+      "nome": "Performance Web",
+      "ordine": 5,
+      "files": [
+        "web-performance"
+      ],
+      "file": "web-performance.json",
+      "totale": 23,
+      "blocchi": 1,
+      "con_follow_up": 23,
+      "priorita": {
+        "ALTA": 14,
+        "MEDIA": 7,
+        "BASSA": 2
+      }
+    },
+    {
+      "slug": "seo",
+      "nome": "SEO",
+      "ordine": 6,
+      "files": [
+        "seo"
+      ],
+      "file": "seo.json",
+      "totale": 19,
+      "blocchi": 1,
+      "con_follow_up": 19,
+      "priorita": {
+        "ALTA": 11,
+        "MEDIA": 8,
+        "BASSA": 0
+      }
+    },
+    {
+      "slug": "java",
+      "nome": "Java",
+      "ordine": 7,
+      "files": [
+        "java"
+      ],
+      "file": "java.json",
+      "totale": 54,
+      "blocchi": 5,
+      "con_follow_up": 54,
+      "priorita": {
+        "ALTA": 39,
+        "MEDIA": 13,
+        "BASSA": 2
+      }
+    },
+    {
+      "slug": "spring",
+      "nome": "Spring",
+      "ordine": 8,
+      "files": [
+        "spring"
+      ],
+      "file": "spring.json",
+      "totale": 46,
+      "blocchi": 4,
+      "con_follow_up": 46,
+      "priorita": {
+        "ALTA": 23,
+        "MEDIA": 18,
+        "BASSA": 5
+      }
+    },
+    {
+      "slug": "jpa",
+      "nome": "JPA e Hibernate",
+      "ordine": 9,
+      "files": [
+        "jpa"
+      ],
+      "file": "jpa.json",
+      "totale": 11,
+      "blocchi": 1,
+      "con_follow_up": 11,
+      "priorita": {
+        "ALTA": 4,
+        "MEDIA": 4,
+        "BASSA": 3
+      }
+    },
+    {
+      "slug": "sql",
+      "nome": "SQL e Database",
+      "ordine": 10,
+      "files": [
+        "sql"
+      ],
+      "file": "sql.json",
+      "totale": 40,
+      "blocchi": 1,
+      "con_follow_up": 40,
+      "priorita": {
+        "ALTA": 23,
+        "MEDIA": 14,
+        "BASSA": 3
+      }
+    },
+    {
+      "slug": "rest-api",
+      "nome": "REST API e HTTP",
+      "ordine": 11,
+      "files": [
+        "rest-api"
+      ],
+      "file": "rest-api.json",
+      "totale": 45,
+      "blocchi": 3,
+      "con_follow_up": 45,
+      "priorita": {
+        "ALTA": 25,
+        "MEDIA": 19,
+        "BASSA": 1
+      }
+    },
+    {
+      "slug": "architettura",
+      "nome": "Architettura e Design",
+      "ordine": 12,
+      "files": [
+        "architettura"
+      ],
+      "file": "architettura.json",
+      "totale": 27,
+      "blocchi": 4,
+      "con_follow_up": 27,
+      "priorita": {
+        "ALTA": 8,
+        "MEDIA": 16,
+        "BASSA": 3
+      }
+    },
+    {
+      "slug": "metodologie",
+      "nome": "Metodologie di Sviluppo",
+      "ordine": 13,
+      "files": [
+        "metodologie"
+      ],
+      "file": "metodologie.json",
+      "totale": 6,
+      "blocchi": 1,
+      "con_follow_up": 6,
+      "priorita": {
+        "ALTA": 3,
+        "MEDIA": 3,
+        "BASSA": 0
+      }
+    },
+    {
+      "slug": "testing",
+      "nome": "Testing",
+      "ordine": 14,
+      "files": [
+        "testing"
+      ],
+      "file": "testing.json",
+      "totale": 12,
+      "blocchi": 1,
+      "con_follow_up": 12,
+      "priorita": {
+        "ALTA": 5,
+        "MEDIA": 6,
+        "BASSA": 1
+      }
+    },
+    {
+      "slug": "cybersecurity",
+      "nome": "Cybersecurity",
+      "ordine": 15,
+      "files": [
+        "cybersecurity"
+      ],
+      "file": "cybersecurity.json",
+      "totale": 6,
+      "blocchi": 1,
+      "con_follow_up": 6,
+      "priorita": {
+        "ALTA": 4,
+        "MEDIA": 2,
+        "BASSA": 0
+      }
+    },
+    {
+      "slug": "fondamenti",
+      "nome": "Fondamenti di Informatica",
+      "ordine": 16,
+      "files": [
+        "fondamenti"
+      ],
+      "file": "fondamenti.json",
+      "totale": 5,
+      "blocchi": 2,
+      "con_follow_up": 5,
+      "priorita": {
+        "ALTA": 5,
+        "MEDIA": 0,
+        "BASSA": 0
+      }
+    },
+    {
+      "slug": "git",
+      "nome": "Git e Versioning",
+      "ordine": 17,
+      "files": [
+        "git"
+      ],
+      "file": "git.json",
+      "totale": 10,
+      "blocchi": 1,
+      "con_follow_up": 10,
+      "priorita": {
+        "ALTA": 4,
+        "MEDIA": 6,
+        "BASSA": 0
+      }
+    },
+    {
+      "slug": "maven",
+      "nome": "Maven",
+      "ordine": 18,
+      "files": [
+        "maven"
+      ],
+      "file": "maven.json",
+      "totale": 8,
+      "blocchi": 1,
+      "con_follow_up": 8,
+      "priorita": {
+        "ALTA": 3,
+        "MEDIA": 5,
+        "BASSA": 0
+      }
+    },
+    {
+      "slug": "docker",
+      "nome": "Docker",
+      "ordine": 19,
+      "files": [
+        "docker"
+      ],
+      "file": "docker.json",
+      "totale": 24,
+      "blocchi": 5,
+      "con_follow_up": 24,
+      "priorita": {
+        "ALTA": 11,
+        "MEDIA": 13,
+        "BASSA": 0
+      }
+    },
+    {
+      "slug": "kubernetes",
+      "nome": "Kubernetes",
+      "ordine": 20,
+      "files": [
+        "kubernetes"
+      ],
+      "file": "kubernetes.json",
+      "totale": 24,
+      "blocchi": 6,
+      "con_follow_up": 24,
+      "priorita": {
+        "ALTA": 9,
+        "MEDIA": 15,
+        "BASSA": 0
+      }
+    },
+    {
+      "slug": "ci-cd",
+      "nome": "CI/CD",
+      "ordine": 21,
+      "files": [
+        "ci-cd"
+      ],
+      "file": "ci-cd.json",
+      "totale": 15,
+      "blocchi": 3,
+      "con_follow_up": 15,
+      "priorita": {
+        "ALTA": 7,
+        "MEDIA": 8,
+        "BASSA": 0
+      }
+    },
+    {
+      "slug": "soft-skills",
+      "nome": "Soft Skills e Colloquio",
+      "ordine": 22,
+      "files": [
+        "soft-skills"
+      ],
+      "file": "soft-skills.json",
+      "totale": 26,
+      "blocchi": 2,
+      "con_follow_up": 26,
+      "priorita": {
+        "ALTA": 11,
+        "MEDIA": 15,
+        "BASSA": 0
+      }
+    }
+  ],
+  "tecnologie": [
+    {
+      "slug": "accessibility",
+      "nome": "Accessibilità",
+      "file": "accessibility.json",
+      "totale": 14,
+      "perPrio": {
+        "ALTA": 4,
+        "MEDIA": 7,
+        "BASSA": 3
+      },
+      "blocchi": 1,
+      "con_follow_up": 14,
+      "argomento": "accessibility"
+    },
+    {
+      "slug": "angular",
+      "nome": "Angular",
+      "file": "angular.json",
+      "totale": 78,
+      "perPrio": {
+        "ALTA": 39,
+        "MEDIA": 39,
+        "BASSA": 0
+      },
+      "blocchi": 14,
+      "con_follow_up": 78,
+      "argomento": "angular"
+    },
+    {
+      "slug": "architettura",
+      "nome": "Architettura e Design",
+      "file": "architettura.json",
+      "totale": 27,
+      "perPrio": {
+        "ALTA": 8,
+        "MEDIA": 16,
+        "BASSA": 3
+      },
+      "blocchi": 4,
+      "con_follow_up": 27,
+      "argomento": "architettura"
+    },
+    {
+      "slug": "ci-cd",
+      "nome": "CI/CD",
+      "file": "ci-cd.json",
+      "totale": 15,
+      "perPrio": {
+        "ALTA": 7,
+        "MEDIA": 8,
+        "BASSA": 0
+      },
+      "blocchi": 3,
+      "con_follow_up": 15,
+      "argomento": "ci-cd"
+    },
+    {
+      "slug": "cybersecurity",
+      "nome": "Cybersecurity",
+      "file": "cybersecurity.json",
+      "totale": 6,
+      "perPrio": {
+        "ALTA": 4,
+        "MEDIA": 2,
+        "BASSA": 0
+      },
+      "blocchi": 1,
+      "con_follow_up": 6,
+      "argomento": "cybersecurity"
+    },
+    {
+      "slug": "docker",
+      "nome": "Docker",
+      "file": "docker.json",
+      "totale": 24,
+      "perPrio": {
+        "ALTA": 11,
+        "MEDIA": 13,
+        "BASSA": 0
+      },
+      "blocchi": 5,
+      "con_follow_up": 24,
+      "argomento": "docker"
+    },
+    {
+      "slug": "fondamenti",
+      "nome": "Fondamenti di Informatica",
+      "file": "fondamenti.json",
+      "totale": 5,
+      "perPrio": {
+        "ALTA": 5,
+        "MEDIA": 0,
+        "BASSA": 0
+      },
+      "blocchi": 2,
+      "con_follow_up": 5,
+      "argomento": "fondamenti"
+    },
+    {
+      "slug": "git",
+      "nome": "Git e Versioning",
+      "file": "git.json",
+      "totale": 10,
+      "perPrio": {
+        "ALTA": 4,
+        "MEDIA": 6,
+        "BASSA": 0
+      },
+      "blocchi": 1,
+      "con_follow_up": 10,
+      "argomento": "git"
+    },
+    {
+      "slug": "html-css",
+      "nome": "HTML e CSS",
+      "file": "html-css.json",
+      "totale": 8,
+      "perPrio": {
+        "ALTA": 2,
+        "MEDIA": 6,
+        "BASSA": 0
+      },
+      "blocchi": 1,
+      "con_follow_up": 8,
+      "argomento": "html-js-ts"
+    },
+    {
+      "slug": "java",
+      "nome": "Java",
+      "file": "java.json",
+      "totale": 54,
+      "perPrio": {
+        "ALTA": 39,
+        "MEDIA": 13,
+        "BASSA": 2
+      },
+      "blocchi": 5,
+      "con_follow_up": 54,
+      "argomento": "java"
+    },
+    {
+      "slug": "javascript",
+      "nome": "JavaScript",
+      "file": "javascript.json",
+      "totale": 17,
+      "perPrio": {
+        "ALTA": 7,
+        "MEDIA": 10,
+        "BASSA": 0
+      },
+      "blocchi": 2,
+      "con_follow_up": 17,
+      "argomento": "html-js-ts"
+    },
+    {
+      "slug": "jpa",
+      "nome": "JPA e Hibernate",
+      "file": "jpa.json",
+      "totale": 11,
+      "perPrio": {
+        "ALTA": 4,
+        "MEDIA": 4,
+        "BASSA": 3
+      },
+      "blocchi": 1,
+      "con_follow_up": 11,
+      "argomento": "jpa"
+    },
+    {
+      "slug": "kubernetes",
+      "nome": "Kubernetes",
+      "file": "kubernetes.json",
+      "totale": 24,
+      "perPrio": {
+        "ALTA": 9,
+        "MEDIA": 15,
+        "BASSA": 0
+      },
+      "blocchi": 6,
+      "con_follow_up": 24,
+      "argomento": "kubernetes"
+    },
+    {
+      "slug": "maven",
+      "nome": "Maven",
+      "file": "maven.json",
+      "totale": 8,
+      "perPrio": {
+        "ALTA": 3,
+        "MEDIA": 5,
+        "BASSA": 0
+      },
+      "blocchi": 1,
+      "con_follow_up": 8,
+      "argomento": "maven"
+    },
+    {
+      "slug": "metodologie",
+      "nome": "Metodologie di Sviluppo",
+      "file": "metodologie.json",
+      "totale": 6,
+      "perPrio": {
+        "ALTA": 3,
+        "MEDIA": 3,
+        "BASSA": 0
+      },
+      "blocchi": 1,
+      "con_follow_up": 6,
+      "argomento": "metodologie"
+    },
+    {
+      "slug": "react",
+      "nome": "React",
+      "file": "react.json",
+      "totale": 59,
+      "perPrio": {
+        "ALTA": 27,
+        "MEDIA": 27,
+        "BASSA": 5
+      },
+      "blocchi": 2,
+      "con_follow_up": 59,
+      "argomento": "react"
+    },
+    {
+      "slug": "rest-api",
+      "nome": "REST API e HTTP",
+      "file": "rest-api.json",
+      "totale": 45,
+      "perPrio": {
+        "ALTA": 25,
+        "MEDIA": 19,
+        "BASSA": 1
+      },
+      "blocchi": 3,
+      "con_follow_up": 45,
+      "argomento": "rest-api"
+    },
+    {
+      "slug": "seo",
+      "nome": "SEO",
+      "file": "seo.json",
+      "totale": 19,
+      "perPrio": {
+        "ALTA": 11,
+        "MEDIA": 8,
+        "BASSA": 0
+      },
+      "blocchi": 1,
+      "con_follow_up": 19,
+      "argomento": "seo"
+    },
+    {
+      "slug": "soft-skills",
+      "nome": "Soft Skills e Colloquio",
+      "file": "soft-skills.json",
+      "totale": 26,
+      "perPrio": {
+        "ALTA": 11,
+        "MEDIA": 15,
+        "BASSA": 0
+      },
+      "blocchi": 2,
+      "con_follow_up": 26,
+      "argomento": "soft-skills"
+    },
+    {
+      "slug": "spring",
+      "nome": "Spring",
+      "file": "spring.json",
+      "totale": 46,
+      "perPrio": {
+        "ALTA": 23,
+        "MEDIA": 18,
+        "BASSA": 5
+      },
+      "blocchi": 4,
+      "con_follow_up": 46,
+      "argomento": "spring"
+    },
+    {
+      "slug": "sql",
+      "nome": "SQL e Database",
+      "file": "sql.json",
+      "totale": 40,
+      "perPrio": {
+        "ALTA": 23,
+        "MEDIA": 14,
+        "BASSA": 3
+      },
+      "blocchi": 1,
+      "con_follow_up": 40,
+      "argomento": "sql"
+    },
+    {
+      "slug": "testing",
+      "nome": "Testing",
+      "file": "testing.json",
+      "totale": 12,
+      "perPrio": {
+        "ALTA": 5,
+        "MEDIA": 6,
+        "BASSA": 1
+      },
+      "blocchi": 1,
+      "con_follow_up": 12,
+      "argomento": "testing"
+    },
+    {
+      "slug": "typescript",
+      "nome": "TypeScript",
+      "file": "typescript.json",
+      "totale": 31,
+      "perPrio": {
+        "ALTA": 10,
+        "MEDIA": 21,
+        "BASSA": 0
+      },
+      "blocchi": 1,
+      "con_follow_up": 31,
+      "argomento": "html-js-ts"
+    },
+    {
+      "slug": "web-performance",
+      "nome": "Performance Web",
+      "file": "web-performance.json",
+      "totale": 23,
+      "perPrio": {
+        "ALTA": 14,
+        "MEDIA": 7,
+        "BASSA": 2
+      },
+      "blocchi": 1,
+      "con_follow_up": 23,
+      "argomento": "web-performance"
+    }
+  ]
+}

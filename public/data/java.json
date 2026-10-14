@@ -1,0 +1,918 @@
+{
+  "meta": {
+    "tecnologia": "Java",
+    "slug": "java",
+    "schema": 2,
+    "versione": 1,
+    "aggiornato": "2026-10-14",
+    "totale_domande": 54
+  },
+  "argomenti": [
+    {
+      "nome": "Fondamentali",
+      "domande": [
+        {
+          "id": "java-001",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra HashMap e TreeMap?",
+          "risposta": "HashMap è come un armadio con tanti cassetti numerati: butti dentro le cose e le ritrovi subito, ma non c'è un ordine. TreeMap è come uno schedario ordinato alfabeticamente: le cose sono in ordine, ma cercare richiede un po' più di tempo.",
+          "parole_chiave": [
+            "HashMap = veloce ma disordinata",
+            "TreeMap = ordinata ma più lenta",
+            "HashMap non è thread-safe"
+          ],
+          "follow_up": {
+            "domanda": "E se due thread usano la stessa HashMap?",
+            "risposta": "Può succedere un disastro: i dati si corrompono. Meglio usare ConcurrentHashMap che è pensata apposta per gestire più thread insieme."
+          }
+        },
+        {
+          "id": "java-002",
+          "priorita": "ALTA",
+          "domanda": "Come rendi una classe immutabile?",
+          "risposta": "Semplice: una volta creata, non puoi più cambiarla. Per farlo: metti `final` su tutti i campi, non creare metodi setter, e se hai oggetti dentro (come una lista) non esporli direttamente ma restituiscine una copia.",
+          "parole_chiave": [
+            "final = non modificabile",
+            "niente setter",
+            "copia difensiva per oggetti interni"
+          ],
+          "follow_up": {
+            "domanda": "Perché String è immutabile?",
+            "risposta": "Per sicurezza (nessuno la modifica sotto il naso) e per performance: se due stringhe sono uguali, Java può riusare la stessa in memoria senza problemi."
+          }
+        },
+        {
+          "id": "java-003",
+          "priorita": "ALTA",
+          "domanda": "Perché devi implementare sia equals() che hashCode()?",
+          "risposta": "Sono due metodi che devono andare d'accordo. equals() dice se due oggetti sono 'uguali', hashCode() dà un numero per trovare velocemente l'oggetto in una HashMap. Se due oggetti sono uguali secondo equals(), devono avere lo stesso hashCode, altrimenti la HashMap non li trova.",
+          "parole_chiave": [
+            "equals = uguaglianza logica",
+            "hashCode = posizione nella mappa",
+            "devono essere coerenti"
+          ],
+          "follow_up": {
+            "domanda": "Cosa succede se hashCode() è sempre 0?",
+            "risposta": "Funziona ma è lento: tutti gli oggetti finiscono nello stesso 'cassetto' e la HashMap diventa una lista. Perdi il vantaggio della ricerca veloce."
+          }
+        },
+        {
+          "id": "java-004",
+          "priorita": "ALTA",
+          "domanda": "Come è strutturato un programma Java e cosa fa il metodo main?",
+          "risposta": "Un programma Java è fatto di classi, e ogni file .java contiene di solito una classe pubblica con lo stesso nome del file. Il punto di ingresso è il metodo main, con la firma public static void main(String[] args): è il metodo che la JVM chiama per avviare l'esecuzione, e riceve come parametro un array di stringhe con gli eventuali argomenti da riga di comando. Da lì parte tutto il flusso del programma.",
+          "parole_chiave": [
+            "classe",
+            "main",
+            "JVM",
+            "esecuzione"
+          ],
+          "follow_up": {
+            "domanda": "Perché main è static?",
+            "risposta": "Perché deve poter essere chiamato dalla JVM senza creare prima un'istanza della classe: non esiste ancora alcun oggetto quando il programma parte. Con static il metodo appartiene alla classe stessa e può essere invocato direttamente."
+          }
+        },
+        {
+          "id": "java-005",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra tipi primitivi e classi wrapper in Java?",
+          "risposta": "I primitivi, come int, double e boolean, sono valori semplici e leggeri, non oggetti. Le classi wrapper, come Integer, Double e Boolean, li incapsulano in oggetti, con metodi utili e la possibilità di essere null. Servono quando serve un oggetto, per esempio nelle collection, che non accettano primitivi. Java fa l'autoboxing, cioè converte automaticamente tra i due, ma bisogna stare attenti alle differenze, come il confronto con == che sugli oggetti confronta i riferimenti.",
+          "parole_chiave": [
+            "primitivi",
+            "wrapper",
+            "autoboxing",
+            "null"
+          ],
+          "follow_up": {
+            "domanda": "Quale usi nelle collection e perché?",
+            "risposta": "Le collection lavorano con oggetti, quindi dentro una List o una Map finiscono i wrapper, come Integer, non i primitivi. L'autoboxing nasconde la conversione, ma su grandi quantità di dati può avere un costo, e un Integer può essere null, cosa che un int non può essere."
+          }
+        },
+        {
+          "id": "java-006",
+          "priorita": "ALTA",
+          "domanda": "Come funzionano le strutture di selezione e iterazione in Java?",
+          "risposta": "La selezione sceglie un ramo in base a una condizione: if, else if, else per le scelte generiche, e switch per confrontare un valore con più casi. L'iterazione ripete un blocco: for quando il numero di ripetizioni è noto, while quando dipende da una condizione verificata prima, e do-while quando il blocco va eseguito almeno una volta. Sono i mattoni per tradurre in codice qualsiasi algoritmo progettato.",
+          "parole_chiave": [
+            "if",
+            "switch",
+            "for",
+            "while"
+          ],
+          "follow_up": {
+            "domanda": "Quando usi for e quando while?",
+            "risposta": "Uso for per iterare su un intervallo o una collection con contatore noto, e while quando la fine dipende da una condizione che non so in anticipo, come leggere finché non c'è più input. È soprattutto una questione di chiarezza: scelgo la struttura che esprime meglio l'intento."
+          }
+        },
+        {
+          "id": "java-007",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono classi e oggetti in Java?",
+          "risposta": "La classe è il progetto, il modello che definisce gli attributi e i metodi di un certo tipo di entità. L'oggetto è l'istanza concreta creata da quel modello, con i suoi valori specifici. Per esempio la classe Cliente definisce che ogni cliente ha un nome e un saldo, mentre ogni oggetto Cliente è un cliente preciso con nome e saldo propri. La programmazione a oggetti è tutta qui: modelli riusabili e istanze indipendenti.",
+          "parole_chiave": [
+            "classe",
+            "oggetto",
+            "istanza",
+            "attributi"
+          ],
+          "follow_up": {
+            "domanda": "Come crei un oggetto da una classe?",
+            "risposta": "Con l'operatore new seguito dal costruttore, come in new Cliente(). La JVM alloca la memoria, inizializza gli attributi ed esegue il costruttore, restituendo un riferimento all'oggetto, che assegni a una variabile del tipo della classe."
+          }
+        },
+        {
+          "id": "java-008",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono i costruttori e a cosa servono?",
+          "risposta": "Un costruttore è un metodo speciale, con lo stesso nome della classe e senza tipo di ritorno, che viene eseguito quando crei un oggetto con new. Serve a inizializzare l'oggetto in uno stato valido, di solito assegnando valori iniziali agli attributi. Se non ne definisci, Java ne fornisce uno di default senza parametri, che inizializza i campi ai loro valori predefiniti. Più costruttori con parametri diversi permettono di creare oggetti in modi diversi.",
+          "parole_chiave": [
+            "costruttore",
+            "inizializzazione",
+            "new",
+            "overload"
+          ],
+          "follow_up": {
+            "domanda": "Cos'è l'overload dei costruttori?",
+            "risposta": "È la possibilità di avere più costruttori con firme diverse nella stessa classe. Uno può chiamare l'altro con this(...) per riusare la logica di inizializzazione, evitando di duplicare codice. Il compilatore sceglie quello giusto in base ai parametri passati."
+          }
+        },
+        {
+          "id": "java-009",
+          "priorita": "ALTA",
+          "domanda": "Come funzionano i metodi con parametri e valori di ritorno?",
+          "risposta": "Un metodo è un blocco di codice con un nome, eventuali parametri in ingresso e un eventuale valore di ritorno dichiarato nella firma. I parametri sono i dati che passi al metodo, il valore di ritorno è il risultato che restituisce al chiamante con return, e se non restituisce nulla il tipo è void. Questa separazione tra input e output è ciò che rende i metodi riusabili e testabili in isolamento.",
+          "parole_chiave": [
+            "metodo",
+            "parametri",
+            "return",
+            "void"
+          ],
+          "follow_up": {
+            "domanda": "Che differenza c'è tra parametri formali e attuali?",
+            "risposta": "I parametri formali sono quelli dichiarati nella firma del metodo, una sorta di segnaposto. Quelli attuali sono i valori concreti passati alla chiamata. Java li associa per posizione e ne verifica il tipo a compile time, rifiutando chiamate incoerenti."
+          }
+        },
+        {
+          "id": "java-010",
+          "priorita": "ALTA",
+          "domanda": "Cos'è l'ereditarietà in Java e come si realizza?",
+          "risposta": "L'ereditarietà permette a una classe di riusare ed estendere il comportamento di un'altra: la sottoclasse eredita attributi e metodi della superclasse e può aggiungerne o ridefinirne di propri. Si realizza con la parola chiave extends. Il vantaggio è riusare codice comune e modellare relazioni di tipo è-un, come un ContoRisparmio è-un Conto. Java supporta l'ereditarietà singola tra classi, ma più livelli di gerarchia.",
+          "parole_chiave": [
+            "ereditarietà",
+            "extends",
+            "superclasse",
+            "override"
+          ],
+          "follow_up": {
+            "domanda": "Cosa significa ridefinire un metodo con override?",
+            "risposta": "Significa fornire nella sottoclasse una nuova implementazione di un metodo ereditato, con la stessa firma. È la base del polimorfismo: il metodo giusto viene scelto a runtime in base al tipo reale dell'oggetto, non al tipo della variabile."
+          }
+        },
+        {
+          "id": "java-011",
+          "priorita": "ALTA",
+          "domanda": "Cos'è l'information hiding e come si ottiene con gli access modifier?",
+          "risposta": "L'information hiding è il principio per cui una classe espone solo ciò che serve all'esterno e nasconde i dettagli interni, così chi la usa non dipende dalla sua implementazione. In Java si ottiene con gli access modifier: private rende un membro visibile solo dentro la classe, default solo nel package, protected anche alle sottoclassi, e public ovunque. La prassi è tenere gli attributi private e accedervi con metodi getter e setter.",
+          "parole_chiave": [
+            "information hiding",
+            "private",
+            "public",
+            "getter"
+          ],
+          "follow_up": {
+            "domanda": "Perché gli attributi vanno tenuti privati?",
+            "risposta": "Perché così controlli l'accesso e puoi cambiare l'implementazione interna senza rompere chi usa la classe. Se un campo è pubblico, chiunque può metterci valori non validi e ogni modifica futura diventa pericolosa. I getter e setter ti danno un punto unico di controllo."
+          }
+        },
+        {
+          "id": "java-012",
+          "priorita": "ALTA",
+          "domanda": "Cos'è il polimorfismo e come si realizza in Java?",
+          "risposta": "Il polimorfismo è la capacità di trattare oggetti di classi diverse attraverso un tipo comune, e far sì che ognuno si comporti secondo la propria natura. In Java si realizza con l'override: una variabile di tipo superclasse o interfaccia può riferirsi a un oggetto di una sottoclasse, e quando chiami un metodo ridefinito viene eseguita la versione della classe reale dell'oggetto. Questo rende il codice estendibile senza modificarlo.",
+          "parole_chiave": [
+            "polimorfismo",
+            "override",
+            "interfaccia",
+            "runtime"
+          ],
+          "follow_up": {
+            "domanda": "Esempio concreto?",
+            "risposta": "Una lista di oggetti Forma che contiene cerchi e quadrati: chiamando disegna() su ciascuno, ogni forma si disegna a modo suo. Il codice che itera la lista non sa quale forma ha davanti, ma grazie al polimorfismo funziona lo stesso, e aggiungere una nuova forma non richiede di toccarlo."
+          }
+        },
+        {
+          "id": "java-013",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra JDK, JRE e JVM?",
+          "risposta": "Sono tre livelli annidati. La JVM è la macchina virtuale che esegue il bytecode, il JRE è l'ambiente di esecuzione e comprende la JVM più le librerie standard, il JDK è il kit di sviluppo e contiene il JRE più il compilatore e gli strumenti di diagnostica. In pratica a chi sviluppa serve il JDK, a chi esegue basta il JRE: è per questo che in un container di produzione ci va solo il runtime.",
+          "parole_chiave": [
+            "JVM",
+            "JRE",
+            "JDK",
+            "bytecode"
+          ],
+          "follow_up": {
+            "domanda": "Perché in un container di produzione non metti il JDK?",
+            "risposta": "Perché ti porti dietro compilatore e decine di strumenti che a runtime non servono: l'immagine diventa più grande e, soprattutto, aumenta la superficie di attacco, perché ognuno di quei pacchetti è codice in più da tenere aggiornato. In produzione ci va il runtime, il JDK lo usi nella build."
+          }
+        },
+        {
+          "id": "java-014",
+          "priorita": "ALTA",
+          "domanda": "Spiega la differenza tra Stack e Heap nella memoria Java.",
+          "risposta": "Lo stack contiene i frame dei metodi con le variabili locali e i riferimenti, ed è privato di ogni thread: quando un metodo termina il suo frame sparisce. L'heap è condiviso da tutti i thread e ci vivono gli oggetti, gestiti dal garbage collector. Detto in modo utile al colloquio: gli oggetti stanno nell'heap, i riferimenti a quegli oggetti e i primitivi locali stanno nello stack.",
+          "parole_chiave": [
+            "stack",
+            "heap",
+            "frame",
+            "thread",
+            "garbage collector"
+          ],
+          "follow_up": {
+            "domanda": "Cosa causa uno StackOverflowError?",
+            "risposta": "Una ricorsione che non termina, o troppo profonda per il limite dello stack del thread: ogni chiamata aggiunge un frame e a un certo punto lo spazio finisce. Con OutOfMemory invece si parla di heap, quindi la causa è il numero o la dimensione degli oggetti vivi. Distinguere i due errori ti dice subito dove guardare."
+          }
+        },
+        {
+          "id": "java-015",
+          "priorita": "ALTA",
+          "domanda": "Come funziona il Garbage Collector in Java?",
+          "risposta": "Il garbage collector libera gli oggetti dell'heap che non sono più raggiungibili da nessun riferimento attivo. Le JVM moderne sono generazionali, perché l'ipotesi è che la maggior parte degli oggetti muoia giovane: gli oggetti nascono nella young generation, dove le raccolte sono frequenti e veloci, e chi sopravvive a più raccolte viene promosso nella old generation, dove le raccolte sono più rare e più costose. G1 è il collector predefinito nelle versioni recenti e lavora a regioni per controllare le pause.",
+          "parole_chiave": [
+            "garbage collector",
+            "generazionale",
+            "young e old generation",
+            "G1"
+          ],
+          "follow_up": {
+            "domanda": "Un oggetto può essere liberato anche se lo sto referenziando?",
+            "risposta": "No, ma attenzione al contrario: un oggetto resta vivo anche se non ti serve più, se un riferimento lo tiene raggiungibile. È la causa classica delle perdite di memoria, come una cache che non scade mai, un listener mai rimosso o una collezione statica che cresce. Il GC non indovina le intenzioni, guarda solo la raggiungibilità."
+          }
+        },
+        {
+          "id": "java-016",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra String, StringBuilder e StringBuffer?",
+          "risposta": "String è immutabile, quindi ogni concatenazione crea un nuovo oggetto: comoda e sicura, ma da evitare quando componi testo in un ciclo. StringBuilder è mutabile e non sincronizzato, ed è la scelta normale per costruire stringhe. StringBuffer fa la stessa cosa ma con i metodi sincronizzati, quindi è thread-safe e più lenta: la usi solo se lo stesso oggetto è condiviso tra thread, cosa che nella pratica capita di rado.",
+          "parole_chiave": [
+            "String",
+            "StringBuilder",
+            "StringBuffer",
+            "immutabilità",
+            "thread-safe"
+          ],
+          "follow_up": {
+            "domanda": "Perché a volte non serve StringBuilder per concatenare?",
+            "risposta": "Perché le concatenazioni dentro una singola espressione vengono compilate in modo efficiente dal compilatore, quindi scrivere il più leggibile non è automaticamente un problema. Il problema resta il ciclo, perché lì la concatenazione avviene a ogni iterazione e nessuna ottimizzazione ti salva."
+          }
+        },
+        {
+          "id": "java-017",
+          "priorita": "ALTA",
+          "domanda": "Perché si devono ridefinire insieme equals e hashCode?",
+          "risposta": "Per il contratto: se due oggetti sono uguali secondo equals devono avere lo stesso hashCode. Se ridefinisci solo equals violi il contratto e le strutture basate su hashing, come HashMap e HashSet, smettono di trovare gli oggetti, perché prima calcolano il bucket dall'hash e solo dopo confrontano con equals. L'ideale è generarne entrambi con lo stesso strumento, così restano coerenti.",
+          "parole_chiave": [
+            "equals",
+            "hashCode",
+            "contratto",
+            "HashMap",
+            "bucket"
+          ],
+          "follow_up": {
+            "domanda": "Cosa succede se cambio un campo usato nell'hashCode dopo aver messo l'oggetto in una mappa?",
+            "risposta": "Che non lo ritrovi più: era stato inserito nel bucket calcolato con il vecchio hash, e ora la ricerca parte da un altro bucket. È un bug insidioso perché rimuovere e reinserire lo stesso oggetto funziona, quindi sembra che la mappa si comporti in modo casuale. La regola è che i campi usati in equals e hashCode non devono cambiare mentre l'oggetto è nella mappa."
+          }
+        },
+        {
+          "id": "java-018",
+          "priorita": "ALTA",
+          "domanda": "Come funziona internamente una HashMap?",
+          "risposta": "HashMap è un array di bucket e la chiave viene trasformata in un indice con una funzione di hash e una maschera sul numero dei bucket. Se due chiavi finiscono nello stesso bucket hai una collisione e le voci vengono messe in una lista; da Java 8, quando un bucket supera una soglia, la lista diventa un albero bilanciato e la ricerca passa da lineare a logaritmica. Prima di sovrascrivere un valore si confronta l'hash e poi si usa equals, che è il motivo per cui i due metodi devono essere coerenti.",
+          "parole_chiave": [
+            "HashMap",
+            "bucket",
+            "collisione",
+            "albero bilanciato",
+            "fattore di carico"
+          ],
+          "follow_up": {
+            "domanda": "Cosa succede quando la mappa si riempie troppo?",
+            "risposta": "Quando gli elementi superano la capacità per il fattore di carico, la mappa raddoppia i bucket e ridistribuisce le voci: è il rehash. Costa, perché ogni voce va ricalcolata, e per questo se sai in anticipo quanti elementi avrai conviene indicare la capacità iniziale nel costruttore ed evitare uno o più rehash."
+          }
+        },
+        {
+          "id": "java-019",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra overloading e overriding?",
+          "risposta": "Il sovraccarico definisce più metodi con lo stesso nome ma parametri diversi nella stessa classe, e la scelta la fa il compilatore in base ai tipi degli argomenti. L'override ridefinisce in una sottoclasse un metodo ereditato mantenendo la stessa firma, e la scelta avviene a runtime in base al tipo reale dell'oggetto: è la base del polimorfismo. Sono due meccanismi diversi, si confondono solo per il nome simile.",
+          "parole_chiave": [
+            "overloading",
+            "overriding",
+            "binding statico",
+            "binding dinamico",
+            "polimorfismo"
+          ],
+          "follow_up": {
+            "domanda": "Cosa cambia mettere @Override?",
+            "risposta": "Non cambia il comportamento a runtime, ma obbliga il compilatore a verificare che tu stia davvero ridefinendo qualcosa: senza l'annotazione, un errore di battitura nel nome o nella firma ti fa creare un metodo nuovo invece di sovrascrivere, e il bug è silenzioso. Va messa sempre."
+          }
+        },
+        {
+          "id": "java-020",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono le checked e le unchecked exception?",
+          "risposta": "Le checked sono verificate dal compilatore: devi gestirle con try/catch o dichiararle con throws, e sono quelle fuori dal tuo controllo, come IOException o SQLException. Le unchecked estendono RuntimeException e non obbligano a nulla: tipicamente segnalano un errore di programmazione, come un riferimento nullo o un argomento non valido. La distinzione serve a decidere il contratto del metodo: se l'errore può essere gestito da chi chiama lo dichiari, se è un bug lo lasci unchecked.",
+          "parole_chiave": [
+            "checked",
+            "unchecked",
+            "RuntimeException",
+            "throws",
+            "contratto del metodo"
+          ],
+          "follow_up": {
+            "domanda": "Perché le checked exception sono scomode dentro le lambda?",
+            "risposta": "Perché l'interfaccia funzionale non le dichiara, quindi non puoi lanciarle da dentro senza catturarle. Il risultato è il try/catch dentro la lambda, che sporca il codice, oppure un wrapper che le rilancia come unchecked. È uno dei motivi per cui gli stream con operazioni che lanciano IOException diventano sgradevoli."
+          }
+        },
+        {
+          "id": "java-021",
+          "priorita": "ALTA",
+          "domanda": "Cosa fa il try-with-resources?",
+          "risposta": "Dichiari le risorse tra parentesi dopo il try e la JVM le chiude da sola alla fine del blocco, in ordine inverso e anche se è stata lanciata un'eccezione. Funziona con qualsiasi cosa implementi AutoCloseable, quindi file, stream, connessioni. Il guadagno non è solo la brevità: elimina il caso in cui la chiusura nel finally va in errore e nasconde l'eccezione originale.",
+          "parole_chiave": [
+            "try-with-resources",
+            "AutoCloseable",
+            "chiusura automatica",
+            "finally"
+          ],
+          "follow_up": {
+            "domanda": "Un errore nella chiusura può nascondere l'eccezione originale?",
+            "risposta": "Con il try-with-resources no: se il corpo lancia e anche la chiusura fallisce, l'errore della chiusura viene aggiunto come eccezione soppressa e quella principale resta visibile. Con il finally scritto a mano succede il contrario, l'errore della chiusura sostituisce quello originale e perdi la causa vera. È uno dei motivi per cui questa sintassi è stata introdotta."
+          }
+        },
+        {
+          "id": "java-022",
+          "priorita": "ALTA",
+          "domanda": "Spiega i generics e il type erasure.",
+          "risposta": "I generics ti fanno parametrizzare classi e metodi sul tipo, così il compilatore verifica che tu non metta un intero in una lista di stringhe. Il type erasure è il passaggio in cui il compilatore cancella i parametri di tipo sostituendoli con Object o con il loro limite: a runtime una lista di stringhe e una di interi sono la stessa classe. È per questo che non puoi creare un new sul tipo generico, non puoi usare instanceof su di esso e non puoi sovraccaricare due metodi che differiscono solo per il parametro di tipo.",
+          "parole_chiave": [
+            "generics",
+            "type erasure",
+            "type safety",
+            "limiti",
+            "compile-time"
+          ],
+          "follow_up": {
+            "domanda": "Perché non puoi creare un array di tipo generico?",
+            "risposta": "Perché a runtime l'array conosce il proprio tipo di componente, mentre il tipo generico è cancellato: se potessi crearlo potresti inserirci elementi sbagliati senza che nessuno se ne accorga, finché non li leggi e ottieni un errore di conversione. La soluzione pratica è usare una lista e convertirla quando serve."
+          }
+        },
+        {
+          "id": "java-023",
+          "priorita": "ALTA",
+          "domanda": "Differenza tra ArrayList e LinkedList.",
+          "risposta": "ArrayList usa un array ridimensionabile, quindi l'accesso per indice è immediato, ma inserire o rimuovere in mezzo costa perché deve spostare gli elementi. LinkedList è una lista doppiamente collegata: inserimenti e rimozioni alle estremità sono immediati, ma arrivare all'elemento n-esimo costa perché ci si deve camminare. Nella pratica usi quasi sempre ArrayList, anche quando aggiungi e togli, perché la località di memoria rende l'accesso sequenziale molto più veloce di quanto il confronto teorico suggerisca.",
+          "parole_chiave": [
+            "ArrayList",
+            "LinkedList",
+            "complessità",
+            "accesso per indice",
+            "località di memoria"
+          ],
+          "follow_up": {
+            "domanda": "Quando LinkedList ha davvero senso?",
+            "risposta": "Quasi mai nei casi reali: servirebbe usando la lista come coda o come pila, con inserimenti e rimozioni solo alle estremità, e anche in quel caso si usano strutture dedicate come ArrayDeque. Se il tuo codice è pieno di letture per indice, LinkedList è la scelta sbagliata e lo paghi in modo evidente."
+          }
+        },
+        {
+          "id": "java-024",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono gli Stream in Java 8?",
+          "risposta": "Uno stream è una pipeline di operazioni su una sorgente di dati: quelle intermedie come filter, map e sorted sono pigre e descrivono la trasformazione, quella terminale come collect, reduce o forEach avvia davvero l'elaborazione. Lo stream non memorizza nulla e si consuma una volta sola, quindi non lo riusi dopo l'operazione terminale. La versione parallela sfrutta più core, ma ha senso solo quando l'operazione è davvero pesante e indipendente, altrimenti è più lenta di quella sequenziale.",
+          "parole_chiave": [
+            "Stream",
+            "operazioni intermedie",
+            "terminale",
+            "pigrizia",
+            "parallelismo"
+          ],
+          "follow_up": {
+            "domanda": "Perché uno stream non si può riusare?",
+            "risposta": "Perché rappresenta un'elaborazione su una sorgente, non una collezione: dopo l'operazione terminale il flusso è consumato e riusarlo lancia un'eccezione. Se ti serve rileggere quei dati, lo stream lo ricostruisci dalla collezione ogni volta, e la collezione è ciò che conservi."
+          }
+        },
+        {
+          "id": "java-025",
+          "priorita": "ALTA",
+          "domanda": "Cos'è Optional e quando va usato?",
+          "risposta": "Optional è un contenitore che rende esplicito il caso in cui un valore può mancare, e serve soprattutto come tipo di ritorno: il chiamante è costretto a considerare l'assenza invece di trovarsi un riferimento nullo da qualche parte. Lo usi con map, filter, orElseThrow o ifPresent, e le alternative restano esplicite. Dove non va usato è come campo di un'entità, come parametro di metodo o dentro una collezione, perché lì aggiungi un livello di indirezione senza risolvere niente.",
+          "parole_chiave": [
+            "Optional",
+            "assenza di valore",
+            "tipo di ritorno",
+            "orElseThrow"
+          ],
+          "follow_up": {
+            "domanda": "Perché Optional non risolve il problema dei null nel dominio?",
+            "risposta": "Perché è uno strumento locale sul bordo dell'API: ti obbliga a gestire l'assenza nel punto in cui chiami il metodo, ma se il modello ha campi opzionali il problema va risolto nel modello. Usarlo come campo rende inoltre la classe scomoda da serializzare e complica la mappatura con il database."
+          }
+        },
+        {
+          "id": "java-026",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra == ed equals per gli oggetti?",
+          "risposta": "L'operatore di uguaglianza confronta i riferimenti, quindi ti dice se due variabili puntano allo stesso oggetto in memoria. Il metodo equals confronta il contenuto logico, e le classi che lo ridefiniscono, come String, ti dicono se due oggetti rappresentano lo stesso valore. La regola è semplice: per gli oggetti usa equals, per i primitivi l'operatore. Su String la differenza si vede subito, perché due stringhe con lo stesso testo possono essere oggetti diversi.",
+          "parole_chiave": [
+            "uguaglianza di riferimento",
+            "equals",
+            "pool delle stringhe",
+            "primitivi"
+          ],
+          "follow_up": {
+            "domanda": "Perché a volte due stringhe uguali risultano uguali anche con l'operatore?",
+            "risposta": "Perché le stringhe scritte come letterali finiscono nel pool e vengono riusate, quindi puntano allo stesso oggetto. Quelle costruite a runtime, invece, sono oggetti distinti. È il motivo per cui su String il confronto con l'operatore funziona nei test e fallisce in produzione, che è il tipo di bug che costa una caccia lunga."
+          }
+        },
+        {
+          "id": "java-027",
+          "priorita": "ALTA",
+          "domanda": "Spiega il concetto di immutabilità e cosa sono i record.",
+          "risposta": "Un oggetto immutabile non cambia stato dopo la creazione: campi final, nessun setter e attenzione a non esporre riferimenti a collezioni interne. Il vantaggio è che è sicuro da condividere tra thread senza sincronizzazione ed è una chiave affidabile nelle mappe. I record sono la scorciatoia per i contenitori di dati: dichiari i componenti e ottieni costruttore, accessor, equals, hashCode e toString, ma restano immutabili solo se i componenti lo sono.",
+          "parole_chiave": [
+            "immutabilità",
+            "final",
+            "thread-safety",
+            "record",
+            "chiave di mappa"
+          ],
+          "follow_up": {
+            "domanda": "Un record è sempre immutabile?",
+            "risposta": "I suoi campi sono final e non ci sono setter, quindi il riferimento non cambia, ma se un componente è una collezione quella resta modificabile dall'esterno. Per avere immutabilità vera devi copiare le collezioni in ingresso e in uscita, come faresti con una classe normale. Il record ti risparmia il codice, non il ragionamento sui riferimenti."
+          }
+        },
+        {
+          "id": "java-028",
+          "priorita": "ALTA",
+          "domanda": "Java è pass-by-value o pass-by-reference?",
+          "risposta": "Java passa sempre per valore: al metodo arriva una copia. Per i primitivi si copia il valore, quindi modificarlo dentro non tocca il chiamante; per gli oggetti si copia il riferimento, quindi puoi modificare lo stato dell'oggetto puntato, ma non puoi far puntare il chiamante a un altro oggetto riassegnando il parametro. È il malinteso classico del colloquio: il fatto che si possa modificare l'oggetto non significa passaggio per riferimento.",
+          "parole_chiave": [
+            "pass-by-value",
+            "copia del riferimento",
+            "riassegnazione",
+            "primitivi"
+          ],
+          "follow_up": {
+            "domanda": "Come si fa a restituire più valori da un metodo?",
+            "risposta": "Restituendo un oggetto che li raggruppa, tipicamente un piccolo record, oppure modificando lo stato di un oggetto passato se questo è il contratto esplicito del metodo. Non puoi farlo con un parametro primitivo, perché ogni modifica resta locale. Modificare parametri di nascosto è la soluzione che sembra comoda e che poi nessuno ricorda leggendo il codice."
+          }
+        },
+        {
+          "id": "java-029",
+          "priorita": "MEDIA",
+          "domanda": "Come si crea e si gestisce un thread in Java?",
+          "risposta": "Puoi estendere Thread o implementare Runnable, ma nell'applicazione reale non crei thread a mano: usi un executor con un pool, sottoponi i task e lasci che gestisca la coda e il riutilizzo dei thread. Così eviti il costo di creare e distruggere un thread per ogni richiesta, che è la cosa che fa crollare un servizio sotto carico. Nelle applicazioni moderne spesso non gestisci nemmeno l'executor, perché lo fa il framework, ma il concetto di pool resta quello.",
+          "parole_chiave": [
+            "Thread",
+            "Runnable",
+            "ExecutorService",
+            "pool",
+            "task"
+          ],
+          "follow_up": {
+            "domanda": "Perché creare un thread per richiesta è un problema?",
+            "risposta": "Perché ogni thread costa memoria per il suo stack e il sistema paga il cambio di contesto: con qualche migliaio di richieste simultanee l'applicazione peggiora invece di migliorare. Il pool limita il parallelismo a un numero controllato e mette in coda l'eccedenza, che è un comportamento prevedibile e misurabile."
+          }
+        },
+        {
+          "id": "java-030",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono synchronized e volatile?",
+          "risposta": "La parola chiave synchronized garantisce sia la mutua esclusione sia la visibilità: un thread alla volta entra nel blocco e le modifiche fatte dentro sono visibili agli altri che entrano dopo. volatile garantisce solo la visibilità di una singola variabile, senza lock e senza atomicità. La conseguenza pratica è che volatile non basta per un contatore, perché incrementare è leggere, sommare e scrivere, e due thread si possono sovrapporre.",
+          "parole_chiave": [
+            "synchronized",
+            "volatile",
+            "visibilità",
+            "atomicità",
+            "lock"
+          ],
+          "follow_up": {
+            "domanda": "Quando volatile è sufficiente?",
+            "risposta": "Quando un solo thread scrive e gli altri leggono, come nel caso di un flag di arresto: lì ti serve solo che la modifica sia visibile. Se invece più thread scrivono sulla stessa variabile ti serve un lock o una classe atomica, che risolve il problema del contatore senza bloccare."
+          }
+        },
+        {
+          "id": "java-031",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono le lambda e le method reference?",
+          "risposta": "La lambda è una funzione anonima scritta in forma compatta, e il suo tipo è un'interfaccia funzionale, cioè un'interfaccia con un solo metodo astratto. Il method reference è la forma ancora più breve, quando la lambda si limita a delegare a un metodo esistente. Il guadagno pratico è la leggibilità: il codice esprime cosa vuoi ottenere invece di come costruirlo, e questo si sente soprattutto nelle pipeline sugli stream.",
+          "parole_chiave": [
+            "lambda",
+            "interfaccia funzionale",
+            "method reference",
+            "leggibilità"
+          ],
+          "follow_up": {
+            "domanda": "Cosa serve perché una lambda compili?",
+            "risposta": "Che il contesto di destinazione sia un'interfaccia funzionale: il compilatore deve sapere quale metodo astratto stai implementando, e a volte serve un cast esplicito quando il contesto è ambiguo. In più le variabili catturate devono essere final o di fatto final, perché la lambda ne porta con sé una copia del valore."
+          }
+        },
+        {
+          "id": "java-032",
+          "priorita": "MEDIA",
+          "domanda": "Spiega il pattern Singleton e i suoi problemi.",
+          "risposta": "Il Singleton garantisce una sola istanza di una classe con accesso globale tramite un metodo statico. In ambiente multithread l'inizializzazione va protetta, con il doppio controllo o con l'enum, che è la forma più robusta perché regge anche serializzazione e reflection. Il problema non è tecnico ma di progetto: l'accesso globale nasconde le dipendenze e rende difficile sostituire l'oggetto nei test. Nei framework con inversione del controllo spesso non ti serve, perché lo scope singleton dei bean fa già quel lavoro.",
+          "parole_chiave": [
+            "Singleton",
+            "istanza unica",
+            "doppio controllo",
+            "enum",
+            "accesso globale"
+          ],
+          "follow_up": {
+            "domanda": "Perché l'enum è considerata la forma migliore di Singleton?",
+            "risposta": "Perché la JVM garantisce che ogni costante di enum venga inizializzata una volta sola anche con accessi concorrenti, e perché protegge dai casi che rompono le altre implementazioni, come la deserializzazione e la reflection. È anche la forma più breve da scrivere. Resta il fatto che il problema di progetto non lo risolve."
+          }
+        },
+        {
+          "id": "java-033",
+          "priorita": "MEDIA",
+          "domanda": "Spiega brevemente i principi SOLID.",
+          "risposta": "Sono cinque principi di progettazione orientata agli oggetti. Responsabilità singola: una classe ha un solo motivo per cambiare. Aperto chiuso: estendi il comportamento senza modificare il codice esistente. Sostituzione di Liskov: una sottoclasse deve poter sostituire la classe base senza sorprese. Segregazione delle interfacce: meglio molte interfacce piccole di una grande. Inversione delle dipendenze: dipendi da astrazioni e non da implementazioni concrete.",
+          "parole_chiave": [
+            "SOLID",
+            "responsabilità singola",
+            "aperto chiuso",
+            "Liskov",
+            "inversione delle dipendenze"
+          ],
+          "follow_up": {
+            "domanda": "Quale principio si viola più spesso in pratica?",
+            "risposta": "La responsabilità singola, perché richiede disciplina continua: si parte da una classe piccola e si finisce con un servizio che carica dati, valida, salva e manda notifiche. Il sintomo è la difficoltà a nominarla senza usare la parola e. Un altro molto violato è Liskov, che si scopre quando una sottoclasse lancia eccezioni che la classe base non dichiarava."
+          }
+        },
+        {
+          "id": "java-034",
+          "priorita": "MEDIA",
+          "domanda": "Cosa succede concatenando String in un loop?",
+          "risposta": "Siccome String è immutabile, ogni concatenazione crea un oggetto nuovo, quindi in un ciclo con molte iterazioni produci moltissimi oggetti temporanei e metti sotto pressione il garbage collector. La soluzione è accumulare in uno StringBuilder e chiamare toString una volta alla fine. Il costo non è solo di memoria: il tempo cresce in modo sproporzionato, perché ogni passaggio ricopia tutto il contenuto accumulato.",
+          "parole_chiave": [
+            "String immutabile",
+            "concatenazione in ciclo",
+            "StringBuilder",
+            "pressione sul garbage collector"
+          ],
+          "follow_up": {
+            "domanda": "Quanto conta davvero in un'applicazione reale?",
+            "risposta": "Con poche iterazioni non lo noti, ma su stringhe che costruiscono report, query o file diventa il punto caldo del profilo. È anche una domanda da colloquio frequente proprio perché distingue chi conosce la teoria dell'immutabilità da chi ha visto un profilo con dentro un ciclo che concatena."
+          }
+        },
+        {
+          "id": "java-035",
+          "priorita": "MEDIA",
+          "domanda": "A cosa servono i metodi default nelle interfacce?",
+          "risposta": "Da Java 8 un'interfaccia può dichiarare metodi con implementazione, e le classi che la implementano li ereditano o li sovrascrivono. Il motivo per cui esistono è pratico: permettere di aggiungere un metodo a un'interfaccia molto usata, come List, senza rompere tutto il codice già scritto che la implementa. Hanno però un limite: se due interfacce forniscono un default con la stessa firma, la classe deve risolvere il conflitto dichiarando esplicitamente quale usare.",
+          "parole_chiave": [
+            "metodi default",
+            "compatibilità",
+            "evoluzione delle API",
+            "conflitto di default"
+          ],
+          "follow_up": {
+            "domanda": "Cosa succede se due interfacce hanno lo stesso metodo default?",
+            "risposta": "Il compilatore obbliga la classe a risolvere l'ambiguità sovrascrivendo il metodo, tipicamente invocando quello dell'interfaccia che vuoi con la sintassi qualificata. Senza quella dichiarazione il codice non compila. È il prezzo della flessibilità: il default non crea problemi finché non ne incontri due con la stessa firma."
+          }
+        },
+        {
+          "id": "java-036",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono gli operatori e le espressioni in Java?",
+          "risposta": "Gli operatori sono simboli che compiono operazioni su valori: aritmetici come + e -, di confronto come == e <, logici come && e ||, e di assegnazione come =. Un'espressione è una combinazione di valori, variabili e operatori che produce un risultato. Conoscere la precedenza degli operatori è essenziale per non scrivere espressioni ambigue, e quando ho dubbi uso le parentesi per rendere l'intento esplicito.",
+          "parole_chiave": [
+            "operatori",
+            "espressioni",
+            "precedenza",
+            "logici"
+          ],
+          "follow_up": {
+            "domanda": "Che differenza c'è tra && e &?",
+            "risposta": "&& è un AND logico con valutazione a corto circuito: se il primo operando è falso, il secondo non viene valutato. & è l'AND bit a bit, che valuta sempre entrambi e lavora sui bit. Nei controlli di flusso si usa quasi sempre &&, che è anche più sicuro perché evita di valutare espressioni che potrebbero fallire."
+          }
+        },
+        {
+          "id": "java-037",
+          "priorita": "MEDIA",
+          "domanda": "Come funziona la reflection?",
+          "risposta": "È la capacità di ispezionare e usare le classi a runtime: leggere le annotazioni, scoprire i metodi, invocarli, accedere ai campi. È quello che permette a Spring di iniettare le dipendenze senza che tu scriva il codice che le assegna, e a una libreria di serializzazione di capire la forma di un oggetto senza conoscerla. Il costo è che i controlli del compilatore non ti proteggono più: un errore di nome diventa un errore a runtime, e il codice è più difficile da seguire.",
+          "parole_chiave": [
+            "riflessione",
+            "introspezione a runtime",
+            "annotazioni",
+            "nessun controllo in compilazione",
+            "fondamento dei framework"
+          ],
+          "follow_up": {
+            "domanda": "Dove la usi senza saperlo?",
+            "risposta": "Nei framework che usi ogni giorno: l'iniezione delle dipendenze, la mappatura degli oggetti sul database, la serializzazione in JSON e i runner dei test si basano tutti sulla riflessione. Anche l'iniezione di un valore di configurazione in un campo funziona così. È per questo che un errore di configurazione a volte si vede solo all'avvio: nessuno lo verifica prima."
+          }
+        },
+        {
+          "id": "java-038",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono i modificatori di accesso?",
+          "risposta": "Definiscono chi può vedere classi, metodi e campi. Il livello più restrittivo è solo la classe stessa, quello successivo è il package, quello protetto aggiunge le sottoclassi, e quello pubblico è visibile a tutti. Servono a controllare l'accoppiamento: più un dettaglio è nascosto, più sei libero di cambiarlo senza rompere chi lo usa. La regola pratica è partire dal più restrittivo e allargare solo quando serve davvero.",
+          "parole_chiave": [
+            "modificatori di accesso",
+            "incapsulamento",
+            "package",
+            "sottoclassi",
+            "controllo dell accoppiamento"
+          ],
+          "follow_up": {
+            "domanda": "Perché tenere privati i campi?",
+            "risposta": "Perché così la rappresentazione interna non fa parte del contratto della classe: puoi cambiarla senza toccare chi la usa, e puoi impedire che venga messa in uno stato incoerente. Se esponessi il campo, chiunque potrebbe assegnargli un valore non valido e la responsabilità dell'invariante si spargerebbe nel codice. I metodi di accesso esistono per questo, non per abitudine."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Java moderno",
+      "domande": [
+        {
+          "id": "java-039",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono le lambda e perché le usi?",
+          "risposta": "Sono un modo compatto per scrivere il corpo di un'interfaccia funzionale, cioè di un'interfaccia con un solo metodo astratto, quando ti serve passare un comportamento come argomento. Al posto di una classe anonima di dieci righe scrivi un'espressione che si legge come l'intenzione: applica questa trasformazione a ogni elemento. Il guadagno vero è la leggibilità delle pipeline di operazioni sulle collezioni, dove il codice esprime cosa vuoi ottenere invece di come costruirlo.",
+          "parole_chiave": [
+            "lambda",
+            "interfaccia funzionale",
+            "comportamento come argomento",
+            "leggibilità",
+            "classi anonime"
+          ],
+          "follow_up": {
+            "domanda": "Cosa serve per usare una lambda?",
+            "risposta": "Un'interfaccia con un solo metodo astratto, perché il compilatore deve sapere quale metodo stai implementando: è il contesto che dà significato all'espressione. Le interfacce più comuni sono già pronte nella libreria standard per i casi tipici: trasformazione, predicato, consumo e fornitura di un valore. Le variabili che catturi devono essere costanti o di fatto costanti."
+          }
+        },
+        {
+          "id": "java-040",
+          "priorita": "BASSA",
+          "domanda": "CompletableFuture: a cosa serve?",
+          "risposta": "Serve a eseguire un'operazione senza bloccare il thread che l'ha avviata, e a combinarne più di una in modo dichiarativo: lanci la chiamata, fai altro, e quando ti serve il risultato lo prendi o concateni una trasformazione. È molto più comodo del vecchio approccio con i future, dove per combinare due risultati finivi in blocchi annidati illeggibili. Il caso d'uso tipico è chiamare più servizi indipendenti e usarli insieme quando sono tutti pronti.",
+          "parole_chiave": [
+            "operazione asincrona",
+            "composizione",
+            "chiamate indipendenti",
+            "non bloccare il thread",
+            "concatenazione"
+          ],
+          "follow_up": {
+            "domanda": "Come gestisci gli errori?",
+            "risposta": "Con i metodi dedicati che intercettano l'eccezione e ti lasciano restituire un valore di riserva, oppure con quello che gestisce insieme risultato ed errore, utile quando devi comunque produrre una risposta. Il punto importante è ricordare che senza eccezioni non gestite anche la catena di concatenazioni rischia di nascondere il fallimento, quindi serve sempre un punto in cui l'errore viene finalmente guardato."
+          }
+        },
+        {
+          "id": "java-041",
+          "priorita": "BASSA",
+          "domanda": "Cosa sono le sealed classes?",
+          "risposta": "Sono classi o interfacce che dichiarano esplicitamente quali tipi possono estenderle, quindi la gerarchia è chiusa e nota al compilatore. Il vantaggio è che il compilatore può verificare che tu abbia considerato tutti i casi: se domani qualcuno aggiunge una sottoclasse, la compilazione fallisce nel punto in cui non l'hai gestita. Serve a modellare insiemi finiti di alternative dove ognuna ha una forma diversa.",
+          "parole_chiave": [
+            "sealed",
+            "gerarchia chiusa",
+            "esaustività",
+            "alternative finite",
+            "controllo in compilazione"
+          ],
+          "follow_up": {
+            "domanda": "Quando le usi?",
+            "risposta": "Per modellare un risultato che può essere solo in uno dei suoi stati possibili: un esito che è riuscito con un valore oppure fallito con un motivo, niente altro. Così chi consuma quel tipo è obbligato a gestire entrambi i casi, e se in futuro ne aggiungi uno il compilatore ti avvisa in tutti i punti da aggiornare. È il modo per far controllare dal compilatore una regola di dominio."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Avanzato",
+      "domande": [
+        {
+          "id": "java-042",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra interfaccia e classe astratta?",
+          "risposta": "Entrambe definiscono contratti che le classi concrete devono rispettare, ma con differenze. Una classe astratta può contenere stato, cioè attributi, e metodi già implementati, e si estende con extends, quindi una sola per classe. Un'interfaccia definisce solo il contratto, può avere costanti e metodi default, e una classe può implementarne più di una con implements. Uso la classe astratta quando c'è uno stato o una logica comune da condividere, l'interfaccia quando voglio solo definire un comportamento.",
+          "parole_chiave": [
+            "classe astratta",
+            "interfaccia",
+            "stato",
+            "ereditarietà singola",
+            "composizione"
+          ],
+          "follow_up": {
+            "domanda": "Quando preferisci un'interfaccia?",
+            "risposta": "Quando voglio che classi molto diverse condividano un comportamento senza forzare una gerarchia, come una interfaccia Comparable che rende confrontabile qualsiasi oggetto. Le interfacce danno più flessibilità e oggi sono il modo preferito di definire contratti."
+          }
+        },
+        {
+          "id": "java-043",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra List, Set e Map nelle collection Java?",
+          "risposta": "Sono le tre famiglie principali del Collection Framework. List è una sequenza ordinata che ammette duplicati e accesso per indice, come ArrayList e LinkedList. Set è un insieme senza duplicati e senza un ordine garantito in generale, come HashSet. Map associa chiavi a valori, senza chiavi duplicate, come HashMap, e non fa parte di Collection ma è comunque fondamentale. La scelta dipende da cosa serve: ordine, unicità o associazione chiave-valore.",
+          "parole_chiave": [
+            "List",
+            "Set",
+            "Map",
+            "HashMap"
+          ],
+          "follow_up": {
+            "domanda": "Quando usi un Set invece di una List?",
+            "risposta": "Quando mi serve garantire l'unicità degli elementi senza dover controllare manualmente i duplicati. Un Set rifiuta automaticamente un elemento già presente, e le operazioni di ricerca in una HashSet sono molto veloci. Se invece conta l'ordine o servono duplicati, uso una List."
+          }
+        },
+        {
+          "id": "java-044",
+          "priorita": "ALTA",
+          "domanda": "A cosa servono Comparable e Comparator in Java?",
+          "risposta": "Entrambi servono a definire come ordinare gli oggetti. Comparable si implementa dentro la classe e definisce l'ordine naturale, con il metodo compareTo: l'oggetto sa confrontarsi con un altro dello stesso tipo. Comparator è un oggetto esterno che confronta due elementi e permette di definire ordinamenti alternativi senza toccare la classe. Uso Comparable per l'ordine di default e Comparator per ordinamenti specifici richiesti da contesti diversi.",
+          "parole_chiave": [
+            "Comparable",
+            "Comparator",
+            "ordinamento",
+            "compareTo"
+          ],
+          "follow_up": {
+            "domanda": "Come ordini una lista con un criterio personalizzato?",
+            "risposta": "Passi un Comparator al metodo sort, spesso scritto come lambda. Per esempio una lista di persone la ordino per cognome o per età semplicemente cambiando il Comparator, senza dover modificare la classe Persona per ogni criterio."
+          }
+        },
+        {
+          "id": "java-045",
+          "priorita": "ALTA",
+          "domanda": "Come ti connetti a un database con JDBC?",
+          "risposta": "JDBC è l'API Java per parlare con i database relazionali. Il flusso è: carico il driver, apro una connessione con DriverManager o un DataSource, creo uno statement o meglio un prepared statement, eseguo la query, leggo il ResultSet e infine chiudo le risorse. I prepared statement sono la scelta giusta: oltre a evitare la SQL injection, sono più efficienti perché il database può riusare il piano di esecuzione.",
+          "parole_chiave": [
+            "JDBC",
+            "connessione",
+            "ResultSet",
+            "prepared statement"
+          ],
+          "follow_up": {
+            "domanda": "Perché preferisci il PreparedStatement allo Statement?",
+            "risposta": "Per due motivi: sicurezza, perché i parametri vengono trattati come dati e non come codice SQL, bloccando le injection, e prestazioni, perché la query preparata può essere compilata una volta e riusata con parametri diversi. Lo Statement semplice lo uso solo per query statiche senza parametri."
+          }
+        },
+        {
+          "id": "java-046",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono i tipi enum e quando li usi?",
+          "risposta": "Un enum è un tipo speciale che definisce un insieme fisso di costanti con nome, come i giorni della settimana o gli stati di un ordine. A differenza di semplici costanti numeriche, è type-safe: non puoi assegnare un valore fuori dall'insieme, e il compilatore lo controlla. Possono avere campi, costruttori e metodi, quindi sono molto più potenti di una lista di costanti, e li uso ogni volta che un valore può assumere solo un numero finito di stati noti.",
+          "parole_chiave": [
+            "enum",
+            "costanti",
+            "type-safe",
+            "stati"
+          ],
+          "follow_up": {
+            "domanda": "Meglio un enum o delle costanti statiche?",
+            "risposta": "L'enum: le costanti statiche sono solo numeri o stringhe senza vincoli, e nulla impedisce di passare un valore non valido. L'enum rende il dominio esplicito nel tipo, quindi gli errori emergono a compile time e il codice diventa auto-documentato."
+          }
+        },
+        {
+          "id": "java-047",
+          "priorita": "MEDIA",
+          "domanda": "Come leggi e scrivi file in Java?",
+          "risposta": "Con le classi del package java.io o la più moderna java.nio. Per leggere un file di testo uso di solito Files.readAllLines o un BufferedReader per file grandi, leggendo riga per riga. Per scrivere uso Files.write o un BufferedWriter. La regola d'oro è chiudere sempre gli stream, meglio ancora con il try-with-resources, che li chiude automaticamente anche in caso di eccezione, evitando perdite di risorse.",
+          "parole_chiave": [
+            "file",
+            "BufferedReader",
+            "Files",
+            "stream"
+          ],
+          "follow_up": {
+            "domanda": "Cos'è il try-with-resources?",
+            "risposta": "È una forma di try che dichiara le risorse da chiudere, come stream o connessioni, e le chiude automaticamente a fine blocco. Rende il codice più sicuro e leggibile, perché non devi scrivere finally con la chiusura manuale, ed evita i classici leak di risorse."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Concorrenza e JVM",
+      "domande": [
+        {
+          "id": "java-048",
+          "priorita": "ALTA",
+          "domanda": "Perché in Java è importante ridefinire equals e hashCode, e cosa c'entra l'immutabilità?",
+          "risposta": "equals serve a confrontare due oggetti per valore, hashCode a calcolare un codice per le strutture come HashMap e HashSet. Il contratto dice che se due oggetti sono uguali devono avere lo stesso hashCode: se ridefinisci solo equals e non hashCode, gli oggetti si perdono dentro mappe e set. L'immutabilità aiuta molto, perché un oggetto immutabile non cambia stato e può essere usato in sicurezza come chiave e condiviso tra thread.",
+          "parole_chiave": [
+            "equals",
+            "hashCode",
+            "contratto",
+            "immutabilità"
+          ],
+          "follow_up": {
+            "domanda": "Perché String è immutabile?",
+            "risposta": "Perché così è sicura da condividere, può essere usata come chiave nelle mappe senza rischi e viene memorizzata in un pool, riusando le stesse istanze. L'immutabilità rende il comportamento prevedibile e thread-safe, ed è la stessa ragione per cui conviene progettare immutabili le classi usate come chiave."
+          }
+        },
+        {
+          "id": "java-049",
+          "priorita": "ALTA",
+          "domanda": "Quali meccanismi di concorrenza usi in Java?",
+          "risposta": "La concorrenza si gestisce creando thread, ma oggi si preferisce l'astrazione degli ExecutorService con pool di thread, che riusano i thread invece di crearli ogni volta. Per comporre operazioni asincrone si usa CompletableFuture, e per coordinare l'accesso a risorse condivise servono synchronized o i lock. Il principio è evitare lo stato condiviso mutabile: la maggior parte dei bug di concorrenza nasce da dati modificati da più thread insieme.",
+          "parole_chiave": [
+            "ExecutorService",
+            "CompletableFuture",
+            "synchronized",
+            "thread"
+          ],
+          "follow_up": {
+            "domanda": "Cosa sono le race condition?",
+            "risposta": "Sono errori che nascono quando più thread accedono e modificano gli stessi dati senza coordinazione, e il risultato dipende dall'ordine di esecuzione. Si prevengono proteggendo lo stato condiviso con synchronized o i lock, oppure evitando del tutto lo stato condiviso, che è la soluzione più solida."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Java Web (JEE)",
+      "domande": [
+        {
+          "id": "java-050",
+          "priorita": "ALTA",
+          "domanda": "Come funziona il modello client-server in un'applicazione web?",
+          "risposta": "Il client, di solito il browser, invia richieste HTTP al server, che le elabora e restituisce una risposta, tipicamente una pagina o dei dati. Il client si occupa di presentazione e interazione con l'utente, il server di logica applicativa e dati. Il protocollo HTTP è stateless: ogni richiesta è indipendente, e per mantenere una sessione servono meccanismi appositi, come cookie o token. Capire questa separazione è la base di qualunque applicazione web.",
+          "parole_chiave": [
+            "client-server",
+            "HTTP",
+            "richiesta",
+            "risposta"
+          ],
+          "follow_up": {
+            "domanda": "Cosa significa che HTTP è stateless?",
+            "risposta": "Che il server non ricorda le richieste precedenti: ogni chiamata parte da zero. Per questo servono sessioni, cookie o token per riconoscere l'utente tra una richiesta e l'altra, ricostruendo uno stato che il protocollo di per sé non conserva."
+          }
+        },
+        {
+          "id": "java-051",
+          "priorita": "ALTA",
+          "domanda": "Cos'è il pattern MVC e come si applica in Java?",
+          "risposta": "MVC separa l'applicazione in tre ruoli: il Model, che contiene dati e logica di business, la View, che mostra i dati all'utente, e il Controller, che riceve le richieste, chiama il model e sceglie la view da restituire. In Java il model è fatto di classi e DAO, la view di JSP o template, e il controller di servlet o classi Spring. Questa separazione rende il codice più organizzato, testabile e modificabile senza far collassare tutto il resto.",
+          "parole_chiave": [
+            "MVC",
+            "model",
+            "view",
+            "controller"
+          ],
+          "follow_up": {
+            "domanda": "Perché separare model, view e controller?",
+            "risposta": "Perché così puoi cambiare la presentazione senza toccare la logica, o testare il model senza dipendere dall'interfaccia. Se mischi tutto in una JSP piena di codice SQL, ogni modifica è un rischio. La separazione è la prima difesa contro il codice che diventa ingovernabile."
+          }
+        },
+        {
+          "id": "java-052",
+          "priorita": "ALTA",
+          "domanda": "Cos'è una servlet e qual è il suo ciclo di vita?",
+          "risposta": "Una servlet è una classe Java che gira sul server e genera risposte dinamiche alle richieste HTTP, tipicamente estendendo HttpServlet e ridefinendo doGet o doPost. Il suo ciclo di vita è gestito dal container: viene caricata e inizializzata con init, poi per ogni richiesta viene chiamato il metodo service, che smista a doGet o doPost, e infine distrutta con destroy. Una sola istanza serve più richieste, quindi va scritta senza stato condiviso non protetto.",
+          "parole_chiave": [
+            "servlet",
+            "doGet",
+            "doPost",
+            "ciclo di vita"
+          ],
+          "follow_up": {
+            "domanda": "Che differenza c'è tra doGet e doPost?",
+            "risposta": "doGet risponde alle richieste GET, usate per leggere dati, con parametri visibili nell'URL. doPost risponde alle POST, usate per inviare dati, come i form, con i parametri nel corpo della richiesta e non nell'URL. Le operazioni che modificano dati andrebbero fatte con POST, non con GET."
+          }
+        },
+        {
+          "id": "java-053",
+          "priorita": "ALTA",
+          "domanda": "Cos'è un connection pool e perché usarlo con un DataSource?",
+          "risposta": "Un connection pool è un insieme di connessioni al database già aperte e riusabili, invece di aprirne una nuova a ogni richiesta. Aprire una connessione è costoso, quindi il pool le mantiene pronte e le presta ai richiedenti, riducendo drasticamente i tempi. Il DataSource è il modo standard per accedere al pool: l'applicazione chiede una connessione al DataSource configurato sul server, come GlassFish, senza conoscere i dettagli della configurazione.",
+          "parole_chiave": [
+            "connection pool",
+            "DataSource",
+            "connessione",
+            "prestazioni"
+          ],
+          "follow_up": {
+            "domanda": "Cosa succede se apri una connessione a ogni richiesta?",
+            "risposta": "Le prestazioni crollano: aprire e chiudere connessioni è lento e stressa il database. Con un pool le connessioni vengono riusate, e il numero massimo è limitato per proteggere il database dal sovraccarico. Senza pool, un'app sotto carico esaurisce rapidamente le risorse."
+          }
+        },
+        {
+          "id": "java-054",
+          "priorita": "MEDIA",
+          "domanda": "Che differenza c'è tra un web server e un application server?",
+          "risposta": "Un web server serve contenuti statici e inoltra richieste, gestendo principalmente HTTP: esempi sono Apache e Nginx. Un application server, come GlassFish o Tomcat nel suo ruolo, fornisce un ambiente completo per eseguire applicazioni: gestisce servlet, JSP, pool di connessioni, transazioni e sicurezza. In pratica l'application server esegue la logica applicativa Java, il web server spesso gli sta davanti per servire file e fare da proxy.",
+          "parole_chiave": [
+            "web server",
+            "application server",
+            "Apache",
+            "GlassFish"
+          ],
+          "follow_up": {
+            "domanda": "Dove si colloca Tomcat?",
+            "risposta": "Tomcat è un servlet container: esegue servlet e JSP, quindi copre la parte web di Java, ma non implementa l'intera specifica Java EE, come EJB o JMS. Per questo a volte si dice che Tomcat è più leggero di un application server completo come GlassFish."
+          }
+        }
+      ]
+    }
+  ]
+}

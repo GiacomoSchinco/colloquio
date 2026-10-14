@@ -1,0 +1,441 @@
+{
+  "meta": {
+    "tecnologia": "Kubernetes",
+    "slug": "kubernetes",
+    "schema": 2,
+    "versione": 1,
+    "aggiornato": "2026-10-14",
+    "totale_domande": 24
+  },
+  "argomenti": [
+    {
+      "nome": "Fondamentali",
+      "domande": [
+        {
+          "id": "kubernetes-001",
+          "priorita": "ALTA",
+          "domanda": "Cos'è Kubernetes e quale problema risolve rispetto a Docker?",
+          "risposta": "Docker impacchetta ed esegue container su una macchina, Kubernetes orchestra centinaia di container su molte macchine: decide dove collocarli, li riavvia quando muoiono, li scala e li aggiorna senza fermare il servizio. Il valore sta nel fatto che è dichiarativo: descrivi lo stato desiderato, per esempio tre repliche di questa applicazione, e il sistema lavora per raggiungerlo e mantenerlo. È questo che permette di sopravvivere alla morte di un nodo senza intervento manuale.",
+          "parole_chiave": [
+            "orchestrazione",
+            "dichiarativo",
+            "stato desiderato",
+            "repliche",
+            "self-healing"
+          ],
+          "follow_up": {
+            "domanda": "Che significa che Kubernetes è dichiarativo?",
+            "risposta": "Che non dai comandi su come fare le cose, ma descrivi il risultato atteso: i manifest sono lo stato desiderato, e i controller confrontano continuamente quello stato con quello reale e correggono la differenza. Se elimini un pod, nessuno te lo richiede: il controller se ne accorge e ne crea un altro. È la differenza concettuale più grande rispetto a lanciare container a mano."
+          }
+        },
+        {
+          "id": "kubernetes-002",
+          "priorita": "ALTA",
+          "domanda": "Cos'è un Pod e perché non avvii direttamente un container?",
+          "risposta": "Il Pod è l'unità minima di esecuzione: contiene uno o più container che condividono rete e volumi e vivono sullo stesso nodo. Non avvii container direttamente perché il pod è l'unità che Kubernetes sa programmare, scalare e sostituire, e perché più processi che devono condividere la rete locale, come un'applicazione e un proxy, vanno nello stesso pod. Nella grande maggioranza dei casi un pod contiene un solo container, e il secondo compare solo quando c'è un motivo tecnico preciso.",
+          "parole_chiave": [
+            "Pod",
+            "unità di esecuzione",
+            "rete condivisa",
+            "sidecar"
+          ],
+          "follow_up": {
+            "domanda": "Quando metteresti due container nello stesso pod?",
+            "risposta": "Quando devono condividere rete o volumi e hanno lo stesso ciclo di vita: un proxy che intercetta il traffico, un container che raccoglie i log, o un'inizializzazione che prepara dati. Se invece i due processi sono indipendenti e scalano in modo diverso non vanno nello stesso pod, perché li costringi a scalare e morire insieme."
+          }
+        },
+        {
+          "id": "kubernetes-003",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra Pod, ReplicaSet e Deployment?",
+          "risposta": "Il Pod è l'istanza in esecuzione, il ReplicaSet garantisce che ne esista un numero preciso, e il Deployment gestisce i ReplicaSet per fare aggiornamenti controllati. In pratica tu scrivi un Deployment e non tocchi né pod né ReplicaSet: sono il Deployment e i suoi controller a crearli e sostituirli. Questa stratificazione è quello che rende possibile il rolling update, perché il Deployment crea un ReplicaSet nuovo, lo porta a regime e riduce il vecchio.",
+          "parole_chiave": [
+            "Pod",
+            "ReplicaSet",
+            "Deployment",
+            "rolling update",
+            "controller"
+          ],
+          "follow_up": {
+            "domanda": "Perché non crei un Pod da solo in produzione?",
+            "risposta": "Perché un Pod creato a mano non viene ricreato se muore o se il nodo sparisce: nessuno garantisce che esista. Per una prova va bene, in produzione serve un controller che mantenga il numero di repliche. È un errore tipico all'inizio, e si riconosce perché l'applicazione sparisce al primo riavvio del nodo."
+          }
+        },
+        {
+          "id": "kubernetes-004",
+          "priorita": "ALTA",
+          "domanda": "Come funziona un Service e perché è necessario?",
+          "risposta": "I pod nascono e muoiono e cambiano indirizzo, quindi non puoi puntare a un IP. Il Service è un nome stabile con un indirizzo virtuale che inoltra il traffico ai pod che corrispondono a un selettore, bilanciando tra le repliche disponibili. È anche il modo in cui i servizi si scoprono tra loro: chiamare il nome del servizio basta, perché il DNS interno lo risolve. La selezione avviene sulle etichette, ed è il motivo per cui etichettare bene le risorse conta.",
+          "parole_chiave": [
+            "Service",
+            "selettore",
+            "etichette",
+            "bilanciamento",
+            "nome stabile"
+          ],
+          "follow_up": {
+            "domanda": "Cosa succede al traffico se un pod non è pronto?",
+            "risposta": "Se la probe di readiness lo segnala come non pronto, viene rimosso dagli endpoint del Service e non riceve traffico, anche se il container è in esecuzione. È il meccanismo che evita di mandare richieste a un'istanza che sta ancora scaldando la cache o applicando migrazioni. Senza readiness, durante un rilascio parte del traffico finirebbe su istanze non pronte."
+          }
+        },
+        {
+          "id": "kubernetes-005",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è un namespace e a cosa serve?",
+          "risposta": "È una partizione logica del cluster dove vivono risorse con nomi distinti: due namespace possono avere un servizio con lo stesso nome senza conflitto. Serve a separare ambienti o team, applicare quote di risorse e limitare i permessi, quindi è uno strumento organizzativo e di sicurezza insieme. Attenzione a un dettaglio: da un namespace puoi chiamare un altro servizio, ma non con il nome semplice, serve il nome qualificato con il namespace.",
+          "parole_chiave": [
+            "namespace",
+            "isolamento logico",
+            "quote",
+            "permessi",
+            "nome qualificato"
+          ],
+          "follow_up": {
+            "domanda": "Un namespace è un confine di sicurezza forte?",
+            "risposta": "Non da solo: di base il traffico di rete tra namespace è permesso, quindi se vuoi chiuderlo devi aggiungere network policy. Per un isolamento reale servono permessi ben fatti, quote di risorse e policy di rete: il namespace è la base su cui costruire, non la recinzione."
+          }
+        },
+        {
+          "id": "kubernetes-006",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è il control plane e cosa fa il kubelet?",
+          "risposta": "Il control plane è il cervello del cluster: il server delle API che riceve i manifest, il database che conserva lo stato, lo scheduler che decide su quale nodo mettere i pod e i controller che confrontano stato desiderato e reale. Il kubelet invece è l'agente che gira su ogni nodo e parla con il runtime dei container: avvia, ferma e controlla i container che gli sono stati assegnati. Se il control plane è giù i carichi continuano a girare, ma non puoi più cambiare nulla.",
+          "parole_chiave": [
+            "control plane",
+            "API server",
+            "scheduler",
+            "controller",
+            "kubelet"
+          ],
+          "follow_up": {
+            "domanda": "Cosa succede ai carichi se il control plane non è disponibile?",
+            "risposta": "I pod già in esecuzione continuano a funzionare, perché sul nodo è il kubelet a gestirli. Quello che smette di funzionare è la capacità di cambiare lo stato: non puoi fare deploy, scalare o leggere la situazione, e i controller non reagiscono più ai guasti. È il motivo per cui il control plane si gestisce in alta disponibilità, con più repliche."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Workload",
+      "domande": [
+        {
+          "id": "kubernetes-007",
+          "priorita": "ALTA",
+          "domanda": "Come funziona un rolling update e come torni indietro?",
+          "risposta": "Il Deployment aggiorna i pod gradualmente, rispettando i parametri di massimo non disponibile e massimo surplus: crea alcune repliche nuove, le rende pronte e solo allora ne spegne altrettante vecchie. Così durante il rilascio il servizio resta disponibile, e se qualcosa va male la versione nuova tocca solo una parte del traffico. Tornare indietro è un comando, perché il Deployment conserva la storia delle revisioni e riporta il ReplicaSet precedente.",
+          "parole_chiave": [
+            "rolling update",
+            "maxSurge",
+            "maxUnavailable",
+            "revisioni",
+            "rollback"
+          ],
+          "follow_up": {
+            "domanda": "Su cosa si basa un rollback affidabile?",
+            "risposta": "Sul fatto che l'immagine di ogni revisione è immutabile e identificata da un tag preciso: il rollback riporta la revisione precedente, che punta a un'immagine che esiste ancora. Se lavori con il tag latest o ricostruisci l'immagine con lo stesso nome, il rollback non ha nulla di certo a cui tornare. È il legame diretto tra versionamento delle immagini e capacità di annullare un rilascio."
+          }
+        },
+        {
+          "id": "kubernetes-008",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è uno StatefulSet e quando ti serve?",
+          "risposta": "È il controller per i carichi che hanno bisogno di identità stabile: ogni pod ha un nome prevedibile e un volume suo che gli resta anche se viene ricreato, e i pod vengono avviati e spenti in ordine. Serve per database, code e sistemi distribuiti dove i nodi hanno ruoli diversi, come un primario e le sue repliche. Per un'applicazione senza stato usi un Deployment, che è molto più semplice da gestire.",
+          "parole_chiave": [
+            "StatefulSet",
+            "identità stabile",
+            "volume per pod",
+            "ordine di avvio"
+          ],
+          "follow_up": {
+            "domanda": "Perché mettere un database su Kubernetes è una scelta impegnativa?",
+            "risposta": "Perché la parte difficile non è avviarlo, ma gestire backup, repliche, failover e ripristino, che sono procedure specifiche da testare. Oggi esistono operatori che ne automatizzano molte, ma resta un onere operativo. Per molte squadre la scelta migliore è un database gestito dal provider, lasciando a Kubernetes i carichi senza stato."
+          }
+        },
+        {
+          "id": "kubernetes-009",
+          "priorita": "MEDIA",
+          "domanda": "Che differenza c'è tra un Job e un CronJob?",
+          "risposta": "Il Job esegue uno o più pod fino al completamento e poi si considera finito: è per i compiti a esecuzione unica, come una migrazione o un'elaborazione batch. Il CronJob crea Job secondo una pianificazione a orario, quindi è per i compiti ricorrenti: pulizie notturne, report, sincronizzazioni. In entrambi i casi serve attenzione ai ritenti, perché un Job che fallisce viene riprovato e il compito deve essere ripetibile senza danni.",
+          "parole_chiave": [
+            "Job",
+            "CronJob",
+            "completamento",
+            "pianificazione",
+            "idempotenza"
+          ],
+          "follow_up": {
+            "domanda": "Perché l'idempotenza è importante per un Job?",
+            "risposta": "Perché se il pod fallisce a metà, il controller ne avvia un altro e il lavoro riparte da capo: se l'operazione non è ripetibile in sicurezza, rischi duplicati. È il caso tipico della migrazione di schema o dell'invio di notifiche, dove serve una chiave che renda l'operazione riconoscibile e ripetibile."
+          }
+        },
+        {
+          "id": "kubernetes-010",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è un DaemonSet?",
+          "risposta": "È il controller che garantisce che una copia di un pod giri su ogni nodo, o su un sottoinsieme scelto con un selettore: non lo usi per l'applicazione, ma per l'infrastruttura del nodo. Gli esempi classici sono l'agente di raccolta log, quello delle metriche e il componente di rete. Quando aggiungi un nodo, il DaemonSet ci mette automaticamente la sua copia, che è esattamente quello che serve per gli strumenti trasversali.",
+          "parole_chiave": [
+            "DaemonSet",
+            "un pod per nodo",
+            "agenti",
+            "log",
+            "metriche"
+          ],
+          "follow_up": {
+            "domanda": "Perché un agente di raccolta log è un caso tipico da DaemonSet?",
+            "risposta": "Perché deve leggere i log dei container che girano su quel nodo specifico: la sua utilità è locale, quindi ha senso una copia per nodo e nessuna replica in più. Se lo mettessi in un Deployment con poche repliche, i nodi senza agente non avrebbero i log raccolti."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Configurazione e Storage",
+      "domande": [
+        {
+          "id": "kubernetes-011",
+          "priorita": "ALTA",
+          "domanda": "ConfigMap e Secret: come passi configurazione e segreti?",
+          "risposta": "La ConfigMap contiene configurazione non riservata, il Secret contiene dati che non devono stare in chiaro nei manifest, come password e token, e li passi come variabili d'ambiente o come file montati. Il montaggio come file è preferibile per i segreti, perché evita che finiscano nei report di errore e negli elenchi di processo. Va ricordato un limite: di base il Secret è codificato e non cifrato, quindi la cifratura a riposo va abilitata e l'accesso va limitato con i permessi.",
+          "parole_chiave": [
+            "ConfigMap",
+            "Secret",
+            "variabili o file",
+            "cifratura a riposo",
+            "permessi"
+          ],
+          "follow_up": {
+            "domanda": "Perché montare un segreto come file è preferibile a una variabile d'ambiente?",
+            "risposta": "Perché una variabile d'ambiente è visibile a chi ha accesso al processo e può comparire nei log o nei report di errore, mentre un file montato è leggibile solo da chi ha accesso al filesystem del container. In più, aggiornando il file il container vede il nuovo valore senza riavvio, se l'applicazione lo rilegge, cosa che con la variabile non succede."
+          }
+        },
+        {
+          "id": "kubernetes-012",
+          "priorita": "MEDIA",
+          "domanda": "Come funziona la persistenza con PersistentVolume e PersistentVolumeClaim?",
+          "risposta": "Il PersistentVolume è lo spazio di archiviazione disponibile nel cluster, il PersistentVolumeClaim è la richiesta di spazio con una certa capacità e modalità di accesso. Il pod monta il claim e non il volume: così la richiesta è indipendente da come lo storage è realizzato, e con le classi di storage il volume viene creato automaticamente quando serve. La modalità di accesso è il punto critico, perché la maggior parte degli storage non consente scrittura da nodi diversi insieme.",
+          "parole_chiave": [
+            "PersistentVolume",
+            "PersistentVolumeClaim",
+            "storage class",
+            "modalità di accesso"
+          ],
+          "follow_up": {
+            "domanda": "Perché la modalità di accesso è il dettaglio che frega tutti?",
+            "risposta": "Perché leggere e scrivere da più nodi contemporaneamente richiede uno storage di rete che lo supporti, e la classe di default spesso non lo fa. Se un carico con più repliche monta lo stesso volume in scrittura, ottieni errori o dati corrotti. La soluzione è usare uno storage adatto, o progettare il carico perché ogni replica abbia il suo volume."
+          }
+        },
+        {
+          "id": "kubernetes-013",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è un init container e quando lo usi?",
+          "risposta": "È un container eseguito prima dei container principali del pod, e deve terminare con successo perché gli altri partano: se fallisce, il pod non parte e resta in attesa. Lo usi per preparazioni che devono concludersi prima dell'avvio: attendere che una dipendenza sia raggiungibile, scaricare un file di configurazione, correggere i permessi su un volume. È più pulito di mettere quella logica all'avvio dell'applicazione, perché la separa e la rende visibile nello stato del pod.",
+          "parole_chiave": [
+            "init container",
+            "prerequisiti",
+            "attesa dipendenze",
+            "ordine"
+          ],
+          "follow_up": {
+            "domanda": "Che differenza c'è tra un init container e un sidecar?",
+            "risposta": "L'init container gira prima e poi finisce, quindi il suo effetto è una preparazione; il sidecar gira insieme agli altri e resta attivo per tutta la vita del pod, tipicamente per fare qualcosa di continuo come proxare o raccogliere metriche. Confonderli porta a un init container che non termina mai, e il pod resta bloccato in avvio."
+          }
+        },
+        {
+          "id": "kubernetes-014",
+          "priorita": "MEDIA",
+          "domanda": "Come passi la configurazione a un'applicazione perché cambi senza ricostruire l'immagine?",
+          "risposta": "Con ConfigMap e Secret montati come variabili d'ambiente o file, e con i valori diversi per ambiente gestiti dal sistema di deploy e non dentro l'immagine. L'immagine deve essere la stessa in tutti gli ambienti: è quello che garantisce che ciò che hai testato sia ciò che rilasci. Se cambiare un indirizzo richiede ricostruire l'immagine, hai costruito un artefatto diverso per ogni ambiente e perso la garanzia.",
+          "parole_chiave": [
+            "ConfigMap",
+            "immagine unica",
+            "configurazione dall ambiente",
+            "promozione"
+          ],
+          "follow_up": {
+            "domanda": "Perché l'immagine deve essere identica tra ambienti?",
+            "risposta": "Perché altrimenti il test su un ambiente non dice nulla su quello successivo: stai eseguendo codice diverso con configurazioni diverse. Promuovendo la stessa immagine tra ambienti cambia solo la configurazione, che è la variabile che puoi controllare e confrontare. È il principio che rende sensata una pipeline unica fino alla produzione."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Networking",
+      "domande": [
+        {
+          "id": "kubernetes-015",
+          "priorita": "ALTA",
+          "domanda": "Cos'è un Ingress e quando ti serve?",
+          "risposta": "È la regola che espone i servizi HTTP verso l'esterno in base all'host e al percorso: un solo punto di ingresso che instrada verso servizi diversi, invece di pubblicare un indirizzo per ciascuno. Serve quando hai più applicazioni dietro lo stesso dominio e vuoi gestire da lì TLS, reindirizzamenti e percorsi. Attenzione a un punto che si confonde spesso: l'Ingress è solo la regola, e serve un controller di ingress che la realizzi, ed è quel componente a ricevere davvero il traffico.",
+          "parole_chiave": [
+            "Ingress",
+            "ingress controller",
+            "routing per host e percorso",
+            "TLS"
+          ],
+          "follow_up": {
+            "domanda": "Che differenza c'è tra Ingress e un Service di tipo LoadBalancer?",
+            "risposta": "Il LoadBalancer assegna un indirizzo esterno al singolo servizio, quindi con dieci servizi ti ritrovi dieci indirizzi e dieci costi. L'Ingress usa un solo ingresso e smista per host e percorso, che è quello che vuoi quando esponi una piattaforma. In più concentra in un punto TLS e reindirizzamenti, invece di ripeterli su ogni servizio."
+          }
+        },
+        {
+          "id": "kubernetes-016",
+          "priorita": "MEDIA",
+          "domanda": "Come funziona la scoperta dei servizi e il DNS interno?",
+          "risposta": "Ogni Service riceve un nome nel DNS interno del cluster, quindi un pod raggiunge un altro servizio semplicemente chiamandolo per nome. Il nome qualificato include servizio, namespace e suffisso del cluster: è utile quando devi chiamare un servizio che sta in un altro namespace. È anche il motivo per cui la configurazione delle applicazioni contiene nomi e non indirizzi: gli indirizzi dei pod cambiano, il nome del servizio resta.",
+          "parole_chiave": [
+            "DNS interno",
+            "nome del servizio",
+            "nome qualificato",
+            "disaccoppiamento"
+          ],
+          "follow_up": {
+            "domanda": "Perché la configurazione non contiene mai indirizzi IP di pod?",
+            "risposta": "Perché i pod vengono ricreati e cambiano indirizzo, quindi un IP cablato in configurazione vale per pochi minuti e poi punta a un'altra cosa o a niente. I nomi dei servizi invece sono stabili. È lo stesso principio per cui il codice non dovrebbe sapere dove gira un servizio: lo chiede al DNS."
+          }
+        },
+        {
+          "id": "kubernetes-017",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è una NetworkPolicy e cosa risolve?",
+          "risposta": "Definisce quali pod possono parlare con quali, per porta e direzione: serve a trasformare l'isolamento logico dei namespace in isolamento di rete reale. Di base in Kubernetes tutto il traffico tra pod è permesso, quindi la policy è ciò che chiude e apre in modo esplicito. Si costruisce con selettori di pod e regole di ingresso e uscita, e va ricordato che serve un plugin di rete che la supporti: definirla su un cluster che non la applica dà la falsa sensazione di essere protetti.",
+          "parole_chiave": [
+            "NetworkPolicy",
+            "isolamento di rete",
+            "ingresso e uscita",
+            "plugin di rete"
+          ],
+          "follow_up": {
+            "domanda": "Perché una NetworkPolicy può dare falsa sicurezza?",
+            "risposta": "Perché è un oggetto dichiarativo che il plugin di rete deve saper tradurre in regole reali: su alcune installazioni viene accettata dal cluster ma non applicata. Se non verifichi con una prova di connettività, credi di aver chiuso un percorso che resta aperto. È uno di quei casi in cui la differenza tra configurazione e comportamento va testata."
+          }
+        },
+        {
+          "id": "kubernetes-018",
+          "priorita": "MEDIA",
+          "domanda": "Come viene distribuito il traffico tra le repliche di un servizio?",
+          "risposta": "Il Service mantiene l'elenco degli indirizzi dei pod pronti e distribuisce le connessioni tra loro: le repliche che non superano la probe di readiness escono dall'elenco, quindi non ricevono traffico. La distribuzione avviene per connessione e non per richiesta, e questo conta con i protocolli che riusano la stessa connessione, come HTTP con keep-alive. Se il carico è squilibrato pur avendo repliche sane, spesso la causa è proprio questa.",
+          "parole_chiave": [
+            "endpoint",
+            "readiness",
+            "bilanciamento per connessione",
+            "keep-alive"
+          ],
+          "follow_up": {
+            "domanda": "Perché il bilanciamento per connessione può squilibrare il carico?",
+            "risposta": "Perché un client che apre una connessione e ci manda mille richieste resta sempre sulla stessa replica, mentre un altro client con un'altra connessione ne prende un'altra. Il risultato è che alcune repliche lavorano molto e altre poco, pur essendo il numero di connessioni bilanciato. Si mitiga con timeout di connessione più corti, o con un bilanciatore consapevole delle richieste davanti al cluster."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Operations",
+      "domande": [
+        {
+          "id": "kubernetes-019",
+          "priorita": "ALTA",
+          "domanda": "Come configuri le probe di liveness e readiness e perché servono entrambe?",
+          "risposta": "La readiness dice se il pod può ricevere traffico, la liveness se il processo è ancora sano o va riavviato: sono due domande diverse e confonderle crea problemi. Una readiness lenta durante l'avvio evita di mandare richieste a un'istanza che sta scaldando, mentre una liveness troppo aggressiva riavvia un'applicazione che era solo lenta. Va aggiunto che una liveness sbagliata è pericolosa: se riavvia in continuo un servizio sotto carico, peggiora il problema invece di risolverlo.",
+          "parole_chiave": [
+            "readiness",
+            "liveness",
+            "avvio",
+            "riavvio",
+            "periodi di grazia"
+          ],
+          "follow_up": {
+            "domanda": "Perché una liveness troppo aggressiva è pericolosa?",
+            "risposta": "Perché il riavvio non risolve un sovraccarico, lo peggiora: il pod perde connessioni e cache, e nel frattempo gli altri devono reggere tutto il traffico, quindi anche loro rallentano e vengono riavviati a catena. Il risultato è un guasto generalizzato causato dal meccanismo pensato per evitarlo."
+          }
+        },
+        {
+          "id": "kubernetes-020",
+          "priorita": "ALTA",
+          "domanda": "Cos'è l'autoscalaggio orizzontale e su cosa si basa?",
+          "risposta": "Aggiunge o toglie repliche in base a una metrica, tipicamente l'utilizzo di CPU rispetto alla richiesta dichiarata: se il consumo medio supera la soglia, il numero di repliche cresce entro un minimo e un massimo. Perché funzioni, i carichi devono dichiarare le richieste di risorsa, altrimenti il calcolo percentuale non ha un riferimento e lo scaling non parte. Nei casi reali si aggiungono metriche proprie, come la lunghezza di una coda, perché la CPU da sola non racconta tutto.",
+          "parole_chiave": [
+            "autoscalaggio",
+            "CPU",
+            "richieste di risorsa",
+            "minimo e massimo",
+            "metriche custom"
+          ],
+          "follow_up": {
+            "domanda": "Perché senza richieste di risorsa l'autoscalaggio non parte?",
+            "risposta": "Perché la metrica è una percentuale rispetto a quanto è stato richiesto: se la richiesta non è dichiarata, il denominatore non esiste e il controller non sa se il pod sta usando troppo. È un errore silenzioso, perché il manifesto è valido e il cluster funziona, ma il numero di repliche non cambia mai."
+          }
+        },
+        {
+          "id": "kubernetes-021",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci i manifest: file diretti, sovrapposizioni o Helm?",
+          "risposta": "Con i file diretti hai il massimo controllo e la massima ripetizione, perché le differenze tra ambienti le copi. Le sovrapposizioni lavorano su un manifest base e applicano le differenze per ambiente, quindi resta tutto YAML nativo e leggibile. Helm aggiunge templating e pacchetti distribuibili, con la gestione delle release e dei valori: è la scelta migliore quando installi software di terze parti o distribuisci la stessa applicazione con parametri diversi. Per un'applicazione tua, la sovrapposizione è più semplice da capire del templating.",
+          "parole_chiave": [
+            "Helm",
+            "sovrapposizioni",
+            "base e differenze",
+            "templating",
+            "release"
+          ],
+          "follow_up": {
+            "domanda": "Quando Helm è la scelta giusta?",
+            "risposta": "Quando installi software di terze parti che esiste già come pacchetto, o quando devi distribuire la stessa applicazione a più clienti con parametri diversi. Il templating diventa un costo quando lo usi per differenze che esprimeresti con una sovrapposizione, perché il manifest finale non è più leggibile senza renderizzarlo. La regola pratica è usarlo per parametri veri, non per gestire ambienti."
+          }
+        },
+        {
+          "id": "kubernetes-022",
+          "priorita": "MEDIA",
+          "domanda": "Come fai il debug di un pod che non parte?",
+          "risposta": "Parti dallo stato con il comando di descrizione, che mostra gli eventi: immagine non trovata, limiti di memoria troppo bassi, volume che non si aggancia, probe che falliscono. Poi guardi i log del container, e se il container non è mai partito guardi gli eventi e non i log, perché non ce ne sono. Se il container parte e muore subito, sovrascrivi il comando con una shell per entrare e controllare file e variabili. La maggior parte dei casi rientra in poche cause: immagine sbagliata, configurazione mancante, permessi o risorse insufficienti.",
+          "parole_chiave": [
+            "describe",
+            "eventi",
+            "log",
+            "CrashLoopBackOff",
+            "immagine"
+          ],
+          "follow_up": {
+            "domanda": "Cosa significa CrashLoopBackOff e come lo affronti?",
+            "risposta": "Che il container parte e termina in errore ripetutamente, e Kubernetes aumenta l'attesa tra un tentativo e l'altro. Le cause tipiche sono una configurazione o un segreto mancante, un comando sbagliato o una dipendenza irraggiungibile all'avvio. La fonte principale sono i log dell'istanza precedente: si guardano quelli, non lo stato attuale, perché il processo non è vivo."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Sicurezza",
+      "domande": [
+        {
+          "id": "kubernetes-023",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è RBAC e come funziona?",
+          "risposta": "È il sistema di autorizzazione di Kubernetes: definisci ruoli con permessi su risorse e li assegni a utenti o a identità dei carichi tramite un binding. Il principio è il minimo privilegio: un'applicazione che legge una ConfigMap non deve poter cancellare deployment. Si costruiscono ruoli per namespace, o ruoli di cluster per le risorse globali, e si legano all'account di servizio che il pod usa. È la differenza tra un cluster dove un bug compromette una funzionalità e uno dove compromette tutto.",
+          "parole_chiave": [
+            "RBAC",
+            "ruoli",
+            "binding",
+            "account di servizio",
+            "minimo privilegio"
+          ],
+          "follow_up": {
+            "domanda": "Perché dare permessi ampi all'account di servizio è rischioso?",
+            "risposta": "Perché l'account è l'identità con cui gira l'applicazione: se quella applicazione viene compromessa, l'attaccante eredita i suoi permessi. Un account con accesso ampio trasforma una vulnerabilità in un controllo del cluster. Il minimo privilegio non è formalismo, è la differenza tra un incidente contenuto e uno totale."
+          }
+        },
+        {
+          "id": "kubernetes-024",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è il securityContext di un pod?",
+          "risposta": "È la sezione dove dichiari i vincoli di sicurezza con cui girano i container: utente non root, filesystem di sola lettura, rimozione delle capability di sistema, divieto di escalation dei privilegi. Serve perché di default un container ha più permessi di quelli che gli servono, e quei permessi sono ciò che un attaccante usa dopo aver sfruttato l'applicazione. Dichiararli è anche un requisito esplicito di molti standard di conformità.",
+          "parole_chiave": [
+            "securityContext",
+            "non root",
+            "sola lettura",
+            "capability",
+            "escalation"
+          ],
+          "follow_up": {
+            "domanda": "Perché far girare un container come root è un problema?",
+            "risposta": "Perché dentro il container root è root, e con una configurazione debole del runtime o un difetto di isolamento si può arrivare ad avere effetti sull'host. Anche restando dentro il container, root può installare pacchetti, cambiare file di sistema e alterare il comportamento dell'applicazione. Un utente non privilegiato riduce drasticamente quello che un attacco può fare."
+          }
+        }
+      ]
+    }
+  ]
+}

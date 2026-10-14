@@ -1,0 +1,114 @@
+{
+  "meta": {
+    "tecnologia": "Cybersecurity",
+    "slug": "cybersecurity",
+    "schema": 2,
+    "versione": 1,
+    "aggiornato": "2026-10-14",
+    "totale_domande": 6
+  },
+  "argomenti": [
+    {
+      "nome": "Fondamentali",
+      "domande": [
+        {
+          "id": "cybersecurity-001",
+          "priorita": "ALTA",
+          "domanda": "Cos'è la triade CIA nella sicurezza informatica?",
+          "risposta": "Sono i tre pilastri della sicurezza: Confidenzialità, cioè che i dati siano accessibili solo a chi è autorizzato, Integrità, cioè che i dati non vengano modificati in modo non autorizzato, e Disponibilità, cioè che i sistemi e i dati siano raggiungibili quando servono. Ogni misura di sicurezza si può leggere attraverso questa lente: la crittografia protegge la confidenzialità, i controlli di versione e le firme l'integrità, i backup e la ridondanza la disponibilità.",
+          "parole_chiave": [
+            "confidenzialità",
+            "integrità",
+            "disponibilità",
+            "CIA"
+          ],
+          "follow_up": {
+            "domanda": "Esempio concreto di violazione di ciascun pilastro?",
+            "risposta": "Un data breach espone la confidenzialità, una modifica non autorizzata dei dati compromette l'integrità, un attacco DDoS che manda giù il sito colpisce la disponibilità. Un buon sistema di sicurezza li presidia tutti e tre, non solo uno."
+          }
+        },
+        {
+          "id": "cybersecurity-002",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra autenticazione e autorizzazione?",
+          "risposta": "L'autenticazione risponde alla domanda 'chi sei?': verifica l'identità dell'utente, di solito con credenziali, token o fattori multipli. L'autorizzazione risponde alla domanda 'cosa puoi fare?': stabilisce a quali risorse e operazioni l'utente autenticato ha accesso. Sono due passaggi distinti: prima accerti l'identità, poi decidi i permessi, e confonderli è una delle cause più comuni di vulnerabilità.",
+          "parole_chiave": [
+            "autenticazione",
+            "autorizzazione",
+            "identità",
+            "permessi",
+            "status corretti"
+          ],
+          "follow_up": {
+            "domanda": "Cosa si intende per autenticazione a più fattori?",
+            "risposta": "Significa chiedere più prove di identità di natura diversa: qualcosa che sai, come la password, qualcosa che hai, come un codice sul telefono, e qualcosa che sei, come l'impronta. Così anche se una prova viene compromessa, l'accesso resta protetto."
+          }
+        },
+        {
+          "id": "cybersecurity-003",
+          "priorita": "ALTA",
+          "domanda": "Quali sono le vulnerabilità web più comuni secondo l'OWASP Top 10?",
+          "risposta": "Le più diffuse sono il broken access control, cioè permessi mal gestiti, i fallimenti crittografici, l'injection come la SQL injection, il design insicuro, le configurazioni errate, i componenti vulnerabili e non aggiornati, e gli errori di autenticazione. L'OWASP Top 10 è il riferimento per capire dove concentrare le difese, e un programmatore deve conoscerlo per non introdurre questi problemi in fase di sviluppo.",
+          "parole_chiave": [
+            "OWASP",
+            "SQL injection",
+            "access control",
+            "vulnerabilità"
+          ],
+          "follow_up": {
+            "domanda": "Come previeni una SQL injection?",
+            "risposta": "Usando sempre le query parametrizzate o i prepared statement, così l'input dell'utente viene trattato come dato e non come parte del comando SQL. Mai concatenare stringhe dell'input dentro una query: è l'errore che rende possibili le injection."
+          }
+        },
+        {
+          "id": "cybersecurity-004",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra crittografia simmetrica e asimmetrica?",
+          "risposta": "Nella crittografia simmetrica la stessa chiave cifra e decifra: è veloce, adatta a grandi quantità di dati, ma il problema è condividere la chiave in modo sicuro. In quella asimmetrica ci sono due chiavi, una pubblica e una privata: ciò che cifri con l'una si decifra solo con l'altra. Risolve lo scambio sicuro delle chiavi ma è più lenta, quindi in pratica si usano insieme: l'asimmetrica per scambiare la chiave, la simmetrica per cifrare i dati.",
+          "parole_chiave": [
+            "simmetrica",
+            "asimmetrica",
+            "chiave",
+            "cifratura"
+          ],
+          "follow_up": {
+            "domanda": "Dove vedi la crittografia asimmetrica ogni giorno?",
+            "risposta": "In HTTPS con i certificati TLS: il server presenta un certificato con chiave pubblica, e la connessione cifrata viene negoziata usando la crittografia asimmetrica prima di passare a una chiave simmetrica di sessione. È il meccanismo che protegge quasi tutta la navigazione web."
+          }
+        },
+        {
+          "id": "cybersecurity-005",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è una funzione di hash e a cosa serve in sicurezza?",
+          "risposta": "Una funzione hash trasforma un input di qualsiasi lunghezza in una stringa di lunghezza fissa, chiamata digest, in modo deterministico ma non invertibile: da un piccolo cambio nell'input esce un digest completamente diverso. In sicurezza si usa per verificare l'integrità dei dati e per conservare le password: non salvi mai la password in chiaro, ma solo il suo hash, così un eventuale furto non espone le credenziali originali.",
+          "parole_chiave": [
+            "hash",
+            "digest",
+            "integrità",
+            "password"
+          ],
+          "follow_up": {
+            "domanda": "Perché per le password non basta un hash semplice?",
+            "risposta": "Perché gli hash semplici sono vulnerabili agli attacchi con dizionario o tabelle precalcolate. Si usano funzioni apposite come bcrypt o Argon2, lente di proposito e con un salt, un valore casuale aggiunto a ogni password, così due password uguali producono hash diversi e gli attacchi diventano impraticabili."
+          }
+        },
+        {
+          "id": "cybersecurity-006",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono i test di sicurezza e in cosa differiscono dai test funzionali?",
+          "risposta": "I test funzionali verificano che il software faccia quello che deve, i test di sicurezza verificano che non faccia quello che non deve: cercano vulnerabilità, falle di configurazione e modi in cui un attaccante potrebbe abusare del sistema. Comprendono analisi statica del codice, scansioni delle dipendenze e test dinamici come il penetration testing. Sono complementari: un software può essere funzionalmente perfetto e insicuro allo stesso tempo.",
+          "parole_chiave": [
+            "test sicurezza",
+            "penetration test",
+            "vulnerabilità",
+            "analisi statica"
+          ],
+          "follow_up": {
+            "domanda": "Cosa fa un penetration test?",
+            "risposta": "Simula l'attacco di un malintenzionato per trovare vulnerabilità sfruttabili, ma in modo autorizzato e controllato. A differenza di una scansione automatica, combina strumenti e ragionamento umano per verificare se una debolezza è davvero sfruttabile e con quale impatto."
+          }
+        }
+      ]
+    }
+  ]
+}

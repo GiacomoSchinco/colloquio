@@ -1,0 +1,296 @@
+{
+  "meta": {
+    "tecnologia": "JavaScript",
+    "slug": "javascript",
+    "schema": 2,
+    "versione": 1,
+    "aggiornato": "2026-10-14",
+    "totale_domande": 17
+  },
+  "argomenti": [
+    {
+      "nome": "Fondamentali",
+      "domande": [
+        {
+          "id": "javascript-001",
+          "priorita": "ALTA",
+          "domanda": "Come funziona l'event loop in JavaScript?",
+          "risposta": "JavaScript è single-thread: esegue una cosa alla volta. L'event loop è il meccanismo che coordina call stack, task queue e microtask queue: le operazioni asincrone vengono accodate, e quando lo stack è vuoto l'event loop prende il prossimo task. Le microtask, come le Promise, hanno priorità sui macrotask come setTimeout, quindi vengono eseguite prima.",
+          "parole_chiave": [
+            "event loop",
+            "single-thread",
+            "microtask",
+            "macrotask"
+          ],
+          "follow_up": {
+            "domanda": "Perché le Promise girano prima di setTimeout?",
+            "risposta": "Perché i callback delle Promise vanno nella microtask queue, che viene svuotata completamente prima di passare alla task queue. Quindi se hai una Promise risolta e un setTimeout a zero, la Promise viene eseguita prima, anche se il setTimeout era stato registrato per primo."
+          }
+        },
+        {
+          "id": "javascript-002",
+          "priorita": "ALTA",
+          "domanda": "Cos'è l'hoisting in JavaScript?",
+          "risposta": "È il comportamento per cui le dichiarazioni vengono 'sollevate' in cima al loro scope prima dell'esecuzione. Le funzioni dichiarate con function sono utilizzabili anche prima della riga in cui compaiono, mentre le variabili var sono sollevate ma inizializzate a undefined. let e const sono sollevate ma restano in una zona morta temporale finché non vengono dichiarate.",
+          "parole_chiave": [
+            "hoisting",
+            "var",
+            "function",
+            "temporal dead zone"
+          ],
+          "follow_up": {
+            "domanda": "Cosa succede con let e const?",
+            "risposta": "Sono sollevate ma non inizializzate: se provi a usarle prima della dichiarazione ottieni un ReferenceError, perché si trovano nella temporal dead zone. È uno dei motivi per cui si preferiscono a var, che invece restituisce silenziosamente undefined e nasconde i bug."
+          }
+        },
+        {
+          "id": "javascript-003",
+          "priorita": "ALTA",
+          "domanda": "Differenza tra let, const e var?",
+          "risposta": "La differenza è tutta nello scope e nella riassegnazione. var ha scope di funzione, quindi una variabile dichiarata con var dentro un blocco è visibile anche fuori, e questo crea un sacco di bug. let ha scope di blocco e può essere riassegnata. const ha scope di blocco e non può essere riassegnata: se però punta a un oggetto o a un array, puoi comunque modificarne il contenuto, perché è il riferimento a non poter cambiare.",
+          "parole_chiave": [
+            "scope",
+            "blocco",
+            "riassegnazione",
+            "const"
+          ],
+          "follow_up": {
+            "domanda": "Perché const è preferito?",
+            "risposta": "Perché rende esplicita l'intenzione: se vedo const so che quel riferimento non cambierà mai, e leggo il codice con più tranquillità. Riduce i bug legati a riassegnazioni accidentali e rende il codice più prevedibile. In più obbliga a ragionare su cosa davvero deve cambiare, spingendo verso uno stile più immutabile."
+          }
+        },
+        {
+          "id": "javascript-004",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono le Promise e come le usi?",
+          "risposta": "Una Promise rappresenta un valore che non è ancora disponibile ma lo sarà in futuro: è l'oggetto che JavaScript usa per gestire le operazioni asincrone. Può trovarsi in tre stati: pending, mentre aspetta, resolved quando è andata a buon fine, o rejected quando qualcosa è andato storto. La consumi con then e catch, oppure con async/await, che rende il codice asincrono molto più leggibile perché sembra sincrono.",
+          "parole_chiave": [
+            "Promise",
+            "async",
+            "await",
+            "then",
+            "catch"
+          ],
+          "follow_up": {
+            "domanda": "Come gestisci gli errori con async/await?",
+            "risposta": "Con un try/catch attorno all'await: se la Promise viene rifiutata, l'errore finisce nel catch e lo gestisco lì, mostrando un messaggio o facendo un fallback. È l'equivalente diretto del catch sulle Promise, ma con una sintassi più lineare e senza callback annidate."
+          }
+        },
+        {
+          "id": "javascript-005",
+          "priorita": "ALTA",
+          "domanda": "Differenza tra == e ===?",
+          "risposta": "== fa un confronto debole: prima prova a convertire i due valori allo stesso tipo e poi li confronta, ed è per questo che '1' == 1 risulta true. === invece confronta valore e tipo insieme, senza conversioni. In pratica si usa sempre ===, perché è più prevedibile ed evita sorprese dovute alla coercizione implicita di JavaScript, che spesso porta a bug difficili da trovare.",
+          "parole_chiave": [
+            "uguaglianza",
+            "tipo",
+            "coercizione",
+            "strict"
+          ],
+          "follow_up": {
+            "domanda": "Eccezione in cui usi ==?",
+            "risposta": "L'unica eccezione in cui uso == è per confrontare con null, perché x == null copre sia null che undefined in un colpo solo, ed è comodo nei controlli. Ma anche lì, se devo essere davvero esplicito, preferisco confrontare separatamente null e undefined."
+          }
+        },
+        {
+          "id": "javascript-006",
+          "priorita": "ALTA",
+          "domanda": "Quali altri metodi di array usi oltre a map, filter e reduce?",
+          "risposta": "Ne uso tanti: find per il primo elemento che soddisfa una condizione, some ed every per verificare se almeno uno o tutti rispettano un predicato, flatMap per trasformare e appiattire in un colpo solo, includes per controllare la presenza di un valore e sort per ordinare. Conoscerli bene ti permette di scrivere codice più espressivo e meno imperativo.",
+          "parole_chiave": [
+            "find",
+            "some",
+            "every",
+            "flatMap",
+            "includes"
+          ],
+          "follow_up": {
+            "domanda": "Differenza tra find e filter?",
+            "risposta": "find ritorna il primo elemento che soddisfa la condizione, o undefined se non lo trova, mentre filter ritorna un array con tutti gli elementi che la soddisfano. Se mi serve solo un elemento uso find, che è anche più efficiente perché si ferma al primo match."
+          }
+        },
+        {
+          "id": "javascript-007",
+          "priorita": "MEDIA",
+          "domanda": "Come funziona this in JavaScript?",
+          "risposta": "Il valore di this dipende da come viene chiamata una funzione, non da dove è definita. In un metodo di un oggetto è l'oggetto, in una funzione normale dipende dal contesto di chiamata, e nelle arrow function this è lessicale: eredita il valore dal contesto in cui sono state create. Per questo le arrow function sono comode nei callback dentro React.",
+          "parole_chiave": [
+            "this",
+            "contesto",
+            "arrow function",
+            "lessicale"
+          ],
+          "follow_up": {
+            "domanda": "Perché nelle classi si usava bind?",
+            "risposta": "Perché quando passavi un metodo come callback, il suo this perdeva il riferimento all'istanza. Con bind o con le arrow function lo fissavi esplicitamente. Nei componenti funzionali moderni il problema non esiste più, ed è uno dei motivi per cui le classi sono state abbandonate."
+          }
+        },
+        {
+          "id": "javascript-008",
+          "priorita": "MEDIA",
+          "domanda": "Cosa fanno optional chaining e nullish coalescing?",
+          "risposta": "L'optional chaining ?. ti permette di accedere a proprietà annidate in modo sicuro, restituendo undefined se un passaggio intermedio è null o undefined, senza lanciare errori. Il nullish coalescing ?? fornisce un valore di default solo quando il valore è null o undefined, non per altri falsy come 0 o stringa vuota. Insieme rendono il codice molto più robusto.",
+          "parole_chiave": [
+            "optional chaining",
+            "nullish",
+            "undefined",
+            "default"
+          ],
+          "follow_up": {
+            "domanda": "Differenza tra ?? e ||?",
+            "risposta": "|| scatta per qualsiasi valore falsy, quindi anche per 0, false o stringa vuota, e questo può essere un bug. ?? scatta solo per null e undefined. Per questo quando un valore 0 è legittimo, uso ?? per non sovrascriverlo con un default sbagliato."
+          }
+        },
+        {
+          "id": "javascript-009",
+          "priorita": "MEDIA",
+          "domanda": "Cosa fa Array.map e quando lo usi?",
+          "risposta": "map è un metodo degli array che crea un nuovo array trasformando ogni elemento tramite una funzione, senza modificare l'originale. In React lo uso in continuazione per renderizzare liste: per ogni elemento dell'array restituisco un componente. In quei casi aggiungo sempre una key univoca a ogni elemento della lista, perché React la usa per tenere traccia di cosa cambia tra un render e l'altro.",
+          "parole_chiave": [
+            "map",
+            "nuovo array",
+            "key",
+            "render"
+          ],
+          "follow_up": {
+            "domanda": "Perché serve la key?",
+            "risposta": "La key serve a React per capire quale elemento è cambiato, aggiunto o rimosso tra un render e l'altro. Se manca o non è stabile, React deve fare più lavoro per aggiornare il DOM e possono comparire bug, tipo stato che salta da un elemento all'altro. Per questo la key deve essere stabile e univoca, mai l'indice dell'array."
+          }
+        },
+        {
+          "id": "javascript-010",
+          "priorita": "MEDIA",
+          "domanda": "Differenza tra map, filter e reduce?",
+          "risposta": "Sono i tre metodi fondamentali per lavorare con gli array, e nessuno modifica l'array originale: restituiscono sempre un nuovo valore. map trasforma ogni elemento, filter seleziona solo quelli che soddisfano una condizione, reduce accumula tutti gli elementi in un unico valore, che può essere una somma, un oggetto o qualsiasi cosa. Sapere quale usare al momento giusto rende il codice molto più espressivo.",
+          "parole_chiave": [
+            "map",
+            "filter",
+            "reduce",
+            "immutabilità"
+          ],
+          "follow_up": {
+            "domanda": "Esempio di reduce?",
+            "risposta": "L'esempio classico è sommare i valori di un array: arr.reduce((acc, n) => acc + n, 0), dove acc è l'accumulatore e 0 è il valore di partenza. Ma reduce serve anche per contare occorrenze, appiattire strutture o costruire oggetti a partire da una lista. È il più potente dei tre, anche se a volte è meno immediato da leggere."
+          }
+        },
+        {
+          "id": "javascript-011",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono le closure?",
+          "risposta": "Una closure è una funzione che ricorda le variabili dello scope in cui è stata creata, anche dopo che quello scope ha terminato la sua esecuzione. È un concetto fondamentale di JavaScript, ed è ciò che rende possibili molte cose: dati privati, funzioni che mantengono uno stato interno e callback che catturano variabili del contesto. In pratica la funzione si porta dietro il suo ambiente.",
+          "parole_chiave": [
+            "closure",
+            "scope",
+            "ricorda",
+            "callback"
+          ],
+          "follow_up": {
+            "domanda": "Esempio pratico in React?",
+            "risposta": "In React le closure sono ovunque: gli Hooks si basano su di loro. Per esempio un useEffect cattura le variabili del render in cui è stato definito, e per questo devi stare attento a dichiarare le dipendenze, altrimenti l'effetto vede valori vecchi. Anche le callback passate ai figli sono closure che ricordano lo stato del render."
+          }
+        },
+        {
+          "id": "javascript-012",
+          "priorita": "MEDIA",
+          "domanda": "Cosa fa l'operatore spread?",
+          "risposta": "L'operatore spread (...) espande un array o un oggetto in elementi o coppie chiave-valore. Lo uso soprattutto per copiare in modo immutabile: per aggiornare lo stato senza mutarlo scrivo cose come {...state, name: 'nuovo'}, che crea un nuovo oggetto con le stesse proprietà e solo name cambiato. È uno strumento fondamentale per lavorare con React, dove non si devono mai mutare direttamente stato e props.",
+          "parole_chiave": [
+            "spread",
+            "immutabilità",
+            "copia",
+            "state"
+          ],
+          "follow_up": {
+            "domanda": "Differenza con Object.assign?",
+            "risposta": "Spread è più leggibile e moderno, e ormai è lo standard: Object.assign fa più o meno la stessa cosa ma è più verboso e meno immediato. Inoltre lo spread funziona anche sugli array, quindi per concatenare o copiare liste è più comodo. Di fatto uso sempre lo spread, Object.assign lo vedo solo su codice vecchio."
+          }
+        },
+        {
+          "id": "javascript-013",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono async e await?",
+          "risposta": "Sono zucchero sintattico sopra le Promise: servono a scrivere codice asincrono che si legge come codice sincrono. Metti async davanti a una funzione e quella funzione restituisce sempre una Promise. Dentro, await sospende l'esecuzione della funzione finché la Promise non si risolve, senza bloccare il resto dell'applicazione. Il risultato è codice molto più leggibile rispetto alle catene di then e catch.",
+          "parole_chiave": [
+            "async",
+            "await",
+            "Promise",
+            "leggibilità"
+          ],
+          "follow_up": {
+            "domanda": "Await blocca l'esecuzione?",
+            "risposta": "Await non blocca l'intero programma: sospende solo la funzione async in cui si trova. Il resto dell'applicazione, compresi altri task e l'interfaccia, continua a girare normalmente. È proprio questa la differenza rispetto a un blocco sincrono, che invece fermerebbe tutto il thread."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Best Practices",
+      "domande": [
+        {
+          "id": "javascript-014",
+          "priorita": "ALTA",
+          "domanda": "Cosa significa scrivere codice pulito?",
+          "risposta": "Significa scrivere codice che chiunque del team possa leggere e capire senza fatica: nomi chiari che spiegano da soli, funzioni piccole che fanno una cosa sola, commenti solo dove davvero servono e nessuna duplicazione. Il codice pulito si legge come una storia: capisci subito cosa fa senza dover decifrare. È una forma di rispetto verso chi ci lavorerà dopo, incluso te stesso tra sei mesi.",
+          "parole_chiave": [
+            "leggibilità",
+            "nomi chiari",
+            "funzioni piccole",
+            "no duplicazione"
+          ],
+          "follow_up": {
+            "domanda": "Come gestisci il codice duplicato?",
+            "risposta": "Quando vedo lo stesso pattern ripetersi, lo estraggo in una funzione o un componente riutilizzabile. Ma attenzione a non astrarre troppo presto: aspetto di vedere il pattern ripetersi almeno due o tre volte, altrimenti rischio di creare astrazioni sbagliate che poi vanno rifatte. La regola del tre è un buon compromesso."
+          }
+        },
+        {
+          "id": "javascript-015",
+          "priorita": "MEDIA",
+          "domanda": "Come strutturi i file in un progetto React?",
+          "risposta": "Di solito per feature, non per tipo di file. Ogni feature ha dentro tutto quello che le serve: i suoi componenti, gli hook, i servizi e i test. In questo modo ciò che riguarda una funzionalità sta tutto vicino, ed è molto più facile trovarlo e ragionarci sopra quando devi modificarlo. È una struttura che scala bene quando il progetto cresce.",
+          "parole_chiave": [
+            "feature",
+            "struttura",
+            "componenti",
+            "hooks"
+          ],
+          "follow_up": {
+            "domanda": "Alternative?",
+            "risposta": "L'alternativa è la struttura per tipo, con cartelle come components, hooks e services tutte insieme. Va bene per progetti piccoli, dove tutto è ancora gestibile. Ma quando il progetto cresce, file che c'entrano tra loro finiscono sparsi in cartelle diverse, e diventa difficile orientarsi. Per questo preferisco la struttura per feature sui progetti grandi."
+          }
+        },
+        {
+          "id": "javascript-016",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono i test e quali hai usato?",
+          "risposta": "I test servono a verificare che il codice faccia quello che deve, e a evitare regressioni quando lo tocchi. Ho usato Jest per gli unit test e React Testing Library per testare i componenti dal punto di vista dell'utente, cioè interagendo con l'interfaccia come farebbe una persona. L'obiettivo è avere una rete di sicurezza che ti permetta di rifattorizzare senza paura.",
+          "parole_chiave": [
+            "Jest",
+            "React Testing Library",
+            "unit test",
+            "componenti"
+          ],
+          "follow_up": {
+            "domanda": "Cosa testi di un componente?",
+            "risposta": "Testo il comportamento, non l'implementazione. Per esempio verifico che cliccando un bottone appaia un messaggio, o che un componente renderizzi i dati che riceve. Non testo i dettagli interni, tipo come è fatto lo stato o quali funzioni vengono chiamate, perché quelli cambiano spesso e rendono i test fragili."
+          }
+        },
+        {
+          "id": "javascript-017",
+          "priorita": "MEDIA",
+          "domanda": "Cosa significa code review per te?",
+          "risposta": "Per me è un momento di confronto, non un giudizio sulla persona. Serve a trovare bug, migliorare la qualità del codice e condividere conoscenza nel team: chi riceve la review impara dagli errori, e chi la fa impara leggendo soluzioni diverse. Se fatta bene, alza il livello di tutti e rende il codice condiviso, non di una sola persona.",
+          "parole_chiave": [
+            "code review",
+            "confronto",
+            "qualità",
+            "team"
+          ],
+          "follow_up": {
+            "domanda": "Come dai feedback?",
+            "risposta": "Do feedback in modo costruttivo: spiego sempre il perché di una critica e, dove posso, propongo un'alternativa. Critico il codice, mai la persona, e riconosco anche quello che è fatto bene. L'obiettivo è che l'altro migliori e capisca, non che si senta attaccato."
+          }
+        }
+      ]
+    }
+  ]
+}

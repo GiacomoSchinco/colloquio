@@ -1,0 +1,988 @@
+{
+  "meta": {
+    "tecnologia": "React",
+    "slug": "react",
+    "schema": 2,
+    "versione": 1,
+    "aggiornato": "2026-10-14",
+    "totale_domande": 59
+  },
+  "argomenti": [
+    {
+      "nome": "Fondamentali",
+      "domande": [
+        {
+          "id": "react-001",
+          "priorita": "ALTA",
+          "domanda": "Cos'è React e perché lo usiamo?",
+          "risposta": "React è una libreria JavaScript per costruire interfacce utente a componenti. L'idea di base è che descrivi come deve apparire la UI in base allo stato, e React si occupa di tutto il resto: aggiorna il DOM da solo, applicando solo le modifiche necessarie, senza che tu debba selezionare e toccare gli elementi a mano. Questo rende il codice più prevedibile, più facile da testare e più semplice da mantenere quando l'app cresce, perché ogni pezzo di UI è un componente riutilizzabile con la sua logica.",
+          "parole_chiave": [
+            "libreria",
+            "componenti",
+            "stato",
+            "dichiarativo",
+            "riutilizzabile"
+          ],
+          "follow_up": {
+            "domanda": "Come fa React a sapere cosa aggiornare nel DOM?",
+            "risposta": "Quando lo stato cambia, React ricostruisce in memoria una nuova versione dell'albero dei componenti e la confronta con quella precedente, in un processo che si chiama reconciliation. Da questo confronto capisce quali nodi sono cambiati davvero e aggiorna solo quelli nel DOM reale, lasciando intatto tutto il resto. È per questo che è efficiente: non ridisegna mai l'intera pagina, tocca soltanto le parti che servono."
+          }
+        },
+        {
+          "id": "react-002",
+          "priorita": "ALTA",
+          "domanda": "Come gestisci la pulizia di un effetto in useEffect e perché serve?",
+          "risposta": "Dentro useEffect puoi ritornare una funzione di cleanup, che React esegue prima di rieseguire l'effetto e quando il componente viene smontato. Serve per annullare ciò che l'effetto aveva avviato: cancellare una subscription, rimuovere un event listener, fermare un timer o abortire una fetch. Se non pulisci, rischi memory leak e comportamenti strani, tipo listener che restano attivi dopo che il componente non c'è più.",
+          "parole_chiave": [
+            "cleanup",
+            "useEffect",
+            "subscription",
+            "unmount"
+          ],
+          "follow_up": {
+            "domanda": "Esempio concreto di cleanup?",
+            "risposta": "L'esempio più tipico è un event listener o una subscription a un Observable: nell'effetto la registri, e nella funzione di cleanup la rimuovi. Anche con le fetch è utile: puoi usare un AbortController e chiamare abort nel cleanup, così se l'utente cambia pagina la richiesta viene annullata e non aggiorna un componente smontato."
+          }
+        },
+        {
+          "id": "react-003",
+          "priorita": "ALTA",
+          "domanda": "Cos'è il Virtual DOM e perché React lo usa?",
+          "risposta": "È una rappresentazione in memoria dell'albero di elementi che descrive l'interfaccia. Quando qualcosa cambia, React ne costruisce una nuova versione e la confronta con la precedente, e da quel confronto ricava le modifiche minime da applicare al DOM reale. Il guadagno non è la velocità delle singole operazioni, ma il fatto che tu descrivi il risultato e non devi gestire a mano cosa aggiornare: è quello che rende il codice prevedibile quando l'interfaccia si complica.",
+          "parole_chiave": [
+            "Virtual DOM",
+            "confronto tra alberi",
+            "modifiche minime",
+            "dichiarativo",
+            "prevedibilità"
+          ],
+          "follow_up": {
+            "domanda": "Il Virtual DOM è più veloce del DOM reale?",
+            "risposta": "No, e dirlo è un buon segnale: un'operazione singola scritta a mano sul DOM reale è più veloce. Il vantaggio è un altro, cioè evitare le operazioni inutili e non doverle decidere tu: il confronto ha un costo che si ripaga quando le modifiche sono molte o quando l'aggiornamento è complicato da calcolare a mano. Su un'interfaccia grande la differenza si sente, su una piccola no."
+          }
+        },
+        {
+          "id": "react-004",
+          "priorita": "ALTA",
+          "domanda": "Come si scrive un componente oggi: funzionale o a classe?",
+          "risposta": "Oggi si scrivono solo componenti funzionali con gli Hooks. I componenti a classe appartengono al passato: servivano per avere stato e lifecycle method, ma con useState e useEffect i funzionali fanno esattamente le stesse cose con molto meno codice, senza dover gestire il this e con una logica che puoi riusare facilmente tra componenti diversi tramite hook custom. Le classi le trovi ormai solo su progetti legacy, e anche lì si tende a migrarle solo quando serve davvero.",
+          "parole_chiave": [
+            "funzionale",
+            "classe",
+            "Hooks",
+            "useState",
+            "useEffect"
+          ],
+          "follow_up": {
+            "domanda": "Perché le classi sono sparite?",
+            "risposta": "Perché gli Hooks hanno tolto l'unico vero motivo per usarle. Prima stato locale e ciclo di vita richiedevano una classe, oggi li hai dentro una semplice funzione. Il risultato è codice più compatto e leggibile, niente this da bindare, e soprattutto la possibilità di estrarre la logica in hook custom e riusarla ovunque. La community si è spostata in massa sui funzionali, e React stesso ormai li considera il modo standard di scrivere componenti."
+          }
+        },
+        {
+          "id": "react-005",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono gli Hooks e quali usi più spesso?",
+          "risposta": "Gli Hooks sono funzioni speciali che ti permettono di usare stato e altre funzionalità di React dentro i componenti funzionali, senza bisogno delle classi. I più comuni sono useState, per tenere uno stato locale, e useEffect, per gestire gli effetti collaterali come chiamate API, subscription o aggiornamenti del DOM. Poi uso anche useRef per accedere a elementi o valori che non devono far scattare un render, useMemo e useCallback quando mi serve ottimizzare, e a volte scrivo hook custom per estrarre logica riusabile tra più componenti.",
+          "parole_chiave": [
+            "useState",
+            "useEffect",
+            "stato locale",
+            "effetti collaterali"
+          ],
+          "follow_up": {
+            "domanda": "Cosa metti nell'array delle dipendenze di useEffect?",
+            "risposta": "L'array delle dipendenze dice a React da cosa dipende l'effetto: ci metto tutte le variabili e le props che l'effetto usa, e ogni volta che una di queste cambia React ripulisce e riesegue l'effetto. Se l'array è vuoto, l'effetto gira una sola volta al mount. Se lo ometto del tutto, gira a ogni render, e di solito è un errore perché può creare loop o chiamate inutili."
+          }
+        },
+        {
+          "id": "react-006",
+          "priorita": "ALTA",
+          "domanda": "Come funziona useEffect e quali sono i casi d'uso?",
+          "risposta": "Serve a sincronizzarsi con qualcosa che sta fuori da React: una chiamata di rete, una sottoscrizione, un listener o un accesso diretto al DOM. Il secondo parametro decide quando rieseguirlo: con l'array vuoto parte una volta dopo il montaggio, con delle dipendenze parte quando quelle cambiano, e senza array parte dopo ogni render. La funzione che restituisci è la pulizia, ed è la parte che si dimentica più spesso, lasciando listener e timer attivi su componenti che non esistono più.",
+          "parole_chiave": [
+            "useEffect",
+            "array di dipendenze",
+            "pulizia",
+            "effetti collaterali",
+            "una volta al montaggio"
+          ],
+          "follow_up": {
+            "domanda": "Cosa succede se dimentichi l'array delle dipendenze?",
+            "risposta": "Che l'effetto viene rieseguito dopo ogni render, e se al suo interno aggiorni dello stato inneschi un ciclo che non si ferma più. È un errore che si riconosce dal comportamento: l'applicazione rallenta o la console si riempie. Attenzione anche all'opposto, cioè mettere nell'array un oggetto o una funzione ricreati a ogni render: ottieni lo stesso effetto di non avere l'array."
+          }
+        },
+        {
+          "id": "react-007",
+          "priorita": "ALTA",
+          "domanda": "Come implementeresti un Context in React?",
+          "risposta": "Creo il context con createContext, avvolgo la parte di albero che deve accedervi con un Provider che passa il valore, e nei componenti leggo il valore con useContext. È il modo nativo di React per condividere dati come tema, lingua o utente loggato senza prop drilling. Di solito lo incapsulo in un componente dedicato con il suo stato, così chi lo usa non deve conoscere i dettagli.",
+          "parole_chiave": [
+            "createContext",
+            "Provider",
+            "useContext",
+            "condivisione"
+          ],
+          "follow_up": {
+            "domanda": "Quando lo eviteresti?",
+            "risposta": "Quando il valore cambia molto spesso, perché ogni cambio fa ri-renderizzare tutti i consumer, anche quelli a cui non interessa. In quei casi preferisco una libreria come Zustand, che permette ai componenti di sottoscriversi solo alla fetta di stato che usano."
+          }
+        },
+        {
+          "id": "react-008",
+          "priorita": "ALTA",
+          "domanda": "Come gestisci lo stato in un'app React di media grandezza?",
+          "risposta": "Divido bene lo stato in due categorie: stato dell'interfaccia e dati del server. Per lo stato locale uso useState, che va benissimo finché resta dentro un componente o poco più. Per lo stato condiviso tra più componenti uso Context quando è semplice, o una libreria leggera come Zustand quando cambia spesso o diventa complesso. Per i dati che arrivano dal server invece uso TanStack Query, perché gestisce da solo cache, refetch, stato di caricamento e di errore, e mi evita un sacco di boilerplate.",
+          "parole_chiave": [
+            "useState",
+            "Context",
+            "Zustand",
+            "TanStack Query",
+            "cache"
+          ],
+          "follow_up": {
+            "domanda": "Perché non usi solo Redux?",
+            "risposta": "Redux resta valido per stati molto complessi e molto condivisi, ma per la maggior parte delle app è più macchina di quanto serve: tanti file e tanto boilerplate. Zustand fa lo stesso lavoro con un'API molto più snella, e TanStack Query copre tutta la parte dati del server che in passato si infilava a forza dentro Redux. Oggi la scelta dipende dal tipo di stato, non da un'unica libreria."
+          }
+        },
+        {
+          "id": "react-009",
+          "priorita": "ALTA",
+          "domanda": "Come eviti che un componente si ri-renderizzi inutilmente?",
+          "risposta": "Prima di tutto cerco di non ottimizzare a caso: parto dal misurare, perché un re-render in più non è sempre un problema. Quando serve davvero, uso React.memo per evitare che un componente si ri-renderizzi se le sue props non sono cambiate, useMemo per memorizzare i valori calcolati pesanti e useCallback per tenere stabili le funzioni che passo come props. E cerco di non creare nuovi oggetti o array a ogni render, perché quelli fanno fallire i confronti e vanificano la memoizzazione.",
+          "parole_chiave": [
+            "React.memo",
+            "useMemo",
+            "useCallback",
+            "render",
+            "props"
+          ],
+          "follow_up": {
+            "domanda": "Quando NON useresti useMemo?",
+            "risposta": "Quando il calcolo è banale, perché useMemo ha un suo costo: deve confrontare le dipendenze e tenere in memoria il valore. Su una semplice somma o una stringa corta è più il lavoro che il beneficio. Lo uso solo per calcoli davvero pesanti o quando mi serve un riferimento stabile, tipo un oggetto o un array usato come dipendenza di un altro hook."
+          }
+        },
+        {
+          "id": "react-010",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono le funzioni di update in useState e quando servono?",
+          "risposta": "Invece di passare il nuovo valore, puoi passare a setState una funzione che riceve il valore precedente e restituisce il nuovo. Serve quando il nuovo stato dipende da quello vecchio, per esempio un contatore con prev => prev + 1. In questo modo eviti problemi di stale closure quando più aggiornamenti avvengono nello stesso render o in callback asincrone.",
+          "parole_chiave": [
+            "useState",
+            "functional update",
+            "prev",
+            "stale closure"
+          ],
+          "follow_up": {
+            "domanda": "Perché è più sicuro?",
+            "risposta": "Perché React può accorpare più aggiornamenti, e se usi direttamente il valore potresti lavorare su una versione vecchia. Con la funzione sei sempre sicuro di partire dal valore più recente, quindi gli aggiornamenti consecutivi non si perdono."
+          }
+        },
+        {
+          "id": "react-011",
+          "priorita": "ALTA",
+          "domanda": "Come previeni re-render inutili?",
+          "risposta": "Si interviene su tre fronti, in ordine di efficacia. Prima si sposta lo stato il più in basso possibile, perché se vive vicino a chi lo usa il cambiamento non fa rieseguire nient'altro. Poi si stabilizzano i riferimenti di oggetti e funzioni passati come proprietà, altrimenti i confronti falliscono sempre. Solo alla fine si aggiunge la memorizzazione dei componenti, e solo dove le misurazioni mostrano un problema: applicarla ovunque costa più di quanto risparmia.",
+          "parole_chiave": [
+            "re-render inutili",
+            "stato in basso",
+            "riferimenti stabili",
+            "memorizzazione mirata",
+            "misurare"
+          ],
+          "follow_up": {
+            "domanda": "Perché un figlio si riesegue anche se le sue proprietà non sono cambiate?",
+            "risposta": "Perché quando il genitore si riesegue, i figli vengono rieseguiti con lui: è il comportamento predefinito, non un errore. Il figlio evita il lavoro solo se è memorizzato e le sue proprietà non sono cambiate per riferimento. Ed è qui che casca il piano: se passi un oggetto o una funzione creati al volo, il riferimento è nuovo a ogni render e la memorizzazione non si attiva mai."
+          }
+        },
+        {
+          "id": "react-012",
+          "priorita": "ALTA",
+          "domanda": "Controlled vs Uncontrolled components",
+          "risposta": "Nei componenti controllati il valore del campo vive nello state di React e lo aggiorni con onChange, quindi React è l'unica fonte di verità. In quelli non controllati il valore resta nel DOM e lo leggi quando ti serve, tipicamente con useRef o leggendo il form al submit. I controllati sono la scelta normale quando devi validare o reagire subito a quello che l'utente scrive, i non controllati vanno bene per form semplici dove conta solo il valore finale.",
+          "parole_chiave": [
+            "state",
+            "ref",
+            "form",
+            "controllo"
+          ],
+          "follow_up": {
+            "domanda": "Quando usi uncontrolled?",
+            "risposta": "Per form semplici, integrazione con librerie non-React, o quando non serve validazione in tempo reale."
+          }
+        },
+        {
+          "id": "react-013",
+          "priorita": "ALTA",
+          "domanda": "Spiega la differenza tra props e state in React.",
+          "risposta": "Le props sono quello che il componente riceve da fuori e non deve modificare: sono parametri di ingresso, e se ti serve cambiarne il valore lo fa il genitore. Lo state è la memoria interna del componente, che il componente stesso decide e modifica. La regola pratica per non sbagliare è chiedersi chi possiede il dato: se lo possiede il padre sono props, se lo possiede il componente è state.",
+          "parole_chiave": [
+            "props",
+            "state",
+            "proprietà del dato",
+            "flusso unidirezionale"
+          ],
+          "follow_up": {
+            "domanda": "Un componente può modificare le props che riceve?",
+            "risposta": "No, e provare a farlo è un errore: le props sono di sola lettura, perché il componente figlio non è il proprietario del dato. Se il figlio deve segnalare un cambiamento, chiama una funzione ricevuta dal padre e sarà il padre ad aggiornare lo state. È il flusso unidirezionale: i dati scendono, gli eventi salgono."
+          }
+        },
+        {
+          "id": "react-014",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono i custom hook in React e come si creano?",
+          "risposta": "Sono funzioni il cui nome inizia con use e che al loro interno possono chiamare altri hook: servono a estrarre logica riutilizzabile, non interfaccia. Se ti ritrovi a copiare la stessa logica di caricamento dati o lo stesso listener in tre componenti, la sposti in un custom hook e la chiami dove serve. La cosa da tenere a mente è che un hook non è un componente: non renderizza nulla, restituisce dati e funzioni.",
+          "parole_chiave": [
+            "custom hook",
+            "prefisso use",
+            "riuso di logica",
+            "regole degli hook"
+          ],
+          "follow_up": {
+            "domanda": "Perché il nome deve iniziare per use?",
+            "risposta": "Perché è così che React e gli strumenti di analisi capiscono che è un hook e possono applicare le regole: gli hook si chiamano solo in cima a un componente o a un altro hook, mai dentro condizioni o cicli. Senza il prefisso il linter non ti avvisa, e finisci per chiamare un hook dentro un if rompendo l'ordine delle chiamate."
+          }
+        },
+        {
+          "id": "react-015",
+          "priorita": "ALTA",
+          "domanda": "Come funziona il ciclo di vita di un componente React funzionale?",
+          "risposta": "Si riduce a tre momenti: il componente viene montato, si aggiorna quando cambiano props o state, e viene smontato. Nei componenti funzionali lo gestisci con useEffect: dipendenze vuote per l'operazione da fare al montaggio, dipendenze specifiche per reagire a un cambiamento, e la funzione di pulizia che restituisci per lo smontaggio. Il ciclo di vita non è più un elenco di metodi come nelle classi, ma dipende da come dichiari le dipendenze.",
+          "parole_chiave": [
+            "montaggio",
+            "aggiornamento",
+            "smontaggio",
+            "useEffect",
+            "cleanup"
+          ],
+          "follow_up": {
+            "domanda": "Quando viene eseguita la funzione di pulizia di useEffect?",
+            "risposta": "Prima della prossima esecuzione dell'effetto e allo smontaggio del componente. Il dettaglio conta: se l'effetto si riesegue a ogni cambio di una dipendenza, la pulizia dell'esecuzione precedente parte prima della nuova, quindi non ti ritrovi due listener attivi insieme."
+          }
+        },
+        {
+          "id": "react-016",
+          "priorita": "ALTA",
+          "domanda": "Qual è la differenza tra useEffect con dipendenze vuote [] e senza secondo parametro?",
+          "risposta": "Senza il secondo parametro l'effetto viene rieseguito dopo ogni render, quindi praticamente sempre. Con l'array vuoto viene eseguito una sola volta, subito dopo il primo montaggio. È una distinzione che genera bug classici: mettere una chiamata di rete senza array di dipendenze significa rifarla a ogni render, e se quell'effetto aggiorna lo state entri in un ciclo infinito.",
+          "parole_chiave": [
+            "array di dipendenze",
+            "ogni render",
+            "una sola volta",
+            "ciclo infinito"
+          ],
+          "follow_up": {
+            "domanda": "E se metto come dipendenza un valore ricreato a ogni render?",
+            "risposta": "Ottieni lo stesso problema di non avere l'array: l'effetto si riesegue ogni volta perché il riferimento cambia. È il caso tipico dell'oggetto o della funzione definiti inline, e si risolve con useMemo o useCallback, oppure spostando la dipendenza fuori dal componente se è davvero costante."
+          }
+        },
+        {
+          "id": "react-017",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono le Keys nelle liste e perché sono importanti?",
+          "risposta": "La key è l'identificatore che dai a ogni elemento di una lista, e serve all'algoritmo di riconciliazione per capire quali nodi sono gli stessi tra un render e il successivo. Con una key stabile React riusa i nodi esistenti e ne crea solo quelli nuovi; senza, o usando l'indice, un inserimento in testa può far ricostruire tutto. La conseguenza visibile è che perdi stato locale e focus, per esempio un campo di input che si svuota quando aggiungi un elemento sopra.",
+          "parole_chiave": [
+            "key",
+            "riconciliazione",
+            "indice come key",
+            "stato locale perso"
+          ],
+          "follow_up": {
+            "domanda": "Perché usare l'indice come key è rischioso?",
+            "risposta": "Perché identifica la posizione e non l'elemento: se la lista viene riordinata o si inserisce qualcosa in mezzo, tutti gli indici successivi cambiano e React crede che ogni elemento sia diverso. Il risultato è una ricostruzione inutile e stato che finisce sull'elemento sbagliato. La key corretta è un identificatore del dato, come l'id che arriva dall'API."
+          }
+        },
+        {
+          "id": "react-018",
+          "priorita": "ALTA",
+          "domanda": "Spiega il Lifting State Up con un esempio concreto.",
+          "risposta": "Quando due componenti fratelli devono condividere un dato, lo stato sale al genitore comune più vicino: il padre lo possiede, lo passa giù come prop e passa anche la funzione per modificarlo. Così la sorgente di verità resta una sola e i due figli non hanno copie che si disallineano. È quello che fai quando un filtro nella barra laterale deve cambiare la lista accanto: il filtro vive nel componente che contiene entrambi.",
+          "parole_chiave": [
+            "lifting state up",
+            "antenato comune",
+            "sorgente unica",
+            "componenti fratelli"
+          ],
+          "follow_up": {
+            "domanda": "Fino a che punto conviene far salire lo stato?",
+            "risposta": "Finché il genitore comune è vicino: se per farlo salire devi attraversare cinque livelli che quel dato non lo usano, stai costruendo prop drilling. Quello è il segnale che lo stato dovrebbe stare in un contesto o in uno store esterno, non nell'albero dei componenti."
+          }
+        },
+        {
+          "id": "react-019",
+          "priorita": "ALTA",
+          "domanda": "Spiega la differenza tra useMemo e useCallback.",
+          "risposta": "Sono entrambi di memorizzazione, cambia cosa conservano: useMemo tiene il risultato di un calcolo, useCallback tiene la funzione stessa. In pratica useCallback è il caso di useMemo in cui il valore memorizzato è una funzione, e serve quando la passi a un componente memorizzato o la usi nelle dipendenze di un effetto. La trappola è mettere l'array di dipendenze vuoto per stabilizzare una funzione che legge props o state: così la funzione continua a vedere i valori vecchi.",
+          "parole_chiave": [
+            "useMemo",
+            "useCallback",
+            "dipendenze",
+            "closure stantia"
+          ],
+          "follow_up": {
+            "domanda": "Perché una useCallback con dipendenze sbagliate crea bug difficili?",
+            "risposta": "Perché la funzione resta legata ai valori del momento in cui è stata creata, quindi legge props e state vecchi: si chiama closure stantia e non dà errore, dà comportamento sbagliato. Il problema si manifesta tardi, perché scatta solo quando quel valore cambia dopo la creazione della funzione."
+          }
+        },
+        {
+          "id": "react-020",
+          "priorita": "ALTA",
+          "domanda": "Cosa fa useRef e come si differenzia da useState?",
+          "risposta": "useRef restituisce un oggetto con la proprietà current che resta lo stesso per tutta la vita del componente, e modificarlo non provoca nessun render. useState invece fa rieseguire il componente quando cambia. La conseguenza pratica è che useRef lo usi per cose che non devono finire nell'interfaccia, come il riferimento a un nodo del DOM, l'id di un timer o un valore che serve solo ai confronti interni. Se il valore deve apparire a schermo, la scelta è useState.",
+          "parole_chiave": [
+            "useRef",
+            "current",
+            "nessun render",
+            "riferimento al DOM"
+          ],
+          "follow_up": {
+            "domanda": "Perché per un timer si usa useRef?",
+            "risposta": "Perché ti serve conservare l'id del timer tra un render e l'altro per poterlo cancellare, e non vuoi che salvarlo provochi un render. Con useState avresti un render in più e il rischio che l'effetto che lo crea venga rieseguito inutilmente, oltre al valore letto in ritardo."
+          }
+        },
+        {
+          "id": "react-021",
+          "priorita": "ALTA",
+          "domanda": "Spiega il processo di Reconciliation in React.",
+          "risposta": "È il confronto tra l'albero del render precedente e quello nuovo, e serve a calcolare il minimo insieme di modifiche da applicare al DOM reale. React usa delle euristiche e non un confronto completo, perché un diff esatto di due alberi sarebbe troppo costoso: confronta per tipo di elemento e posizione, usa le key nelle liste e considera diversi i sottoalberi quando il tipo cambia. Il risultato è che la maggior parte dei nodi resta intatta e il browser lavora poco.",
+          "parole_chiave": [
+            "riconciliazione",
+            "diffing",
+            "euristiche",
+            "key",
+            "albero dei componenti"
+          ],
+          "follow_up": {
+            "domanda": "Cosa succede se cambio il tipo di un elemento?",
+            "risposta": "React butta via quel sottoalbero e lo ricostruisce da zero, insieme a tutto lo state dei componenti figli. È il motivo per cui non conviene cambiare il tipo di un contenitore solo per un condizionale di stile, e per cui due return con la stessa struttura ma radici diverse ti fanno perdere lo stato senza aspettartelo."
+          }
+        },
+        {
+          "id": "react-022",
+          "priorita": "ALTA",
+          "domanda": "Quando usi useEffect con dipendenze e quando eviti di usarlo?",
+          "risposta": "useEffect serve per sincronizzarsi con qualcosa che sta fuori da React: chiamate di rete, sottoscrizioni, listener, accesso diretto al DOM. Non serve per calcolare un valore derivato da props o state, perché quello si fa nel corpo del render, e non serve per reagire a un cambiamento che puoi gestire direttamente nell'evento che lo ha causato. Togliere gli effect inutili semplifica il codice e cancella intere categorie di bug da dipendenze sbagliate.",
+          "parole_chiave": [
+            "useEffect",
+            "effetti collaterali",
+            "dati derivati",
+            "effect inutili"
+          ],
+          "follow_up": {
+            "domanda": "Come riconosci un useEffect inutile?",
+            "risposta": "Chiedendoti se fa qualcosa fuori da React: se aggiorna solo dello state in base ad altre props o state, è codice che può stare nel render come valore calcolato. Un altro segnale è l'effetto che serve solo a tenere sincronizzati due pezzi di state: spesso significa che uno dei due non dovrebbe esistere."
+          }
+        },
+        {
+          "id": "react-023",
+          "priorita": "ALTA",
+          "domanda": "Come funziona la Context API in React?",
+          "risposta": "Si crea un contesto, si avvolge la parte di albero che ne ha bisogno in un Provider con un valore, e chi sta sotto legge quel valore senza riceverlo come prop. Serve per dati trasversali e stabili, come il tema, la lingua o l'utente autenticato. Non è la soluzione per lo stato che cambia spesso e in tanti punti, perché ogni cambio del valore ridisegna tutti i consumatori.",
+          "parole_chiave": [
+            "createContext",
+            "Provider",
+            "useContext",
+            "dati trasversali"
+          ],
+          "follow_up": {
+            "domanda": "Perché il Context non sostituisce sempre Redux?",
+            "risposta": "Perché non gestisce la logica: nessuna azione, nessuna storia dei cambiamenti, nessuno strumento che ti mostri perché lo stato è così. In più le modifiche frequenti ridisegnano tutti i consumatori, mentre un vero store permette selezioni mirate. Il Context risolve il passaggio del dato, non la gestione dello stato."
+          }
+        },
+        {
+          "priorita": "ALTA",
+          "domanda": "Come fai una chiamata API in React?",
+          "risposta": "Dipende dal contesto. Per una chiamata semplice uso fetch o axios dentro un useEffect, gestendo a mano caricamento ed errori. Ma nella maggior parte dei casi preferisco TanStack Query: gestisce da solo cache, stato di loading, errori e refetch, e riduce tantissimo il codice che devo scrivere. In più tiene i dati sincronizzati in modo automatico, cosa che con un semplice fetch devo fare a mano.",
+          "parole_chiave": [
+            "fetch",
+            "axios",
+            "TanStack Query",
+            "useEffect",
+            "cache"
+          ],
+          "follow_up": {
+            "domanda": "Come gestisci gli errori?",
+            "risposta": "Se uso fetch o axios, avvolgo la chiamata in un try/catch e gestisco l'errore mostrando un messaggio all'utente. Con TanStack Query invece ho lo stato isError già pronto, e posso aggiungere un pulsante di retry o un fallback. In entrambi i casi l'importante è che l'utente capisca cosa è successo e non resti davanti a una schermata vuota."
+          },
+          "id": "react-024"
+        },
+        {
+          "id": "react-025",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è un error boundary e a cosa serve?",
+          "risposta": "È un componente che cattura gli errori JavaScript lanciati dai suoi figli durante il render, e mostra un fallback invece di far crashare tutta l'app. Si implementa con i metodi di classe getDerivedStateFromError e componentDidCatch. Serve a isolare i guasti: se una sezione va in errore, il resto dell'applicazione continua a funzionare e l'utente vede un messaggio utile.",
+          "parole_chiave": [
+            "error boundary",
+            "fallback",
+            "componentDidCatch",
+            "crash"
+          ],
+          "follow_up": {
+            "domanda": "Cosa NON cattura?",
+            "risposta": "Non cattura gli errori negli event handler, nel codice asincrono o nelle chiamate al server: solo gli errori durante il render, nei lifecycle method e nei constructor. Per il resto servono try/catch o la gestione errori di TanStack Query."
+          }
+        },
+        {
+          "id": "react-026",
+          "priorita": "MEDIA",
+          "domanda": "Spiega l'uso di React.memo e quando non è utile.",
+          "risposta": "React.memo memorizza il risultato del render e lo salta quando le props non sono cambiate, confrontandole in modo superficiale. È utile sui componenti che si ridisegnano spesso con le stesse props, tipicamente gli elementi di una lista lunga. Non serve sui componenti leggeri, perché il confronto delle props costa più del render che stai evitando: applicarlo ovunque è un modo per peggiorare le prestazioni credendo di migliorarle.",
+          "parole_chiave": [
+            "React.memo",
+            "confronto superficiale",
+            "render inutili",
+            "misurare prima"
+          ],
+          "follow_up": {
+            "domanda": "Perché a volte il confronto superficiale non basta?",
+            "risposta": "Perché confronta i riferimenti e non il contenuto: se il genitore passa un oggetto o una funzione ricreati a ogni render, il riferimento cambia e memo non salva nulla. Si risolve con useMemo e useCallback dal lato di chi passa le props, oppure con una funzione di confronto personalizzata se hai davvero quel caso."
+          }
+        },
+        {
+          "id": "react-027",
+          "priorita": "MEDIA",
+          "domanda": "Come passi dati da un componente figlio al padre?",
+          "risposta": "Il flusso dei dati in React va dall'alto verso il basso, quindi per mandare dati da un figlio al padre si usa una callback: il padre passa al figlio una funzione come prop, e il figlio la chiama quando deve comunicare qualcosa, passandogli i dati come argomento. Questo pattern si chiama lifting state up, perché di fatto lo stato vive nel padre e il figlio si limita ad aggiornarlo tramite quella funzione.",
+          "parole_chiave": [
+            "callback",
+            "props",
+            "lifting state up",
+            "funzione"
+          ],
+          "follow_up": {
+            "domanda": "E se i componenti sono lontani nell'albero?",
+            "risposta": "Se i componenti sono lontani nell'albero e passarsi le callback attraverso tanti livelli diventa scomodo, uso il Context per valori che cambiano poco, oppure una libreria di stato globale come Zustand. Così qualsiasi componente può leggere e aggiornare lo stato senza che io debba travasare props in mezzo a componenti che non le usano."
+          }
+        },
+        {
+          "id": "react-028",
+          "priorita": "MEDIA",
+          "domanda": "Quando usi useRef e per cosa?",
+          "risposta": "useRef serve a due cose: accedere direttamente a un elemento del DOM, come focusare un input, e tenere un valore che deve sopravvivere tra i render senza però farli scattare quando cambia. A differenza dello stato, cambiare il valore di un ref non provoca un re-render, quindi è perfetto per timer, id di subscription o riferimenti a valori precedenti.",
+          "parole_chiave": [
+            "useRef",
+            "DOM",
+            "senza re-render",
+            "riferimento"
+          ],
+          "follow_up": {
+            "domanda": "Esempio pratico?",
+            "risposta": "Per esempio tenere l'id di un setTimeout per poterlo cancellare in cleanup, oppure un riferimento a un input per fare focus al mount. Anche per leggere un valore precedente nelle render, confrontando il valore attuale con quello nel ref."
+          }
+        },
+        {
+          "id": "react-029",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono gli Error Boundaries e come si implementano?",
+          "risposta": "Sono componenti che intercettano gli errori sollevati durante il render dell'albero sotto di loro, evitano che tutta l'applicazione diventi bianca e mostrano un'interfaccia di fallback. Si implementano ancora come componenti a classe, perché servono i metodi getDerivedStateFromError o componentDidCatch, e non esiste un hook equivalente. C'è un limite da ricordare: non catturano gli errori dentro i gestori di eventi né quelli asincroni, per quelli serve un try/catch tuo.",
+          "parole_chiave": [
+            "error boundary",
+            "componentDidCatch",
+            "fallback",
+            "solo errori di render"
+          ],
+          "follow_up": {
+            "domanda": "Un error boundary cattura gli errori di una chiamata asincrona?",
+            "risposta": "No, ed è il malinteso più comune: cattura gli errori del render e del ciclo di vita, ma non quelli che avvengono in un gestore di eventi, in un setTimeout o in una Promise rifiutata. Quelli vanno gestiti dove accadono, con un try/catch o con un catchError se stai usando RxJS."
+          }
+        },
+        {
+          "id": "react-030",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è il prop drilling e come lo risolvi?",
+          "risposta": "Il prop drilling è quando passi una prop attraverso molti livelli di componenti che non la usano, solo per farla arrivare a quello che sta in fondo all'albero. Il codice diventa rumoroso e fragile, perché ogni componente in mezzo deve dichiarare quella prop. Si risolve con il Context per valori che cambiano poco, con una libreria come Zustand per lo stato condiviso, oppure con la composizione: a volte basta ristrutturare i componenti perché la prop non debba attraversare tutta la gerarchia.",
+          "parole_chiave": [
+            "prop drilling",
+            "Context",
+            "Zustand",
+            "composizione"
+          ],
+          "follow_up": {
+            "domanda": "Context ha svantaggi?",
+            "risposta": "Sì, il principale è che quando il valore del provider cambia, tutti i componenti che lo consumano si ri-renderizzano, anche se a loro interessava solo una parte. Per questo va bene per cose che cambiano poco, tipo il tema o i dati dell'utente loggato. Per stati che si aggiornano di frequente conviene Zustand, che permette a ogni componente di sottoscriversi solo alla fetta di stato che gli serve."
+          }
+        },
+        {
+          "id": "react-031",
+          "priorita": "MEDIA",
+          "domanda": "Spiega la differenza tra Composition e Inheritance in React.",
+          "risposta": "L'ereditarietà costruisce gerarchie di classi, ed è il motivo per cui in React non la usi: i componenti si compongono, non ereditano. Comporre significa costruire un componente grande da componenti piccoli, passando elementi tramite children oppure passando componenti come props. Il vantaggio è che le dipendenze restano visibili e ogni pezzo si testa da solo, mentre con l'ereditarietà ti porti dietro il comportamento del padre e i cambiamenti si propagano dove non te lo aspetti.",
+          "parole_chiave": [
+            "composition",
+            "children",
+            "ereditarietà",
+            "componenti come props"
+          ],
+          "follow_up": {
+            "domanda": "Come si evita concretamente l'ereditarietà?",
+            "risposta": "Passando elementi o componenti come props invece di specializzare una classe: se ti serve una variante, ricevi il pezzo di interfaccia e lo metti dove serve. Nella pratica, se ti accorgi di voler ereditare, quasi sempre stai descrivendo una composizione con qualche punto di innesto in più."
+          }
+        },
+        {
+          "id": "react-032",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci i form in React?",
+          "risposta": "Di solito con i componenti controllati: il valore dell'input vive nello stato di React, e ogni onChange aggiorna quello stato. Così ho sempre il valore sotto controllo e posso validare, disabilitare o trasformare l'input in tempo reale. Per form complessi uso React Hook Form, che tiene i valori in un registro interno e tocca il DOM solo dove serve: con tanti campi è molto più performante, e la validazione si integra bene con librerie come Zod.",
+          "parole_chiave": [
+            "controlled component",
+            "onChange",
+            "React Hook Form",
+            "validazione"
+          ],
+          "follow_up": {
+            "domanda": "Cosa sono i componenti non controllati?",
+            "risposta": "Nei componenti non controllati il valore vive direttamente nel DOM e React non lo tiene nello stato: lo leggi solo quando ti serve, di solito con un useRef. Scrivono meno codice e vanno bene per casi semplici, ma perdi il controllo in tempo reale sul valore, quindi niente validazione immediata o trasformazioni. Per questo li uso poco, solo quando non mi serve reattività sull'input."
+          }
+        },
+        {
+          "id": "react-033",
+          "priorita": "MEDIA",
+          "domanda": "Come funziona il Lazy Loading con Suspense in React?",
+          "risposta": "React.lazy prende un import dinamico e restituisce un componente che viene scaricato solo quando serve, quindi il suo codice finisce in un chunk separato. Suspense gli fa da contenitore e mostra il fallback mentre il chunk arriva. Ha senso per le parti pesanti che non servono al primo render, come una rotta secondaria o un editor: applicarlo ai componenti sempre visibili peggiora l'esperienza, perché sposta il caricamento invece di ridurlo.",
+          "parole_chiave": [
+            "React.lazy",
+            "import dinamico",
+            "Suspense",
+            "fallback",
+            "code splitting"
+          ],
+          "follow_up": {
+            "domanda": "Perché il fallback di Suspense crea problemi alla SEO?",
+            "risposta": "Perché il contenuto arriva dal client dopo il caricamento del chunk, quindi un crawler che non aspetta il JavaScript vede solo il fallback. Se quella pagina conta per la SEO, la renderizzi sul server o la preri renderizzi, così l'HTML arriva completo e il caricamento differito resta un'ottimizzazione per il resto."
+          }
+        },
+        {
+          "id": "react-034",
+          "priorita": "MEDIA",
+          "domanda": "Quali sono i vantaggi di StrictMode?",
+          "risposta": "StrictMode attiva controlli aggiuntivi solo in sviluppo: esegue di proposito un doppio render e monta e smonta due volte gli effetti, proprio per far emergere effetti collaterali scritti male. Non cambia nulla in produzione, quindi se vedi un comportamento strano solo in sviluppo il problema è nel tuo codice, e StrictMode lo sta rendendo visibile. Il vantaggio vero è che ti obbliga a scrivere effetti eseguibili due volte senza rompere niente, che è la condizione per essere pronti alle funzionalità future.",
+          "parole_chiave": [
+            "StrictMode",
+            "doppio render",
+            "solo sviluppo",
+            "effetti idempotenti"
+          ],
+          "follow_up": {
+            "domanda": "Perché il mio useEffect viene eseguito due volte in sviluppo?",
+            "risposta": "Perché StrictMode monta, smonta e rimonta il componente per verificare che la pulizia funzioni. Se l'effetto è scritto bene non hai problemi, perché la prima esecuzione viene pulita prima della seconda. Se invece vedi la chiamata all'API fatta due volte, manca la pulizia o l'operazione non è idempotente: è esattamente il bug che il doppio montaggio ha scoperto."
+          }
+        },
+        {
+          "id": "react-035",
+          "priorita": "MEDIA",
+          "domanda": "Quali sono i limiti della Context API rispetto a Redux?",
+          "risposta": "Il Context è un modo per passare valori senza attraversare tutti i livelli, non uno state manager: non ha azioni, non ha una storia delle modifiche, non ha strumenti di debug. Il limite pratico più sentito è che un cambiamento nel valore del contesto ridisegna tutti i consumatori, anche quelli che usano solo una parte del valore. Redux offre selezioni più fini e tracciabilità dei cambiamenti, quindi conviene quando lo stato è condiviso da molte parti e le regole sono complesse.",
+          "parole_chiave": [
+            "Context API",
+            "re-render dei consumatori",
+            "Redux",
+            "state manager"
+          ],
+          "follow_up": {
+            "domanda": "Il Context ridisegna tutti i consumatori anche se il valore non è cambiato?",
+            "risposta": "Se il valore è un oggetto ricreato a ogni render del provider, sì, anche se il contenuto è identico, perché il riferimento è diverso. Si risolve memorizzando il valore con useMemo nel provider. È un errore frequente che fa sembrare lento il Context quando il problema è come lo fornisci."
+          }
+        },
+        {
+          "id": "react-036",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è il Server-Side Rendering (SSR) e qual è la differenza con il Client-Side Rendering?",
+          "risposta": "Nel rendering lato client il browser riceve una pagina quasi vuota e ci pensa il JavaScript a costruire tutto, quindi l'utente vede il contenuto solo dopo che il bundle è scaricato ed eseguito. Nel rendering lato server il server esegue React, produce l'HTML già completo di dati e lo manda pronto, quindi il contenuto è visibile subito e i crawler lo leggono senza aspettare. Il costo è che il server lavora a ogni richiesta e che il codice va scritto stando attenti a cosa gira dove.",
+          "parole_chiave": [
+            "SSR",
+            "CSR",
+            "HTML completo",
+            "SEO",
+            "idratazione"
+          ],
+          "follow_up": {
+            "domanda": "Che ruolo ha l'idratazione?",
+            "risposta": "È il passaggio in cui il JavaScript sul client prende l'HTML già presente e ci attacca gli eventi, rendendolo interattivo. Fino a quel momento la pagina si vede ma non risponde ai click. È anche il punto in cui emergono gli errori di disallineamento, quando il markup generato dal server e quello del client non coincidono."
+          }
+        },
+        {
+          "id": "react-037",
+          "priorita": "MEDIA",
+          "domanda": "Come funziona useDeferredValue?",
+          "risposta": "Serve a tenere fluida l'interfaccia quando un aggiornamento è costoso: invece di bloccare il render con il nuovo valore, React continua a mostrare quello precedente e applica il nuovo quando ha tempo. Lo usi su valori che derivano da input rapidi, come il testo di una ricerca che filtra una lista grande: l'utente vede subito quello che scrive e i risultati arrivano poco dopo. Non riduce il lavoro, lo sposta, quindi va riservato ai casi in cui il ritardo è percettibile.",
+          "parole_chiave": [
+            "valore differito",
+            "priorità degli aggiornamenti",
+            "interfaccia fluida",
+            "ricerca su lista grande",
+            "non riduce il lavoro"
+          ],
+          "follow_up": {
+            "domanda": "Che differenza c'è con la transizione?",
+            "risposta": "Il valore differito lavora su un valore che dipende da un altro, mentre la transizione contrassegna come non urgente un aggiornamento di stato che stai per fare. Se il caso è \"questo testo deriva da quello che l'utente digita\", il primo è più diretto; se devi marcare un'azione come rimandabile, il secondo. Entrambi abbassano la priorità, cambia il punto da cui guardi il problema."
+          }
+        },
+        {
+          "id": "react-038",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono i portal in React?",
+          "risposta": "Permettono di renderizzare un elemento in un punto diverso dell'albero del documento, mantenendo però la sua posizione logica nell'albero dei componenti: il classico caso è la finestra di dialogo che va agganciata al corpo della pagina. Servono a evitare che stili come il ritaglio o il contesto di sovrapposizione del genitore intrappolino l'elemento. Il punto chiave è che gli eventi continuano a comportarsi come se il componente fosse ancora dove l'hai scritto, quindi non perdi il contesto di React.",
+          "parole_chiave": [
+            "portal",
+            "fuori dall albero del DOM",
+            "finestra di dialogo",
+            "sovrapposizione",
+            "eventi propagati"
+          ],
+          "follow_up": {
+            "domanda": "Perché usarli?",
+            "risposta": "Perché una finestra di dialogo figlia di un contenitore con ritaglio o con un contesto di sovrapposizione limitato può risultare tagliata o finire sotto altri elementi. Spostandola nel corpo della pagina il problema scompare senza combattere con valori di sovrapposizione sempre più alti. E il focus e la gestione della tastiera restano raggiungibili come prima, perché il legame con il componente è intatto."
+          }
+        },
+        {
+          "id": "react-039",
+          "priorita": "BASSA",
+          "domanda": "Cosa sono i Render Props?",
+          "risposta": "È una tecnica in cui passi a un componente una funzione che decide cosa disegnare, così il componente si occupa solo del comportamento e tu della forma. È stato uno dei modi con cui si condivideva logica prima degli hook, e serve anche oggi in casi specifici, per esempio in alcune librerie di componenti headless. Il suo difetto è che aggiunge un livello nell'albero e rende meno evidente da dove arrivano i dati.",
+          "parole_chiave": [
+            "render props",
+            "funzione come proprietà",
+            "condivisione di logica",
+            "livello nell albero",
+            "librerie headless"
+          ],
+          "follow_up": {
+            "domanda": "Sono ancora usati?",
+            "risposta": "Poco, perché gli hook risolvono lo stesso problema senza aggiungere componenti: usi quello che ti serve dentro la funzione e vedi subito da dove viene ogni valore. Restano in uso in librerie che separano completamente la logica dalla vista, dove il fatto di delegare il disegno è il punto. Per il codice applicativo, se ti accorgi di scriverne uno, quasi sempre lì c'è un hook che aspetta di essere estratto."
+          }
+        },
+        {
+          "id": "react-040",
+          "priorita": "BASSA",
+          "domanda": "Cosa sono i Compound Components?",
+          "risposta": "È un insieme di componenti progettati per lavorare insieme, dove il contenitore condivide stato e comportamento con i figli senza che tu debba passarlo a mano: il caso classico sono le tendine o le schede, dove il contenitore sa quale è aperta e i figli lo leggono. Il vantaggio è un'interfaccia flessibile: chi lo usa compone i pezzi come gli servono, invece di scegliere tra dieci varianti previste. Il costo è che i figli funzionano solo dentro il loro contenitore, quindi il contratto tra i pezzi va documentato bene.",
+          "parole_chiave": [
+            "compound components",
+            "stato condiviso implicito",
+            "composizione",
+            "flessibilità dell API",
+            "contesto"
+          ],
+          "follow_up": {
+            "domanda": "Fammi un esempio",
+            "risposta": "Una tendina composta dal contenitore e dalle sue parti: il contenitore si occupa di quale pannello è aperto, le parti leggono quello stato dal contesto e funzionano senza che tu passi proprietà di collegamento. Chi la usa scrive solo i pezzi che gli servono, nell'ordine che vuole. È più flessibile di un componente unico con dieci opzioni, perché non deve prevedere tutte le combinazioni."
+          }
+        },
+        {
+          "id": "react-041",
+          "priorita": "BASSA",
+          "domanda": "Spiega la differenza tra Class Components e Functional Components",
+          "risposta": "I componenti a classe gestiscono stato e ciclo di vita con metodi e con il riferimento all'istanza, quelli funzionali con gli hook e senza quel riferimento. La differenza pratica è molta meno cerimonia: niente costruttore, niente legame del contesto, e la logica di stato si può estrarre in funzioni riutilizzabili invece di spargerla tra i metodi. Oggi il codice nuovo si scrive funzionale, le classi restano nei progetti esistenti.",
+          "parole_chiave": [
+            "componenti funzionali",
+            "componenti a classe",
+            "hook",
+            "ciclo di vita",
+            "codice nuovo"
+          ],
+          "follow_up": {
+            "domanda": "Le classi sono deprecate?",
+            "risposta": "Non deprecate, ma non più raccomandate per il codice nuovo: React non le rimuoverà a breve, quindi un progetto esistente non deve convertirle d'urgenza. L'eccezione che vale la pena ricordare è che c'è ancora una funzionalità che richiede le classi, cioè la cattura degli errori di render, per cui non esiste un hook equivalente. Le librerie di terze parti vanno verificate prima di alzare la versione."
+          }
+        },
+        {
+          "id": "react-042",
+          "priorita": "BASSA",
+          "domanda": "Come funziona l'hook useId?",
+          "risposta": "Genera un identificativo unico e stabile da usare quando un componente ha bisogno di collegare due elementi, tipicamente un'etichetta e il suo campo. Il problema che risolve è concreto: se scrivi l'identificativo a mano e il componente viene renderizzato più volte, ottieni identificativi duplicati e i collegamenti si confondono. È pensato per funzionare anche con il rendering lato server, dove l'identificativo deve essere lo stesso sul server e sul client.",
+          "parole_chiave": [
+            "identificativo unico",
+            "collegamento etichetta campo",
+            "componente riutilizzato",
+            "rendering lato server",
+            "evitare duplicati"
+          ],
+          "follow_up": {
+            "domanda": "Quando è utile?",
+            "risposta": "Quando costruisci un componente riutilizzabile che deve collegare un'etichetta a un campo, o un testo di aiuto a un campo: non puoi sapere quante volte verrà usato, quindi non puoi scrivere l'identificativo a mano. Il caso da evitare è usarlo per cose che non sono collegamenti tra elementi, perché in quel caso un identificativo stabile generato altrove è più adatto. La sua ragione è l'accessibilità."
+          }
+        },
+        {
+          "id": "react-043",
+          "priorita": "BASSA",
+          "domanda": "Come funziona useImperativeHandle?",
+          "risposta": "Serve a esporre al genitore dei metodi scelti, invece di lasciargli il riferimento all'elemento del DOM: il genitore chiama funzioni con un significato, non manipola nodi. È utile nelle librerie di componenti, dove devi offrire operazioni come portare il focus, scorrere fino a un punto o azzerare uno stato interno, senza esporre tutto il resto. Nella propria applicazione si usa poco, perché di solito è meglio passare proprietà che funzioni imperative.",
+          "parole_chiave": [
+            "riferimento imperativo",
+            "metodi esposti",
+            "librerie di componenti",
+            "focus e scorrimento",
+            "interfaccia controllata"
+          ],
+          "follow_up": {
+            "domanda": "Quando è utile?",
+            "risposta": "Quando c'è un'operazione che non si può esprimere con lo stato, come portare il focus su un campo o far scorrere fino a un elemento. In quel caso esporre un metodo con un nome chiaro è più leggibile che far maneggiare il nodo al genitore. Se invece ti serve solo comunicare un valore, le proprietà bastano e questa soluzione complica senza motivo."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "State Management",
+      "domande": [
+        {
+          "id": "react-044",
+          "priorita": "ALTA",
+          "domanda": "Differenza tra Context API e Zustand/Redux",
+          "risposta": "Il Context diffonde il valore attraverso l'albero, quindi chi consuma si ridisegna quando il valore cambia e serve un Provider a monte. Zustand tiene lo stato fuori dall'albero e ogni componente sottoscrive la porzione che gli interessa, quindi un cambiamento ridisegna solo chi la legge. La differenza si sente quando lo stato cambia spesso: con il Context devi spezzarlo in più contesti o memorizzare i valori per limitare i render, con lo store la granularità sta nella selezione.",
+          "parole_chiave": [
+            "Context",
+            "Zustand",
+            "re-render",
+            "Provider",
+            "granularità"
+          ],
+          "follow_up": {
+            "domanda": "Quando useresti Context API invece di Zustand?",
+            "risposta": "Per dati statici o che cambiano raramente (tema, lingua, utente loggato). Per stato frequente e granulare, meglio Zustand."
+          }
+        },
+        {
+          "id": "react-045",
+          "priorita": "ALTA",
+          "domanda": "Come funziona Zustand rispetto a Redux in termini di architettura?",
+          "risposta": "Zustand crea uno store fuori dall'albero dei componenti e ci si collega con un hook, quindi non serve un Provider e non c'è il giro di azioni e reducer di Redux. Lo stato e le azioni che lo modificano stanno nello stesso posto, e l'aggiornamento avviene chiamando set direttamente. Il risultato è molto meno codice per lo stesso comportamento, mentre Redux resta più strutturato quando ti servono tracciabilità completa e vincoli forti sulle modifiche.",
+          "parole_chiave": [
+            "Zustand",
+            "store esterno",
+            "nessun Provider",
+            "set",
+            "confronto con Redux"
+          ],
+          "follow_up": {
+            "domanda": "Perché con Zustand non serve un Provider?",
+            "risposta": "Perché lo store è un oggetto creato fuori da React: l'hook lo importa e si sottoscrive. Il Provider serve quando il valore deve stare nell'albero, mentre Zustand lo tiene fuori, quindi qualsiasi componente lo raggiunge senza passaggi intermedi."
+          }
+        },
+        {
+          "id": "react-046",
+          "priorita": "ALTA",
+          "domanda": "Spiega il concetto di selectors in Zustand e perché sono importanti.",
+          "risposta": "Il selector è la funzione che passi all'hook per dire quale parte dello stato ti interessa, e il componente si ridisegna solo quando cambia il risultato di quella selezione. È la differenza tra leggere tutto lo store e leggere un campo: senza selector, qualsiasi modifica dello store fa rieseguire tutti i componenti collegati. Nella pratica ogni componente prende solo i campi che usa, e i valori derivati li calcoli dentro la selezione.",
+          "parole_chiave": [
+            "selector",
+            "aggiornamenti mirati",
+            "confronto del risultato",
+            "prestazioni"
+          ],
+          "follow_up": {
+            "domanda": "Cosa succede se il selector restituisce un nuovo oggetto a ogni chiamata?",
+            "risposta": "Che il confronto fallisce sempre, perché il riferimento è nuovo, e il componente si ridisegna a ogni aggiornamento dello store anche se i valori sono identici. Si risolve selezionando i campi singolarmente, oppure passando una funzione di confronto personalizzata."
+          }
+        },
+        {
+          "id": "react-047",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono gli store subscriptions in Zustand fuori da React?",
+          "risposta": "Lo store che crei con Zustand è un oggetto normalissimo: ha metodi per leggere, scrivere e sottoscriversi, e funziona anche fuori da React. Questo ti permette di usarlo in una utility, in un worker o in un test senza montare componenti, e di ascoltare i cambiamenti con un subscribe che restituisce la funzione per annullare l'iscrizione. È anche la ragione per cui la libreria è piccola: non dipende dall'albero dei componenti per funzionare.",
+          "parole_chiave": [
+            "store vanilla",
+            "subscribe",
+            "unsubscribe",
+            "fuori da React"
+          ],
+          "follow_up": {
+            "domanda": "A cosa serve sottoscriversi allo store fuori da React?",
+            "risposta": "A reagire a un cambiamento dove il rendering non c'entra: per esempio registrare un log, sincronizzare un'altra sorgente o pilotare una libreria esterna. Ricordati di annullare l'iscrizione, perché subscribe non lo fa da solo e in un contesto di lunga durata resterebbe attivo per sempre."
+          }
+        },
+        {
+          "id": "react-048",
+          "priorita": "MEDIA",
+          "domanda": "Spiega come funziona il persist middleware in Zustand.",
+          "risposta": "Il middleware di persistenza salva lo stato su uno storage, tipicamente la memoria locale del browser, e lo rilegge all'avvio dello store. Puoi decidere quali parti salvare e gestire il caso in cui la forma dello stato sia cambiata tra una versione e l'altra. La cosa da tenere presente è che il ripristino avviene all'avvio: se nello store metti anche dati temporanei, come un caricamento in corso, ti ritrovi uno stato iniziale incoerente.",
+          "parole_chiave": [
+            "persist",
+            "storage locale",
+            "reidratazione",
+            "migrazione dello stato"
+          ],
+          "follow_up": {
+            "domanda": "Cosa fai quando cambia la forma dello stato salvato?",
+            "risposta": "Usi la versione dello storage e una funzione di migrazione, che trasforma il vecchio formato nel nuovo quando la versione salvata è più vecchia. Senza quella, un utente con dati del formato precedente si ritrova uno stato incompleto e comportamenti strani che non riesci a riprodurre sulla tua macchina, perché il tuo storage è già aggiornato."
+          }
+        },
+        {
+          "id": "react-049",
+          "priorita": "MEDIA",
+          "domanda": "Quali middleware sono disponibili in Zustand?",
+          "risposta": "I più usati sono quello di persistenza per conservare lo stato, quello per gli strumenti di sviluppo che lo collegano all'estensione di Redux, e quello di immutabilità che ti lascia scrivere gli aggiornamenti in stile mutabile senza costruire copie a mano. Si compongono tra loro, e l'ordine conta perché ognuno avvolge la funzione di creazione dello store. La cosa pratica è che sono opzionali: aggiungi quelli che ti servono davvero, perché ognuno è uno strato in più da capire quando qualcosa non funziona.",
+          "parole_chiave": [
+            "persistenza",
+            "strumenti di sviluppo",
+            "immutabilità",
+            "composizione"
+          ],
+          "follow_up": {
+            "domanda": "Quando conviene collegare gli strumenti di sviluppo?",
+            "risposta": "Quando hai bisogno di capire perché lo stato è cambiato: ti dà una sequenza delle azioni e lo stato prima e dopo ognuna. In sviluppo lo tieni quasi sempre; su applicazioni grandi il costo è la memoria della cronologia, quindi in produzione lo lascia spento o limiti quanti passaggi conservare."
+          }
+        },
+        {
+          "id": "react-050",
+          "priorita": "MEDIA",
+          "domanda": "Come si implementa lo slicing pattern in Zustand?",
+          "risposta": "Spezzi lo store in più funzioni, ognuna responsabile di una parte dello stato e delle sue azioni, e le unisci in un unico store al momento della creazione. Ogni pezzo dichiara la propria fetta, e i pezzi si possono chiamare tra loro tramite set e get, quindi restano coordinati. Serve a evitare il file da mille righe, non a creare più store: lo stato resta uno, cambia solo come è organizzato il codice che lo descrive.",
+          "parole_chiave": [
+            "slice",
+            "store unico",
+            "organizzazione del codice",
+            "set e get"
+          ],
+          "follow_up": {
+            "domanda": "Slicing e store multipli sono la stessa cosa?",
+            "risposta": "No: nello slicing hai un solo store composto da più pezzi, quindi tutto condivide lo stesso ciclo di vita, mentre store multipli sono istanze separate. Se ti serve che due parti non si vedano affatto, o che abbiano vite diverse, ti servono store distinti; se ti serve solo ordine nel codice, lo slicing basta."
+          }
+        },
+        {
+          "id": "react-051",
+          "priorita": "MEDIA",
+          "domanda": "Come testi uno store Zustand?",
+          "risposta": "Lo store è un oggetto normale, quindi lo testi chiamando le azioni e verificando lo stato risultante, senza montare alcun componente. L'unica accortezza è isolare i test: se un caso modifica lo stato e non lo ripristina, quello successivo parte da una situazione diversa e il fallimento sembra casuale. Per i componenti che lo usano puoi anche iniettare uno store creato apposta per il test, così non dipendi dallo stato globale.",
+          "parole_chiave": [
+            "store testabile",
+            "azioni e stato",
+            "isolamento",
+            "ripristino dello stato",
+            "store dedicato"
+          ],
+          "follow_up": {
+            "domanda": "Come ripristini lo stato?",
+            "risposta": "Sostituendo completamente lo stato con quello iniziale tra un test e l'altro, oppure creando uno store nuovo per ogni test, che è la soluzione più robusta. Il punto non è quale tecnica usi, ma che i test non dipendano dall'ordine di esecuzione: quando succede, il fallimento compare solo in suite completa e ti fa perdere molto tempo. Con uno store nuovo per test il problema non si pone."
+          }
+        },
+        {
+          "id": "react-052",
+          "priorita": "MEDIA",
+          "domanda": "Spiega la differenza tra atomic state e global state in Zustand.",
+          "risposta": "Nello stato atomico lo stato è fatto di tante unità indipendenti che i componenti sottoscrivono singolarmente e che si possono comporre tra loro. Zustand usa invece un unico store, e la finezza degli aggiornamenti la ottieni con i selector, che dicono al componente quale parte seguire. La differenza pratica è che con lo store unico hai un posto dove guardare tutto, mentre con gli atomi hai tante unità piccole, più componibili ma più sparse nel codice.",
+          "parole_chiave": [
+            "stato atomico",
+            "store unico",
+            "selector",
+            "granularità"
+          ],
+          "follow_up": {
+            "domanda": "Quale dei due scegli per uno stato derivato complesso?",
+            "risposta": "Con gli atomi la composizione è naturale, perché derivi un atomo da altri e la dipendenza resta esplicita. Con Zustand scrivi il valore derivato nella selezione o lo calcoli a mano, e con molte derivazioni concatenate la logica si concentra in un punto solo. Dipende da quanto sono intrecciate le relazioni tra i dati."
+          }
+        },
+        {
+          "id": "react-053",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci side effects asincroni in Zustand?",
+          "risposta": "Le azioni possono essere funzioni asincrone: fai la chiamata nel corpo dell'azione e aggiorni lo stato con set quando la risposta arriva, senza middleware aggiuntivi come Thunk. Lo stato intermedio, come un caricamento in corso o un errore, lo dichiari tu nello store e lo aggiorni nei punti giusti. Va considerato che così la logica di rete finisce dentro lo store: nelle applicazioni grandi conviene tenerla in un livello separato e lasciare allo store solo il risultato.",
+          "parole_chiave": [
+            "azione asincrona",
+            "async/await",
+            "stato di caricamento",
+            "senza middleware"
+          ],
+          "follow_up": {
+            "domanda": "Cosa devi mettere nello store per una chiamata asincrona fatta bene?",
+            "risposta": "Almeno lo stato di caricamento, l'errore e i dati, aggiornati nell'ordine giusto: prima carico, poi esito. Dimenticare il caso di errore è l'errore tipico, e in produzione si vede come schermata che resta in caricamento per sempre quando la richiesta fallisce."
+          }
+        },
+        {
+          "id": "react-054",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono gli store multipli in Zustand e quando usarli?",
+          "risposta": "Sono store creati separatamente, ognuno con il suo stato e il suo ciclo di vita, che i componenti raggiungono importando quello che serve. Si usano quando hai domini che non c'entrano nulla tra loro e non vuoi farli finire in un unico contenitore, oppure quando una parte deve essere isolata, per esempio un widget riutilizzabile. Il costo è che perdi una vista unica dello stato, quindi la scelta va fatta quando la separazione è reale e non solo per ordine nel codice.",
+          "parole_chiave": [
+            "store multipli",
+            "isolamento",
+            "domini separati",
+            "ciclo di vita"
+          ],
+          "follow_up": {
+            "domanda": "Store multipli o slicing: come decidi?",
+            "risposta": "Se le due parti devono restare sincronizzate o condividere dati, un solo store con più slice è più semplice. Se la separazione è funzionale, per esempio un widget che deve funzionare da solo anche dentro un'altra applicazione, allora lo store separato è quello giusto. La domanda utile è se esiste un dato che attraversa il confine."
+          }
+        },
+        {
+          "id": "react-055",
+          "priorita": "MEDIA",
+          "domanda": "Spiega come Zustand evita il prop drilling.",
+          "risposta": "Lo store vive fuori dall'albero dei componenti, quindi qualsiasi componente lo importa e legge quello che gli serve con l'hook: nessun valore deve attraversare i livelli intermedi. È il guadagno principale rispetto al passaggio di props a cascata, dove ogni componente di mezzo diventa un imbuto che quel dato non lo usa ma è costretto a rigirarlo. Il prezzo è che la dipendenza non è più visibile nella firma del componente, quindi conviene tenere store piccoli e per dominio, altrimenti diventa difficile capire chi legge cosa.",
+          "parole_chiave": [
+            "prop drilling",
+            "store esterno",
+            "import diretto",
+            "dipendenza implicita"
+          ],
+          "follow_up": {
+            "domanda": "Il prop drilling è sempre un male?",
+            "risposta": "No: per uno o due livelli è la soluzione più leggibile, perché la dipendenza resta esplicita in chi riceve i dati. Diventa un problema quando il valore attraversa componenti che non lo usano, perché lì ogni passaggio è accoppiamento gratuito. La soglia pratica è quando ti accorgi di aggiungere una prop solo per farla passare."
+          }
+        },
+        {
+          "id": "react-056",
+          "priorita": "MEDIA",
+          "domanda": "Come si testano store Zustand?",
+          "risposta": "Lo store è un oggetto JavaScript, quindi lo testi chiamando le sue azioni e verificando lo stato risultante, senza montare nulla. L'unica accortezza è isolare i test: riporti lo stato iniziale prima di ogni caso, altrimenti il test che aggiunge un elemento influenza quello successivo. Per i componenti che usano lo store puoi anche sostituirlo con uno creato apposta per il test, così verifichi il comportamento senza dipendere dallo store globale.",
+          "parole_chiave": [
+            "test dello store",
+            "azioni",
+            "isolamento",
+            "reset dello stato"
+          ],
+          "follow_up": {
+            "domanda": "Perché serve riportare lo stato iniziale tra i test?",
+            "risposta": "Perché lo store è un oggetto condiviso a livello di modulo: se un test modifica lo stato e non lo ripristina, il test seguente parte da una situazione diversa e il fallimento compare apparentemente a caso. Un reset esplicito, o uno store creato per ogni test, elimina la dipendenza dall'ordine di esecuzione."
+          }
+        },
+        {
+          "id": "react-057",
+          "priorita": "MEDIA",
+          "domanda": "Come funziona l'immutable update in Zustand?",
+          "risposta": "Quando aggiorni, restituisci un nuovo oggetto di stato: usi una copia con i campi modificati, tipicamente con lo spread, e Zustand confronta i riferimenti per capire cosa è cambiato. Se hai attivato il middleware di immutabilità puoi scrivere come se stessi mutando, e sarà lui a produrre la copia. La regola da tenere a mente è che mutare lo stato esistente non notifica nessuno: è l'errore silenzioso più comune con questo store.",
+          "parole_chiave": [
+            "immutabilità",
+            "spread",
+            "middleware immer",
+            "confronto per riferimento"
+          ],
+          "follow_up": {
+            "domanda": "Cosa succede se muto lo stato senza creare una copia?",
+            "risposta": "Che il riferimento resta lo stesso, il confronto non rileva cambiamenti e i componenti non si aggiornano. Il sintomo è uno store che sembra funzionare per alcune azioni e non per altre, e la diagnosi è sempre la stessa: manca il nuovo oggetto di stato."
+          }
+        },
+        {
+          "id": "react-058",
+          "priorita": "MEDIA",
+          "domanda": "Spiega come gestire il typed store in TypeScript con Zustand.",
+          "risposta": "Dichiari un tipo che descrive sia i dati dello stato sia le azioni, e lo passi alla creazione dello store: così set e get sono tipizzati e ogni campo è verificato dal compilatore. Il vantaggio si vede quando rinomini un campo, perché gli errori compaiono dove lo usi invece di diventare undefined a runtime. Quando lo store è composto da più slice, i tipi si compongono allo stesso modo delle funzioni che li descrivono.",
+          "parole_chiave": [
+            "TypeScript",
+            "tipo dello store",
+            "set e get tipizzati",
+            "composizione dei tipi"
+          ],
+          "follow_up": {
+            "domanda": "Perché conviene tipizzare anche le azioni e non solo i dati?",
+            "risposta": "Perché le azioni sono l'unico modo di modificare lo stato, quindi è lì che vuoi i controlli: parametri sbagliati e campi inesistenti diventano errori di compilazione. Tipizzando solo i dati proteggi la lettura ma lasci scoperto il punto in cui i bug nascono."
+          }
+        },
+        {
+          "id": "react-059",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono le computed properties in Zustand?",
+          "risposta": "Non esistono come concetto nativo: sono valori che derivi dallo stato, e li ottieni calcolandoli dentro la selezione oppure nell'azione che modifica lo stato. La scelta dipende da quanto costa il calcolo: se è pesante conviene calcolarlo nell'azione e conservarlo, altrimenti ricalcolarlo nella selezione è più semplice e non rischia di disallinearsi. Il punto importante è non duplicare il dato: se puoi derivarlo, non salvarlo.",
+          "parole_chiave": [
+            "valori derivati",
+            "selector",
+            "costo del calcolo",
+            "non duplicare lo stato"
+          ],
+          "follow_up": {
+            "domanda": "Perché un valore derivato salvato nello stato è rischioso?",
+            "risposta": "Perché diventa una seconda fonte di verità che devi aggiornare a mano a ogni modifica collegata: prima o poi ne dimentichi una e il dato mostrato non corrisponde più. Lo conservi solo se il calcolo è davvero costoso, e in quel caso accetti di doverti ricordare di aggiornarlo."
+          }
+        }
+      ]
+    }
+  ]
+}

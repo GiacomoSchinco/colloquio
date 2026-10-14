@@ -1,0 +1,795 @@
+{
+  "meta": {
+    "tecnologia": "Spring",
+    "slug": "spring",
+    "schema": 2,
+    "versione": 1,
+    "aggiornato": "2026-10-14",
+    "totale_domande": 46
+  },
+  "argomenti": [
+    {
+      "nome": "Fondamenti",
+      "domande": [
+        {
+          "id": "spring-001",
+          "priorita": "ALTA",
+          "domanda": "Cos'è Spring e quale problema risolve rispetto a Java EE classico?",
+          "risposta": "Spring è un framework Java che semplifica lo sviluppo enterprise, e il suo cuore è l'inversione di controllo con la dependency injection: non sei tu a creare e collegare gli oggetti, ma il container di Spring, che li inietta dove servono. Rispetto a Java EE classico, con EJB pesanti e file di configurazione complessi, Spring è più leggero, meno invasivo e più facile da testare, perché il codice resta semplice e le dipendenze sono esplicite.",
+          "parole_chiave": [
+            "Spring",
+            "dependency injection",
+            "container",
+            "leggero"
+          ],
+          "follow_up": {
+            "domanda": "Cosa rende Spring testabile?",
+            "risposta": "Proprio la dependency injection: puoi sostituire le dipendenze con oggetti finti nei test, isolando la classe da verificare. Se invece una classe si crea le dipendenze da sola, testarla diventa molto più complicato, perché trascini con sé tutto ciò che usa."
+          }
+        },
+        {
+          "id": "spring-002",
+          "priorita": "ALTA",
+          "domanda": "Cos'è Spring Boot e perché ha semplificato lo sviluppo?",
+          "risposta": "Spring Boot è un'estensione di Spring che elimina gran parte della configurazione manuale. Con l'auto-configurazione, rileva le librerie presenti e configura il contesto da solo; con gli starter, aggiungi dipendenze pronte in un colpo solo; e con il server embedded, come Tomcat, l'app parte con un semplice main, senza deploy su un server esterno. Il risultato è che passi dal progetto all'applicazione funzionante in pochi minuti.",
+          "parole_chiave": [
+            "Spring Boot",
+            "auto-configurazione",
+            "starter",
+            "embedded"
+          ],
+          "follow_up": {
+            "domanda": "Cosa sono gli starter di Spring Boot?",
+            "risposta": "Sono dipendenze che aggregano tutto ciò che serve per una funzionalità: spring-boot-starter-web porta MVC e Tomcat, spring-boot-starter-data-jpa porta la persistenza. Aggiungi uno starter e hai l'intero stack configurato, invece di cercare e versionare ogni libreria a mano."
+          }
+        },
+        {
+          "id": "spring-003",
+          "priorita": "ALTA",
+          "domanda": "Come crei un servizio REST con Spring?",
+          "risposta": "Con un controller annotato @RestController, che espone metodi mappati agli URL con @GetMapping, @PostMapping, @PutMapping e @DeleteMapping. Il controller riceve le richieste, chiama il service che contiene la logica, e restituisce i dati, che Spring serializza automaticamente in JSON. I parametri arrivano dal path con @PathVariable o dal body con @RequestBody, e i codici di stato si gestiscono con ResponseEntity. È un flusso pulito e dichiarativo.",
+          "parole_chiave": [
+            "RestController",
+            "GetMapping",
+            "PostMapping",
+            "JSON"
+          ],
+          "follow_up": {
+            "domanda": "Che ruolo hanno @PathVariable e @RequestBody?",
+            "risposta": "@PathVariable estrae un valore dall'URL, come l'id in /utenti/123, mentre @RequestBody deserializza il corpo JSON della richiesta in un oggetto Java. Insieme permettono di leggere in modo dichiarativo tutto ciò che il client invia."
+          }
+        }
+      ],
+      "domandeScarto": []
+    },
+    {
+      "nome": "Spring Core",
+      "domande": [
+        {
+          "id": "spring-004",
+          "priorita": "MEDIA",
+          "domanda": "Come funziona @ConfigurationProperties?",
+          "risposta": "Invece di usare @Value per ogni singola proprietà, raggruppi proprietà correlate in una classe tipizzata. Se hai `app.mail.host`, `app.mail.port`, crei una classe MailProperties con quei campi e Spring li popola automaticamente.",
+          "parole_chiave": [
+            "raggruppare proprietà",
+            "type safety",
+            "validazione"
+          ],
+          "follow_up": {
+            "domanda": "Che vantaggio ha rispetto a @Value?",
+            "risposta": "Più ordine, type safety, e puoi validare. Con 20 @Value sparsi il codice diventa illeggibile."
+          }
+        },
+        {
+          "id": "spring-005",
+          "priorita": "MEDIA",
+          "domanda": "Differenza tra @Configuration e @Component",
+          "risposta": "@Configuration è una specializzazione di @Component. La differenza è che @Configuration crea un proxy: se chiami un metodo @Bean da un altro metodo @Bean, ottieni sempre la stessa istanza. Con @Component no.",
+          "parole_chiave": [
+            "proxy",
+            "bean",
+            "stessa istanza"
+          ],
+          "follow_up": {
+            "domanda": "Quando usi @Configuration?",
+            "risposta": "Quando definisci bean esplicitamente. Per il resto usa @Component, @Service, @Repository."
+          }
+        },
+        {
+          "id": "spring-006",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono i @EventListener?",
+          "risposta": "Sono metodi che reagiscono a eventi pubblicati nell'applicazione: chi pubblica non sa chi ascolta, quindi puoi aggiungere una reazione senza toccare il codice che ha generato l'evento. Serve a disaccoppiare comportamenti che altrimenti finirebbero nello stesso metodo, come inviare un'email dopo una registrazione. La scelta importante è se l'ascoltatore deve vedere le modifiche al database o può essere indipendente.",
+          "parole_chiave": [
+            "ascolto di eventi",
+            "disaccoppiamento",
+            "pubblicazione",
+            "reazione aggiuntiva",
+            "sincrono o asincrono"
+          ],
+          "follow_up": {
+            "domanda": "Sono sincroni o asincroni?",
+            "risposta": "Sincroni per impostazione predefinita, quindi l'ascoltatore viene eseguito nello stesso flusso di chi ha pubblicato e un suo errore si ripercuote sul chiamante. Per renderli asincroni lo dichiari, e allora vanno considerati i rischi: l'ascoltatore potrebbe non venire mai eseguito, o essere eseguito due volte, quindi la sua operazione deve essere ripetibile. La scelta dipende da quanto quella reazione è critica."
+          }
+        },
+        {
+          "id": "spring-007",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci gli errori globalmente?",
+          "risposta": "Con una classe globale che intercetta le eccezioni sollevate dai controller e le trasforma in risposte coerenti. Il vantaggio non è solo evitare di ripetere il blocco di gestione in ogni metodo: è avere un formato di errore uniforme in tutta l'API, che è quello che permette al client di gestire gli errori una volta sola. Il dettaglio che fa la differenza è non far uscire il messaggio tecnico interno: al client va un codice e un messaggio comprensibile, mentre il dettaglio completo finisce nei log.",
+          "parole_chiave": [
+            "gestione globale degli errori",
+            "formato uniforme",
+            "risposta coerente",
+            "messaggio per il client",
+            "dettaglio nei log"
+          ],
+          "follow_up": {
+            "domanda": "Perché non gestirli con un blocco di cattura in ogni metodo?",
+            "risposta": "Perché lo ripeteresti identico decine di volte e prima o poi qualcuno lo scrive in modo diverso, quindi il formato degli errori diventa incoerente e il client non sa cosa aspettarsi. In più la gestione dell'errore è una preoccupazione trasversale: ogni metodo che se ne occupa diventa più lungo e racconta due cose insieme. Concentrarla in un punto solo rende i controller leggibili e il contratto verificabile."
+          }
+        },
+        {
+          "id": "spring-008",
+          "priorita": "BASSA",
+          "domanda": "Cosa sono i BeanPostProcessor?",
+          "risposta": "Sono agganci che intervengono nel ciclo di vita dei bean, prima e dopo l'inizializzazione, e sono il meccanismo con cui il framework applica parte delle sue magie: risoluzione delle dipendenze nei campi annotati, iniezione dei valori di configurazione, creazione dei proxy per transazioni e cache. Puoi scriverne uno tuo per trasformare tutti i bean che rispettano una condizione, ma nell'applicazione normale non serve quasi mai. È più utile capire che esistono per spiegare perché alcuni comportamenti avvengono senza che tu li abbia scritti.",
+          "parole_chiave": [
+            "BeanPostProcessor",
+            "ciclo di vita",
+            "agganci",
+            "proxy",
+            "uso interno del framework"
+          ],
+          "follow_up": {
+            "domanda": "Ne scriveresti mai uno custom?",
+            "risposta": "Raramente, e solo per una trasformazione che deve valere su tutti i bean di un certo tipo: per esempio applicare un comportamento uniforme a ogni classe marcata con una tua annotazione. Nella maggior parte dei casi l'esigenza si risolve con un aspetto, che è più mirato e più facile da leggere. Se ti serve un post processor, spesso significa che l'alternativa sarebbe ripetere la stessa modifica in molti punti."
+          }
+        },
+        {
+          "id": "spring-009",
+          "priorita": "BASSA",
+          "domanda": "Cos'è AOP e a cosa serve?",
+          "risposta": "È la tecnica con cui aggiungi comportamento a metodi esistenti senza modificarli, agganciandoti a punti definiti del loro ciclo di esecuzione. Serve per le responsabilità trasversali che altrimenti si spargono in ogni metodo: registrazione dei log, controllo dei permessi, metriche, transazioni. Il framework la usa per le sue annotazioni, ed è il motivo per cui aggiungere un'annotazione su un metodo ottiene un comportamento senza che tu scriva il codice che lo realizza.",
+          "parole_chiave": [
+            "programmazione orientata agli aspetti",
+            "responsabilità trasversali",
+            "punti di aggancio",
+            "proxy",
+            "annotazioni che funzionano"
+          ],
+          "follow_up": {
+            "domanda": "Dove lo usi in Spring?",
+            "risposta": "La transazione è l'esempio che chiarisce tutto: non scrivi tu il codice che apre, conferma o annulla, lo fa il framework agganciandosi all'annotazione. Lo stesso vale per la cache e per l'esecuzione asincrona. Il rovescio è che il comportamento applicato non è visibile nel codice che leggi e nello stack compaiono classi generate, quindi va usato su poche responsabilità davvero trasversali."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Spring Boot",
+      "domande": [
+        {
+          "id": "spring-010",
+          "priorita": "ALTA",
+          "domanda": "Cos'è l'annotazione @SpringBootApplication e cosa fa?",
+          "risposta": "È l'annotazione che si mette sulla classe main e che racchiude tre annotazioni fondamentali: @EnableAutoConfiguration, che attiva l'auto-configurazione di Spring Boot, @ComponentScan, che scansiona il package per trovare i componenti, e @Configuration, che marca la classe come fonte di bean. In pratica è il punto di partenza di ogni applicazione Spring Boot: una sola annotazione mette in moto tutto il contesto.",
+          "parole_chiave": [
+            "SpringBootApplication",
+            "auto-configurazione",
+            "ComponentScan",
+            "main"
+          ],
+          "follow_up": {
+            "domanda": "Perché si trova sulla classe main?",
+            "risposta": "Perché da lì parte l'applicazione: il metodo main lancia SpringApplication.run, che usa proprio @SpringBootApplication per sapere da dove iniziare a costruire il contesto, cosa scansionare e quali configurazioni automatiche attivare."
+          }
+        },
+        {
+          "id": "spring-011",
+          "priorita": "ALTA",
+          "domanda": "Come configuri un'applicazione Spring Boot con application.properties o YAML?",
+          "risposta": "Le proprietà esterne, come la porta del server, le credenziali del database o i log, si definiscono in application.properties con la sintassi chiave=valore, oppure in application.yml con una struttura a rientri più leggibile. Spring Boot le carica automaticamente e le inietta con @Value o le mappa su classi con @ConfigurationProperties. I profili, con file come application-dev.yml, permettono di avere configurazioni diverse per sviluppo, test e produzione.",
+          "parole_chiave": [
+            "application.properties",
+            "YAML",
+            "profilo",
+            "ConfigurationProperties"
+          ],
+          "follow_up": {
+            "domanda": "A cosa servono i profili?",
+            "risposta": "A separare le configurazioni per ambiente: application-dev.yml, application-prod.yml e simili, attivati con spring.profiles.active. Così lo stesso codice usa database e impostazioni diverse a seconda dell'ambiente, senza modificare nulla a mano al momento del deploy."
+          }
+        },
+        {
+          "id": "spring-012",
+          "priorita": "ALTA",
+          "domanda": "Cos'è Spring Data JPA e come definisci un repository?",
+          "risposta": "Spring Data JPA semplifica l'accesso ai dati eliminando quasi tutto il codice ripetitivo: definisci un'interfaccia che estende JpaRepository e Spring genera automaticamente le query di base, come findById, findAll e save, a partire dal nome dei metodi. Per query personalizzate dichiari metodi con nomi parlanti, come findByCognomeOrderByNome, oppure usi l'annotazione @Query. Il risultato è un livello dati scritto in poche righe e molto leggibile.",
+          "parole_chiave": [
+            "Spring Data",
+            "JPA",
+            "repository",
+            "boilerplate"
+          ],
+          "follow_up": {
+            "domanda": "Come funzionano le query derivate dai nomi dei metodi?",
+            "risposta": "Spring legge il nome del metodo e ne deduce la query: findByCognome cerca per il campo cognome, OrderByNome ordina i risultati. Se il nome rispetta la convenzione, la query viene generata e validata all'avvio, e per i casi complessi si ricorre a @Query con JPQL."
+          }
+        },
+        {
+          "id": "spring-013",
+          "priorita": "ALTA",
+          "domanda": "Cos'è Spring Boot e cosa risolve?",
+          "risposta": "Prima di Spring Boot dovevi configurare tutto a mano: XML, server, dipendenze. Spring Boot fa tutto da solo: include un server embedded, configura automaticamente i bean in base alle librerie che trova, e ti fa partire un'app con pochi click.",
+          "parole_chiave": [
+            "auto-configurazione",
+            "server embedded",
+            "convenzione > configurazione"
+          ],
+          "follow_up": {
+            "domanda": "Come fa a sapere cosa configurare?",
+            "risposta": "Guarda il classpath: se trova il driver MySQL, configura il DataSource. Se trova Spring MVC, configura il web server. È il principio 'opinionated': fa le scelte giuste al posto tuo."
+          }
+        },
+        {
+          "id": "spring-014",
+          "priorita": "ALTA",
+          "domanda": "Come gestisci configurazioni diverse per sviluppo e produzione?",
+          "risposta": "Con i profili: metti le configurazioni specifiche in file separati per ambiente e indichi quale è attivo all'avvio, così il codice resta lo stesso e cambia solo ciò che viene caricato. Il vantaggio è che le differenze tra ambienti sono esplicite e versionate, invece di vivere in istruzioni tramandate a voce. C'è però un limite da tenere presente: il profilo decide quale comportamento attivare, non dove custodire i segreti.",
+          "parole_chiave": [
+            "profili",
+            "configurazione per ambiente",
+            "file separati",
+            "profilo attivo",
+            "stesso artefatto"
+          ],
+          "follow_up": {
+            "domanda": "E per password e segreti?",
+            "risposta": "Mai nel codice né nel repository: arrivano da variabili d'ambiente o da un gestore di segreti, che è anche l'unico modo per cambiarli senza ricostruire l'applicazione. Un file di configurazione versionato è pubblico di fatto, quindi una chiave lì dentro va considerata compromessa appena il repository diventa accessibile. La regola è che l'artefatto deve poter essere pubblicato senza contenere nulla di riservato."
+          }
+        },
+        {
+          "id": "spring-015",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono l'Inversion of Control e la Dependency Injection?",
+          "risposta": "L'inversione del controllo è il principio per cui la creazione e la gestione del ciclo di vita degli oggetti non le fa più la classe, ma il container. La dependency injection è il modo in cui Spring realizza quel principio: tu dichiari di cosa hai bisogno e il container te lo passa, invece di costruirlo con un new dentro il codice. Il vantaggio concreto è che le dipendenze diventano esplicite e sostituibili, quindi l'accoppiamento scende e i test diventano semplici.",
+          "parole_chiave": [
+            "inversione del controllo",
+            "dependency injection",
+            "container",
+            "accoppiamento",
+            "testabilità"
+          ],
+          "follow_up": {
+            "domanda": "Cosa cambia concretamente rispetto a costruire gli oggetti a mano?",
+            "risposta": "Che non decidi tu quale implementazione usare nel punto in cui serve: la scegli in un solo posto, la configurazione. Se domani devi sostituire un client HTTP con un doppio nei test, non tocchi il codice che lo usa. Con il new manuale quella scelta è sparsa ovunque e ogni sostituzione diventa una ricerca nel progetto."
+          }
+        },
+        {
+          "id": "spring-016",
+          "priorita": "ALTA",
+          "domanda": "Cos'è un bean in Spring e quali scope esistono?",
+          "risposta": "Un bean è un oggetto il cui ciclo di vita lo gestisce il container: lo crea, inietta le dipendenze e lo distrugge alla chiusura del contesto. Gli scope principali sono singleton, che è il predefinito e significa una sola istanza per contesto, e prototype, che ne crea una nuova a ogni richiesta. In applicazioni web esistono anche request e session, e c'è un dettaglio da ricordare: un singleton non dovrebbe dipendere da un bean di request, perché sopravvive alle richieste.",
+          "parole_chiave": [
+            "bean",
+            "singleton",
+            "prototype",
+            "request",
+            "session"
+          ],
+          "follow_up": {
+            "domanda": "Perché un singleton non dovrebbe dipendere da un bean di request?",
+            "risposta": "Perché il singleton viene creato una volta e vive più a lungo, quindi si terrebbe stretto il primo bean di request incontrato e lo riuserebbe per tutte le richieste successive, mescolando i dati di utenti diversi. È un bug di concorrenza che si manifesta come dati di un altro utente nella risposta. Si risolve iniettando un proxy che risolve il bean corretto a ogni chiamata, oppure leggendo il valore dal contesto al momento dell'uso."
+          }
+        },
+        {
+          "id": "spring-017",
+          "priorita": "ALTA",
+          "domanda": "Differenza tra @Component, @Service, @Repository e @Controller.",
+          "risposta": "Sono tutte specializzazioni dell'annotazione base che marca i componenti, e la scansione le rileva allo stesso modo: la differenza sta nel significato. Service indica la logica di business, Repository l'accesso ai dati, Controller il livello web. In particolare Repository non è solo una marca: attiva la traduzione automatica delle eccezioni di persistenza in una gerarchia comune, così il codice che gestisce gli errori non dipende dalla tecnologia usata.",
+          "parole_chiave": [
+            "component scanning",
+            "service",
+            "repository",
+            "controller",
+            "traduzione delle eccezioni"
+          ],
+          "follow_up": {
+            "domanda": "C'è una di queste annotazioni che fa qualcosa in più?",
+            "risposta": "Sì, quella del repository: oltre a marcare la classe fa tradurre le eccezioni specifiche della tecnologia di persistenza nella gerarchia comune di Spring. Così se cambi implementazione il codice che gestisce gli errori continua a funzionare. È anche il motivo per cui conviene usarla davvero sulle classi di accesso ai dati."
+          }
+        },
+        {
+          "id": "spring-018",
+          "priorita": "ALTA",
+          "domanda": "Quali tipi di injection esistono e qual è preferito?",
+          "risposta": "Puoi iniettare sul campo, con un setter o tramite il costruttore. Quella sul costruttore è la raccomandata: le dipendenze sono obbligatorie per costruire l'oggetto, i campi possono essere final e nei test istanzi la classe passando parametri senza tirare in ballo il container. C'è anche un vantaggio di progetto: se il costruttore diventa lunghissimo, il codice ti sta dicendo che quella classe fa troppe cose.",
+          "parole_chiave": [
+            "constructor injection",
+            "field injection",
+            "setter",
+            "campi final",
+            "obbligatorietà"
+          ],
+          "follow_up": {
+            "domanda": "Perché la field injection è sconsigliata?",
+            "risposta": "Perché nasconde le dipendenze: la classe non dichiara di cosa ha bisogno per essere valida e chi la legge non lo vede. In più permette di costruire l'oggetto in stato incompleto, perché i campi si riempiono dopo, e nei test ti obbliga alla riflessione o al container per valorizzarli."
+          }
+        },
+        {
+          "id": "spring-019",
+          "priorita": "ALTA",
+          "domanda": "Spiega il pattern Proxy in Spring e i suoi limiti.",
+          "risposta": "Spring non modifica il tuo bean: ne crea un oggetto che lo avvolge e intercetta le chiamate, usando i proxy dinamici se il bean implementa interfacce o la generazione di una sottoclasse altrimenti. È così che funzionano transazioni, cache e sicurezza, cioè tutto ciò che si applica tramite annotazioni. Il limite da conoscere è che le chiamate interne non passano dal proxy, quindi un metodo dello stesso bean che ne chiama un altro annotato non ottiene quell'effetto.",
+          "parole_chiave": [
+            "proxy",
+            "proxy dinamico",
+            "sottoclasse generata",
+            "chiamate interne",
+            "auto-invocazione"
+          ],
+          "follow_up": {
+            "domanda": "Come risolvi il problema della chiamata interna a un metodo transazionale?",
+            "risposta": "Spostando il metodo in un altro bean, che è la soluzione pulita e rende esplicita la responsabilità. In alternativa puoi iniettare il bean in sé stesso, ma è un giro che confonde chi legge. Se il metodo non ha bisogno di stare nella stessa classe, il problema non esisteva dall'inizio."
+          }
+        },
+        {
+          "id": "spring-020",
+          "priorita": "ALTA",
+          "domanda": "Spiega il flusso di una richiesta HTTP in Spring MVC.",
+          "risposta": "La richiesta arriva alla servlet di dispatcher, che è il front controller unico, e lei consulta i mapping per capire quale metodo del controller deve gestirla. Il metodo elabora, tipicamente chiamando i servizi, e restituisce un oggetto. Poi entrano in gioco i convertitori di messaggi: con Jackson l'oggetto diventa JSON e viene scritto nel corpo della risposta. Capire questo flusso aiuta quando un errore di serializzazione o un filtro si comporta in modo inatteso.",
+          "parole_chiave": [
+            "DispatcherServlet",
+            "HandlerMapping",
+            "convertitori di messaggi",
+            "Jackson",
+            "front controller"
+          ],
+          "follow_up": {
+            "domanda": "Dove intervengono i filtri rispetto a questo flusso?",
+            "risposta": "Prima della servlet di dispatcher: i filtri servlet stanno a monte, quindi possono leggere e modificare richiesta e risposta prima che il controller esista, ed è lì che vive Spring Security. Gli interceptor invece stanno dentro il dispatcher e hanno accesso al metodo del controller, quindi usi gli uni o gli altri a seconda di quanto contesto ti serve."
+          }
+        },
+        {
+          "id": "spring-021",
+          "priorita": "ALTA",
+          "domanda": "Differenza tra @Controller e @RestController.",
+          "risposta": "Controller serve a restituire il nome di una vista da renderizzare, quindi lo usi con i template. RestController è la combinazione di Controller e dell'annotazione che indica che il valore di ritorno va scritto direttamente nel corpo della risposta, serializzato di solito in JSON. Per le API REST è la scelta standard, e mettere entrambe le annotazioni sulla stessa classe è l'errore che si vede spesso nel codice.",
+          "parole_chiave": [
+            "Controller",
+            "RestController",
+            "ResponseBody",
+            "serializzazione",
+            "viste"
+          ],
+          "follow_up": {
+            "domanda": "Cosa fa esattamente l'annotazione ResponseBody?",
+            "risposta": "Dice al framework di non cercare una vista e di scrivere il valore restituito nel corpo della risposta, passando dai convertitori di messaggi. Senza di essa il nome dell'oggetto restituito verrebbe interpretato come nome di vista e otterresti un errore di risoluzione. È il motivo per cui RestController è comodo: combina due annotazioni che vanno sempre insieme."
+          }
+        },
+        {
+          "id": "spring-022",
+          "priorita": "ALTA",
+          "domanda": "Come gestisci le eccezioni in modo centralizzato?",
+          "risposta": "Con un consigliere globale sui controller, dove ogni metodo si occupa di un tipo di eccezione e restituisce una risposta con lo stato HTTP adeguato. Così i controller restano puliti e il formato dell'errore è coerente in tutta l'API. Il dettaglio che fa la differenza è non esporre mai il messaggio tecnico interno: al client va un codice e un messaggio comprensibile, mentre il dettaglio completo finisce nei log.",
+          "parole_chiave": [
+            "RestControllerAdvice",
+            "ExceptionHandler",
+            "ResponseEntity",
+            "formato coerente degli errori"
+          ],
+          "follow_up": {
+            "domanda": "Cosa non deve mai arrivare nel messaggio di errore?",
+            "risposta": "I dettagli interni: nomi di tabelle e colonne, query, percorsi di file, versioni delle librerie. Sono informazioni utili a chi ti attacca e inutili al client. All'utente serve sapere cosa ha sbagliato e cosa può fare, quindi un codice, un messaggio leggibile e un identificativo della richiesta per correlare i log."
+          }
+        },
+        {
+          "id": "spring-023",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono Spring Data JPA e le derived query?",
+          "risposta": "Definisci un'interfaccia che estende il repository di Spring Data e hai già pronto l'insieme di operazioni standard: salvataggio, ricerca per identificatore, elenco con paginazione e ordinamento. In più il nome del metodo genera la query: scrivere findByCognomeAndAttivo produce la clausola corrispondente senza che tu scriva nulla. Quando la derivazione non basta usi l'annotazione con la query in JPQL, e il codice nativo resta per i casi in cui serve davvero.",
+          "parole_chiave": [
+            "Spring Data JPA",
+            "JpaRepository",
+            "derived query",
+            "JPQL",
+            "paginazione"
+          ],
+          "follow_up": {
+            "domanda": "Quando smetti di usare i nomi dei metodi e passi a una query esplicita?",
+            "risposta": "Quando il nome diventa lungo e difficile da leggere: c'è un limite pratico oltre il quale il metodo si chiama con quattro condizioni e un ordinamento e nessuno lo ricostruisce a mente. In quel caso la query esplicita è più chiara, specialmente se ci sono join. La regola è usare la derivazione per i casi semplici e non piegarla a quelli complessi."
+          }
+        },
+        {
+          "id": "spring-024",
+          "priorita": "ALTA",
+          "domanda": "Cosa fa @Transactional?",
+          "risposta": "Apre una transazione attorno al metodo: se tutto fila committa, se viene lanciata un'eccezione di runtime fa il rollback. Il punto da tenere a mente è che funziona tramite proxy, quindi il metodo deve essere pubblico e la chiamata deve arrivare dall'esterno del bean, altrimenti l'annotazione non ha effetto. E il rollback predefinito non copre le eccezioni verificate, quindi se il tuo metodo ne lancia una devi dirlo esplicitamente.",
+          "parole_chiave": [
+            "transazione",
+            "commit",
+            "rollback",
+            "proxy",
+            "eccezioni verificate"
+          ],
+          "follow_up": {
+            "domanda": "Perché un'eccezione verificata non fa rollback per impostazione predefinita?",
+            "risposta": "Perché il comportamento predefinito riguarda gli errori di runtime, considerati guasti imprevisti, mentre le eccezioni verificate sono parte del contratto del metodo e possono rappresentare casi gestiti. Se nel tuo caso indicano un guasto che deve annullare la transazione, lo dichiari esplicitamente nell'annotazione. È una decisione da prendere consapevolmente, non da subire."
+          }
+        },
+        {
+          "id": "spring-025",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono Spring Security e la filter chain?",
+          "risposta": "La sicurezza si applica attraverso una catena di filtri servlet, quindi viene valutata prima che la richiesta arrivi al controller. Nel bean di configurazione dichiari quali percorsi sono pubblici e quali protetti, come avviene l'autenticazione e quali regole di autorizzazione applicare. Ogni filtro della catena ha un compito preciso, e capire la catena è il modo per rispondere a domande tipo perché il token non viene letto o perché una richiesta pubblica viene bloccata lo stesso.",
+          "parole_chiave": [
+            "catena di filtri",
+            "configurazione della sicurezza",
+            "percorsi pubblici",
+            "autenticazione",
+            "autorizzazione"
+          ],
+          "follow_up": {
+            "domanda": "Perché una richiesta a un endpoint pubblico può essere bloccata lo stesso?",
+            "risposta": "Perché la catena applica i filtri prima di sapere quale controller risponderà: se un filtro precedente rifiuta la richiesta, il percorso pubblico non viene nemmeno raggiunto. È il caso tipico del filtro che valida il token senza distinguere le rotte. La soluzione è dichiarare l'esclusione nella configurazione della catena, che è il posto giusto."
+          }
+        },
+        {
+          "id": "spring-026",
+          "priorita": "ALTA",
+          "domanda": "Come funziona l'autenticazione JWT in Spring?",
+          "risposta": "Il client invia le credenziali, il server le verifica e restituisce un token firmato che contiene le informazioni necessarie. A ogni richiesta successiva il client manda quel token nell'header di autorizzazione, e un filtro personalizzato ne verifica firma e scadenza: se è valido popola il contesto di sicurezza e la richiesta prosegue come autenticata. La cosa importante da dire al colloquio è che il token è firmato ma non cifrato, quindi chi lo intercetta ne legge il contenuto e dentro non ci metti dati sensibili.",
+          "parole_chiave": [
+            "JWT",
+            "token firmato",
+            "firma",
+            "scadenza",
+            "contesto di sicurezza"
+          ],
+          "follow_up": {
+            "domanda": "Come gestisci la scadenza del token?",
+            "risposta": "Con una scadenza breve per il token di accesso e uno di rinnovo più longevo con cui ottenerne uno nuovo, così se il primo viene rubato la finestra di abuso è ridotta. La revoca immediata è il punto debole dei token di accesso: per averla servirebbe uno stato lato server, che è esattamente quello che il token senza stato voleva evitare."
+          }
+        },
+        {
+          "id": "spring-027",
+          "priorita": "ALTA",
+          "domanda": "Cos'è l'auto-configuration di Spring Boot?",
+          "risposta": "Spring Boot configura automaticamente i bean in base a cosa trova nel classpath: se ci sono le dipendenze della persistenza e una sorgente dati, ti prepara repository e gestore delle transazioni senza che tu scriva la configurazione. L'annotazione principale abilita insieme la scansione dei componenti e questa configurazione automatica. Il resto lo fai con le proprietà, e se una scelta automatica non ti va la escludi o la sostituisci con un tuo bean, che ha la precedenza.",
+          "parole_chiave": [
+            "auto-configurazione",
+            "classpath",
+            "annotazione principale",
+            "esclusione",
+            "precedenza"
+          ],
+          "follow_up": {
+            "domanda": "Come fai a capire da dove arriva un bean configurato automaticamente?",
+            "risposta": "Attivi il report delle condizioni di autoconfigurazione e parti da lì: ti dice quali configurazioni sono state applicate e quali no, e per quale motivo. È lo strumento giusto perché il codice che le genera non è nel tuo progetto. Aggiungere una dipendenza e vedere cambiare la configurazione senza toccare nulla è comodo e disorientante insieme, e quel report è la mappa."
+          }
+        },
+        {
+          "id": "spring-028",
+          "priorita": "MEDIA",
+          "domanda": "A cosa serve Spring Boot Actuator?",
+          "risposta": "Actuator aggiunge endpoint di monitoraggio e gestione all'applicazione, come /actuator/health per lo stato di salute, /actuator/info per le informazioni e /actuator/metrics per le metriche. In produzione serve per capire se l'app è viva, controllare memoria e thread, e integrarla con i sistemi di monitoring. Gli endpoint vanno esposti con cautela, perché rivelano dettagli interni, quindi si configurano permessi e accessi di rete in modo restrittivo.",
+          "parole_chiave": [
+            "Actuator",
+            "health",
+            "metrics",
+            "monitoring"
+          ],
+          "follow_up": {
+            "domanda": "Come usi l'endpoint health in produzione?",
+            "risposta": "Lo interrogo periodicamente dai sistemi di orchestrazione, come Kubernetes con le readiness e liveness probe, per capire se l'app è pronta a ricevere traffico o va riavviata. Un health check affidabile è la base per rilasciare senza interruzioni."
+          }
+        },
+        {
+          "id": "spring-029",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci le migrazioni del database?",
+          "risposta": "Con uno strumento di versionamento dello schema: scrivi i cambiamenti come script numerati e all'avvio lo strumento verifica quali sono già stati applicati ed esegue solo i nuovi. Il vantaggio è che lo schema del database diventa codice versionato insieme all'applicazione, quindi ogni ambiente si allinea allo stesso modo e si vede chi ha introdotto cosa. Va eseguito come passo controllato e non dell'applicazione stessa, altrimenti con più istanze parte in parallelo più volte.",
+          "parole_chiave": [
+            "migrazioni versionate",
+            "script numerati",
+            "schema come codice",
+            "applicazione automatica",
+            "passo controllato"
+          ],
+          "follow_up": {
+            "domanda": "Quale strumento scegli?",
+            "risposta": "Uno che privilegia semplicità e script SQL è spesso sufficiente, perché il linguaggio lo conosci già e chi arriva dopo capisce cosa succede. Uno più strutturato serve quando ti servono rollback automatici o supporto a più formati. La cosa su cui vale la pena discutere non è lo strumento, è la regola: le migrazioni devono essere compatibili con la versione precedente dell'applicazione, perché durante un rilascio le due convivono."
+          }
+        },
+        {
+          "id": "spring-030",
+          "priorita": "MEDIA",
+          "domanda": "Come monitori un'app Spring Boot in produzione?",
+          "risposta": "Con gli endpoint di diagnostica del framework, che espongono informazioni già pronte sullo stato dell'applicazione: salute, metriche, configurazione attiva, livello dei log. Sono anche il punto da cui un sistema di raccolta esterno preleva le metriche e le porta su una dashboard. Il dettaglio da non sbagliare è che quegli endpoint vanno protetti: esporre la configurazione o lo stato interno a chiunque è un modo silenzioso di regalare informazioni utili a chi ti attacca.",
+          "parole_chiave": [
+            "endpoint di diagnostica",
+            "verifica dello stato",
+            "metriche",
+            "raccolta esterna",
+            "esposizione protetta"
+          ],
+          "follow_up": {
+            "domanda": "Quali metteresti in produzione?",
+            "risposta": "Quello di salute, perché è ciò che il bilanciatore interroga per sapere se mandarti traffico, e le metriche, che servono per capire cosa succede nel tempo. Gli altri li valuti caso per caso: alcuni mostrano configurazione o dati sensibili e vanno limitati o tolti del tutto. La configurazione predefinita li espone in modo troppo generoso, quindi va rivista prima del rilascio."
+          }
+        },
+        {
+          "id": "spring-031",
+          "priorita": "MEDIA",
+          "domanda": "Spiega il ciclo di vita di un bean.",
+          "risposta": "Il container istanzia il bean, inietta le dipendenze e poi passa dai post processor, che sono il punto in cui Spring applica proxy e altre trasformazioni. Subito dopo arrivano i callback di inizializzazione, come il metodo annotato con PostConstruct, e infine, alla chiusura del contesto, quelli di distruzione come PreDestroy. Sapere l'ordine serve quando devi aprire o chiudere una risorsa: il posto giusto è il callback e non il costruttore, perché lì le dipendenze sono già presenti.",
+          "parole_chiave": [
+            "ciclo di vita",
+            "post processor",
+            "PostConstruct",
+            "PreDestroy",
+            "ordine"
+          ],
+          "follow_up": {
+            "domanda": "Perché aprire una risorsa nel costruttore è sbagliato?",
+            "risposta": "Perché nel costruttore le dipendenze iniettate possono non essere ancora valorizzate, e soprattutto non hai un punto simmetrico in cui chiudere la risorsa. Il callback di inizializzazione esiste esattamente per questo e ti dà la coppia corretta con quello di distruzione. Se apri nel costruttore e l'inizializzazione fallisce, la gestione dell'errore diventa più complicata del necessario."
+          }
+        },
+        {
+          "id": "spring-032",
+          "priorita": "MEDIA",
+          "domanda": "@Component vs @Bean: quando usare l'uno o l'altro?",
+          "risposta": "Component è un'annotazione sulla classe e viene registrata automaticamente dalla scansione: la usi sulle classi di cui possiedi il codice. Bean è un'annotazione su un metodo di una classe di configurazione e ti dà il controllo su come l'oggetto viene costruito: la usi per le classi di librerie terze o quando la creazione richiede logica, come scegliere un'implementazione in base a una proprietà. In sintesi: component per il tuo codice, bean per tutto il resto.",
+          "parole_chiave": [
+            "Component",
+            "Bean",
+            "component scanning",
+            "classe di configurazione",
+            "librerie terze"
+          ],
+          "follow_up": {
+            "domanda": "Cosa succede se metti Component su una classe di una libreria?",
+            "risposta": "Che non hai il controllo su come viene istanziata: il container usa il costruttore che trova, e se ti serve passare un valore calcolato o un'altra implementazione non hai un punto dove farlo. In più stai annotando codice che non ti appartiene, e a ogni aggiornamento della libreria rischi che la classe cambi forma e la registrazione si rompa."
+          }
+        },
+        {
+          "id": "spring-033",
+          "priorita": "MEDIA",
+          "domanda": "Come si risolve l'ambiguità quando esistono più bean dello stesso tipo?",
+          "risposta": "Quando ci sono più bean dello stesso tipo l'iniezione fallisce, perché il container non sa quale scegliere. Si risolve indicando un candidato predefinito con Primary, oppure selezionando esplicitamente per nome con Qualifier nel punto di iniezione. La scelta tra i due dipende dalla situazione: Primary va bene se esiste un candidato naturale nella maggior parte degli usi, Qualifier se ogni punto di iniezione ha esigenze diverse.",
+          "parole_chiave": [
+            "ambiguità",
+            "Primary",
+            "Qualifier",
+            "candidati",
+            "iniezione"
+          ],
+          "follow_up": {
+            "domanda": "Perché non usare sempre Qualifier?",
+            "risposta": "Perché diventa rumore in ogni punto di iniezione e ripete un'informazione che quasi sempre è la stessa. Se la maggior parte dei consumatori vuole la stessa implementazione, Primary la esprime una volta sola e Qualifier resta per le eccezioni. La regola è mettere l'eccezione dove è un'eccezione."
+          }
+        },
+        {
+          "id": "spring-034",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono Spring AOP e le cross-cutting concern?",
+          "risposta": "La programmazione orientata agli aspetti separa le responsabilità trasversali, come log, sicurezza, transazioni e metriche, dalla logica di business che altrimenti si riempie di chiamate ripetute. In Spring scrivi un aspetto con i punti di contatto e i consigli di prima, dopo o intorno, e il container applica quel comportamento ai metodi che corrispondono. Spring la usa internamente per transazioni, cache ed esecuzione asincrona: è il motivo per cui quelle annotazioni funzionano senza che tu scriva il codice che le implementa.",
+          "parole_chiave": [
+            "AOP",
+            "aspetti",
+            "pointcut",
+            "advice",
+            "transazioni"
+          ],
+          "follow_up": {
+            "domanda": "Perché AOP può rendere difficile il debug?",
+            "risposta": "Perché il comportamento è applicato fuori dal codice che stai leggendo: nel profilo dello stack compaiono classi generate e non capisci da dove arriva una chiamata. In più l'ordine di applicazione di più aspetti non è sempre ovvio. È potente e va usato su poche responsabilità davvero trasversali, non per nascondere logica di business."
+          }
+        },
+        {
+          "id": "spring-035",
+          "priorita": "MEDIA",
+          "domanda": "Come si leggono i parametri di una richiesta REST?",
+          "risposta": "Usi PathVariable per i segmenti del percorso, RequestParam per i parametri di query come il numero di pagina, RequestBody per il corpo JSON deserializzato in un oggetto e RequestHeader per leggere gli header. La distinzione non è formale: se un parametro identifica la risorsa sta nel percorso, se serve a filtrare o paginare va nella query. Seguire questa convenzione rende l'API prevedibile e più semplice da documentare.",
+          "parole_chiave": [
+            "PathVariable",
+            "RequestParam",
+            "RequestBody",
+            "RequestHeader",
+            "convenzione"
+          ],
+          "follow_up": {
+            "domanda": "Perché non mettere tutto nel percorso?",
+            "risposta": "Perché il percorso identifica la risorsa, mentre filtri e opzioni la descrivono: mescolarli rende l'URL ambiguo e complica la cache, perché ogni combinazione di filtri diventa un percorso diverso. La query string esiste esattamente per le opzioni, ed è quella che gli strumenti di documentazione descrivono meglio."
+          }
+        },
+        {
+          "id": "spring-036",
+          "priorita": "MEDIA",
+          "domanda": "Come implementi la validazione degli input?",
+          "risposta": "Annoti i campi dell'oggetto di ingresso con i vincoli della validazione dei bean: obbligatorietà, lunghezza, formato dell'email, valori minimi e massimi. Poi metti l'annotazione di validazione sul parametro del controller e, se un vincolo fallisce, Spring solleva un'eccezione che gestisci in un punto solo. La validazione sul client è cortesia verso l'utente, quella sul server è l'unica che conta davvero.",
+          "parole_chiave": [
+            "validazione dei bean",
+            "vincoli",
+            "annotazione sul parametro",
+            "gestione centralizzata"
+          ],
+          "follow_up": {
+            "domanda": "Dove metti i messaggi di errore personalizzati?",
+            "risposta": "Nel gestore centralizzato delle eccezioni, che legge quali campi hanno fallito e costruisce una risposta con il dettaglio per il client. Tenerli lì evita che ogni controller li ripeta. Se ti servono tradotti, li tieni in file di messaggi e li risolvi a partire dal codice del vincolo."
+          }
+        },
+        {
+          "id": "spring-037",
+          "priorita": "MEDIA",
+          "domanda": "Come funziona il mapping entità-relazione in JPA?",
+          "risposta": "Ogni entità è una classe annotata che corrisponde a una tabella, con un campo che rappresenta la chiave primaria ed è spesso generato automaticamente. Le relazioni si dichiarano con le annotazioni specifiche per i vari tipi, e per quelle uno a molti devi decidere qual è il lato proprietario, cioè quello che possiede la chiave esterna. È una decisione che conta, perché solo il lato proprietario governa come la relazione viene scritta.",
+          "parole_chiave": [
+            "entità",
+            "chiave primaria",
+            "relazioni",
+            "lato proprietario",
+            "chiave esterna"
+          ],
+          "follow_up": {
+            "domanda": "Perché il lato proprietario è il dettaglio su cui si sbaglia di più?",
+            "risposta": "Perché mappare la chiave esterna dal lato sbagliato produce tabelle di collegamento inattese e aggiornamenti che non arrivano al database: cambi la relazione in memoria, sembra funzionare, ma non viene salvata. La regola è che il lato del molti possiede la chiave esterna, quindi la relazione uno a molti si mappa dal lato molti."
+          }
+        },
+        {
+          "id": "spring-038",
+          "priorita": "MEDIA",
+          "domanda": "Spiega propagation e isolation in @Transactional.",
+          "risposta": "La propagazione decide cosa fare se una transazione è già aperta: quella predefinita si aggancia a quella esistente, mentre l'opzione che ne crea una nuova indipendente sospende la corrente. Serve quando vuoi che un'operazione venga salvata anche se quella esterna fallisce, come in una traccia di audit. L'isolamento invece è il livello di protezione dalle letture concorrenti. Sono due cose che si regolano separatamente, e sbagliare la propagazione è la causa più frequente di rollback inattesi.",
+          "parole_chiave": [
+            "propagazione",
+            "transazione esistente",
+            "transazione indipendente",
+            "isolamento",
+            "rollback"
+          ],
+          "follow_up": {
+            "domanda": "Quando ti serve davvero una transazione nuova e indipendente?",
+            "risposta": "Quando l'operazione interna deve essere indipendente dall'esito di quella esterna: il caso tipico è registrare un tentativo fallito o una traccia di audit che deve restare anche se poi tutto va in rollback. Fuori da quei casi è una complicazione, perché introduci una seconda connessione al database e rischi blocchi tra le due transazioni."
+          }
+        },
+        {
+          "id": "spring-039",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono i profili Spring e come si usano?",
+          "risposta": "I profili ti permettono di attivare configurazioni e bean diversi per ambiente senza cambiare il codice. Marci i bean o le classi di configurazione con il profilo a cui appartengono e indichi quale è attivo nella configurazione dell'ambiente. Così il database in memoria in sviluppo e quello reale in produzione convivono nello stesso progetto, e chi legge il codice vede quali parti sono specifiche di un ambiente.",
+          "parole_chiave": [
+            "profili",
+            "bean condizionali",
+            "profilo attivo",
+            "ambiente"
+          ],
+          "follow_up": {
+            "domanda": "Cosa non deve mai stare dentro un profilo?",
+            "risposta": "I segreti e i valori specifici dell'ambiente: quelli devono arrivare da variabili d'ambiente o da un gestore di segreti, non da un file versionato. Il profilo serve a decidere quale comportamento attivare, non a custodire password. Confondere le due cose è il modo classico per far finire una chiave di produzione nel repository."
+          }
+        },
+        {
+          "id": "spring-040",
+          "priorita": "MEDIA",
+          "domanda": "Differenza tra @Value e @ConfigurationProperties.",
+          "risposta": "Value inietta una singola proprietà direttamente nel campo, ed è comodo per un valore isolato. ConfigurationProperties mappa un gruppo di proprietà con lo stesso prefisso su un oggetto dedicato, in modo tipizzato, e supporta anche la validazione. Quando la configurazione cresce la seconda è molto meglio: hai un oggetto che descrive le impostazioni, i default sono espliciti e un errore di battitura diventa un errore di compilazione invece di un valore strano a runtime.",
+          "parole_chiave": [
+            "Value",
+            "ConfigurationProperties",
+            "tipizzazione",
+            "prefisso",
+            "validazione"
+          ],
+          "follow_up": {
+            "domanda": "Perché un valore mancante con Value è pericoloso?",
+            "risposta": "Perché se la proprietà non esiste e non hai dato un valore predefinito l'avvio fallisce in modo rumoroso, ma se hai dato un predefinito accetti in silenzio una configurazione sbagliata in produzione. Con l'oggetto tipizzato puoi rendere obbligatori i campi e validarli all'avvio, così l'errore arriva subito invece che quando la funzionalità viene usata."
+          }
+        },
+        {
+          "id": "spring-041",
+          "priorita": "BASSA",
+          "domanda": "Come crei un'app da zero?",
+          "risposta": "Parti da uno strumento che genera lo scheletro del progetto: scegli le dipendenze che ti servono e ottieni una struttura funzionante con la classe principale e la configurazione. Da lì aggiungi i tuoi pezzi: il modello, la persistenza, i servizi, i controller. La cosa da capire è che la classe principale fa molto: avvia il contenitore, attiva la scansione dei componenti e la configurazione automatica in base a ciò che trova nel classpath.",
+          "parole_chiave": [
+            "scheletro del progetto",
+            "dipendenze",
+            "classe principale",
+            "scansione",
+            "configurazione automatica"
+          ],
+          "follow_up": {
+            "domanda": "Cosa fa la classe principale?",
+            "risposta": "Avvia il contenitore, attiva la scansione dei componenti nel package e la configurazione automatica in base alle dipendenze presenti. È il motivo per cui aggiungere una dipendenza al progetto può cambiare il comportamento senza che tu tocchi il codice: qualcosa viene configurato da sé. Quando serve capire cosa è stato configurato, si guarda il report delle condizioni di configurazione automatica."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Spring Security",
+      "domande": [
+        {
+          "id": "spring-042",
+          "priorita": "ALTA",
+          "domanda": "Come funziona il login con JWT?",
+          "risposta": "L'utente manda user e password. Il server verifica, crea un token firmato con scadenza, e lo restituisce. Da quel momento il client invia il token in ogni richiesta nell'header Authorization. Il server lo valida e sa chi sei.",
+          "parole_chiave": [
+            "token firmato",
+            "header Authorization",
+            "stateless",
+            "scadenza"
+          ],
+          "follow_up": {
+            "domanda": "Il server dove salva il token?",
+            "risposta": "Da nessuna parte! Il token è firmato: il server può verificarlo senza doverlo memorizzare. È questo il bello del JWT: zero stato sul server."
+          }
+        },
+        {
+          "id": "spring-043",
+          "priorita": "ALTA",
+          "domanda": "Come funzionano autenticazione e autorizzazione in Spring Security?",
+          "risposta": "Spring Security si basa su una catena di filtri che intercettano ogni richiesta HTTP. In autenticazione il filtro legge le credenziali o il token, le verifica tramite un AuthenticationManager e mette l'utente nel SecurityContext; in autorizzazione le regole, definite in una SecurityFilterChain con metodi come authorizeHttpRequests, decidono se l'utente può accedere a quel percorso o metodo. Nelle API REST si configura di solito il CSRF come disattivato, perché con i token è inutile.",
+          "parole_chiave": [
+            "Spring Security",
+            "filtri",
+            "AuthenticationManager",
+            "autorizzazione"
+          ],
+          "follow_up": {
+            "domanda": "Dove definisci quali rotte sono libere?",
+            "risposta": "Nella SecurityFilterChain, con permitAll per le rotte pubbliche come login e registrazione, e authenticated o ruoli specifici per le altre. Tutto ciò che non è esplicitamente permesso resta protetto."
+          }
+        },
+        {
+          "id": "spring-044",
+          "priorita": "MEDIA",
+          "domanda": "Come funziona la protezione CSRF?",
+          "risposta": "Il server genera un token per sessione. Le richieste che modificano dati (POST, PUT) devono includere questo token. Se non c'è, il server rifiuta. Impedisce che un sito malevolo faccia richieste a nome tuo.",
+          "parole_chiave": [
+            "token",
+            "sessione",
+            "protezione"
+          ],
+          "follow_up": {
+            "domanda": "Serve con JWT?",
+            "risposta": "No. Con JWT non c'è sessione e il token è nell'header, non nei cookie. La protezione CSRF è disabilitata."
+          }
+        },
+        {
+          "id": "spring-045",
+          "priorita": "BASSA",
+          "domanda": "Cosa sono i security filters?",
+          "risposta": "Sono una catena di filtri che processano ogni richiesta prima che arrivi al controller, e sono il punto in cui vive la sicurezza: identificano chi sta chiamando, verificano i permessi, proteggono dalle falsificazioni di richiesta e applicano gli header di sicurezza. Il vantaggio di intervenire lì è che nessun endpoint può dimenticarsi di controllare, perché il controllo avviene prima e per tutti. Capire la catena serve quando una richiesta pubblica viene bloccata lo stesso o quando un token non viene letto: la causa è quasi sempre l'ordine dei filtri.",
+          "parole_chiave": [
+            "catena di filtri",
+            "prima del controller",
+            "controllo uniforme",
+            "ordine dei filtri",
+            "nessun endpoint dimenticato"
+          ],
+          "follow_up": {
+            "domanda": "Come aggiungi un filtro custom?",
+            "risposta": "Estendendo il filtro di base che garantisce l'esecuzione una sola volta per richiesta e inserendolo nella catena con la configurazione, scegliendo in che punto. La scelta della posizione conta: se lo metti prima di quello che rinnova le credenziali, leggerai un token vecchio e sembrerà un problema di autenticazione. È il tipo di dettaglio che si capisce solo sapendo che la catena è ordinata."
+          }
+        },
+        {
+          "id": "spring-046",
+          "priorita": "BASSA",
+          "domanda": "Cos'è il method-level security?",
+          "risposta": "Significa dichiarare i permessi sui metodi del servizio invece che solo sui percorsi web, con un'annotazione che esprime la regola richiesta. Serve perché la sicurezza va difesa in profondità: lo stesso metodo può essere raggiunto da endpoint diversi, da un lavoro pianificato o da un altro servizio, e proteggere solo l'indirizzo lascerebbe scoperti tutti gli altri accessi. Il costo è che i permessi si trovano sparsi nel codice e non li leggi tutti in un punto solo.",
+          "parole_chiave": [
+            "sicurezza sui metodi",
+            "annotazioni",
+            "difesa in profondità",
+            "accessi non web",
+            "permessi distribuiti"
+          ],
+          "follow_up": {
+            "domanda": "Perché non proteggere solo gli indirizzi?",
+            "risposta": "Perché un indirizzo è una delle porte di accesso, non l'unica: un lavoro pianificato, un altro servizio o una chiamata interna non passano da lì, quindi resterebbero senza controllo. Mettere la regola sul metodo significa che vale per tutti i modi in cui quel codice viene raggiunto. La contropartita è che la mappa dei permessi non è più in un unico posto, e va cercata nel codice."
+          }
+        }
+      ]
+    }
+  ]
+}
