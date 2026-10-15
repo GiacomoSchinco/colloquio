@@ -8,6 +8,8 @@ Raccolta di domande e risposte per preparare colloqui da sviluppatore, con un'ap
 public/data/
   index.json          catalogo: argomenti, ordine di studio, conteggi
   angular.json        un file per argomento
+  csharp.json
+  dotnet.json
   java.json
   react.json
   ...

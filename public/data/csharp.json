@@ -1,0 +1,920 @@
+{
+  "meta": {
+    "tecnologia": "C#",
+    "slug": "csharp",
+    "schema": 2,
+    "versione": 1,
+    "aggiornato": "2026-10-15",
+    "totale_domande": 55
+  },
+  "argomenti": [
+    {
+      "nome": "Fondamentali",
+      "domande": [
+        {
+          "id": "csharp-001",
+          "priorita": "ALTA",
+          "domanda": "Cosa succede davvero quando compili ed esegui un programma C#?",
+          "risposta": "Il compilatore non produce codice macchina, ma IL, un linguaggio intermedio indipendente dalla piattaforma, insieme ai metadati dei tipi. A runtime il CLR carica l'assembly, verifica il bytecode e traduce l'IL in istruzioni native con il JIT, la compilazione just-in-time, quando il metodo viene chiamato la prima volta. In più il CLR gestisce la memoria con il garbage collector, le eccezioni e la sicurezza dei tipi: è questo che si intende quando si dice che C# è un linguaggio gestito.",
+          "parole_chiave": [
+            "IL",
+            "CLR",
+            "JIT",
+            "assembly",
+            "codice gestito"
+          ],
+          "follow_up": {
+            "domanda": "Cosa significa che il codice è gestito?",
+            "risposta": "Significa che non gestisci tu la memoria: il garbage collector libera gli oggetti non più raggiungibili e il runtime controlla i tipi. In cambio perdi un po' di controllo, per esempio sui tempi esatti delle deallocazioni, ma guadagni sicurezza contro i classici errori di memoria del C++. Resta comunque tua la responsabilità di capire quali oggetti restano vivi, per esempio evitando riferimenti tenuti aperti inutilmente."
+          }
+        },
+        {
+          "id": "csharp-002",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra tipo valore e tipo riferimento?",
+          "risposta": "Un tipo valore, come `int` o una `struct`, contiene direttamente i dati: assegnarlo o passarlo a un metodo copia il valore, e non può essere null se non usi la variante nullable. Un tipo riferimento, come una classe, contiene un riferimento a un oggetto sull'heap: assegnarlo copia il riferimento, quindi due variabili possono puntare allo stesso oggetto e le modifiche si vedono da entrambe. Le stringhe sono un tipo riferimento, ma essendo immutabili si comportano di fatto come valori quando le modifichi.",
+          "parole_chiave": [
+            "tipo valore",
+            "tipo riferimento",
+            "copia",
+            "heap",
+            "stack"
+          ],
+          "follow_up": {
+            "domanda": "Perché modificare una struct dentro una `List<T>` non ha effetto?",
+            "risposta": "Perché l'indicizzatore della lista restituisce una copia del valore: scrivi sulla copia, non sull'elemento. Per modificarla davvero riassegni l'elemento tramite l'indice oppure usi una classe, che è un tipo riferimento. È anche il motivo per cui conviene rendere le struct immutabili, creandone una nuova versione invece di cambiarne i campi."
+          }
+        },
+        {
+          "id": "csharp-003",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra `string` e `StringBuilder`?",
+          "risposta": "Le stringhe sono immutabili: ogni concatenazione crea una nuova stringa e alloca nuova memoria, quindi dentro un ciclo con molte iterazioni i costi crescono. `StringBuilder` mantiene un buffer modificabile, quindi `Append` non ricrea nulla e alloca molto meno, e alla fine chiami `ToString` una volta sola per ottenere il risultato. La regola pratica è semplice: concatenazione diretta per pochi pezzi, `StringBuilder` quando costruisci il testo a pezzi in un ciclo lungo.",
+          "parole_chiave": [
+            "immutabilità",
+            "StringBuilder",
+            "allocazioni",
+            "concatenazione"
+          ],
+          "follow_up": {
+            "domanda": "Perché le stringhe sono immutabili?",
+            "risposta": "Perché l'immutabilità le rende sicure e condivisibili: se una stringa non cambia, puoi passarla a chiunque senza che qualcuno la modifichi a tua insaputa, e il runtime può riusare le stesse istanze tra letterali uguali. In più il codice hash resta valido, quindi la stringa può fare da chiave di dizionario. Il prezzo da pagare è che ogni modifica produce una nuova stringa."
+          }
+        },
+        {
+          "id": "csharp-004",
+          "priorita": "ALTA",
+          "domanda": "Cosa fa `var` e quando preferisci il tipo esplicito?",
+          "risposta": "`var` chiede al compilatore di dedurre il tipo dalla parte destra dell'assegnazione: il tipo resta statico e deciso in compilazione, non è una variabile dinamica. Lo usi quando il tipo è evidente dal contesto, per esempio con `new List<Utente>()` o nei `foreach`, mentre scrivi il tipo esplicito quando la deduzione può sorprendere, per esempio con il risultato di un metodo che restituisce un tipo molto generico. In code review conta la leggibilità, non la preferenza personale.",
+          "parole_chiave": [
+            "var",
+            "inferenza",
+            "tipo statico",
+            "leggibilità"
+          ],
+          "follow_up": {
+            "domanda": "Che differenza c'è tra `var` e `dynamic`?",
+            "risposta": "Con `var` il tipo è noto in compilazione, quindi hai IntelliSense e controllo degli errori; con `dynamic` le chiamate vengono risolte a runtime, quindi il codice compila sempre e fallisce solo sulla riga che esegui. `dynamic` serve per scenari di interoperabilità o dati molto fluidi, ma ti fa perdere l'aiuto del compilatore e costa prestazioni. Nel codice applicativo normale non ti serve quasi mai."
+          }
+        },
+        {
+          "id": "csharp-005",
+          "priorita": "MEDIA",
+          "domanda": "A cosa servono i tipi nullable come `int?`?",
+          "risposta": "`int?` è zucchero sintattico per `Nullable<int>`: aggiunge alla variabile la possibilità di rappresentare l'assenza di valore, con `HasValue` per il controllo e `.Value` per leggere il numero. Serve quando il dominio prevede il vuoto, come una data di fine non ancora definita, un prezzo opzionale o una colonna nullable del database. `int?` e `int` non sono intercambiabili: per combinarli devi gestire il caso null con `??`, un controllo esplicito o `GetValueOrDefault()`.",
+          "parole_chiave": [
+            "Nullable<T>",
+            "HasValue",
+            "operatore null-coalescing",
+            "valore opzionale"
+          ],
+          "follow_up": {
+            "domanda": "Cosa fa l'operatore `??`?",
+            "risposta": "Restituisce il valore di sinistra se non è null, altrimenti quello di destra: `var nome = input ?? \"anonimo\"`. Si concatena senza problemi e ha una variante di assegnazione, `??=`, che assegna solo se la variabile è null. È il modo più leggibile di dare un valore di default senza scrivere un `if`."
+          }
+        },
+        {
+          "id": "csharp-006",
+          "priorita": "MEDIA",
+          "domanda": "Che differenza c'è tra `const`, `readonly` e `static readonly`?",
+          "risposta": "`const` è una costante di compilazione: il valore viene copiato dentro chi la usa, quindi può essere solo un primitivo o una stringa e non può cambiare tra una build e l'altra. `readonly` è un campo assegnato a runtime, di norma nel costruttore, e può contenere qualsiasi tipo, anche un oggetto creato a runtime; aggiungendo `static` il campo appartiene al tipo invece che all'istanza. La differenza si vede quando aggiorni una libreria senza ricompilare chi la usa: un `const` resta al valore vecchio.",
+          "parole_chiave": [
+            "const",
+            "readonly",
+            "static",
+            "costante di compilazione"
+          ],
+          "follow_up": {
+            "domanda": "Perché nel dubbio si preferisce `static readonly` in una libreria pubblica?",
+            "risposta": "Perché i `const` vengono incorporati nel chiamante: se cambi il valore nella libreria e il progetto chiamante non viene ricompilato, continua a usare il vecchio numero. Con `static readonly` il valore viene letto a runtime, quindi un aggiornamento della libreria ha effetto subito. Per valori davvero immutabili e usati come parametro di attributo, invece, `const` è l'unica opzione."
+          }
+        },
+        {
+          "id": "csharp-007",
+          "priorita": "MEDIA",
+          "domanda": "Che differenza c'è tra campo e proprietà?",
+          "risposta": "Il campo è la variabile che conserva il dato; la proprietà è la porta di accesso, con un `get` e un `set` che ti permettono di aggiungere validazione, logica o di rendere la scrittura impossibile dall'esterno. Le auto-property, come `public string Nome { get; set; }`, generano il campo per te e sono la forma normale quando non serve logica. Esporre campi pubblici lega il codice alla rappresentazione interna, perché trasformarli in proprietà più avanti è un cambio che può rompere la compatibilità binaria: si parte sempre dalle proprietà.",
+          "parole_chiave": [
+            "campo",
+            "proprietà",
+            "auto-property",
+            "incapsulamento"
+          ],
+          "follow_up": {
+            "domanda": "A cosa serve `init` in una proprietà?",
+            "risposta": "Permette di assegnare la proprietà solo durante la costruzione, nell'oggetto literal o dal costruttore, e la rende immutabile dopo. È il modo moderno di avere oggetti di sola lettura senza scrivere costruttori pieni di parametri, e si combina bene con i record. Se dopo la costruzione qualcuno prova a scriverci, il compilatore lo avverte."
+          }
+        },
+        {
+          "id": "csharp-008",
+          "priorita": "MEDIA",
+          "domanda": "Come si gestiscono i valori null nel C# moderno?",
+          "risposta": "Con i nullable reference types: attivandoli con `<Nullable>enable</Nullable>` il compilatore distingue `string` da `string?` e ti avvisa quando usi un riferimento che può essere null senza controllarlo. Nei controlli si usano `?.` per non invocare nulla su un null, `??` per dare un valore di default, `??=` per assegnarlo e `is null` o `is not null` per le verifiche. L'obiettivo non è eliminare i null a runtime, ma far emergere in compilazione i casi che devi gestire.",
+          "parole_chiave": [
+            "nullable reference types",
+            "sicurezza dei null",
+            "operatore null-conditional",
+            "avvisi del compilatore"
+          ],
+          "follow_up": {
+            "domanda": "Quindi i null non possono più causare errori a runtime?",
+            "risposta": "No: gli avvisi sono un contratto, non una garanzia. I dati che arrivano da JSON, da un database o da codice non annotato possono essere null anche se il tipo dice il contrario, quindi ai confini del sistema serve una validazione esplicita. Nei punti critici resta utile un controllo difensivo, con `ArgumentNullException.ThrowIfNull` o un `if` chiaro."
+          }
+        },
+        {
+          "id": "csharp-009",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra `==` e `Equals`, e cosa c'entra `GetHashCode`?",
+          "risposta": "`Equals` definisce l'uguaglianza di valore, ed è il metodo che sovrascrivi per dire quando due oggetti sono uguali. `==` sulle classi confronta per default i riferimenti, cioè verifica se sono lo stesso oggetto in memoria, anche se alcuni tipi come `string` lo ridefiniscono per confrontare il contenuto. `GetHashCode` è il codice hash usato dalle collezioni basate su hash, come `Dictionary` e `HashSet`: due oggetti uguali devono avere lo stesso hash, altrimenti la ricerca non li trova più.",
+          "parole_chiave": [
+            "Equals",
+            "GetHashCode",
+            "uguaglianza di valore",
+            "codice hash"
+          ],
+          "follow_up": {
+            "domanda": "Perché sovrascrivere `Equals` obbliga a sovrascrivere anche `GetHashCode`?",
+            "risposta": "Perché le collezioni cercano prima per hash e poi confermano con `Equals`: due oggetti uguali con hash diversi finirebbero in secchi diversi e non verrebbero mai trovati. Il compilatore segnala l'incoerenza con un avviso, quindi è un errore che si nota in fretta. Nei record il problema non esiste, perché uguaglianza di valore e hash vengono generati insieme."
+          }
+        },
+        {
+          "id": "csharp-010",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è la reflection e quando è giusto usarla?",
+          "risposta": "La reflection permette di ispezionare e usare i tipi a runtime: leggere proprietà, invocare metodi, creare istanze, scoprire attributi, tutto partendo da un `Type` o dal nome del tipo in una stringa. È il motore dietro a serializzatori JSON, contenitori di dependency injection, ORM e sistemi di plugin. Il costo è che perdi il controllo del compilatore e paghi prestazioni, perché le chiamate vengono risolte a runtime: la usi quando serve davvero essere generici, non come scorciatoia al posto del codice tipizzato.",
+          "parole_chiave": [
+            "reflection",
+            "Type",
+            "attributi",
+            "runtime"
+          ],
+          "follow_up": {
+            "domanda": "Che ruolo hanno gli attributi in tutto questo?",
+            "risposta": "Gli attributi sono i metadati che descrivono il codice, e la reflection li legge: `[JsonPropertyName]` dice al serializzatore come chiamare un campo, `[Authorize]` dice al framework chi può entrare, `[Fact]` dice al runner che quel metodo è un test. Sono il modo con cui una libreria scopre le tue intenzioni senza che tu debba chiamarla esplicitamente. Se scrivi una libreria puoi definire attributi tuoi, seguendo la convenzione di chiamarli con il suffisso `Attribute`."
+          }
+        },
+        {
+          "id": "csharp-011",
+          "priorita": "BASSA",
+          "domanda": "Cosa sono le classi `partial` e perché le trovi nel codice generato?",
+          "risposta": "Una classe `partial` è definita in più file e il compilatore la unisce in un unico tipo. Serve a separare il codice scritto a mano da quello generato automaticamente, così rigenerare il secondo non cancella il primo, e in secondo luogo aiuta a organizzare classi molto grandi in file tematici. È un dettaglio del linguaggio, ma spiega perché nei progetti con designer o generatori trovi due file con lo stesso nome di classe.",
+          "parole_chiave": [
+            "partial class",
+            "codice generato",
+            "designer",
+            "source generator"
+          ],
+          "follow_up": {
+            "domanda": "Dove la incontri in un'applicazione reale?",
+            "risposta": "Nei progetti desktop, dove il designer genera un file `Designer.cs` accanto al tuo; nei source generator, dove il frammento generato è una `partial` che si somma a quella che scrivi tu; e nelle migration di Entity Framework Core, che sono esattamente classi partial. Riconoscerlo evita di cercare a lungo dove sia definito un metodo che sembra sparito."
+          }
+        },
+        {
+          "id": "csharp-012",
+          "priorita": "MEDIA",
+          "domanda": "Interpolazione, `string.Format` e `string.Join`: quando usi quale?",
+          "risposta": "L'interpolazione, con il `$` davanti alla stringa, è la forma leggibile e preferita per comporre testo con poche variabili, perché il codice resta vicino al risultato. `string.Format` fa la stessa cosa con segnaposto numerici, quindi è più difficile da leggere ma utile quando il formato è un template esterno o una risorsa di traduzione. `string.Join` è lo strumento giusto per unire una collezione con un separatore, mentre per il testo costruito a pezzi in un ciclo conviene `StringBuilder`.",
+          "parole_chiave": [
+            "interpolazione",
+            "string.Format",
+            "string.Join",
+            "cultura"
+          ],
+          "follow_up": {
+            "domanda": "Come formatti numeri e date senza sorprese?",
+            "risposta": "Con lo specificatore dopo i due punti: `{prezzo:C}` per la valuta, `{data:yyyy-MM-dd}` per una data in formato fisso, `{valore:N2}` per due decimali con separatore delle migliaia. Soprattutto, non costruire questi formati a mano e passa la cultura giusta: con `CultureInfo.InvariantCulture` il separatore decimale non cambia con la lingua del server. È anche il motivo per cui nelle API e nei log conviene il formato ISO."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Tipi, oggetti e memoria",
+      "domande": [
+        {
+          "id": "csharp-013",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra classe astratta e interfaccia?",
+          "risposta": "L'interfaccia definisce un contratto di comportamento senza stato: una classe può implementarne quante vuole, quindi è lo strumento quando vuoi trattare allo stesso modo oggetti diversi. La classe astratta è una classe incompleta che può contenere campi, costruttori e implementazioni già pronte, ma se ne eredita una sola, quindi rappresenta una relazione di tipo più forte. In pratica si programma verso le interfacce e si usa la classe astratta quando c'è codice comune da condividere tra le varianti.",
+          "parole_chiave": [
+            "interfaccia",
+            "classe astratta",
+            "contratto",
+            "ereditarietà singola"
+          ],
+          "follow_up": {
+            "domanda": "Perché per test e dependency injection si preferisce l'interfaccia?",
+            "risposta": "Perché permette di sostituire l'implementazione reale con un doppio nei test, senza ereditare da una classe concreta che magari fa chiamate di rete o accesso al database. In più non ti lega a una gerarchia: testi la classe che dipende dall'interfaccia senza sapere chi la implementa in produzione. Con un framework di mock, l'interfaccia è tutto ciò che serve per definire il comportamento atteso."
+          }
+        },
+        {
+          "id": "csharp-014",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra `override` e `new`?",
+          "risposta": "`override` sostituisce il comportamento del metodo virtuale della classe base, e la sostituzione vale anche se chiami l'oggetto tramite un riferimento al tipo base: è il polimorfismo. `new` invece nasconde il membro della classe base senza sostituirlo, quindi quale versione viene eseguita dipende dal tipo statico della variabile e non da quello reale dell'oggetto. Il risultato è un comportamento sorprendente, ed è il motivo per cui `new` sui metodi è quasi sempre un errore di progettazione.",
+          "parole_chiave": [
+            "override",
+            "new",
+            "polimorfismo",
+            "nascondere un membro"
+          ],
+          "follow_up": {
+            "domanda": "Come te ne accorgi in code review?",
+            "risposta": "Se vedi `new` su un metodo che nella classe base è `virtual`, chiedi se l'intenzione era davvero nascondere o sostituire: nella maggior parte dei casi volevi `override` e ti è sfuggito il `virtual`. Il compilatore avverte già quando nascondi un membro senza dichiararlo, quindi quell'avviso non va ignorato. Se il metodo base non è virtuale, la soluzione di solito è renderlo tale o ripensare la gerarchia."
+          }
+        },
+        {
+          "id": "csharp-015",
+          "priorita": "MEDIA",
+          "domanda": "Cosa significano `virtual`, `abstract` e `sealed`?",
+          "risposta": "Un membro `virtual` ha un'implementazione che le classi derivate possono sostituire con `override`; un membro `abstract` non ha implementazione e obbliga la derivata a fornirla, e una classe con membri astratti non è istanziabile. `sealed` blocca l'ereditarietà, su un'intera classe o su un singolo override, e serve a impedire che qualcuno cambi il comportamento che hai definito. Sono i tre strumenti che regolano quanto una gerarchia è aperta all'estensione.",
+          "parole_chiave": [
+            "virtual",
+            "abstract",
+            "sealed",
+            "estensibilità"
+          ],
+          "follow_up": {
+            "domanda": "Perché non dichiarare tutto virtual?",
+            "risposta": "Perché ogni punto di estensione è un contratto che ti impegni a mantenere, e l'ereditarietà libera rende difficile capire il comportamento reale del codice. Chi progetta librerie preferisce composizione e interfacce e rende virtual solo dove vuole davvero permettere la sostituzione. Nelle applicazioni il problema si pone poco, quindi `sealed` si usa più per misurare l'intenzione che per necessità tecnica."
+          }
+        },
+        {
+          "id": "csharp-016",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono i record e in cosa differiscono dalle classi?",
+          "risposta": "Il record è un tipo pensato per i dati: il compilatore genera uguaglianza di valore, `ToString` leggibile, `GetHashCode` coerente e il metodo `with` per copiare cambiando qualche proprietà. Una classe normale è un tipo pensato per il comportamento, dove l'uguaglianza resta per riferimento finché non la definisci tu. I record possono essere classi o struct: scegli il record quando il tipo rappresenta un dato immutabile, come un DTO o un valore di dominio, e la classe quando lo stato evolve nel tempo.",
+          "parole_chiave": [
+            "record",
+            "uguaglianza di valore",
+            "immutabilità",
+            "with"
+          ],
+          "follow_up": {
+            "domanda": "Cosa fa esattamente `with`?",
+            "risposta": "Crea una copia dell'oggetto cambiando solo le proprietà che indichi, per esempio `var nuovo = vecchio with { Stato = Stato.Attivo }`. La copia è superficiale, quindi gli oggetti referenziati restano gli stessi, e funziona bene con le proprietà `init`. È comodo per trattare i dati come valori ed evitare costruttori con molti parametri."
+          }
+        },
+        {
+          "id": "csharp-017",
+          "priorita": "MEDIA",
+          "domanda": "Quando scegli una `struct` invece di una classe?",
+          "risposta": "La struct è un tipo valore: non ha bisogno di una allocazione sull'heap e viene copiata a ogni assegnazione. La scegli quando i dati sono piccoli, immutabili e usati intensamente, come coordinate, importi o identificatori, perché riduci allocazioni e pressione sul garbage collector; la eviti quando è grande, quando serve identità condivisa o quando prevedi modifiche da più punti del codice. Ricorda che la copia è il comportamento di default: se una struct cambia dentro una collezione, la modifica può non propagarsi.",
+          "parole_chiave": [
+            "struct",
+            "tipo valore",
+            "allocazioni",
+            "pressione sul GC"
+          ],
+          "follow_up": {
+            "domanda": "Che differenza c'è tra una `struct` e una `record struct`?",
+            "risposta": "La `record struct` è una struct con in più l'uguaglianza di valore, un `ToString` leggibile e il supporto a `with`, quindi è la scelta naturale per piccoli dati di dominio. Una struct normale è più essenziale e non ti dà nulla di tutto questo: se ti serve solo raggruppare due campi, va benissimo così. Attenzione ai dettagli di prestazioni, perché anche nelle collezioni generiche resta una copia a ogni accesso."
+          }
+        },
+        {
+          "id": "csharp-018",
+          "priorita": "ALTA",
+          "domanda": "Come funziona il garbage collector di .NET?",
+          "risposta": "Il GC individua gli oggetti ancora raggiungibili partendo dalle radici, come variabili locali attive, campi statici e riferimenti in corso di esecuzione, e libera quelli che non lo sono più. Non è deterministico, quindi non sai esattamente quando un oggetto verrà rimosso, e usa le generazioni zero, uno e due per concentrarsi prima sugli oggetti giovani, che nella pratica muoiono subito, trattando a parte gli oggetti grandi. È il motivo per cui in .NET si evita di allocare oggetti temporanei nei percorsi caldi.",
+          "parole_chiave": [
+            "garbage collector",
+            "generazioni",
+            "raggiungibilità",
+            "Large Object Heap"
+          ],
+          "follow_up": {
+            "domanda": "Allora il GC chiude anche file e connessioni?",
+            "risposta": "No, ed è un punto che in colloquio viene chiesto spesso: il GC gestisce solo la memoria che ha allocato lui, non gli handle di file, le connessioni o le risorse native. Quelle vanno rilasciate esplicitamente tramite `IDisposable`, quindi con `using`, oppure incapsulate in `SafeHandle`. Se ti affidi al GC per chiudere una connessione, quella resta aperta finché il finalizzatore non viene eseguito, e non sai quando succede."
+          }
+        },
+        {
+          "id": "csharp-019",
+          "priorita": "ALTA",
+          "domanda": "Cosa fa `using` e cosa succede se dimentichi di liberare una risorsa?",
+          "risposta": "`using` chiama `Dispose` alla fine del blocco, anche se dentro è scattata un'eccezione, perché il compilatore lo traduce in un `try` con `finally`. Serve per le risorse non gestite o costose: file, connessioni, stream, client HTTP, transazioni. Se dimentichi di liberarle, la risorsa resta occupata più del necessario, il pool si esaurisce ed è il classico caso in cui l'applicazione rallenta sotto carico senza un errore evidente nei log.",
+          "parole_chiave": [
+            "IDisposable",
+            "using",
+            "try-finally",
+            "rilascio deterministico"
+          ],
+          "follow_up": {
+            "domanda": "Che differenza c'è tra `using` come blocco e come dichiarazione?",
+            "risposta": "Il blocco delimita l'ambito esplicitamente, mentre la dichiarazione `using var` libera la risorsa alla fine dell'ambito corrente, che è più leggibile quando la risorsa vive fino alla fine del metodo. Con le risorse asincrone esiste `await using`, che chiama `DisposeAsync` e serve per stream e connessioni che chiudono con operazioni asincrone. In tutti i casi il rilascio resta garantito anche in caso di eccezione."
+          }
+        },
+        {
+          "id": "csharp-020",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è il boxing e perché conviene evitarlo?",
+          "risposta": "Il boxing è la conversione di un tipo valore in `object` o in un'interfaccia: il runtime alloca una copia sull'heap e ti restituisce un riferimento. Il costo è doppio, perché c'è un'allocazione da pagare e una copia da fare, e nell'altro senso serve l'unboxing con un cast che può fallire. Con le collezioni generiche il problema è in gran parte scomparso, perché `List<int>` non boxa nulla, ma resta nei punti in cui il tipo deve essere `object`.",
+          "parole_chiave": [
+            "boxing",
+            "unboxing",
+            "allocazioni",
+            "collezioni generiche"
+          ],
+          "follow_up": {
+            "domanda": "Dove lo incontri senza accorgertene?",
+            "risposta": "Quando passi una struct a un metodo che accetta `object`, quando la inserisci in una collezione non generica, o quando la usi come chiave di un confronto che passa per `Equals(object)`. Anche i confronti tra tipi valore e le interfacce non generiche possono allocare. Nei percorsi caldi si evita con i generici, con `IEquatable<T>` e con i tipi `Span<T>` che non allocano affatto."
+          }
+        },
+        {
+          "id": "csharp-021",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono i generici e a cosa serve un vincolo come `where T : class`?",
+          "risposta": "I generici permettono di scrivere codice che funziona con qualsiasi tipo mantenendo il controllo in compilazione: `List<T>` è la stessa implementazione per ogni tipo, senza boxing e senza cast. Il vincolo dichiara cosa sai del tipo, per esempio `where T : class` per i riferimenti, `where T : new()` per poterlo istanziare, `where T : IRepository` per poter chiamare i metodi dell'interfaccia. Senza vincoli il compilatore ti fa usare solo i membri di `object`, quindi i vincoli sono ciò che rende il generico davvero utilizzabile.",
+          "parole_chiave": [
+            "generici",
+            "vincoli",
+            "type safety",
+            "riuso"
+          ],
+          "follow_up": {
+            "domanda": "Che vantaggio danno rispetto a usare `object`?",
+            "risposta": "Il controllo dei tipi in compilazione e nessun cast a runtime: se sbagli tipo, non compila, invece di fallire in produzione con un'eccezione di conversione. In più elimini boxing e allocazioni, perché il codice generico con tipi valore resta sui tipi valore. È lo stesso motivo per cui `List<T>` ha sostituito le vecchie collezioni non generiche."
+          }
+        },
+        {
+          "id": "csharp-022",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono i delegati e come si usano `Action` e `Func`?",
+          "risposta": "Il delegato è un tipo che rappresenta un riferimento a un metodo con una certa firma: è la base di callback, eventi, LINQ e in generale del passaggio di comportamento come parametro. `Action` e `Func` sono delegati generici già pronti, dove `Action` non restituisce nulla e `Func` restituisce l'ultimo parametro di tipo, quindi `Func<int, bool>` è un metodo che prende un intero e restituisce un booleano. Le lambda sono la sintassi compatta con cui assegni il metodo al delegato.",
+          "parole_chiave": [
+            "delegati",
+            "Action",
+            "Func",
+            "lambda"
+          ],
+          "follow_up": {
+            "domanda": "Cosa succede se un delegato ha più metodi iscritti e uno lancia un'eccezione?",
+            "risposta": "I delegati multicast si invocano in sequenza e un'eccezione interrompe la catena, quindi i metodi successivi non vengono eseguiti. È il motivo per cui dentro un gestore di evento conviene catturare le eccezioni e non lasciarle propagare agli altri iscritti. Inoltre l'ordine di invocazione è quello di iscrizione, che non è una cosa su cui conviene costruire logica fragile."
+          }
+        },
+        {
+          "id": "csharp-023",
+          "priorita": "MEDIA",
+          "domanda": "Come funziona un evento e perché non esporre direttamente un delegato pubblico?",
+          "risposta": "Un evento è un delegato con l'accesso controllato: chi sta fuori può solo iscriversi con `+=` e disiscriversi con `-=`, ma non può invocarlo né sovrascriverlo. L'esposizione del delegato pubblico invece permetterebbe a chiunque di azzerare la lista degli iscritti con un'assegnazione, cancellando silenziosamente tutti gli altri consumatori. Dentro la classe che lo dichiara l'evento si invoca normalmente, di solito proteggendo la chiamata dal controllo su null.",
+          "parole_chiave": [
+            "evento",
+            "delegato multicast",
+            "incapsulamento",
+            "iscrizione"
+          ],
+          "follow_up": {
+            "domanda": "Perché dimenticare di disiscriversi è un problema?",
+            "risposta": "Perché l'evento conserva il riferimento al sottoscrittore: se chi si è iscritto non si disiscrive, il garbage collector non lo può raccogliere e resta vivo finché vive il publisher. Nei servizi a lunga vita è una perdita di memoria lenta e difficile da vedere. La regola è disiscriversi dove ci si iscrive, per esempio in `Dispose` o alla fine dell'ambito."
+          }
+        },
+        {
+          "id": "csharp-024",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è una closure e quali insidie porta con sé?",
+          "risposta": "Una closure nasce quando una lambda o un metodo anonimo cattura una variabile dell'ambito esterno: il compilatore crea una classe che tiene quella variabile, quindi la lambda vede il valore attuale, non una copia al momento della creazione. L'insidia classica è catturare la variabile di ciclo e ottenerne un solo valore condiviso, oppure catturare oggetti pesanti che restano in vita più del previsto. Quando ti serve il valore corrente, copia la variabile dentro una variabile locale prima di usarla nella lambda.",
+          "parole_chiave": [
+            "closure",
+            "cattura di variabili",
+            "lambda",
+            "ambito"
+          ],
+          "follow_up": {
+            "domanda": "L'errore con la variabile di ciclo esiste ancora?",
+            "risposta": "Con il `foreach` non più, perché dalla versione 5 del linguaggio ogni iterazione ha la sua variabile distinta, quindi le lambda create nel ciclo vedono ognuna il proprio elemento. Con il `for`, invece, la variabile del contatore è una sola per tutto il ciclo e l'errore si presenta ancora, quindi lì conviene copiarla in una variabile locale. È un dettaglio che in colloquio fa capire se conosci il linguaggio o lo usi solo per abitudine."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Collezioni, generici e LINQ",
+      "domande": [
+        {
+          "id": "csharp-025",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra `List<T>`, `Dictionary<TKey,TValue>` e `HashSet<T>`?",
+          "risposta": "`List<T>` è una sequenza ordinata con accesso per indice, quindi è la scelta di default quando l'ordine conta e ti serve scorrere o accedere per posizione. `Dictionary<TKey,TValue>` è una mappa chiave-valore con ricerca praticamente immediata, quindi la usi quando devi trovare un elemento per identificatore invece di scorrere. `HashSet<T>` tiene elementi unici e risponde molto in fretta alla domanda se un valore è presente, ed è la collezione che sostituisce il controllo con `Contains` su una lista.",
+          "parole_chiave": [
+            "List",
+            "Dictionary",
+            "HashSet",
+            "complessità"
+          ],
+          "follow_up": {
+            "domanda": "Quando la scelta sbagliata si sente davvero?",
+            "risposta": "Quando la ricerca avviene dentro un ciclo: una `Contains` su una lista scorre tutti gli elementi, quindi su una lista grande il costo diventa quadratico e basta cambiare la struttura per risolverlo. Il caso tipico è la deduplicazione o la verifica di appartenenza fatta migliaia di volte. In code review, vedere una ricerca lineare dentro un ciclo è uno dei primi campanelli d'allarme sulle prestazioni."
+          }
+        },
+        {
+          "id": "csharp-026",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra `IEnumerable`, `ICollection` e `IList`?",
+          "risposta": "`IEnumerable<T>` è il minimo indispensabile: dice solo che puoi scorrere gli elementi con `foreach`. `ICollection<T>` aggiunge la dimensione e le operazioni di modifica, come `Add` e `Remove`. `IList<T>` aggiunge anche l'accesso per indice, quindi `this[int]` e `IndexOf`. La regola pratica è chiedere il tipo meno potente che ti serve: se devi solo leggere, accetta `IEnumerable<T>`, e la tua classe resterà utilizzabile con più implementazioni e più facile da testare.",
+          "parole_chiave": [
+            "IEnumerable",
+            "ICollection",
+            "IList",
+            "interfacce minime"
+          ],
+          "follow_up": {
+            "domanda": "Perché restituire `List<T>` da un metodo pubblico è sconsigliato?",
+            "risposta": "Perché esponi un tipo concreto e permetti al chiamante di modificare la collezione interna, magari aggiungendo o rimuovendo elementi che il tuo oggetto non si aspetta. Restituendo `IReadOnlyList<T>` o `IEnumerable<T>` comunichi l'intenzione di sola lettura e resti libero di cambiare implementazione senza rompere nessuno. Se serve una copia difensiva, la crei tu quando la restituisci."
+          }
+        },
+        {
+          "id": "csharp-027",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra esecuzione differita e immediata in LINQ?",
+          "risposta": "Una query LINQ non viene eseguita quando la scrivi, ma quando la scorri: `Where` e `Select` costruiscono una pipeline che si attiva solo quando la scorri, con un `foreach`, con `ToList` o con `Count`. Questo si chiama esecuzione differita e ti permette di comporre la query per pezzi senza pagare nulla finché non serve. La conseguenza da ricordare è che enumerare due volte la stessa query la esegue due volte, con tutti i costi del caso, anche una seconda chiamata al database.",
+          "parole_chiave": [
+            "esecuzione differita",
+            "query",
+            "enumerazione",
+            "ToList"
+          ],
+          "follow_up": {
+            "domanda": "Quando conviene materializzare con `ToList`?",
+            "risposta": "Quando sai che devi scorrere il risultato più di una volta, o quando vuoi riportare la query in memoria prima di fare altro, per esempio per chiudere la connessione al database. Materializzare però perde la capacità di comporre la query e carica tutto in memoria, quindi su un risultato grande è la scelta sbagliata. In sintesi: differita di default, materializzata solo con un motivo."
+          }
+        },
+        {
+          "id": "csharp-028",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra `IEnumerable` e `IQueryable`?",
+          "risposta": "`IEnumerable` rappresenta una sequenza che vive in memoria e i cui metodi sono delegati normali: filtrare significa scaricare i dati e poi scartarli in memoria. `IQueryable` rappresenta un albero di espressioni che un provider può tradurre in un'altra lingua, per esempio in SQL, quindi i filtri vengono compilati nella query e il database restituisce solo le righe che servono. È il motivo per cui su Entity Framework Core conviene filtrare prima di materializzare con `ToList`, altrimenti il filtro avviene in memoria e hai già caricato tutta la tabella.",
+          "parole_chiave": [
+            "IQueryable",
+            "albero di espressioni",
+            "traduzione in SQL",
+            "materializzazione"
+          ],
+          "follow_up": {
+            "domanda": "Cosa cambia se chiami una tua funzione dentro una query `IQueryable`?",
+            "risposta": "Che il provider non sa tradurla e devi scegliere: o chiami `AsEnumerable` e la esegui in memoria, oppure riscrivi la logica in modo che sia traducibile. Nelle versioni recenti il provider segnala esplicitamente che l'espressione non è traducibile invece di eseguirla silenziosamente in memoria, che è il motivo per cui gli errori di questo tipo si vedono subito in fase di test. Il caso classico è la formattazione o il confronto con metodi personalizzati."
+          }
+        },
+        {
+          "id": "csharp-029",
+          "priorita": "MEDIA",
+          "domanda": "Cosa fa `yield return` e quando conviene usarlo?",
+          "risposta": "`yield return` crea un iteratore: il metodo restituisce gli elementi uno alla volta e sospende la propria esecuzione tra un elemento e l'altro, riprendendo al passo successivo dell'enumerazione. Il vantaggio è che non costruisci una collezione intermedia in memoria e il primo elemento è disponibile subito, anche con una sorgente infinita o molto grande. Il costo è che lo stato del metodo viene gestito dal compilatore e che ogni iterazione riparte da lì, quindi in percorsi molto caldi non è gratis.",
+          "parole_chiave": [
+            "yield return",
+            "iteratori",
+            "lazy",
+            "streaming"
+          ],
+          "follow_up": {
+            "domanda": "Cosa devi ricordare quando enumeri un iteratore due volte?",
+            "risposta": "Che il metodo viene rieseguito da capo: se dentro ci sono letture da file o query, quelle operazioni si ripetono. Inoltre il codice dentro l'iteratore non parte finché non inizi a scorrere, quindi un'eccezione di validazione scritta lì dentro scatta solo al primo elemento e non quando chiami il metodo. Se ti serve una validazione immediata, falla prima di restituire l'iteratore."
+          }
+        },
+        {
+          "id": "csharp-030",
+          "priorita": "MEDIA",
+          "domanda": "Che differenza c'è tra `First`, `FirstOrDefault`, `Single` e `SingleOrDefault`?",
+          "risposta": "`First` restituisce il primo elemento e lancia un'eccezione se la sequenza è vuota, mentre `FirstOrDefault` restituisce il valore di default, cioè null per i riferimenti e zero per i numeri. `Single` e `SingleOrDefault` aggiungono la garanzia che l'elemento sia esattamente uno: se ce ne sono due, entrambe lanciano. La scelta è una dichiarazione di intenti: usa `Single` quando il duplicato è un errore dei dati, e `First` quando ne aspetti legittimamente più di uno.",
+          "parole_chiave": [
+            "First",
+            "Single",
+            "OrDefault",
+            "semantica"
+          ],
+          "follow_up": {
+            "domanda": "Perché `Single` può essere pericoloso su una tabella grande?",
+            "risposta": "Perché deve verificare che non esistano altri elementi, quindi può costringere il database a cercare oltre la prima riga trovata. Su una colonna indicizzata e unica il problema non si pone, ma su una query generica paghi una scansione in più. In termini di correttezza invece è utile, perché trasforma un duplicato inaspettato in un errore visibile invece che in un dato sbagliato."
+          }
+        },
+        {
+          "id": "csharp-031",
+          "priorita": "MEDIA",
+          "domanda": "Che differenza c'è tra `Select` e `SelectMany`?",
+          "risposta": "`Select` trasforma ogni elemento in un altro elemento, quindi se il risultato è a sua volta una collezione ottieni una sequenza di collezioni. `SelectMany` trasforma e poi appiattisce, restituendo un'unica sequenza di tutti gli elementi interni: è quello che usi quando da un ordine vuoi l'elenco piatto di tutte le righe, senza cicli annidati. Il caso tipico in memoria è la lista di stringhe di parole da dividere, mentre su database corrisponde a una join o a una sottoquery.",
+          "parole_chiave": [
+            "Select",
+            "SelectMany",
+            "proiezione",
+            "appiattimento"
+          ],
+          "follow_up": {
+            "domanda": "Si può ottenere lo stesso risultato con un `Select` e un `foreach` annidato?",
+            "risposta": "Sì, e talvolta è persino più chiaro, ma con `SelectMany` esprimi l'intenzione in una riga e resti componibile con altri operatori come `Where` o `GroupBy`. Il `foreach` annidato è preferibile quando dentro il ciclo fai qualcosa di complesso, con effetti collaterali o condizioni. La differenza sostanziale emerge su `IQueryable`, dove `SelectMany` diventa una join tradotta dal database e i due cicli non potrebbero esserlo."
+          }
+        },
+        {
+          "id": "csharp-032",
+          "priorita": "MEDIA",
+          "domanda": "Cosa fa `GroupBy` e come leggi il risultato?",
+          "risposta": "`GroupBy` raggruppa gli elementi per una chiave e restituisce una sequenza di gruppi, ognuno con la sua chiave e la sua collezione di elementi. Il risultato non è un dizionario, quindi per usarlo scorri i gruppi e leggi `Key` e gli elementi, oppure lo converti in un dizionario se ti serve la ricerca per chiave. È l'operatore giusto per aggregazioni per categoria, come il totale per cliente o il conteggio per stato.",
+          "parole_chiave": [
+            "GroupBy",
+            "chiave",
+            "aggregazioni",
+            "raggruppamento"
+          ],
+          "follow_up": {
+            "domanda": "Come ottieni il risultato come dizionario?",
+            "risposta": "Con `ToDictionary(g => g.Key, g => g.ToList())`, che però materializza tutto in memoria e non è traducibile in SQL. L'alternativa più naturale è proiettare subito l'aggregazione che ti serve, per esempio con `Select(g => new { g.Key, Totale = g.Sum(x => x.Importo) })`, così il database fa il lavoro di calcolo. In una query su `IQueryable` la seconda forma è anche quella che resta efficiente."
+          }
+        },
+        {
+          "id": "csharp-033",
+          "priorita": "MEDIA",
+          "domanda": "Perché materializzare con `ToList` cambia il comportamento di una query?",
+          "risposta": "`ToList` esegue la query e copia il risultato in memoria, chiudendo la composizione: le operazioni fatte dopo avvengono su oggetti in memoria e non vengono tradotte né dal provider né dal database. È utile quando devi scorrere il risultato più volte o quando vuoi staccarti dalla connessione, ma se lo metti troppo presto il filtro successivo lo fai nel processo applicativo su dati già scaricati. La posizione di `ToList` dentro una pipeline è una delle differenze di prestazioni più facili da sbagliare.",
+          "parole_chiave": [
+            "ToList",
+            "materializzazione",
+            "pipeline",
+            "prestazioni"
+          ],
+          "follow_up": {
+            "domanda": "C'è una differenza tra `ToList` e `AsEnumerable`?",
+            "risposta": "Sì: `ToList` esegue e materializza, quindi hai risultati concreti che puoi scorrere e modificare; `AsEnumerable` cambia solo il tipo statico e passa dalle operazioni traducibili a quelle in memoria, mantenendo però l'esecuzione differita. Se devi solo continuare con LINQ in memoria senza scorrere due volte, `AsEnumerable` è più leggero. Se invece ti serve la collezione, `ToList` è la scelta corretta."
+          }
+        },
+        {
+          "id": "csharp-034",
+          "priorita": "MEDIA",
+          "domanda": "A cosa servono `ref`, `out` e `in` nei parametri?",
+          "risposta": "`ref` passa la variabile per riferimento, quindi il metodo può leggerla e modificarla, e la variabile deve essere già inizializzata. `out` indica che il metodo restituirà un valore da quella variabile, e il metodo è obbligato ad assegnarla prima di uscire, cosa che permette le firme come `TryParse`. `in` passa per riferimento in sola lettura, quindi evita la copia di struct grandi senza permettere modifiche. Sono dettagli di prestazioni e di API, da usare quando servono e non per abitudine.",
+          "parole_chiave": [
+            "ref",
+            "out",
+            "in",
+            "passaggio per riferimento"
+          ],
+          "follow_up": {
+            "domanda": "Perché `TryParse` usa `out` e non restituisce direttamente il valore?",
+            "risposta": "Perché deve comunicare due cose: se la conversione è riuscita e quale valore ha prodotto. Con `out` il chiamante può scrivere `if (int.TryParse(testo, out var n))` ed evitare le eccezioni per il caso normale di input non valido. Il pattern `Try...` con `out` è la convenzione in .NET per le operazioni che possono fallire normalmente, e da tempo si usa anche con il metodo che restituisce una tupla."
+          }
+        },
+        {
+          "id": "csharp-035",
+          "priorita": "BASSA",
+          "domanda": "Cosa sono i metodi di estensione e quali regole seguono?",
+          "risposta": "Sono metodi statici che aggiungono comportamenti a un tipo esistente senza ereditare né modificarlo: si dichiarano in una classe statica, con il primo parametro preceduto da `this`, e si usano come se fossero metodi di istanza. Serve che il namespace della classe sia in visibilità con un `using`. Non possono accedere ai membri privati, non sovrascrivono i metodi reali e se ne dichiari due con la stessa firma ottieni un conflitto di ambiguità: sono zucchero sintattico, non ereditarietà.",
+          "parole_chiave": [
+            "metodi di estensione",
+            "classe statica",
+            "this",
+            "namespace"
+          ],
+          "follow_up": {
+            "domanda": "Quando conviene scriverne uno?",
+            "risposta": "Quando vuoi rendere leggibile un'operazione comune su un tipo che non controlli, per esempio `string` o una classe di terze parti, e l'operazione è abbastanza generale da meritare un nome proprio. Non conviene per logica di dominio che dipende dalla tua applicazione, perché sparsa in metodi di estensione è difficile da trovare e da testare nel suo insieme. In generale, prima prova con una funzione normale nel punto d'uso."
+          }
+        },
+        {
+          "id": "csharp-036",
+          "priorita": "MEDIA",
+          "domanda": "Perché confrontare stringhe ignorando maiuscole e minuscole richiede attenzione?",
+          "risposta": "Perché il confronto dipende dalla cultura e dalle regole della lingua, quindi conversioni come `ToLower` possono dare risultati diversi da quelli attesi e allocano stringhe nuove. La libreria offre `StringComparison`, e in particolare `Ordinal` per il confronto byte per byte e `OrdinalIgnoreCase` per il confronto tecnico senza regole linguistiche. Per gli identificatori, i percorsi, le chiavi e i confronti interni la scelta giusta è quasi sempre quella ordinal, mentre le regole linguistiche servono dove il testo è mostrato all'utente.",
+          "parole_chiave": [
+            "StringComparison",
+            "cultura",
+            "Ordinal",
+            "confronto"
+          ],
+          "follow_up": {
+            "domanda": "Come si comporta `string.Equals` di default?",
+            "risposta": "Il confronto ordinale semplice, che è veloce ma non gestisce le regole linguistiche, e per le ricerche ci sono overload che accettano la `StringComparison` esplicita. L'errore frequente è usare `==`, che confronta il contenuto in modo ordinale, per logica che voleva invece un confronto consapevole della cultura. Nei casi dubbi è sempre meglio dichiarare l'intenzione con il parametro, perché il codice dice cosa vuole e chi legge non deve indovinare."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Async e concorrenza",
+      "domande": [
+        {
+          "id": "csharp-037",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra esecuzione sincrona, asincrona e parallela?",
+          "risposta": "Il codice sincrono blocca il thread finché l'operazione non è finita, quindi durante un'attesa il thread resta occupato a non fare nulla. L'asincrono libera il thread mentre attende un'operazione di input o output e lo riprende quando il risultato è pronto: serve per la scalabilità sotto carico, non per far correre più veloce una singola richiesta. Il parallelo, invece, divide davvero il lavoro su più core per ridurre il tempo di calcolo. Sono tre problemi diversi e si confondono facilmente in colloquio.",
+          "parole_chiave": [
+            "sincrono",
+            "asincrono",
+            "parallelo",
+            "I/O bound",
+            "CPU bound"
+          ],
+          "follow_up": {
+            "domanda": "Su cosa si guadagna davvero usando async in un servizio web?",
+            "risposta": "Sul numero di richieste che il servizio riesce a servire con lo stesso numero di thread: mentre una richiesta aspetta il database, quel thread viene restituito al pool e usato per un'altra richiesta. Il tempo di risposta della singola richiesta resta simile, a volte leggermente peggiore per il costo della macchina a stati. Il guadagno si vede nel throughput e nella resistenza ai picchi, non nel tempo del singolo utente."
+          }
+        },
+        {
+          "id": "csharp-038",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra `Task` e `Thread`?",
+          "risposta": "Il thread è una risorsa del sistema operativo, costosa da creare e da gestire, mentre `Task` è un'astrazione che rappresenta un lavoro futuro e non ti obbliga a sapere su quale thread verrà eseguito. Le attività usano il pool di thread, quindi riutilizzano i thread esistenti, e possono anche non occupare alcun thread mentre aspettano un'operazione di input o output. Per questo in .NET moderno si lavora con `Task` e si lascia al runtime la gestione dei thread.",
+          "parole_chiave": [
+            "Task",
+            "Thread",
+            "thread pool",
+            "astrazione"
+          ],
+          "follow_up": {
+            "domanda": "Quando scendi al livello del thread?",
+            "risposta": "Quando hai lavoro CPU-bound che deve restare separato, quando hai bisogno di un thread dedicato con una priorità precisa, o quando stai scrivendo codice di infrastruttura. Per il lavoro di calcolo si usa comunque `Task.Run`, che manda il lavoro sul pool senza creare thread a mano. Creare thread manualmente è quasi sempre il segnale che l'astrazione è stata usata male."
+          }
+        },
+        {
+          "id": "csharp-039",
+          "priorita": "ALTA",
+          "domanda": "Cosa fanno `async` e `await` sotto il cofano?",
+          "risposta": "Il compilatore trasforma il metodo `async` in una macchina a stati: quando arrivi a un `await` su un'operazione non ancora completata, il metodo restituisce subito al chiamante un `Task` non concluso e registra una continuazione da eseguire al completamento. Quando l'operazione finisce, la continuazione riprende il metodo dal punto in cui era, con le variabili locali ripristinate dallo stato salvato. `async` non crea thread: semmai aspetta qualcosa che avviene altrove, per esempio nel sistema operativo o in rete.",
+          "parole_chiave": [
+            "macchina a stati",
+            "continuazione",
+            "Task",
+            "SynchronizationContext"
+          ],
+          "follow_up": {
+            "domanda": "Su quale thread riprende l'esecuzione dopo l'`await`?",
+            "risposta": "Dipende dal contesto: in un'applicazione con un contesto di sincronizzazione, come le interfacce grafiche, la continuazione torna sul thread del contesto per poter aggiornare l'interfaccia. In servizi senza contesto, come ASP.NET Core, riprende su un thread qualsiasi del pool, quindi non puoi contare sulla continuità del thread. Questo è il motivo per cui non si usano variabili legate al thread per mantenere stato tra un `await` e l'altro."
+          }
+        },
+        {
+          "id": "csharp-040",
+          "priorita": "ALTA",
+          "domanda": "Perché non si usa `.Result` o `.Wait()` su un'operazione asincrona?",
+          "risposta": "Perché bloccano il thread mentre l'operazione è in corso, vanificando il motivo per cui hai reso il codice asincrono, e possono causare stalli: se il contesto di sincronizzazione aspetta che quel thread torni libero per completare la continuazione, e il thread è bloccato proprio lì, ci si blocca a vicenda. Anche senza contesto si consumano thread del pool e sotto carico si arriva all'esaurimento. La soluzione è propagare `async` fino in fondo e usare `await`.",
+          "parole_chiave": [
+            "deadlock",
+            "Result",
+            "Wait",
+            "thread pool starvation"
+          ],
+          "follow_up": {
+            "domanda": "E se mi serve il risultato in un metodo che non è asincrono?",
+            "risposta": "Di norma significa che quel metodo andrebbe reso asincrono, perché anche chi lo chiama sta aspettando qualcosa che viene da fuori. Se il punto è davvero sincrono, come un costruttore o un evento di terze parti, esistono pattern dedicati e si valuta se spostare il lavoro asincrono prima, per esempio preparando i dati e passandoli al metodo sincrono. Usare `.Result` come scorciatoia è la soluzione che si rompe in produzione."
+          }
+        },
+        {
+          "id": "csharp-041",
+          "priorita": "MEDIA",
+          "domanda": "Che differenza c'è tra `Task.WhenAll` e `Task.WhenAny`?",
+          "risposta": "`Task.WhenAll` aspetta che tutte le attività siano concluse e restituisce un'attività composta, quindi serve per avviare più operazioni indipendenti in parallelo e aspettarle insieme. `Task.WhenAny` restituisce la prima che finisce, quindi serve per il timeout, per la prima risposta disponibile o per fermarsi quando una condizione è soddisfatta. Con `WhenAll` tutte le attività partono subito e aspettare la più lenta non è uno spreco, perché il lavoro è già in corso.",
+          "parole_chiave": [
+            "WhenAll",
+            "WhenAny",
+            "parallelismo",
+            "aggregazione"
+          ],
+          "follow_up": {
+            "domanda": "Se una delle attività fallisce, cosa succede con `WhenAll`?",
+            "risposta": "Aspettando l'attività composta viene rilanciata la prima eccezione, mentre tutte le altre restano disponibili nella proprietà `Exception` dell'attività aggregata. Se ti serve sapere quali sono fallite, leggi quella proprietà e gestisci i casi uno per uno. In più, se una fallisce, le altre non vengono annullate automaticamente: l'annullamento lo devi gestire tu con un token."
+          }
+        },
+        {
+          "id": "csharp-042",
+          "priorita": "ALTA",
+          "domanda": "Cosa fa un `CancellationToken` e come lo usi?",
+          "risposta": "È il meccanismo di annullamento cooperativo: un token segnala che non c'è più interesse a completare il lavoro, e chi lo riceve deve controllare la richiesta e interrompersi. Si passa come ultimo parametro ai metodi asincroni, e le API di sistema, HTTP, EF Core e le pipeline lo accettano già, quindi l'annullamento arriva fino al database o alla rete. La cooperazione è indispensabile: il token non interrompe nulla da solo, se il codice non lo controlla.",
+          "parole_chiave": [
+            "CancellationToken",
+            "annullamento cooperativo",
+            "timeout",
+            "propagazione"
+          ],
+          "follow_up": {
+            "domanda": "Da dove arriva il token in una richiesta HTTP?",
+            "risposta": "Da `HttpContext.RequestAborted`, che si attiva quando il client chiude la connessione o scade il timeout: registrarlo nelle operazioni lunghe evita che il server continui a lavorare per una risposta che nessuno aspetta più. In un'applicazione desktop il token arriva invece dall'azione dell'utente che annulla. Il pattern è sempre lo stesso: il token nasce in alto e viene propagato verso il basso."
+          }
+        },
+        {
+          "id": "csharp-043",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono i metodi `async void` e perché sono sconsigliati?",
+          "risposta": "Un metodo `async void` restituisce il controllo subito ma non espone nulla per sapere quando ha finito e, soprattutto, un'eccezione che sfugge diventa un'eccezione non gestita che fa terminare il processo. L'unico caso d'uso legittimo è il gestore di un evento, dove la firma è imposta dal delegato, e anche lì conviene racchiudere il corpo in un `try` con `catch`. In ogni altro caso si usa `async Task`, così il chiamante può aspettare e gestire gli errori.",
+          "parole_chiave": [
+            "async void",
+            "eccezioni non gestite",
+            "event handler",
+            "async Task"
+          ],
+          "follow_up": {
+            "domanda": "Come si passa da `async void` a qualcosa di testabile?",
+            "risposta": "Spostando la logica in un metodo `async Task` e lasciando al gestore dell'evento solo la chiamata, con `await` e un `catch` che registra l'errore. In questo modo il lavoro è verificabile con un test che fa `await` sul metodo, e l'evento resta un guscio sottile. È un riordino di poche righe che elimina una classe di crash difficili da diagnosticare."
+          }
+        },
+        {
+          "id": "csharp-044",
+          "priorita": "MEDIA",
+          "domanda": "A cosa serve `ConfigureAwait(false)`?",
+          "risposta": "Di default la continuazione dopo un `await` prova a tornare sul contesto di sincronizzazione originale, cosa necessaria nelle interfacce grafiche. `ConfigureAwait(false)` dice che non ti interessa tornare su quel contesto, quindi la continuazione può riprendere su un thread qualunque del pool: evita un giro di posta sul contesto e riduce il rischio di stalli. Nelle librerie riutilizzabili è una buona pratica, mentre nel codice applicativo che deve aggiornare la UI non va usata.",
+          "parole_chiave": [
+            "ConfigureAwait",
+            "SynchronizationContext",
+            "librerie",
+            "continuazione"
+          ],
+          "follow_up": {
+            "domanda": "Serve in ASP.NET Core?",
+            "risposta": "Meno che in passato, perché ASP.NET Core non ha un contesto di sincronizzazione, quindi il comportamento di default è già quello che vorresti. Resta comunque consigliato nelle librerie, perché chi le usa potrebbe chiamarle da un'applicazione desktop o da un contesto con sincronizzazione. È una riga che non cambia il comportamento applicativo e toglie una fonte di problemi a chi ti consuma."
+          }
+        },
+        {
+          "id": "csharp-045",
+          "priorita": "MEDIA",
+          "domanda": "Che differenza c'è tra `lock`, `Monitor` e `SemaphoreSlim`?",
+          "risposta": "`lock` è la forma compatta di `Monitor`: prende un flag, esegue il blocco in mutua esclusione e lo rilascia, garantendo che non si entri in due contemporaneamente. `Monitor` espone la stessa cosa con più controllo, come `TryEnter` e le attese con timeout. `SemaphoreSlim` invece permette un numero limitato di accessi simultanei e ha una versione asincrona, `WaitAsync`, che è l'unica adatta a proteggere codice asincrono, perché `lock` non può essere rilasciato attraverso un `await`.",
+          "parole_chiave": [
+            "lock",
+            "Monitor",
+            "SemaphoreSlim",
+            "mutua esclusione"
+          ],
+          "follow_up": {
+            "domanda": "Perché `lock` non funziona in un metodo asincrono?",
+            "risposta": "Perché il blocco di `lock` è legato al thread: dopo un `await` l'esecuzione può riprendere su un thread diverso, e rilasciare un blocco preso da un altro thread non è possibile. Si usa `SemaphoreSlim` con `WaitAsync` oppure si sposta la sezione critica in un metodo sincrono. Tenere un lock durante un'operazione lunga è comunque da evitare, perché mette in coda tutti gli altri."
+          }
+        },
+        {
+          "id": "csharp-046",
+          "priorita": "BASSA",
+          "domanda": "Cosa sono `Interlocked` e le collezioni concorrenti?",
+          "risposta": "`Interlocked` offre operazioni atomiche su singole variabili, come incremento, scambio e confronto con scambio, senza usare lock: sono l'opzione più leggera per contatori e stati semplici. Le collezioni in `System.Collections.Concurrent`, come `ConcurrentDictionary` e `ConcurrentQueue`, gestiscono invece le operazioni interne in modo thread-safe, quindi non devi sincronizzare tu. Restano però necessari ragionamenti attenti quando devi rendere atomica una sequenza di operazioni, perché la singola operazione è sicura ma la sequenza no.",
+          "parole_chiave": [
+            "Interlocked",
+            "collezioni concorrenti",
+            "atomicità",
+            "thread safety"
+          ],
+          "follow_up": {
+            "domanda": "Basta una collezione concorrente per essere al sicuro?",
+            "risposta": "No: la collezione è sicura rispetto a se stessa, ma le operazioni composte da più passi restano soggette a interferenze, come leggere un valore, calcolarne uno nuovo e riscriverlo. In quei casi serve un metodo specifico della collezione che faccia tutto in un colpo, oppure una sezione protetta. È il classico errore di chi sostituisce un `Dictionary` con un `ConcurrentDictionary` e crede di aver risolto la concorrenza."
+          }
+        },
+        {
+          "id": "csharp-047",
+          "priorita": "BASSA",
+          "domanda": "Cosa sono `IAsyncEnumerable` e `await foreach`?",
+          "risposta": "Sono lo streaming asincrono: invece di aspettare una lista completa, il produttore restituisce elementi uno alla volta e il consumatore li riceve con `await foreach`, elaborandoli mentre arrivano. È lo strumento giusto per grandi risultati di database, file di log o flussi di rete, dove materializzare tutto in memoria non è accettabile. Si combina con `yield return` in un metodo `async`, che è proprio il modo con cui si costruisce il produttore.",
+          "parole_chiave": [
+            "IAsyncEnumerable",
+            "await foreach",
+            "streaming",
+            "memoria"
+          ],
+          "follow_up": {
+            "domanda": "A cosa serve il token in `WithCancellation`?",
+            "risposta": "A interrompere l'enumerazione quando non serve più, per esempio perché il client ha chiuso la connessione: senza token il produttore continuerebbe a lavorare per un consumatore che non c'è. Si passa con `WithCancellation(token)` durante l'enumerazione, oppure il token arriva già come parametro del metodo che produce la sequenza. È lo stesso principio dell'annullamento cooperativo applicato al flusso."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Errori ed evoluzione del linguaggio",
+      "domande": [
+        {
+          "id": "csharp-048",
+          "priorita": "ALTA",
+          "domanda": "Come gestisci le eccezioni in C# e perché evitare `catch (Exception)`?",
+          "risposta": "Le eccezioni servono per i casi eccezionali, non per il flusso normale: il codice dovrebbe gestire con valori di ritorno i casi previsti e riservare le eccezioni agli errori veri. Si catturano il più vicino possibile al punto in cui sai cosa fare, e catturare `Exception` in modo generico rischia di nascondere bug reali trattandoli come errori previsti. In una API conviene un gestore centralizzato che traduce l'eccezione in una risposta sensata e la registra con il contesto necessario.",
+          "parole_chiave": [
+            "eccezioni",
+            "catch specifico",
+            "gestione centralizzata",
+            "flusso normale"
+          ],
+          "follow_up": {
+            "domanda": "Cosa significa gestire l'errore e non solo registrarlo?",
+            "risposta": "Che il blocco `catch` deve fare qualcosa di utile: riprovare, ripiegare su un valore di default sensato, restituire un errore al chiamante o arricchire l'eccezione con informazioni prima di rilanciarla. Registrare e continuare come se nulla fosse è la trappola più comune, perché il sistema resta in uno stato incoerente e nessuno se ne accorge. Se non sai cosa fare, la scelta onesta è lasciar propagare l'eccezione."
+          }
+        },
+        {
+          "id": "csharp-049",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra `throw` e `throw ex`?",
+          "risposta": "`throw` da solo rilanciato dentro un `catch` conserva lo stack trace originale, quindi nei log vedi dove si è verificato davvero l'errore. `throw ex` invece riparte da lì e cancella le tracce precedenti, quindi perdi il punto di origine ed è molto più difficile capire cosa è successo. La regola è: dentro un `catch` usa `throw;` senza l'eccezione, oppure rilancia una nuova eccezione passando quella originale come inner exception.",
+          "parole_chiave": [
+            "throw",
+            "stack trace",
+            "inner exception",
+            "rilancio"
+          ],
+          "follow_up": {
+            "domanda": "Quando conviene avvolgere l'eccezione in una nuova?",
+            "risposta": "Quando vuoi esprimere un errore del tuo dominio senza far trapelare i dettagli tecnici, per esempio una `PaymentException` che racchiude un errore di rete. In quel caso passi la causa come inner exception, così chi debugga ha entrambe le informazioni. Il vantaggio è un livello di astrazione coerente, ma ogni involucro aggiuntivo aumenta la profondità degli stack: non esagerare."
+          }
+        },
+        {
+          "id": "csharp-050",
+          "priorita": "MEDIA",
+          "domanda": "Quando crei un'eccezione personalizzata?",
+          "risposta": "Quando il chiamante ha bisogno di distinguere quel caso da altri errori e trattarlo in modo diverso, oppure quando vuoi portare informazioni aggiuntive, come l'identificativo dell'entità che ha causato il problema. Se l'errore è prevedibile e chi chiama lo gestisce come parte del flusso normale, spesso è meglio un valore di ritorno o un risultato esplicito. Un'eccezione personalizzata in più senza un motivo di distinzione è peso inutile per chi legge il codice.",
+          "parole_chiave": [
+            "eccezione personalizzata",
+            "gerarchia di eccezioni",
+            "informazioni di contesto",
+            "casi previsti"
+          ],
+          "follow_up": {
+            "domanda": "Perché le eccezioni non dovrebbero guidare il flusso normale?",
+            "risposta": "Perché costano: catturare un'eccezione raccoglie lo stack trace e ha un impatto molto più alto di un controllo condizionale, quindi in un ciclo con migliaia di iterazioni si sente. Inoltre rendono il flusso di controllo implicito, nascosto tra le righe, e più difficile da seguire. I casi previsti si gestiscono con un esito esplicito, mentre l'eccezione resta per l'imprevisto."
+          }
+        },
+        {
+          "id": "csharp-051",
+          "priorita": "MEDIA",
+          "domanda": "Come usi il pattern matching per semplificare i controlli?",
+          "risposta": "Il pattern matching permette di verificare un tipo, una proprietà o una condizione e di estrarre il valore nella stessa espressione: `if (x is Utente { Attivo: true } u)` dichiara e assegna in una riga. Le espressioni `switch` restituiscono poi un valore invece di eseguire rami e assegnare, quindi si combinano bene con le assegnazioni e con i tipi di ritorno. Sono il modo idiomatico moderno di scrivere logica di discriminazione senza cast ripetuti e senza `if` annidati.",
+          "parole_chiave": [
+            "pattern matching",
+            "switch expression",
+            "is",
+            "deconstruction"
+          ],
+          "follow_up": {
+            "domanda": "Cosa cambia rispetto a `switch` con `case`?",
+            "risposta": "La versione a espressione non cade nei casi per assenza di `break` e obbliga il compilatore a verificare che ogni caso che restituisce un valore sia coperto, quindi non dimentichi rami. In più i pattern sono molto più espressivi: puoi verificare tipi, proprietà, valori costanti e condizioni. Il `case` classico resta utile quando i rami hanno corpi complessi o quando devi usare `goto case`, cioè quasi mai."
+          }
+        },
+        {
+          "id": "csharp-052",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono i membri `required` e i costruttori primari?",
+          "risposta": "`required` obbliga chi crea l'oggetto a inizializzare una proprietà, e il compilatore lo verifica, cosa utile per gli oggetti che non devono esistere senza certi dati e per la deserializzazione. Il costruttore primario permette di dichiarare parametri direttamente sulla classe o sulla struct e usarli nel corpo, riducendo il codice di inizializzazione. Sono due novità recenti del linguaggio che servono a rendere più difficile costruire oggetti in stato non valido, senza scrivere costruttori pieni di parametri.",
+          "parole_chiave": [
+            "required",
+            "costruttore primario",
+            "stato valido",
+            "inizializzazione"
+          ],
+          "follow_up": {
+            "domanda": "I costruttori primari hanno insidie?",
+            "risposta": "Sì: i parametri sono catturati dall'oggetto e diventano campi, quindi se ne usi solo uno per calcolare un valore stai occupando memoria senza motivo, e non è immediato capire cosa venga catturato e cosa no. Vanificano anche in parte l'idea di immutabilità, perché il parametro resta accessibile nel corpo della classe. Sono comodi per i tipi piccoli e per le dipendenze, ma in una classe grande non li userei al posto di proprietà esplicite."
+          }
+        },
+        {
+          "id": "csharp-053",
+          "priorita": "BASSA",
+          "domanda": "A cosa serve `nameof`?",
+          "risposta": "`nameof` restituisce il nome di una variabile, un membro o un tipo come stringa, e viene risolto in compilazione. Serve per evitare stringhe magiche: nelle eccezioni, nei nomi di proprietà per il binding, negli attributi e nei log, se rinomini il simbolo il valore si aggiorna da solo. È una piccola cosa, ma elimina una classe di errori che il compilatore non potrebbe altrimenti vedere, perché quelle stringhe sono invisibili ai controlli.",
+          "parole_chiave": [
+            "nameof",
+            "stringhe magiche",
+            "refactoring sicuro",
+            "compilazione"
+          ],
+          "follow_up": {
+            "domanda": "Che differenza c'è con `CallerMemberName`?",
+            "risposta": "`CallerMemberName` è un attributo sui parametri di default e il compilatore lo riempie con il nome del membro che ha chiamato il metodo, utile per esempio per `OnPropertyChanged`. `nameof` invece prende un simbolo e lo trasforma in stringa nel punto in cui lo scrivi. Sono complementari: il primo serve per chiamate generiche senza indicare nulla, il secondo per indicare esplicitamente un simbolo."
+          }
+        },
+        {
+          "id": "csharp-054",
+          "priorita": "BASSA",
+          "domanda": "Cosa succede in caso di overflow e a cosa servono `checked` e `unchecked`?",
+          "risposta": "Per default le operazioni sui tipi interi non sollevano errori in caso di superamento del limite: il valore gira e diventa negativo o sbagliato senza avviso, che è il comportamento chiamato unchecked. Con `checked`, su un blocco o su una singola espressione, il runtime lancia invece un'eccezione di overflow, rendendo il problema visibile. La scelta dipende dal contesto: nei calcoli critici, come importi o contatori, il controllo è la scelta prudente.",
+          "parole_chiave": [
+            "overflow",
+            "checked",
+            "unchecked",
+            "tipi interi"
+          ],
+          "follow_up": {
+            "domanda": "Si può attivare il controllo per tutto il progetto?",
+            "risposta": "Sì, esiste la proprietà `CheckForOverflowUnderflow` nel file di progetto, che imposta il `checked` come comportamento predefinito. Attenzione però al costo: ogni operazione porta con sé un controllo, quindi nei percorsi di calcolo intensivo la differenza si misura. Una via di mezzo comune è lasciare il progetto non controllato e usare `checked` nei punti dove un valore fuori scala è un errore serio."
+          }
+        },
+        {
+          "id": "csharp-055",
+          "priorita": "BASSA",
+          "domanda": "Quali convenzioni di codice segui in C# e cosa guardi in code review?",
+          "risposta": "Le convenzioni ufficiali del linguaggio: PascalCase per tipi e membri pubblici, camelCase per variabili locali e parametri, `_` per i campi privati, `I` iniziale per le interfacce, nomi asincroni con suffisso `Async`. In code review guardo soprattutto tre cose: se il codice dice cosa fa con nomi chiari, se gestisce davvero i casi null e di errore e se le collezioni e le query non nascondono costi inattesi. Lo stile lo lascio al formattatore automatico, perché discuterne a mano è tempo speso male.",
+          "parole_chiave": [
+            "convenzioni",
+            "PascalCase",
+            "nomi",
+            "code review"
+          ],
+          "follow_up": {
+            "domanda": "Perché affidare lo stile a uno strumento?",
+            "risposta": "Perché il formato è una questione di gusto e discuterne in review consuma tempo senza migliorare il software: un formattatore come `dotnet format` o l'analisi del compilatore decide per tutti e nessuno se ne occupa più. Le regole di analisi possono anche segnalare problemi reali, come un `async void` o un `Dispose` mancante. Le discussioni in review restano così concentrate su design, correttezza e leggibilità."
+          }
+        }
+      ]
+    }
+  ]
+}

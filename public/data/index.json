@@ -1,11 +1,11 @@
 {
   "meta": {
     "schema": 2,
-    "versione": 4,
-    "aggiornato": "2026-10-14",
-    "totale_domande": 608,
-    "totale_argomenti": 22,
-    "totale_file": 24
+    "versione": 5,
+    "aggiornato": "2026-10-15",
+    "totale_domande": 718,
+    "totale_argomenti": 24,
+    "totale_file": 26
   },
   "argomenti": [
     {
@@ -164,9 +164,43 @@
       }
     },
     {
+      "slug": "csharp",
+      "nome": "C#",
+      "ordine": 10,
+      "files": [
+        "csharp"
+      ],
+      "file": "csharp.json",
+      "totale": 55,
+      "blocchi": 5,
+      "con_follow_up": 55,
+      "priorita": {
+        "ALTA": 21,
+        "MEDIA": 27,
+        "BASSA": 7
+      }
+    },
+    {
+      "slug": "dotnet",
+      "nome": ".NET e ASP.NET Core",
+      "ordine": 11,
+      "files": [
+        "dotnet"
+      ],
+      "file": "dotnet.json",
+      "totale": 55,
+      "blocchi": 5,
+      "con_follow_up": 55,
+      "priorita": {
+        "ALTA": 20,
+        "MEDIA": 30,
+        "BASSA": 5
+      }
+    },
+    {
       "slug": "sql",
       "nome": "SQL e Database",
-      "ordine": 10,
+      "ordine": 12,
       "files": [
         "sql"
       ],
@@ -183,7 +217,7 @@
     {
       "slug": "rest-api",
       "nome": "REST API e HTTP",
-      "ordine": 11,
+      "ordine": 13,
       "files": [
         "rest-api"
       ],
@@ -200,7 +234,7 @@
     {
       "slug": "architettura",
       "nome": "Architettura e Design",
-      "ordine": 12,
+      "ordine": 14,
       "files": [
         "architettura"
       ],
@@ -217,7 +251,7 @@
     {
       "slug": "metodologie",
       "nome": "Metodologie di Sviluppo",
-      "ordine": 13,
+      "ordine": 15,
       "files": [
         "metodologie"
       ],
@@ -234,7 +268,7 @@
     {
       "slug": "testing",
       "nome": "Testing",
-      "ordine": 14,
+      "ordine": 16,
       "files": [
         "testing"
       ],
@@ -251,7 +285,7 @@
     {
       "slug": "cybersecurity",
       "nome": "Cybersecurity",
-      "ordine": 15,
+      "ordine": 17,
       "files": [
         "cybersecurity"
       ],
@@ -268,7 +302,7 @@
     {
       "slug": "fondamenti",
       "nome": "Fondamenti di Informatica",
-      "ordine": 16,
+      "ordine": 18,
       "files": [
         "fondamenti"
       ],
@@ -285,7 +319,7 @@
     {
       "slug": "git",
       "nome": "Git e Versioning",
-      "ordine": 17,
+      "ordine": 19,
       "files": [
         "git"
       ],
@@ -302,7 +336,7 @@
     {
       "slug": "maven",
       "nome": "Maven",
-      "ordine": 18,
+      "ordine": 20,
       "files": [
         "maven"
       ],
@@ -319,7 +353,7 @@
     {
       "slug": "docker",
       "nome": "Docker",
-      "ordine": 19,
+      "ordine": 21,
       "files": [
         "docker"
       ],
@@ -336,7 +370,7 @@
     {
       "slug": "kubernetes",
       "nome": "Kubernetes",
-      "ordine": 20,
+      "ordine": 22,
       "files": [
         "kubernetes"
       ],
@@ -353,7 +387,7 @@
     {
       "slug": "ci-cd",
       "nome": "CI/CD",
-      "ordine": 21,
+      "ordine": 23,
       "files": [
         "ci-cd"
       ],
@@ -370,7 +404,7 @@
     {
       "slug": "soft-skills",
       "nome": "Soft Skills e Colloquio",
-      "ordine": 22,
+      "ordine": 24,
       "files": [
         "soft-skills"
       ],
