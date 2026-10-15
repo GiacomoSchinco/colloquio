@@ -3,9 +3,9 @@
     "tecnologia": "Architettura e Design",
     "slug": "architettura",
     "schema": 2,
-    "versione": 1,
-    "aggiornato": "2026-10-14",
-    "totale_domande": 27
+    "versione": 2,
+    "aggiornato": "2026-10-15",
+    "totale_domande": 28
   },
   "argomenti": [
     {
@@ -472,6 +472,27 @@
           "follow_up": {
             "domanda": "Perché garantire l'accessibilità in un unico punto è un vantaggio così grande?",
             "risposta": "Perché i problemi di accessibilità sono quasi sempre gli stessi, e risolverli nel componente condiviso li elimina da tutti i prodotti insieme: chi lo usa eredita la soluzione senza sapere nulla della materia. Se ogni team li risolve per conto proprio, il livello medio scende e i controlli vanno ripetuti ovunque. È l'argomento più concreto a favore di un sistema condiviso."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Integrazioni per colloqui",
+      "domande": [
+        {
+          "id": "architettura-028",
+          "priorita": "ALTA",
+          "domanda": "Come condividi routing, autenticazione e dipendenze tra microfrontend?",
+          "risposta": "Una shell orchestra navigazione e mount/unmount dei microfrontend, mentre ciascuna applicazione mantiene confini e responsabilità chiare. Definisco contratti di integrazione per routing, comunicazione e autenticazione, evitando globali implicite. Le dipendenze condivise, soprattutto librerie UI o runtime, richiedono versioni coordinate e verifiche di isolamento.",
+          "parole_chiave": [
+            "microfrontend",
+            "single-spa",
+            "Qiankun",
+            "routing"
+          ],
+          "follow_up": {
+            "domanda": "Quali problemi affronti con Qiankun o single-spa?",
+            "risposta": "Lifecycle, path, isolamento CSS/JS, gestione eventi e duplicazione di librerie registrate globalmente."
           }
         }
       ]

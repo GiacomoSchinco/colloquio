@@ -1,0 +1,443 @@
+{
+  "meta": {
+    "tecnologia": "Soft Skills e Colloquio",
+    "slug": "soft-skills",
+    "schema": 2,
+    "versione": 1,
+    "aggiornato": "2026-10-14",
+    "totale_domande": 26
+  },
+  "argomenti": [
+    {
+      "nome": "Fondamentali",
+      "domande": [
+        {
+          "id": "soft-skills-001",
+          "priorita": "ALTA",
+          "domanda": "Perché vuoi lavorare in questa azienda?",
+          "risposta": "Perché mi interessa il tipo di contesto e di prodotti: un'azienda strutturata, con processi solidi, dove posso crescere tecnicamente e allo stesso tempo lavorare su qualcosa che ha un impatto reale sulle persone che lo usano. Non è una risposta generica: prima del colloquio mi informo sui prodotti, sul settore e sulle sfide tecniche, così posso dire cosa mi attira davvero e non solo che mi piace l'azienda.",
+          "parole_chiave": [
+            "contesto",
+            "prodotti",
+            "crescita",
+            "impatto",
+            "preparazione"
+          ],
+          "follow_up": {
+            "domanda": "Cosa sai del settore in cui opera l'azienda?",
+            "risposta": "Me lo studio prima del colloquio: come guadagna, chi sono i concorrenti, quali vincoli normativi ha e quali problemi tecnici affronta. È un settore con vincoli forti su sicurezza, responsabilità e conformità, e questo significa che dietro ogni prodotto c'è attenzione alla correttezza e ai processi. Per uno sviluppatore è un contesto stimolante, perché la qualità non è un optional."
+          }
+        },
+        {
+          "id": "soft-skills-002",
+          "priorita": "ALTA",
+          "domanda": "Cosa conosci di questa azienda e del suo settore?",
+          "risposta": "Me lo preparo prima: prodotti e servizi, come l'azienda guadagna, chi sono i concorrenti, quali vincoli normativi ha e quali problemi tecnici affronta. Poi collego quello che ho capito al ruolo: se l'annuncio parla di un contesto dinamico, di formazione continua e di progetti ad alto impatto, dico perché quelle sono esattamente le cose che cerco. Il punto non è recitare informazioni, è dimostrare di aver scelto quella azienda con criterio e non di aver mandato il CV a tutti.",
+          "parole_chiave": [
+            "ricerca",
+            "prodotti",
+            "settore",
+            "ruolo",
+            "motivazione"
+          ],
+          "follow_up": {
+            "domanda": "Cosa ti ha colpito dell'annuncio?",
+            "risposta": "L'attenzione alla responsabilità e alla sostenibilità, e il fatto che vengano citati valori come inclusione e collaborazione. Mi dà l'idea di un'azienda seria, dove la qualità e le persone contano davvero, non solo il risultato tecnico."
+          }
+        },
+        {
+          "id": "soft-skills-003",
+          "priorita": "ALTA",
+          "domanda": "Perché dovremmo assumere te e non un altro candidato?",
+          "risposta": "Perché porto un mix di competenze tecniche e di product ownership: ho sviluppato frontend con React e Angular, ma ho anche gestito backlog e stakeholder. Questo vuol dire che capisco sia il codice sia le esigenze del business, e so tradurre i requisiti in soluzioni tecniche. È una combinazione che non tutti hanno, e che ti permette di essere autonomo e di fare da ponte tra team tecnico e prodotto.",
+          "parole_chiave": [
+            "mix",
+            "React",
+            "Angular",
+            "product owner",
+            "business"
+          ],
+          "follow_up": {
+            "domanda": "Come colmi le lacune?",
+            "risposta": "Studio in autonomia, chiedo feedback e imparo velocemente. Il mio percorso lo dimostra: sono passato dal frontend alla product ownership e poi di nuovo al frontend, adattandomi a contesti diversi. Le lacune non mi spaventano, le tratto come opportunità per crescere."
+          }
+        },
+        {
+          "id": "soft-skills-004",
+          "priorita": "ALTA",
+          "domanda": "Hai domande per noi?",
+          "risposta": "Sì, ne ho diverse. Come è strutturato il team frontend? Quali sono le sfide tecniche principali del dipartimento Operations & Technology? Come funziona il processo di sviluppo e review? E che margine c'è per crescere e imparare nuove tecnologie? Mi interessa capire sia il lavoro quotidiano sia le prospettive di crescita.",
+          "parole_chiave": [
+            "team",
+            "sfide",
+            "processo",
+            "crescita"
+          ],
+          "follow_up": {
+            "domanda": "Cosa ti aspetti dal primo anno?",
+            "risposta": "Dal primo anno mi aspetto di capire a fondo il prodotto e il dominio, integrarmi nel team e portare valore concreto il prima possibile. E crescere tecnicamente su architetture complesse e best practices, così da diventare un punto di riferimento per il team."
+          }
+        },
+        {
+          "id": "soft-skills-005",
+          "priorita": "ALTA",
+          "domanda": "Hai domande sul contratto, la modalità ibrida o la formazione?",
+          "risposta": "Sì, mi piacerebbe capire come è organizzato concretamente il lavoro ibrido e com'è strutturato il percorso di formazione iniziale. Mi interessa anche sapere come funziona l'inserimento di un junior nel team e con che tecnologie si lavora oggi sui progetti principali. Sono aspetti che mi aiutano a capire come potrei rendermi utile fin da subito.",
+          "parole_chiave": [
+            "contratto",
+            "ibrido",
+            "formazione",
+            "inserimento"
+          ],
+          "follow_up": {
+            "domanda": "Cosa ti aspetti dalla formazione?",
+            "risposta": "Un percorso che mi faccia crescere sia sulle hard skill sia sulle soft skill, come dice l'annuncio. Mi piace l'idea di imparare dentro il contesto reale dei progetti, affiancato da persone più esperte, più che con corsi isolati."
+          }
+        },
+        {
+          "id": "soft-skills-006",
+          "priorita": "MEDIA",
+          "domanda": "How would you describe your experience with React in English?",
+          "risposta": "I would say: I have around two years of experience building frontend applications with React. I've worked with hooks, state management, and TanStack Query for data fetching, and I've built reusable components and responsive interfaces. I'm comfortable explaining technical decisions in English and collaborating in an international context.",
+          "parole_chiave": [
+            "English",
+            "React",
+            "experience",
+            "collaboration"
+          ],
+          "follow_up": {
+            "domanda": "Can you explain a technical challenge in English?",
+            "risposta": "Sure. One challenge I faced was keeping a real-time dashboard responsive while data was constantly updating. I solved it by using TanStack Query for caching and refetching, and by optimizing renders with memoization, so the UI stayed fast even with frequent updates."
+          }
+        },
+        {
+          "id": "soft-skills-007",
+          "priorita": "MEDIA",
+          "domanda": "Cosa ne pensi dei valori aziendali dichiarati da un'azienda?",
+          "risposta": "In genere li condivido, soprattutto la collaborazione: credo che il codice migliore nasca dal confronto e dalla code review, non dal lavoro in solitaria. Inclusione e diversità portano punti di vista diversi, che rendono i prodotti migliori. E l'eccellenza per me significa fare le cose per bene ogni giorno, non cercare la perfezione irraggiungibile. Se i valori dichiarati non corrispondono a come si lavora davvero, però, me ne accorgo: è una cosa che chiedo sempre in fase di colloquio.",
+          "parole_chiave": [
+            "valori",
+            "collaborazione",
+            "inclusione",
+            "coerenza"
+          ],
+          "follow_up": {
+            "domanda": "Come li vivi concretamente?",
+            "risposta": "Facendo code review costruttive, condividendo quello che imparo e chiedendo feedback. E restando aperto alle idee degli altri, anche quando arrivano da ruoli diversi dal mio. La qualità si costruisce insieme, non da soli."
+          }
+        },
+        {
+          "id": "soft-skills-008",
+          "priorita": "MEDIA",
+          "domanda": "Raccontami un progetto di cui vai fiero.",
+          "risposta": "La Security Dashboard di Duskrise. Ho sviluppato una piattaforma in tempo reale per il monitoraggio di eventi malevoli e vulnerabilità, usando React e TanStack Query. Vedere i dati aggiornarsi in tempo reale e sapere che lo strumento aiutava le aziende a proteggersi era una grande soddisfazione: univa una sfida tecnica interessante a un impatto concreto sulla sicurezza delle persone.",
+          "parole_chiave": [
+            "Security Dashboard",
+            "React",
+            "TanStack Query",
+            "tempo reale"
+          ],
+          "follow_up": {
+            "domanda": "Quale è stata la difficoltà maggiore?",
+            "risposta": "La difficoltà maggiore è stata gestire il flusso di dati in tempo reale senza appesantire l'interfaccia. Ho usato TanStack Query per la cache e il refetch, e ho ottimizzato i render con memo e useCallback per evitare che la UI rallentasse. Trovare il giusto equilibrio tra freschezza dei dati e performance è stata la parte più delicata."
+          }
+        },
+        {
+          "id": "soft-skills-009",
+          "priorita": "MEDIA",
+          "domanda": "Come ti vedi tra due o tre anni?",
+          "risposta": "Mi vedo cresciuto tecnicamente: più autonomo su architetture complesse, con una conoscenza più profonda del dominio e delle best practices, e in grado di fare da riferimento per i colleghi più junior. Mi piacerebbe anche continuare a fare da ponte tra il tecnico e il prodotto, perché è la parte che mi riesce naturale e che mi dà soddisfazione.",
+          "parole_chiave": [
+            "crescita",
+            "autonomia",
+            "riferimento",
+            "ponte"
+          ],
+          "follow_up": {
+            "domanda": "Vuoi restare frontend o ampliare?",
+            "risposta": "Per ora voglio consolidare il frontend e diventare davvero bravo lì. Nel tempo mi interessa allargare lo sguardo verso il full stack o l'architettura, ma senza bruciare le tappe: prima voglio essere solido su quello che faccio."
+          }
+        },
+        {
+          "id": "soft-skills-010",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci una scadenza stretta?",
+          "risposta": "Prioritizzo con il team, taglio lo scope al minimo indispensabile e comunico subito se qualcosa non è fattibile nei tempi. L'obiettivo è concentrarsi su ciò che dà davvero valore e consegnare qualcosa di funzionante. Meglio meno ma funzionante, che tutto ma rotto o in ritardo.",
+          "parole_chiave": [
+            "priorità",
+            "scope",
+            "comunicazione",
+            "team"
+          ],
+          "follow_up": {
+            "domanda": "E se il capo insiste su tutto?",
+            "risposta": "Se il capo insiste su tutto, spiego i rischi con dati alla mano, propongo alternative e cerco un compromesso. Magari si può fare un rilascio a fasi, o rimandare le parti meno critiche. La trasparenza è sempre la scelta migliore: meglio dire subito che qualcosa non ci sta, che scoprirlo a consegna mancata."
+          }
+        },
+        {
+          "id": "soft-skills-011",
+          "priorita": "MEDIA",
+          "domanda": "Com'è il tuo inglese parlato? Riesci a sostenere una call tecnica?",
+          "risposta": "Ho una buona conoscenza dell'inglese scritto e parlato: leggo documentazione e contenuti tecnici in inglese ogni giorno, e sono in grado di spiegare le mie scelte tecniche e di partecipare a riunioni. So che posso migliorare la fluidità, ma riesco a sostenere una conversazione tecnica senza problemi, soprattutto sui temi frontend che conosco bene.",
+          "parole_chiave": [
+            "inglese",
+            "parlato",
+            "tecnico",
+            "call"
+          ],
+          "follow_up": {
+            "domanda": "Come lo pratichi?",
+            "risposta": "Leggendo documentazione, seguendo contenuti in inglese e, quando capita, scrivendo o parlando in contesti di lavoro. La pratica quotidiana sulla lettura c'è sempre, quella sulla conversazione va allenata con costanza, e ci sto lavorando."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "CV e presentazione",
+      "domande": [
+        {
+          "id": "soft-skills-012",
+          "priorita": "ALTA",
+          "domanda": "Raccontami il tuo percorso professionale dall'inizio.",
+          "risposta": "Ho iniziato come sviluppatore frontend lavorando con React, poi ho avuto l'opportunità di occuparmi anche della parte di prodotto come Product Owner, gestendo backlog e stakeholder. Questa esperienza mi ha dato una visione più ampia, ma mi sono reso conto che la mia passione resta il codice, quindi sono tornato a concentrarmi sul frontend, portando con me la capacità di capire le esigenze del business.",
+          "parole_chiave": [
+            "percorso",
+            "frontend",
+            "product owner",
+            "ritorno al codice"
+          ],
+          "follow_up": {
+            "domanda": "Cosa ti ha lasciato l'esperienza da PO?",
+            "risposta": "Mi ha insegnato a ragionare in termini di valore e priorità, e a comunicare meglio con le persone non tecniche. Oggi quando sviluppo capisco subito il perché di una richiesta, e questo mi rende più autonomo e più efficace nelle decisioni quotidiane."
+          }
+        },
+        {
+          "id": "soft-skills-013",
+          "priorita": "ALTA",
+          "domanda": "Parlami del progetto più complesso del tuo CV: cosa faceva e qual era il tuo ruolo.",
+          "risposta": "Era una piattaforma in tempo reale per il monitoraggio di eventi malevoli e vulnerabilità. Io mi occupavo dello sviluppo frontend con React e TanStack Query: costruivo le viste, gestivo il flusso dei dati in tempo reale e curavo la performance dell'interfaccia. Era un progetto dove la correttezza dei dati e la reattività erano fondamentali, e mi ha dato grande soddisfazione sapere che aiutava le aziende a proteggersi.",
+          "parole_chiave": [
+            "Duskrise",
+            "security",
+            "tempo reale",
+            "React"
+          ],
+          "follow_up": {
+            "domanda": "Qual era la parte più complessa?",
+            "risposta": "Tenere l'interfaccia fluida mentre i dati arrivavano in continuazione. Ho usato TanStack Query per la cache e il refetch, e ottimizzato i render con memo e useCallback. Trovare il bilanciamento tra freschezza dei dati e performance è stata la sfida più interessante."
+          }
+        },
+        {
+          "id": "soft-skills-014",
+          "priorita": "ALTA",
+          "domanda": "Hai mai lavorato su un'architettura a micro-frontend? Com'era organizzata?",
+          "risposta": "Single-SPA orchestrava più applicazioni frontend indipendenti dentro una stessa pagina, ognuna con il suo stack e il suo ciclo di rilascio. Io lavoravo sulla parte Angular dedicata alla gestione logistica. Il vantaggio è che team diversi potevano sviluppare e rilasciare in autonomia senza bloccarsi a vicenda, anche se questo introduce complessità di coordinamento e di integrazione.",
+          "parole_chiave": [
+            "micro-frontend",
+            "Single-SPA",
+            "Angular",
+            "indipendenza"
+          ],
+          "follow_up": {
+            "domanda": "Che complessità introduce?",
+            "risposta": "Soprattutto la comunicazione tra le applicazioni, la condivisione di stato e lo stile globale. Serve disciplina: contratti chiari tra i moduli, versioning e test di integrazione, altrimenti il rischio è che le app si rompano tra loro senza che nessuno se ne accorga subito."
+          }
+        },
+        {
+          "id": "soft-skills-015",
+          "priorita": "ALTA",
+          "domanda": "Perché sei passato al ruolo di Product Owner e perché sei tornato a sviluppare?",
+          "risposta": "Sono passato al ruolo di PO perché volevo capire il prodotto da un punto di vista più ampio: gestivo il backlog, le priorità e il rapporto con gli stakeholder. È stata un'esperienza formativa, ma mi sono accorto che la parte che mi dà più energia è costruire le cose, scrivere codice e risolvere problemi tecnici. Così sono tornato al frontend, portandomi dietro la capacità di vedere il quadro d'insieme.",
+          "parole_chiave": [
+            "product owner",
+            "backlog",
+            "stakeholder",
+            "scelta"
+          ],
+          "follow_up": {
+            "domanda": "È stata una scelta difficile?",
+            "risposta": "No, anzi. Avevo già chiaro che il codice era la mia strada, e l'esperienza da PO l'ho vissuta come un arricchimento, non come un ripiego. Credo che oggi essere un dev che capisce il prodotto sia un vantaggio concreto, e il mio percorso lo dimostra."
+          }
+        },
+        {
+          "id": "soft-skills-016",
+          "priorita": "ALTA",
+          "domanda": "Hai lavorato sia con React che con Angular: quali differenze hai trovato?",
+          "risposta": "React è una libreria: ti dà la UI e per il resto scegli tu, quindi hai più libertà ma anche più decisioni da prendere. Angular è un framework completo, con dependency injection, routing e RxJS già inclusi, e un modo di fare le cose più standardizzato. Passare da uno all'altro mi ha insegnato a ragionare sui concetti più che sulla sintassi, e a capire quando conviene uno o l'altro.",
+          "parole_chiave": [
+            "React",
+            "Angular",
+            "libreria",
+            "framework"
+          ],
+          "follow_up": {
+            "domanda": "Quale preferisci?",
+            "risposta": "Dipende dal contesto, ma personalmente mi trovo meglio con React per la flessibilità e l'ecosistema. Detto questo, apprezzo di Angular la struttura e il fatto che molte decisioni siano già prese: su progetti enterprise con team grandi è un vantaggio concreto."
+          }
+        },
+        {
+          "id": "soft-skills-017",
+          "priorita": "ALTA",
+          "domanda": "L'annuncio chiede almeno 2 anni di esperienza: cosa hai fatto concretamente in questi anni?",
+          "risposta": "In questi anni ho sviluppato frontend su progetti reali, sia con React che con Angular: applicazioni responsive, componenti riusabili, integrazioni con API REST e manutenzione di codice esistente. Ho anche lavorato in un contesto micro-frontend e fatto esperienza come Product Owner. Credo di aver coperto tutti i punti dell'annuncio e di portare in più una visione di prodotto che non tutti hanno.",
+          "parole_chiave": [
+            "esperienza",
+            "2 anni",
+            "React",
+            "Angular",
+            "API"
+          ],
+          "follow_up": {
+            "domanda": "Ti senti allineato ai requisiti?",
+            "risposta": "Sì, i requisiti coincidono con quello che ho fatto: React e Angular, TypeScript, REST, Git con Gitflow e collaborazione con il backend. La parte che sento più forte è proprio la combinazione tra sviluppo e comprensione del prodotto, che per questa posizione credo faccia la differenza."
+          }
+        },
+        {
+          "id": "soft-skills-018",
+          "priorita": "MEDIA",
+          "domanda": "Come gestivi backlog e priorità quando eri Product Owner?",
+          "risposta": "Tenevo il backlog ordinato per valore, raccoglievo le richieste dagli stakeholder e le trasformavo in storie chiare e stimate insieme al team. Usavo le priorità per decidere cosa entrava nello sprint, cercando sempre di bilanciare il valore di business con la fattibilità tecnica. Era un lavoro di sintesi e comunicazione costante tra le persone.",
+          "parole_chiave": [
+            "backlog",
+            "priorità",
+            "stakeholder",
+            "sprint"
+          ],
+          "follow_up": {
+            "domanda": "Come gestivi i conflitti di priorità?",
+            "risposta": "Facendo parlare i numeri e il valore: chiedevo agli stakeholder di motivare le richieste e confrontavo l'impatto con il costo. Quando le priorità erano in conflitto, proponevo una scelta e la condividevo in modo trasparente, spiegando cosa si guadagnava e cosa si rimandava."
+          }
+        },
+        {
+          "id": "soft-skills-019",
+          "priorita": "MEDIA",
+          "domanda": "Come hai gestito un flusso di dati in tempo reale in un tuo progetto?",
+          "risposta": "Il problema era che i dati si aggiornavano di continuo e l'interfaccia non doveva appesantirsi. Ho usato TanStack Query per la cache e il refetch, evitando richieste duplicate, e ho ottimizzato i render con memo e useCallback. In questo modo l'app mostrava sempre dati freschi senza rallentare, anche con molti aggiornamenti al secondo.",
+          "parole_chiave": [
+            "real-time",
+            "TanStack Query",
+            "cache",
+            "performance"
+          ],
+          "follow_up": {
+            "domanda": "Avresti fatto qualcosa di diverso oggi?",
+            "risposta": "Valuterei anche i WebSocket o lo streaming per gli aggiornamenti push, a seconda di quanto il tempo reale fosse davvero critico. Ma l'impostazione con TanStack Query era solida, perché separava bene la gestione dei dati dalla presentazione."
+          }
+        },
+        {
+          "id": "soft-skills-020",
+          "priorita": "MEDIA",
+          "domanda": "Che esperienza hai con TypeScript in produzione?",
+          "risposta": "Lo uso come standard nei progetti React e Angular su cui ho lavorato. Definisco i tipi dei modelli, tipizzo le risposte API e uso utility types per derivare i tipi senza duplicarli. In produzione TypeScript mi ha salvato da molti errori che con JavaScript sarebbero emersi solo a runtime, soprattutto quando i modelli dati cambiavano.",
+          "parole_chiave": [
+            "TypeScript",
+            "produzione",
+            "tipi",
+            "API"
+          ],
+          "follow_up": {
+            "domanda": "Un caso in cui ti ha salvato?",
+            "risposta": "Quando il backend ha cambiato la forma di una risposta: il type check ha segnalato subito tutti i punti che usavano il campo rimosso, e li ho sistemati in pochi minuti. Senza tipi avrei scoperto il problema solo testando a mano, o peggio in produzione."
+          }
+        },
+        {
+          "id": "soft-skills-021",
+          "priorita": "MEDIA",
+          "domanda": "Come hai collaborato con il team backend nei tuoi progetti?",
+          "risposta": "Definivamo insieme i contratti delle API prima di iniziare, così ognuno lavorava in parallelo senza bloccare l'altro. Durante lo sviluppo comunicavo in modo chiaro cosa mi serviva e segnalavo subito eventuali incongruenze nei dati. L'esperienza da Product Owner mi ha aiutato a parlare sia la lingua tecnica sia quella funzionale, rendendo la collaborazione più fluida.",
+          "parole_chiave": [
+            "backend",
+            "contratto API",
+            "collaborazione",
+            "comunicazione"
+          ],
+          "follow_up": {
+            "domanda": "Come gestivi le API non ancora pronte?",
+            "risposta": "Usavamo mock o definizioni condivise, così potevo sviluppare il frontend senza aspettare il backend. Concordavamo la forma dei dati e io lavoravo su quella, poi all'integrazione i problemi erano minimi perché il contratto era già condiviso."
+          }
+        },
+        {
+          "id": "soft-skills-022",
+          "priorita": "MEDIA",
+          "domanda": "Hai mai fatto manutenzione di codice esistente o legacy?",
+          "risposta": "Sì, e la tratto con rispetto: prima capisco cosa fa e perché è stato scritto così, poi lo modifico con interventi piccoli e sicuri. Quando posso, aggiungo test o ristrutturo solo la parte che tocco, senza riscrivere tutto. La manutenzione evolutiva e correttiva fa parte del lavoro, e l'importante è non rompere quello che già funziona.",
+          "parole_chiave": [
+            "legacy",
+            "manutenzione",
+            "refactoring",
+            "cautela"
+          ],
+          "follow_up": {
+            "domanda": "Come ti orienti in codice che non conosci?",
+            "risposta": "Leggo i file seguendo il flusso dei dati, cerco i punti di ingresso e uso la navigazione dell'editor. Se non c'è documentazione, la ricostruisco mentre capisco, e chiedo a chi lo conosce se è disponibile. Poi faccio modifiche piccole e verificabili, così il rischio di regressione resta basso."
+          }
+        },
+        {
+          "id": "soft-skills-023",
+          "priorita": "MEDIA",
+          "domanda": "Qual è stato il bug o problema più difficile che hai risolto?",
+          "risposta": "Il più difficile è stato un problema di performance su una vista con molti dati che si aggiornavano in tempo reale: l'interfaccia rallentava in modo intermittente ed era difficile da riprodurre. L'ho isolato riproducendo il caso peggiore, poi ho risolto ottimizzando i render e la gestione della cache. Mi ha insegnato a non fidarmi delle impressioni e a misurare prima di intervenire.",
+          "parole_chiave": [
+            "bug",
+            "performance",
+            "debugging",
+            "misurare"
+          ],
+          "follow_up": {
+            "domanda": "Qual è stato il tuo approccio?",
+            "risposta": "Prima riproduco il problema in modo affidabile, poi restringo il campo eliminando le cause possibili e usando gli strumenti di profiling. Una volta trovata la causa, applico la soluzione minima e verifico che non abbia effetti collaterali. La pazienza nel riprodurre il bug è metà del lavoro."
+          }
+        },
+        {
+          "id": "soft-skills-024",
+          "priorita": "MEDIA",
+          "domanda": "Come ti tieni aggiornato sulle novità frontend?",
+          "risposta": "Leggo la documentazione ufficiale, seguo alcune newsletter e sviluppatori sul web, e soprattutto sperimento: quando esce qualcosa di interessante, faccio un piccolo progetto per provarlo davvero. Non inseguo ogni novità, ma cerco di capire cosa risolve un problema reale e cosa invece è solo moda. L'aggiornamento continuo fa parte del lavoro in questo settore.",
+          "parole_chiave": [
+            "aggiornamento",
+            "documentazione",
+            "sperimentare",
+            "newsletter"
+          ],
+          "follow_up": {
+            "domanda": "L'ultima cosa che hai imparato?",
+            "risposta": "Ho approfondito le funzionalità più recenti di React e TypeScript, e sto sperimentando con TanStack Query per la gestione dei dati server. Mi piace prendere una feature nuova e capirla facendo, non solo leggendo."
+          }
+        },
+        {
+          "id": "soft-skills-025",
+          "priorita": "MEDIA",
+          "domanda": "Cosa hai imparato dall'esperienza da Product Owner che usi ancora oggi?",
+          "risposta": "Ho imparato a pensare in termini di valore e di priorità, e a comunicare con chi non è tecnico. Oggi quando ricevo una richiesta mi chiedo prima quale problema risolve, e questo mi aiuta a proporre soluzioni migliori e a evitare lavoro inutile. In più so gestire le aspettative e spiegare le scelte tecniche in modo comprensibile.",
+          "parole_chiave": [
+            "valore",
+            "priorità",
+            "comunicazione",
+            "problem solving"
+          ],
+          "follow_up": {
+            "domanda": "Come ti aiuta concretamente nel codice?",
+            "risposta": "Per esempio quando devo stimare una funzionalità o decidere l'ordine di sviluppo, ragiono sull'impatto per l'utente e non solo sulla difficoltà tecnica. Questo mi porta a fare le cose giuste al momento giusto, che è esattamente quello che un buon team si aspetta da uno sviluppatore."
+          }
+        },
+        {
+          "id": "soft-skills-026",
+          "priorita": "MEDIA",
+          "domanda": "Descrivi il tuo stack tipico in un progetto frontend.",
+          "risposta": "Parto da React con TypeScript, che è la base che uso di più. Per lo stato uso useState e Context, o Zustand quando serve di più, e per i dati del server TanStack Query. Per i form React Hook Form, per i test Jest e React Testing Library, e per il versionamento Git con GitLab. È uno stack che mi permette di essere produttivo e mantenere il codice pulito.",
+          "parole_chiave": [
+            "stack",
+            "React",
+            "TypeScript",
+            "TanStack Query",
+            "GitLab"
+          ],
+          "follow_up": {
+            "domanda": "Come scegli una libreria?",
+            "risposta": "Guardo la manutenzione, la community e se risolve davvero il mio problema senza aggiungere complessità. Preferisco librerie piccole e focalizzate, che posso sostituire facilmente, piuttosto che strumenti pesanti che invadono tutto il progetto."
+          }
+        }
+      ]
+    }
+  ]
+}

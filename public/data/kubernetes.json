@@ -3,9 +3,9 @@
     "tecnologia": "Kubernetes",
     "slug": "kubernetes",
     "schema": 2,
-    "versione": 1,
-    "aggiornato": "2026-10-14",
-    "totale_domande": 24
+    "versione": 2,
+    "aggiornato": "2026-10-15",
+    "totale_domande": 25
   },
   "argomenti": [
     {
@@ -193,7 +193,7 @@
           "id": "kubernetes-011",
           "priorita": "ALTA",
           "domanda": "ConfigMap e Secret: come passi configurazione e segreti?",
-          "risposta": "La ConfigMap contiene configurazione non riservata, il Secret contiene dati che non devono stare in chiaro nei manifest, come password e token, e li passi come variabili d'ambiente o come file montati. Il montaggio come file è preferibile per i segreti, perché evita che finiscano nei report di errore e negli elenchi di processo. Va ricordato un limite: di base il Secret è codificato e non cifrato, quindi la cifratura a riposo va abilitata e l'accesso va limitato con i permessi.",
+          "risposta": "ConfigMap contiene configurazione non riservata, Secret è l’oggetto destinato a credenziali o token. I Secret possono essere montati come file o passati come variabili d’ambiente, ma base64 non è cifratura: per impostazione predefinita i Secret possono essere conservati in etcd senza cifratura. In produzione servono RBAC minimo, cifratura at rest, gestione sicura delle credenziali e, spesso, un secret manager esterno.",
           "parole_chiave": [
             "ConfigMap",
             "Secret",
@@ -433,6 +433,27 @@
           "follow_up": {
             "domanda": "Perché far girare un container come root è un problema?",
             "risposta": "Perché dentro il container root è root, e con una configurazione debole del runtime o un difetto di isolamento si può arrivare ad avere effetti sull'host. Anche restando dentro il container, root può installare pacchetti, cambiare file di sistema e alterare il comportamento dell'applicazione. Un utente non privilegiato riduce drasticamente quello che un attacco può fare."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Integrazioni per colloqui",
+      "domande": [
+        {
+          "id": "kubernetes-025",
+          "priorita": "MEDIA",
+          "domanda": "Perché il Secret non basta a proteggere una password?",
+          "risposta": "Secret separa le credenziali dal manifest applicativo, ma non equivale automaticamente a un secret manager cifrato: i dati possono essere leggibili da chi possiede determinati permessi nel cluster e la memorizzazione di default richiede attenzione. Configuro RBAC minimo, cifratura a riposo e rotazione; considero un servizio esterno per segreti sensibili.",
+          "parole_chiave": [
+            "Secret",
+            "base64",
+            "RBAC",
+            "encryption"
+          ],
+          "follow_up": {
+            "domanda": "Base64 è crittografia?",
+            "risposta": "No, è una codifica reversibile: basta decodificarla per recuperare il contenuto."
           }
         }
       ]

@@ -3,9 +3,9 @@
     "tecnologia": "Java",
     "slug": "java",
     "schema": 2,
-    "versione": 1,
-    "aggiornato": "2026-10-14",
-    "totale_domande": 54
+    "versione": 2,
+    "aggiornato": "2026-10-15",
+    "totale_domande": 55
   },
   "argomenti": [
     {
@@ -910,6 +910,26 @@
           "follow_up": {
             "domanda": "Dove si colloca Tomcat?",
             "risposta": "Tomcat è un servlet container: esegue servlet e JSP, quindi copre la parte web di Java, ma non implementa l'intera specifica Java EE, come EJB o JMS. Per questo a volte si dice che Tomcat è più leggero di un application server completo come GlassFish."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Integrazioni per colloqui",
+      "domande": [
+        {
+          "id": "java-055",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono i virtual thread di Java e quando sono utili?",
+          "risposta": "I virtual thread sono thread leggeri gestiti dalla JVM, utili per molte attività concorrenti bloccate su I/O, come chiamate di rete o database. Non rendono automaticamente più veloci i calcoli CPU-bound. Richiedono attenzione a librerie, pool e risorse esterne, perché la quantità di thread non elimina i limiti del database.",
+          "parole_chiave": [
+            "Java",
+            "virtual threads",
+            "concurrency"
+          ],
+          "follow_up": {
+            "domanda": "Sostituiscono CompletableFuture?",
+            "risposta": "Non necessariamente: consentono un modello imperativo semplice, ma i modelli asincroni restano utili in altri contesti."
           }
         }
       ]

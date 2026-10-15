@@ -3,9 +3,9 @@
     "tecnologia": "SQL e Database",
     "slug": "sql",
     "schema": 2,
-    "versione": 1,
-    "aggiornato": "2026-10-14",
-    "totale_domande": 40
+    "versione": 2,
+    "aggiornato": "2026-10-15",
+    "totale_domande": 42
   },
   "argomenti": [
     {
@@ -460,7 +460,7 @@
           "id": "sql-028",
           "priorita": "MEDIA",
           "domanda": "Differenza tra indice clustered e non-clustered.",
-          "risposta": "L'indice raggruppato determina l'ordine fisico delle righe, quindi ce n'è uno solo per tabella ed è quello che rende rapidissime le letture per quella chiave e gli intervalli. Quello non raggruppato è una struttura separata che contiene il valore indicizzato e un riferimento alla riga, quindi se ne possono avere molti. La conseguenza pratica è che una tabella può avere un solo ordine fisico, e tutte le altre ricerche rapide passano da indici secondari.",
+          "risposta": "Un indice clustered, quando supportato dal database, organizza i dati secondo la chiave dell’indice; un indice nonclustered conserva invece una struttura separata che consente di individuare le righe. In SQL Server la tabella può essere clustered oppure heap e in genere ha un solo clustered index. Le implementazioni variano tra DBMS: non trasferisco automaticamente gli stessi dettagli a PostgreSQL o DB2.",
           "parole_chiave": [
             "indice raggruppato",
             "indice secondario",
@@ -625,7 +625,7 @@
           "id": "sql-038",
           "priorita": "BASSA",
           "domanda": "Cos'è il CAP theorem?",
-          "risposta": "In un sistema distribuito non puoi avere tutto: Consistenza (tutti vedono gli stessi dati), Disponibilità (tutti ricevono risposta), e tolleranza alle Partizioni (funziona anche se la rete si spezza). Devi sceglierne due.",
+          "risposta": "Il teorema CAP riguarda sistemi di dati distribuiti: durante una partizione di rete, un sistema non può garantire contemporaneamente forte consistenza e disponibilità di ogni richiesta. Non significa che a funzionamento normale si possano scegliere “solo due caratteristiche su tre” in modo semplice. Va distinto dalle proprietà ACID delle transazioni.",
           "parole_chiave": [
             "consistenza",
             "disponibilità",
@@ -668,6 +668,43 @@
           "follow_up": {
             "domanda": "Quali problemi introduce?",
             "risposta": "Le join tra dati di shard diversi non si possono fare, quindi devi duplicare o ristrutturare il modello. Le transazioni che coinvolgono più shard richiedono un coordinamento, quindi perdi l'atomicità semplice. E la scelta della chiave diventa quasi irreversibile: se distribuisci male, hai sbilanciato i carichi in modo difficile da correggere."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Integrazioni per colloqui",
+      "domande": [
+        {
+          "id": "sql-041",
+          "priorita": "ALTA",
+          "domanda": "Come leggi un piano di esecuzione per ottimizzare una query SQL Server?",
+          "risposta": "Parto dal piano effettivo e confronto righe stimate con quelle reali, scansioni, seek, join costosi e avvisi su ordinamenti o conversioni. Verifico indici, filtri, selettività e statistiche prima di cambiare la query. Non aggiungo un indice alla cieca, perché rallenta scritture e richiede manutenzione.",
+          "parole_chiave": [
+            "SQL Server",
+            "execution plan",
+            "index",
+            "statistics"
+          ],
+          "follow_up": {
+            "domanda": "Che differenza c’è tra scan e seek?",
+            "risposta": "Il seek raggiunge un intervallo tramite l’indice; lo scan scorre molte righe o pagine: nessuno dei due è sempre sbagliato senza contesto."
+          }
+        },
+        {
+          "id": "sql-042",
+          "priorita": "MEDIA",
+          "domanda": "Cosa cambia quando lavori con DB2, SQL Server e PostgreSQL?",
+          "risposta": "Il linguaggio SQL condivide molte regole, ma cambiano dialetti, funzioni, paginazione, tipi dati, locking e strumenti per i piani di esecuzione. Controllo versione del database e dialetto dell’ORM invece di assumere che ogni query sia portabile. Per operazioni critiche verifico sempre il comportamento sul motore reale.",
+          "parole_chiave": [
+            "DB2",
+            "SQL Server",
+            "PostgreSQL",
+            "dialect"
+          ],
+          "follow_up": {
+            "domanda": "Perché un ORM non elimina tutte le differenze?",
+            "risposta": "Perché la traduzione dipende dal dialetto e alcune funzioni o comportamenti restano specifici del database."
           }
         }
       ]

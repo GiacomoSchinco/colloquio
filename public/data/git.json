@@ -3,9 +3,9 @@
     "tecnologia": "Git e Versioning",
     "slug": "git",
     "schema": 2,
-    "versione": 1,
-    "aggiornato": "2026-10-14",
-    "totale_domande": 10
+    "versione": 2,
+    "aggiornato": "2026-10-15",
+    "totale_domande": 11
   },
   "argomenti": [
     {
@@ -173,6 +173,26 @@
           "follow_up": {
             "domanda": "E se hai già pushato?",
             "risposta": "Se ho già pushato, dipende dal branch. Se è condiviso, meglio evitare di riscrivere la storia: faccio un nuovo commit di fix e lascio tutto tracciato. Se il branch è solo mio, posso usare git push --force-with-lease per riscrivere, che è più sicuro del force push semplice perché controlla che nessun altro abbia pushato nel frattempo."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Integrazioni per colloqui",
+      "domande": [
+        {
+          "id": "git-011",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c’è tra git reset e git revert?",
+          "risposta": "reset sposta il puntatore del branch e può cambiare la storia locale, conservando o scartando modifiche secondo le opzioni. revert crea un nuovo commit che annulla le modifiche di un commit precedente, preservando la cronologia: per un branch già condiviso è normalmente la scelta più sicura.",
+          "parole_chiave": [
+            "reset",
+            "revert",
+            "history"
+          ],
+          "follow_up": {
+            "domanda": "Quando è pericoloso fare reset --hard?",
+            "risposta": "Quando esistono modifiche non salvate o commit che rischi di perdere; su un branch condiviso riscrivere storia può creare conflitti."
           }
         }
       ]

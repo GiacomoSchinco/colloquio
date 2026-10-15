@@ -1,0 +1,480 @@
+{
+  "meta": {
+    "tecnologia": "Architettura e Design",
+    "slug": "architettura",
+    "schema": 2,
+    "versione": 1,
+    "aggiornato": "2026-10-14",
+    "totale_domande": 27
+  },
+  "argomenti": [
+    {
+      "nome": "Fondamentali",
+      "domande": [
+        {
+          "id": "architettura-001",
+          "priorita": "ALTA",
+          "domanda": "Microservizi: perché sì e perché no?",
+          "risposta": "Il vantaggio dei microservizi è l'indipendenza: ogni servizio si rilascia e scala da solo, e team diversi lavorano in parallelo senza bloccarsi a vicenda sui rilasci. Il costo è che la complessità si sposta dal codice all'infrastruttura: comunicazione di rete che può fallire, dati distribuiti senza transazioni semplici, e un'osservabilità che devi costruire perché non vedi più tutto in un unico processo. La scelta si giustifica con l'organizzazione, non con la tecnologia.",
+          "parole_chiave": [
+            "indipendenza di rilascio",
+            "autonomia dei team",
+            "dati distribuiti",
+            "osservabilità",
+            "costo operativo"
+          ],
+          "follow_up": {
+            "domanda": "Partiresti mai con i microservizi?",
+            "risposta": "No: si parte da un monolite ben strutturato, con i confini già chiari tra le parti. Quando cresce e quei confini mostrano un'esigenza reale di scala o di autonomia diversa, si estrae il pezzo che ne ha bisogno. Partire distribuendo significa pagare subito tutti i costi e non avere ancora nessun beneficio, perché il problema che i microservizi risolvono non esiste ancora."
+          }
+        },
+        {
+          "id": "architettura-002",
+          "priorita": "ALTA",
+          "domanda": "Raccontami un progetto che hai sviluppato",
+          "risposta": "Struttura la risposta: contesto (cosa faceva il progetto), il tuo ruolo, le tecnologie usate, le sfide affrontate, e i risultati ottenuti. Sii specifico: 'ho ridotto i tempi del 40%' è meglio di 'ho migliorato le performance'.",
+          "parole_chiave": [
+            "contesto",
+            "ruolo",
+            "sfide",
+            "risultati misurabili"
+          ],
+          "follow_up": {
+            "domanda": "Qual è stata la sfida più grande?",
+            "risposta": "Prepara un esempio concreto: problema, analisi, soluzione, risultato. Il metodo STAR: Situation, Task, Action, Result."
+          }
+        },
+        {
+          "id": "architettura-003",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è un message queue e quando serve?",
+          "risposta": "È un sistema dove un servizio deposita un messaggio e un altro lo legge quando può, così il primo non deve aspettare il secondo per proseguire. Serve a disaccoppiare due parti che hanno velocità diverse: chi riceve un ordine non deve restare bloccato se l'invio dell'email è lento o il servizio è momentaneamente giù. Il guadagno è la resistenza ai guasti e la separazione dei tempi, il costo è che il sistema diventa asincrono e più difficile da seguire.",
+          "parole_chiave": [
+            "coda di messaggi",
+            "disaccoppiamento",
+            "asincronia",
+            "resistenza ai guasti",
+            "tempi diversi"
+          ],
+          "follow_up": {
+            "domanda": "Coda per comandi o flusso di eventi?",
+            "risposta": "Sono due esigenze diverse. Una coda classica serve per distribuire comandi a chi deve eseguirli, con routing flessibile e messaggi che vengono consumati una volta: tipico per notifiche, elaborazioni, lavori in background. Uno strumento di flusso di eventi serve invece per registrare cosa è successo, con conservazione nel tempo e più consumatori indipendenti sullo stesso flusso: tipico per metriche, analytics e reazioni a catena."
+          }
+        },
+        {
+          "id": "architettura-004",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è un circuit breaker?",
+          "risposta": "È un meccanismo che smette di chiamare un servizio esterno quando questo ha fallito troppe volte di seguito, invece di continuare a tentare e restare bloccato ad aspettare. Dopo un periodo di attesa prova qualche richiesta di prova, e se rispondono torna a funzionare normalmente. Serve a impedire che un guasto esterno si propaghi: senza, i thread si accumulano in attesa e il servizio che chiama muore per colpa di un altro.",
+          "parole_chiave": [
+            "circuit breaker",
+            "guasto a catena",
+            "soglia di fallimenti",
+            "stato di prova",
+            "thread in attesa"
+          ],
+          "follow_up": {
+            "domanda": "Come lo implementi in Spring?",
+            "risposta": "Con una libreria di resilienza: annoti il metodo che chiama il servizio esterno e configuri la soglia di fallimenti, il tempo di attesa prima di riprovare e la risposta di riserva da dare nel frattempo. La parte importante è la riserva: un guasto gestito male è peggio di un errore esplicito, quindi decidi cosa mostrare o restituire quando il servizio è indisponibile."
+          }
+        },
+        {
+          "id": "architettura-005",
+          "priorita": "MEDIA",
+          "domanda": "Come progetti un sistema che deve reggere alto carico?",
+          "risposta": "Si regge il carico su tre fronti insieme. Prima si scala orizzontalmente, aggiungendo istanze dietro un bilanciatore, perché è la mossa più semplice ed efficace. Poi si riduce il lavoro: cache per ciò che si legge spesso, operazioni pesanti spostate su code asincrone, e query sistemate. Infine si osserva, perché senza dati non sai quale dei tre fronti è il collo di bottiglia e rischi di ottimizzare la parte sbagliata.",
+          "parole_chiave": [
+            "scalabilità orizzontale",
+            "bilanciamento",
+            "cache",
+            "asincronia",
+            "misurare"
+          ],
+          "follow_up": {
+            "domanda": "Da dove inizi?",
+            "risposta": "Prima misuri: senza dati sul collo di bottiglia, ottimizzare è indovinare. Le volte in cui ho visto risolvere davvero un problema di carico, la causa era quasi sempre una query mancante di indice o una chiamata esterna lenta, non la mancanza di istanze. Si trova guardando le metriche, poi si risolve quella causa, si rimisura e si riparte."
+          }
+        },
+        {
+          "id": "architettura-006",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è il load balancing?",
+          "risposta": "Con il bilanciamento distribuisci le richieste tra più istanze della stessa applicazione, così se una cade le altre continuano e se una è sovraccarica le altre assorbono. È anche quello che rende possibile rilasciare senza interruzioni, togliendo dal giro le istanze mentre le aggiorni. Richiede però che le istanze non conservino sessione, altrimenti l'utente viene mandato a un'istanza che non conosce il suo stato.",
+          "parole_chiave": [
+            "bilanciamento",
+            "più istanze",
+            "disponibilità",
+            "rilascio senza interruzioni",
+            "assenza di sessione"
+          ],
+          "follow_up": {
+            "domanda": "Che strategie conosci?",
+            "risposta": "A rotazione, che distribuisce in modo uniforme ed è la più diffusa; a minor numero di connessioni, che va bene quando le richieste hanno durate molto diverse; e basata su un valore della richiesta, che manda sempre lo stesso utente alla stessa istanza e serve quando lo stato non è condiviso. Quest'ultima però introduce uno sbilanciamento, quindi è un compromesso."
+          }
+        },
+        {
+          "id": "architettura-007",
+          "priorita": "MEDIA",
+          "domanda": "Come progetti un sistema ad alta disponibilità?",
+          "risposta": "L'alta disponibilità è un obiettivo diverso dal reggere il carico: qui il punto è non avere un punto singolo di guasto, cioè nessun componente la cui caduta fermi tutto il sistema. In pratica significa più istanze in zone diverse, database con replica e failover, code per non perdere il lavoro in corso, e monitoraggio che ti avvisi prima che gli utenti se ne accorgano. Il numero di nove di disponibilità che prometti determina quanto di tutto questo devi pagare.",
+          "parole_chiave": [
+            "alta disponibilità",
+            "punto singolo di guasto",
+            "replica e failover",
+            "zone diverse",
+            "monitoraggio"
+          ],
+          "follow_up": {
+            "domanda": "Da cosa parti per capire se sei coperto?",
+            "risposta": "Dall'elenco dei componenti: per ognuno ti chiedi cosa succede se muore in questo momento. Se la risposta è che il sistema si ferma, hai trovato un punto singolo di guasto e quello va eliminato per primo. È un esercizio che si fa sulla carta e costa poco, mentre scoprire lo stesso punto durante un guasto reale costa moltissimo."
+          }
+        },
+        {
+          "id": "architettura-008",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è un API Gateway?",
+          "risposta": "È un unico punto di ingresso davanti a tutti i servizi, che si occupa delle cose trasversali: instradare verso il servizio giusto, verificare l'autenticazione, limitare il numero di richieste, raccogliere log e metriche. Il vantaggio è che queste responsabilità le configuri in un posto solo, invece di replicarle in ogni servizio. Il rischio è farlo diventare il centro di tutto il sistema: se ci metti logica di business o se si satura, torni ad avere il punto singolo di guasto che volevi evitare.",
+          "parole_chiave": [
+            "API gateway",
+            "punto di ingresso unico",
+            "instradamento",
+            "responsabilità trasversali",
+            "punto singolo di guasto"
+          ],
+          "follow_up": {
+            "domanda": "Quale useresti?",
+            "risposta": "In un ecosistema Spring la scelta naturale è il gateway di Spring, perché si configura con le stesse convenzioni del resto e resta coerente con il team. Se invece hai già un bilanciatore o un proxy gestito dal provider, il gateway applicativo può essere ridondante: la domanda utile è se ti serve logica di instradamento e trasformazione, o solo distribuire il traffico."
+          }
+        },
+        {
+          "id": "architettura-009",
+          "priorita": "MEDIA",
+          "domanda": "Che differenza c'è tra frontend e backend e come comunicano?",
+          "risposta": "Il frontend è ciò che vede l'utente: l'interfaccia, spesso Angular o React, che gira nel browser. Il backend è ciò che sta dietro: logica applicativa, database e servizi, spesso Spring o un altro framework lato server. Comunicano tramite API REST: il frontend invia richieste HTTP e riceve dati in JSON, tipicamente. La separazione è netta, e il contratto tra i due, cioè la forma delle API, è ciò che permette ai team di lavorare in parallelo.",
+          "parole_chiave": [
+            "frontend",
+            "backend",
+            "API",
+            "comunicazione"
+          ],
+          "follow_up": {
+            "domanda": "Come si evita che frontend e backend si blocchino a vicenda?",
+            "risposta": "Definendo prima il contratto delle API: gli endpoint, i metodi e la forma dei dati. Poi ognuno lavora sulla propria parte, il frontend anche con dati finti se il backend non è pronto, e all'integrazione gli attriti sono minimi perché il contratto era già condiviso."
+          }
+        },
+        {
+          "id": "architettura-010",
+          "priorita": "BASSA",
+          "domanda": "Cos'è il CQRS?",
+          "risposta": "Consiste nel separare il modello di scrittura da quello di lettura, con due rappresentazioni diverse ottimizzate per scopi diversi. Ha senso quando letture e scritture hanno esigenze opposte: per esempio un aggregato complicato da scrivere in modo coerente e una vista denormalizzata da leggere in fretta. Il costo è che le due parti vanno sincronizzate, quindi accetti un ritardo tra il dato scritto e quello letto.",
+          "parole_chiave": [
+            "separazione lettura scrittura",
+            "modelli diversi",
+            "viste denormalizzate",
+            "sincronizzazione",
+            "ritardo"
+          ],
+          "follow_up": {
+            "domanda": "Quando lo usi?",
+            "risposta": "Su sistemi dove le due esigenze sono davvero diverse e i volumi lo giustificano, come un catalogo con letture enormi e scritture rare e complesse. Su un CRUD normale è complessità senza beneficio: aggiungi due modelli da mantenere e una sincronizzazione da sorvegliare, in cambio di un problema che non avevi. La regola è non introdurlo finché il dolore non è misurabile."
+          }
+        },
+        {
+          "id": "architettura-011",
+          "priorita": "BASSA",
+          "domanda": "Cos'è il saga pattern?",
+          "risposta": "È il modo di gestire un'operazione che attraversa più servizi quando non puoi usare una transazione unica. Ogni servizio esegue la sua parte e, se una fallisce, i precedenti eseguono un'azione di compensazione che annulla il proprio effetto, perché il rollback automatico non esiste tra servizi diversi. La compensazione non è un'eliminazione: è un'operazione nuova che riporta il sistema a uno stato accettabile, come emettere un rimborso al posto di cancellare un pagamento.",
+          "parole_chiave": [
+            "saga",
+            "compensazione",
+            "transazione distribuita",
+            "annullamento logico",
+            "più servizi"
+          ],
+          "follow_up": {
+            "domanda": "Come lo implementi?",
+            "risposta": "Con un coordinatore che conosce la sequenza e decide cosa compensare in caso di errore, oppure con i servizi che si ascoltano a vicenda tramite eventi. La prima è più facile da seguire e da diagnosticare quando qualcosa va storto, la seconda è più disaccoppiata ma il flusso complessivo diventa difficile da ricostruire: con molti servizi nessuno ha la visione d'insieme."
+          }
+        },
+        {
+          "id": "architettura-012",
+          "priorita": "BASSA",
+          "domanda": "Cos'è un evento di dominio?",
+          "risposta": "È la registrazione di qualcosa che è successo nel dominio, espresso nel linguaggio del dominio stesso: non un comando, ma un fatto compiuto. Chi lo pubblica non sa chi lo ascolta, quindi chi reagisce si aggiunge senza toccare il codice che lo emette. È lo strumento che rende possibile estrarre un comportamento senza modificare il resto, ed è spesso il primo passo verso la separazione di un servizio.",
+          "parole_chiave": [
+            "evento di dominio",
+            "fatto compiuto",
+            "pubblicazione e ascolto",
+            "disaccoppiamento",
+            "linguaggio del dominio"
+          ],
+          "follow_up": {
+            "domanda": "Come li implementi in Spring?",
+            "risposta": "Con il meccanismo di pubblicazione degli eventi del framework: pubblichi dalla logica di business e ascolti dove serve, con metodi annotati. C'è una scelta importante da fare: se vuoi che chi ascolta veda le modifiche al database, agganci l'ascolto all'esecuzione della transazione, altrimenti rischi che l'ascoltatore legga dati non ancora confermati o che non venga eseguito se la transazione fallisce."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Design pattern",
+      "domande": [
+        {
+          "id": "architettura-013",
+          "priorita": "ALTA",
+          "domanda": "Cos'è un design pattern e perché si usano?",
+          "risposta": "Un design pattern è una soluzione collaudata e riusabile a un problema ricorrente di progettazione. Non è codice pronto da copiare, ma uno schema concettuale che descrive come organizzare classi e oggetti per risolvere quel problema in modo pulito. Si usano per non reinventare la ruota, per comunicare con un linguaggio comune tra sviluppatori e per ottenere design più flessibili e manutenibili.",
+          "parole_chiave": [
+            "design pattern",
+            "soluzione",
+            "riuso",
+            "progettazione"
+          ],
+          "follow_up": {
+            "domanda": "Quali categorie di pattern esistono?",
+            "risposta": "I creazionali, che riguardano come creare gli oggetti, come Factory e Builder; gli strutturali, che compongono classi e oggetti, come Adapter; e i comportamentali, che gestiscono le interazioni, come State e Observer. Ogni categoria risponde a una famiglia di problemi diversa."
+          }
+        },
+        {
+          "id": "architettura-014",
+          "priorita": "ALTA",
+          "domanda": "Come funziona il pattern Singleton e quando va evitato?",
+          "risposta": "Il Singleton garantisce che una classe abbia una sola istanza e fornisce un punto di accesso globale a essa. Si implementa con un costruttore privato e un metodo statico che restituisce sempre la stessa istanza. È comodo per risorse condivise come una configurazione, ma va usato con cautela: introduce uno stato globale che complica i test e crea accoppiamenti nascosti, tanto che oggi molti lo considerano un anti-pattern se abusato.",
+          "parole_chiave": [
+            "Singleton",
+            "istanza unica",
+            "globale",
+            "anti-pattern"
+          ],
+          "follow_up": {
+            "domanda": "Come lo rendi sicuro in un contesto multithread?",
+            "risposta": "Con la lazy initialization sincronizzata o con l'inizializzazione eager della variabile statica, che in Java è thread-safe per natura. L'importante è evitare che due thread creino due istanze diverse in contemporanea, che vanificherebbe il pattern."
+          }
+        },
+        {
+          "id": "architettura-015",
+          "priorita": "ALTA",
+          "domanda": "Come funziona il pattern Factory e quando lo usi?",
+          "risposta": "La Factory centralizza la creazione degli oggetti: invece di fare new direttamente nel codice, chiami un metodo che decide quale implementazione concreta istanziare e te la restituisce dietro un'interfaccia comune. Serve quando la scelta dell'oggetto dipende da condizioni o configurazioni, e vuoi che il resto del codice non conosca le classi concrete. Così aggiungi nuove varianti senza toccare chi usa la factory.",
+          "parole_chiave": [
+            "Factory",
+            "creazione",
+            "interfaccia",
+            "disaccoppiamento"
+          ],
+          "follow_up": {
+            "domanda": "Esempio pratico?",
+            "risposta": "Un sistema di pagamento che supporta carta, PayPal e bonifico: una factory prende il metodo scelto e restituisce l'oggetto giusto. Il resto dell'applicazione lavora con l'interfaccia comune, e aggiungere un nuovo metodo significa solo aggiungere una classe e una voce alla factory."
+          }
+        },
+        {
+          "id": "architettura-016",
+          "priorita": "ALTA",
+          "domanda": "Come funziona il pattern Builder e quale problema risolve?",
+          "risposta": "Il Builder separa la costruzione di un oggetto complesso dalla sua rappresentazione, permettendo di crearlo passo dopo passo. Serve quando un oggetto ha molti parametri, soprattutto opzionali, e un costruttore con venti argomenti sarebbe illeggibile e incline a errori. Con il builder chiami metodi chiari per impostare i campi e alla fine ottieni l'oggetto configurato, con codice molto più leggibile.",
+          "parole_chiave": [
+            "Builder",
+            "costruzione",
+            "parametri",
+            "leggibilità"
+          ],
+          "follow_up": {
+            "domanda": "Dove lo vedi di solito?",
+            "risposta": "Nelle classi di configurazione, come un HttpClient o un oggetto DTO con molti campi opzionali. Invece di un costruttore mostruoso, scrivi qualcosa come nuovo Builder().conHost(host).conTimeout(10).build(), e ogni passaggio è esplicito."
+          }
+        },
+        {
+          "id": "architettura-017",
+          "priorita": "ALTA",
+          "domanda": "Come funziona il pattern Adapter e quando lo usi?",
+          "risposta": "L'Adapter fa da ponte tra due interfacce incompatibili: avvolge un oggetto esistente e ne traduce l'interfaccia in quella che il resto del codice si aspetta. Serve quando devi integrare una libreria o un sistema legacy che non rispetta i contratti del tuo progetto, senza modificarlo. Così il tuo codice continua a parlare con l'interfaccia che conosce, e l'adattamento resta confinato in un unico punto.",
+          "parole_chiave": [
+            "Adapter",
+            "interfaccia",
+            "legacy",
+            "integrazione"
+          ],
+          "follow_up": {
+            "domanda": "Esempio concreto?",
+            "risposta": "Un'app che usa un'interfaccia per le notifiche e deve integrare un servizio di terze parti con metodi e nomi diversi. Scrivi un adapter che implementa la tua interfaccia e al suo interno chiama il servizio esterno, così il resto dell'app non cambia e il fornitore esterno può anche essere sostituito."
+          }
+        },
+        {
+          "id": "architettura-018",
+          "priorita": "MEDIA",
+          "domanda": "Come funziona il pattern State e quale problema risolve?",
+          "risposta": "Il pattern State permette a un oggetto di cambiare comportamento quando cambia il suo stato interno, come se cambiasse classe. Invece di un unico metodo pieno di if e switch che controlla lo stato, incapsuli ogni stato in una classe dedicata e deleghi il comportamento a essa. Il risultato è codice più pulito e l'aggiunta di un nuovo stato non richiede di modificare tutti i metodi esistenti.",
+          "parole_chiave": [
+            "State",
+            "stato",
+            "comportamento",
+            "delega"
+          ],
+          "follow_up": {
+            "domanda": "Esempio tipico?",
+            "risposta": "Un lettore multimediale con stati play, pausa e stop: premere il pulsante fa cose diverse a seconda dello stato. Con il pattern, ogni stato sa come reagire e come passare allo stato successivo, invece di un enorme switch centrale che cresce a ogni nuova modalità."
+          }
+        },
+        {
+          "id": "architettura-019",
+          "priorita": "MEDIA",
+          "domanda": "Qual è la differenza tra Factory Method e Abstract Factory?",
+          "risposta": "Il Factory Method usa un singolo metodo per creare un tipo di oggetto, lasciando alle sottoclassi decidere quale classe concreta istanziare. L'Abstract Factory è più ampio: è un'interfaccia che crea famiglie di oggetti correlati tra loro, garantendone la compatibilità. In pratica il Factory Method risponde a 'quale oggetto creo', l'Abstract Factory a 'quale famiglia coerente di oggetti creo insieme'.",
+          "parole_chiave": [
+            "Factory Method",
+            "Abstract Factory",
+            "famiglie",
+            "creazione"
+          ],
+          "follow_up": {
+            "domanda": "Quando scegli l'Abstract Factory?",
+            "risposta": "Quando devi creare più oggetti che devono essere compatibili tra loro, come i componenti di una UI per un tema: bottoni, menu e finestre dello stesso tema. L'Abstract Factory ti garantisce di non mischiare per errore un bottone del tema chiaro con una finestra del tema scuro."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "UML e progettazione",
+      "domande": [
+        {
+          "id": "architettura-020",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra diagramma delle classi e diagramma di sequenza?",
+          "risposta": "Il diagramma delle classi descrive la struttura statica del sistema: le classi con attributi e metodi e le relazioni tra loro, come ereditarietà e associazioni. Il diagramma di sequenza descrive il comportamento dinamico: mostra come gli oggetti interagiscono nel tempo scambiandosi messaggi per realizzare uno scenario. Insieme rispondono a due domande diverse: com'è fatto il sistema e come si comporta in un certo flusso.",
+          "parole_chiave": [
+            "classi",
+            "sequenza",
+            "statico",
+            "dinamico"
+          ],
+          "follow_up": {
+            "domanda": "Quando usi l'uno e quando l'altro?",
+            "risposta": "Il diagramma delle classi in progettazione, per definire il modello dei dati e le relazioni. Quello di sequenza per chiarire un flusso complesso, come una transazione o un'autenticazione, mostrando chi chiama chi e in che ordine. Spesso si parte dalla sequenza per capire il comportamento e poi si consolidano le classi."
+          }
+        },
+        {
+          "id": "architettura-021",
+          "priorita": "MEDIA",
+          "domanda": "Cosa rappresenta la cardinalità in un'associazione tra classi?",
+          "risposta": "Indica quanti oggetti di una classe possono essere collegati a quanti oggetti dell'altra, definendo i limiti dell'associazione. Le più comuni sono uno-a-uno, uno-a-molti e molti-a-molti. Per esempio, un ordine appartiene a un solo cliente, ma un cliente può avere molti ordini: una relazione uno-a-molti. Definirle bene è il primo passo verso un modello dati corretto.",
+          "parole_chiave": [
+            "cardinalità",
+            "associazione",
+            "uno-a-molti",
+            "molti-a-molti"
+          ],
+          "follow_up": {
+            "domanda": "Come si traduce una molti-a-molti in un database?",
+            "risposta": "Con una tabella di collegamento: una terza entità che contiene le chiavi delle due in relazione, così ogni riga rappresenta una coppia valida. Per esempio studenti e corsi diventano una tabella iscrizioni con la chiave dello studente e quella del corso."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Architettura frontend",
+      "domande": [
+        {
+          "id": "architettura-022",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono le tecniche di code splitting in architettura frontend enterprise?",
+          "risposta": "Sono strategie per spezzare il codice in frammenti che vengono scaricati quando servono. Il taglio più naturale è per rotta, perché corrisponde a come l'utente naviga; un altro separa il tuo codice da quello delle librerie esterne, in modo che aggiornare un componente non invalidi il frammento delle dipendenze e viceversa; un terzo carica su richiesta i moduli pesanti, per esempio un editor che si apre al clic. La cosa da tenere a mente è che ogni frammento è una richiesta in più, quindi il taglio giusto è quello che corrisponde a un confine d'uso reale.",
+          "parole_chiave": [
+            "code splitting",
+            "taglio per rotta",
+            "separazione delle dipendenze",
+            "caricamento su interazione",
+            "costo per frammento"
+          ],
+          "follow_up": {
+            "domanda": "Perché separare le dipendenze delle librerie dal tuo codice conviene?",
+            "risposta": "Perché le librerie cambiano molto meno del tuo codice: se stanno in un frammento separato, quando rilasci una modifica il browser riscarica solo la parte tua e riusa la copia delle librerie che ha già in cache. Senza quella separazione un piccolo cambiamento invalida un file che contiene tutto, e ogni rilascio costa un download completo agli utenti. È un vantaggio che si vede solo sui rilasci successivi."
+          }
+        },
+        {
+          "id": "architettura-023",
+          "priorita": "MEDIA",
+          "domanda": "Spiega il pattern Monorepo per architetture frontend.",
+          "risposta": "Consiste nel tenere il codice di più progetti distinti in un unico repository. Il vantaggio principale è il riuso: condividere una libreria interna diventa un percorso locale invece di un pacchetto da pubblicare e versionare a ogni modifica, e una modifica alle fondamenta comuni si propaga e viene verificata in un solo passaggio. Il costo è che gli strumenti devono lavorare su tutto l'insieme, quindi le build diventano più pesanti e servono accorgimenti per eseguire solo ciò che è cambiato.",
+          "parole_chiave": [
+            "monorepo",
+            "riuso interno",
+            "verifica unica",
+            "build pesanti",
+            "esecuzione selettiva"
+          ],
+          "follow_up": {
+            "domanda": "Perché il riuso è così diverso rispetto a repository separati?",
+            "risposta": "Perché pubblicare un pacchetto interno significa versionarlo, aggiornare i consumatori e attendere il rilascio: ogni piccola modifica diventa un ciclo lungo, quindi nella pratica nessuno condivide nulla e il codice viene copiato. Nel monorepo la modifica e il suo uso stanno nello stesso commit, quindi la condivisione è immediata. Il rovescio è che la disciplina sui confini deve essere imposta dagli strumenti, altrimenti tutto diventa un unico blocco indistinto."
+          }
+        },
+        {
+          "id": "architettura-024",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono i Microfrontend e quando adottarli?",
+          "risposta": "È la scomposizione di un'applicazione in parti indipendenti, sviluppate e rilasciate separatamente e composte insieme a runtime, tipicamente dentro una pagina comune. Si adotta quando il problema vero non è tecnico ma organizzativo: molti team che lavorano sulla stessa interfaccia si bloccano a vicenda sui rilasci, e dare a ciascuno il proprio pezzo elimina la coda. Il prezzo è la complessità di integrazione: stili che si sovrappongono, prestazioni da controllare e comunicazione tra i pezzi da definire con contratti espliciti.",
+          "parole_chiave": [
+            "microfrontend",
+            "decomposizione",
+            "autonomia dei team",
+            "composizione a runtime",
+            "complessità di integrazione"
+          ],
+          "follow_up": {
+            "domanda": "Qual è il segnale che non ti servono?",
+            "risposta": "Se hai pochi team o un solo team, il problema organizzativo non esiste e ti assumi tutta la complessità senza il beneficio. Un altro segnale è quando la motivazione è tecnologica, tipo usare framework diversi: quella è una conseguenza, non una ragione, e come obiettivo porta a costi alti e nessun guadagno. L'adozione si giustifica con l'autonomia dei team e con i tempi di rilascio, altrimenti è solo complessità."
+          }
+        },
+        {
+          "id": "architettura-025",
+          "priorita": "MEDIA",
+          "domanda": "Spiega il concetto di Composition Pattern vs Configuration Pattern.",
+          "risposta": "Nel pattern a composizione il componente offre dei punti di innesto e delega al chiamante la struttura: chi lo usa decide cosa mettere dentro, tipicamente passando contenuto o componenti. Nel pattern a configurazione il componente riceve un insieme di opzioni e decide internamente come renderizzare ogni variante. La composizione è più flessibile e non richiede modifiche al componente quando serve un caso nuovo, la configurazione è più comoda e autodocumentante quando le varianti sono poche e prevedibili.",
+          "parole_chiave": [
+            "composizione",
+            "configurazione",
+            "punti di innesto",
+            "flessibilità",
+            "documentazione"
+          ],
+          "follow_up": {
+            "domanda": "Perché la configurazione tende a degenerare nel tempo?",
+            "risposta": "Perché ogni esigenza nuova si risolve aggiungendo un'opzione, e dopo un anno il componente ha trenta proprietà e una serie di diramazioni che nessuno riesce più a testare tutte. Il sintomo è un componente che non si riesce più a modificare senza rompere un caso. La composizione evita questo, perché il caso nuovo si costruisce fuori invece di entrare nelle opzioni."
+          }
+        },
+        {
+          "id": "architettura-026",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono i Render Props e come si differenziano dagli HOC?",
+          "risposta": "La proprietà di rendering è una proprietà a cui passi una funzione: il componente chiama quella funzione per sapere cosa disegnare, e così delega la forma dell'interfaccia a chi lo usa. I componenti di ordine superiore sono funzioni che prendono un componente e ne restituiscono uno arricchito, aggiungendo comportamento. Sono entrambe tecniche per condividere logica prima degli hook, e oggi si preferiscono gli hook perché non introducono livelli nell'albero dei componenti e non oscurano la provenienza delle proprietà.",
+          "parole_chiave": [
+            "render props",
+            "componenti di ordine superiore",
+            "condivisione di logica",
+            "livelli nell albero",
+            "hook"
+          ],
+          "follow_up": {
+            "domanda": "Perché gli hook hanno sostituito entrambe?",
+            "risposta": "Perché risolvono lo stesso problema senza aggiungere componenti o livelli: prendi quello che ti serve e lo usi dentro, e nel codice vedi da dove viene ogni valore. Con gli involucri la provenienza delle proprietà si perde tra i livelli, e con più di due annidati diventa difficile capire chi ha passato cosa. Gli hook hanno anche permesso di comporre logiche diverse, cosa che con gli involucri portava a inversioni di annidamento poco leggibili."
+          }
+        },
+        {
+          "id": "architettura-027",
+          "priorita": "MEDIA",
+          "domanda": "Spiega il ruolo del Design System in architettura enterprise.",
+          "risposta": "È l'insieme di componenti riutilizzabili, regole e valori di stile condivisi che i prodotti di un'azienda adottano. Serve a garantire coerenza tra superfici diverse senza che ogni team reinventi i componenti, e a spostare su un unico punto le decisioni di accessibilità, così vengono risolte una volta invece che in ogni progetto. Il valore si vede quando i prodotti sono molti: senza, ogni team costruisce il proprio pulsante e l'esperienza diventa disomogenea.",
+          "parole_chiave": [
+            "design system",
+            "riuso dei componenti",
+            "coerenza visiva",
+            "accessibilità centralizzata",
+            "più prodotti"
+          ],
+          "follow_up": {
+            "domanda": "Perché garantire l'accessibilità in un unico punto è un vantaggio così grande?",
+            "risposta": "Perché i problemi di accessibilità sono quasi sempre gli stessi, e risolverli nel componente condiviso li elimina da tutti i prodotti insieme: chi lo usa eredita la soluzione senza sapere nulla della materia. Se ogni team li risolve per conto proprio, il livello medio scende e i controlli vanno ripetuti ovunque. È l'argomento più concreto a favore di un sistema condiviso."
+          }
+        }
+      ]
+    }
+  ]
+}

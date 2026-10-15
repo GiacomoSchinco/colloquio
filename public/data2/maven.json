@@ -1,0 +1,151 @@
+{
+  "meta": {
+    "tecnologia": "Maven",
+    "slug": "maven",
+    "schema": 2,
+    "versione": 1,
+    "aggiornato": "2026-10-14",
+    "totale_domande": 8
+  },
+  "argomenti": [
+    {
+      "nome": "Fondamentali",
+      "domande": [
+        {
+          "id": "maven-001",
+          "priorita": "ALTA",
+          "domanda": "Come funziona Maven e cosa sono lifecycle e dipendenze?",
+          "risposta": "Maven è lo strumento che compila, testa e impacchetta un progetto Java seguendo convenzioni fisse: c'è una struttura di cartelle attesa, quindi non decidi tu dove mettere i sorgenti. Il lifecycle è la sequenza di fasi che esegui con un comando, come compile, test e package, e ogni fase esegue anche quelle precedenti. Le dipendenze le dichiari nel pom con le coordinate, e Maven le scarica da un repository insieme alle loro dipendenze, così non gestisci file jar a mano.",
+          "parole_chiave": [
+            "lifecycle",
+            "convenzioni",
+            "pom",
+            "coordinate",
+            "repository"
+          ],
+          "follow_up": {
+            "domanda": "Perché le convenzioni di Maven sono considerate un vantaggio?",
+            "risposta": "Perché chi entra nel progetto sa già dove sono i sorgenti, i test e le risorse, senza leggere una configurazione. Le convenzioni riducono le decisioni inutili e rendono i plugin applicabili senza configurazione aggiuntiva. Il costo è che uscire dalle convenzioni richiede configurazione esplicita, e all'inizio sembra un vincolo."
+          }
+        },
+        {
+          "id": "maven-002",
+          "priorita": "ALTA",
+          "domanda": "Cosa contiene il pom e a cosa servono le coordinate?",
+          "risposta": "Il pom è il file di configurazione del progetto: identifica il progetto con gruppo, artefatto e versione, elenca le dipendenze, dichiara le proprietà e configura i plugin di build. Le coordinate sono quelle tre informazioni e servono a identificare in modo univoco il progetto in un repository: è così che un altro progetto ti può usare come dipendenza. La cosa da capire è che il pom non è solo un elenco di librerie, è la definizione di come il progetto si costruisce.",
+          "parole_chiave": [
+            "groupId",
+            "artifactId",
+            "version",
+            "dipendenze",
+            "plugin"
+          ],
+          "follow_up": {
+            "domanda": "Perché la versione del progetto è importante?",
+            "risposta": "Perché identifica un artefatto immutabile: se pubblichi due build diverse con la stessa versione, chi la usa non sa cosa sta scaricando e non può tornare indietro. Per questo le versioni di rilascio non si sovrascrivono mai, mentre le versioni di sviluppo hanno un suffisso che lo dichiara. È lo stesso principio del versionamento degli artefatti in una pipeline."
+          }
+        },
+        {
+          "id": "maven-003",
+          "priorita": "ALTA",
+          "domanda": "Come funziona il ciclo di vita di default e quali fasi usi?",
+          "risposta": "È una sequenza che va da validate, compile, test, package, verify, install a deploy, e ogni fase include quelle prima: se lanci package, Maven esegue anche compile e test. Le fasi che usi davvero sono compile per costruire, test per la verifica, package per produrre l'artefatto e install per metterlo nel repository locale. Capire che le fasi sono cumulative evita di lanciare tre comandi quando ne basta uno.",
+          "parole_chiave": [
+            "validate",
+            "compile",
+            "test",
+            "package",
+            "install",
+            "fasi cumulative"
+          ],
+          "follow_up": {
+            "domanda": "Perché install è diverso da package?",
+            "risposta": "Perché package produce l'artefatto nella cartella di build, mentre install lo copia anche nel repository locale della tua macchina, rendendolo disponibile agli altri progetti. È la fase che serve quando sviluppi più progetti insieme e uno dipende dall'altro. In una pipeline di solito usi package e pubblichi altrove, perché install modifica lo stato della macchina."
+          }
+        },
+        {
+          "id": "maven-004",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono gli scope delle dipendenze e quando usi provided o test?",
+          "risposta": "Lo scope dice in quali fasi la dipendenza serve: compile è quello predefinito e vale sempre, test la rende disponibile solo ai test, provided indica che la fornisce l'ambiente di esecuzione e non va inclusa nel pacchetto, runtime serve a esecuzione ma non a compilazione. Il caso classico di provided è l'API delle servlet, perché la fornisce il server applicativo: includerla nel pacchetto crea conflitti. Sbagliare scope si vede come libreria presente dove non dovrebbe o classe non trovata in esecuzione.",
+          "parole_chiave": [
+            "compile",
+            "test",
+            "provided",
+            "runtime",
+            "ambiente di esecuzione"
+          ],
+          "follow_up": {
+            "domanda": "Perché includere l'API delle servlet nel pacchetto è un errore?",
+            "risposta": "Perché la fornisce già il server applicativo, e portarne una copia dentro l'applicazione crea due versioni della stessa classe. Il comportamento diventa imprevedibile e dipende dall'ordine di caricamento. Con lo scope provided la usi per compilare e la lasci fuori dal pacchetto, che è esattamente quello che serve."
+          }
+        },
+        {
+          "id": "maven-005",
+          "priorita": "MEDIA",
+          "domanda": "Come risolvi un conflitto tra versioni di dipendenze?",
+          "risposta": "Maven costruisce un albero delle dipendenze transitive e, quando la stessa libreria compare più volte con versioni diverse, sceglie quella più vicina alla radice, cioè con il percorso più corto. Le due strade sono escludere la dipendenza sbagliata dal ramo che la porta, oppure dichiarare la versione che vuoi direttamente nel progetto, che è la scelta più leggibile. Per capire cosa sta succedendo usi l'albero delle dipendenze, perché dedurre il conflitto leggendo i pom è quasi impossibile.",
+          "parole_chiave": [
+            "dipendenze transitive",
+            "conflitto di versioni",
+            "esclusioni",
+            "albero delle dipendenze"
+          ],
+          "follow_up": {
+            "domanda": "Perché non risolvi sempre escludendo la dipendenza in conflitto?",
+            "risposta": "Perché escluderla può togliere anche ciò che serviva: la libreria intermedia la usava per qualcosa, e rimuoverla fa fallire l'esecuzione con una classe mancante. Dichiarare direttamente la versione che vuoi è più sicuro e documenta la scelta, così chi legge sa che quella versione è una decisione e non un caso."
+          }
+        },
+        {
+          "id": "maven-006",
+          "priorita": "MEDIA",
+          "domanda": "A cosa serve un progetto multi-modulo?",
+          "risposta": "Serve a spezzare un progetto grande in moduli con dipendenze esplicite tra loro, gestiti da un pom padre: ogni modulo si compila con le sue dipendenze e la build complessiva segue l'ordine giusto. Il vantaggio è che i confini restano visibili nel codice e nella build, quindi non puoi usare una classe di un modulo se non hai dichiarato la dipendenza. Nei progetti grandi è quello che evita che tutto diventi un unico blocco compilato insieme.",
+          "parole_chiave": [
+            "multi-modulo",
+            "pom padre",
+            "confini",
+            "ordine di build"
+          ],
+          "follow_up": {
+            "domanda": "Perché i confini tra moduli sono un vantaggio architetturale?",
+            "risposta": "Perché rendono costoso il disordine: se un modulo vuole usare qualcosa di un altro deve dichiararlo, quindi il grafo delle dipendenze resta visibile e verificabile. Nei progetti a modulo singolo ogni classe può usare ogni altra e i confini esistono solo nella testa di chi scrive. I moduli sono un modo per far controllare l'architettura dalla build."
+          }
+        },
+        {
+          "id": "maven-007",
+          "priorita": "MEDIA",
+          "domanda": "Come funzionano il repository locale e il download delle dipendenze?",
+          "risposta": "Maven cerca le dipendenze prima nel repository locale, nella cartella utente, e se non le trova le scarica dai repository remoti configurati: tipicamente quello centrale e quello aziendale. Quello che scarica lo conserva in locale, quindi le build successive sono più rapide, e gli artefatti installati da te finiscono nello stesso posto. In azienda si aggiunge di solito un proxy interno, che fa da cache e da unico punto di accesso verso l'esterno.",
+          "parole_chiave": [
+            "repository locale",
+            "repository remoto",
+            "cache",
+            "proxy aziendale"
+          ],
+          "follow_up": {
+            "domanda": "Perché in azienda si usa un repository interno?",
+            "risposta": "Perché funziona da cache condivisa, quindi le build sono più veloci e non dipendono dalla rete esterna, e perché permette di pubblicare e usare artefatti interni senza esporli. È anche un punto di controllo per le dipendenze approvate, che in ambienti regolati è un requisito. Il costo è che diventa un componente critico da mantenere."
+          }
+        },
+        {
+          "id": "maven-008",
+          "priorita": "MEDIA",
+          "domanda": "Che differenza c'è tra Maven e Gradle?",
+          "risposta": "Maven si configura con XML e ha un ciclo di vita fisso e convenzioni rigide: è prevedibile e uguale in ogni progetto, e chi conosce Maven si orienta subito. Gradle usa uno script con un linguaggio vero, quindi è più flessibile e più veloce grazie a una build incrementale e a un processo che resta attivo in memoria. Nei progetti nuovi molti scelgono Gradle per la velocità, mentre Maven resta diffusissimo nell'esistente e nell'ecosistema Spring.",
+          "parole_chiave": [
+            "Maven",
+            "Gradle",
+            "XML e script",
+            "build incrementale",
+            "flessibilità"
+          ],
+          "follow_up": {
+            "domanda": "Cosa rende Gradle più veloce di Maven?",
+            "risposta": "Il fatto che salti i task i cui input non sono cambiati e che tenga un processo attivo in memoria invece di ripartire da zero a ogni comando. Maven è più lineare e ricalcola di più, anche se i plugin moderni hanno cache proprie. Su progetti grandi la differenza sullo sviluppo quotidiano si sente."
+          }
+        }
+      ]
+    }
+  ]
+}

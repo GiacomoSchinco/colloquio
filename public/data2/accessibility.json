@@ -1,0 +1,253 @@
+{
+  "meta": {
+    "tecnologia": "Accessibilità",
+    "slug": "accessibility",
+    "schema": 2,
+    "versione": 1,
+    "aggiornato": "2026-10-14",
+    "totale_domande": 14
+  },
+  "argomenti": [
+    {
+      "nome": "Fondamentali",
+      "domande": [
+        {
+          "id": "accessibility-001",
+          "priorita": "ALTA",
+          "domanda": "Come curi l'accessibilità nelle tue interfacce?",
+          "risposta": "Parto dalla semantica HTML, poi aggiungo attributi aria solo dove servono, controllo i contrasti dei colori, rendo tutto navigabile da tastiera e mi assicuro che immagini e form abbiano descrizioni adeguate. Seguo le linee guida WCAG e uso strumenti come Lighthouse o axe per verificare. L'accessibilità non è un extra: è parte del lavoro, perché l'app deve funzionare per tutti.",
+          "parole_chiave": [
+            "accessibilità",
+            "aria",
+            "WCAG",
+            "tastiera",
+            "contrasto"
+          ],
+          "follow_up": {
+            "domanda": "A cosa servono gli attributi aria?",
+            "risposta": "A comunicare alle tecnologie assistive informazioni che l'HTML da solo non esprime: lo stato di un elemento, il ruolo, se è espanso o selezionato. Per esempio aria-label descrive un pulsante che ha solo un'icona, e aria-expanded indica se un menu è aperto. Vanno usati con criterio, perché l'HTML semantico spesso basta."
+          }
+        },
+        {
+          "id": "accessibility-002",
+          "priorita": "ALTA",
+          "domanda": "Spiega l'importanza di WAI-ARIA e quando usarlo.",
+          "risposta": "È una specifica che aggiunge ruoli, stati e proprietà agli elementi per far capire alle tecnologie assistive cosa sono e in che stato si trovano. La regola d'oro è usarla solo quando non esiste un elemento nativo adatto: un pulsante è un pulsante, una casella è una casella, e ricostruirli con attributi ARIA aggiunge lavoro e rompe comportamenti che il browser dava gratis. L'ARIA serve per quei componenti che davvero non hanno equivalente, come una finestra di dialogo o una scheda, e va sempre accompagnata dalla gestione della tastiera.",
+          "parole_chiave": [
+            "WAI-ARIA",
+            "ruoli",
+            "stati",
+            "elementi nativi",
+            "gestione della tastiera"
+          ],
+          "follow_up": {
+            "domanda": "Perché una regola dice di non usare ARIA se puoi evitarlo?",
+            "risposta": "Perché ARIA descrive ma non si comporta: dichiarare che un elemento è un pulsante non lo rende attivabile con la tastiera né lo rende raggiungibile, quindi devi implementare tu tutto ciò che il browser faceva. Inoltre una dichiarazione sbagliata è peggio dell'assenza, perché annuncia una cosa diversa da quella che l'utente trova. Partire dall'elemento nativo corretto è più semplice e più robusto."
+          }
+        },
+        {
+          "id": "accessibility-003",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono le WCAG e quali livelli di conformità esistono?",
+          "risposta": "Sono le linee guida internazionali che definiscono cosa rende un contenuto accessibile, organizzate per livello: il primo è il requisito minimo, il secondo è quello che nella pratica viene richiesto come riferimento normativo, il terzo è il livello massimo e non sempre sostenibile su tutto il sito. Nella pratica l'obiettivo è il secondo livello, e citare l'esistenza di tre livelli mostra che conosci il quadro. È utile ricordare che la conformità va dimostrata, non dichiarata.",
+          "parole_chiave": [
+            "WCAG",
+            "livelli di conformità",
+            "requisito normativo",
+            "sostenibilità",
+            "conformità dimostrabile"
+          ],
+          "follow_up": {
+            "domanda": "Perché il terzo livello non è l'obiettivo?",
+            "risposta": "Perché chiede cose che non sono applicabili a ogni contenuto o che richiedono risorse sproporzionate, come le trascrizioni di interpretazioni o i livelli di contrasto molto alti. Il secondo livello è il compromesso che garantisce l'accessibilità reale alla maggior parte degli utenti ed è quello che la legge richiede. Puntare al terzo su tutto porta a non raggiungere nemmeno il secondo."
+          }
+        },
+        {
+          "id": "accessibility-004",
+          "priorita": "ALTA",
+          "domanda": "Come gestisci il focus management in React per modali e navigation?",
+          "risposta": "Con il focus intendo dove si trova il cursore da tastiera. Quando apri una finestra di dialogo, il focus deve entrare dentro e restare lì finché è aperta, altrimenti con il tasto di tabulazione si esce e si finisce a interagire con la pagina sottostante, che è invisibile e inattiva. Alla chiusura il focus deve tornare sull'elemento che aveva aperto la finestra, altrimenti chi usa la tastiera si ritrova all'inizio della pagina. Sono due dettagli che vengono dimenticati quasi sempre e che rovinano l'esperienza a chi non usa il mouse.",
+          "parole_chiave": [
+            "gestione del focus",
+            "contenimento",
+            "tasto di tabulazione",
+            "ritorno del focus",
+            "finestre di dialogo"
+          ],
+          "follow_up": {
+            "domanda": "Perché la gestione del focus è così spesso dimenticata?",
+            "risposta": "Perché con il mouse non si nota: clicchi e la finestra si apre, il cursore è già dove serve. Il problema emerge solo usando la tastiera, e chi sviluppa raramente prova l'intero flusso senza mouse. È il motivo per cui conviene inserire la navigazione da tastiera tra i criteri di verifica di una funzionalità, invece di considerarla un rifinitura finale."
+          }
+        },
+        {
+          "id": "accessibility-005",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono le WCAG e i livelli A, AA, AAA?",
+          "risposta": "Sono le linee guida internazionali che definiscono cosa rende un contenuto accessibile, e hanno tre livelli: il primo è il requisito minimo, il secondo è quello che nella pratica viene richiesto come riferimento normativo, il terzo è il massimo e non sempre sostenibile su tutto il sito. Nella pratica l'obiettivo è il secondo livello, e sapere che i livelli sono tre mostra che conosci il quadro. La cosa da tenere a mente è che la conformità va dimostrata, non dichiarata.",
+          "parole_chiave": [
+            "WCAG",
+            "tre livelli",
+            "livello normativo",
+            "sostenibilità",
+            "conformità dimostrabile"
+          ],
+          "follow_up": {
+            "domanda": "Quale livello è richiesto per legge?",
+            "risposta": "Il secondo livello è lo standard minimo richiesto dalla maggior parte delle normative. Il primo livello copre gli ostacoli più gravi ma non basta a garantire un'esperienza utilizzabile, quindi come obiettivo di progetto il riferimento è il secondo. Il terzo lo si persegue solo dove ha senso, non su tutto il sito."
+          }
+        },
+        {
+          "id": "accessibility-006",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci il focus management in una modale?",
+          "risposta": "Con il focus intendo dove si trova il cursore da tastiera. Quando apri una finestra di dialogo, il focus deve entrare dentro e restare lì finché è aperta, altrimenti con il tasto di tabulazione si esce e si finisce a interagire con la pagina sottostante, che è invisibile e inattiva. Alla chiusura il focus deve tornare sull'elemento che aveva aperto la finestra, altrimenti chi usa la tastiera si ritrova all'inizio della pagina. Sono due dettagli che si dimenticano quasi sempre e che rovinano l'esperienza a chi non usa il mouse.",
+          "parole_chiave": [
+            "focus trap",
+            "ritorno del focus",
+            "tasto di tabulazione",
+            "finestra di dialogo",
+            "esperienza da tastiera"
+          ],
+          "follow_up": {
+            "domanda": "Come chiudi la modale con la tastiera?",
+            "risposta": "Con il tasto Esc, che è la convenzione che tutti si aspettano, più un pulsante di chiusura esplicito con un'etichetta comprensibile. Anche il clic sullo sfondo è comune, ma non basta da solo: se l'unico modo di chiudere è il clic, chi usa la tastiera resta bloccato dentro. Vanno previsti tutti i canali, non uno."
+          }
+        },
+        {
+          "id": "accessibility-007",
+          "priorita": "MEDIA",
+          "domanda": "Come rendi accessibile un form?",
+          "risposta": "Serve che ogni campo abbia una label associata, che gli errori siano annunciati e non solo colorati di rosso, e che lo stato di ogni campo sia comunicato anche a chi non lo vede. In pratica: la label collegata all'input, il messaggio di errore riferito al campo giusto, lo stato di invalidità dichiarato, e il focus portato sul primo campo che ha problemi al momento dell'invio. Il colore da solo non è un'informazione accessibile, perché non tutti lo distinguono.",
+          "parole_chiave": [
+            "label associate",
+            "errori annunciati",
+            "stato di invalidità",
+            "focus sul primo errore",
+            "colore non basta"
+          ],
+          "follow_up": {
+            "domanda": "Come colleghi la label all'input?",
+            "risposta": "Con l'attributo della label che punta all'identificativo dell'input, oppure avvolgendo l'input dentro la label. Sono due modi equivalenti, quello che conta è che il collegamento esista: senza, chi usa il lettore schermo sente solo un campo vuoto senza sapere cosa deve inserire. Il segnaposto non è un'etichetta, perché scompare appena l'utente scrive."
+          }
+        },
+        {
+          "id": "accessibility-008",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono i ruoli ARIA e quando servono?",
+          "risposta": "Sono attributi che aggiungono semantica a un elemento, dicendo alle tecnologie assistive cosa rappresenta e in che stato si trova. Servono solo quando non esiste un elemento nativo adatto: un pulsante è un pulsante, una casella è una casella, e ricostruirli con i ruoli aggiunge lavoro e rompe comportamenti che il browser dava gratis. La regola pratica è usarli per i componenti che davvero non hanno equivalente, come una finestra di dialogo o una scheda, sempre accompagnati dalla gestione della tastiera.",
+          "parole_chiave": [
+            "ruoli ARIA",
+            "semantica",
+            "elementi nativi",
+            "stato",
+            "gestione della tastiera"
+          ],
+          "follow_up": {
+            "domanda": "Fammi un esempio",
+            "risposta": "Il caso tipico è la finestra di dialogo costruita a mano: le dichiari il ruolo e lo stato, e in più devi gestire il focus e la chiusura con Esc, che è esattamente il lavoro che l'elemento nativo farebbe per te. Un altro esempio sono i messaggi di stato che compaiono dopo un'azione: con il ruolo di avviso il lettore schermo li annuncia da solo, senza che l'utente debba andarli a cercare."
+          }
+        },
+        {
+          "id": "accessibility-009",
+          "priorita": "MEDIA",
+          "domanda": "Spiega la differenza tra aria-label e aria-labelledby.",
+          "risposta": "La prima imposta un'etichetta come testo che non compare nell'interfaccia, utile quando il significato è chiaro visivamente ma serve una descrizione, come su un pulsante con la sola icona. La seconda indica l'identificativo di un elemento già presente nel documento e ne usa il testo come etichetta, quindi il testo resta visibile e non viene duplicato. La seconda è preferibile quando esiste già un'etichetta a schermo, perché evita di mantenere due testi che possono divergere.",
+          "parole_chiave": [
+            "etichetta testuale",
+            "riferimento a un elemento",
+            "testo visibile",
+            "icona",
+            "duplicazione"
+          ],
+          "follow_up": {
+            "domanda": "Perché un'etichetta duplicata è un problema?",
+            "risposta": "Perché i due testi possono divergere: cambi quello visibile e dimentichi quello non visibile, così chi usa il lettore schermo sente una descrizione e chi vede ne legge un'altra. Con il riferimento all'elemento esiste un solo testo e il problema non si pone. È lo stesso principio della singola fonte di verità applicato ai contenuti dell'interfaccia."
+          }
+        },
+        {
+          "id": "accessibility-010",
+          "priorita": "MEDIA",
+          "domanda": "Come rendi accessibile un'immagine?",
+          "risposta": "Dipende da cosa fa l'immagine. Se porta informazione serve un testo alternativo che descrive il contenuto, non il nome del file né la parola immagine. Se è puramente decorativa il testo alternativo va vuoto, perché così le tecnologie assistive la saltano invece di annunciare rumore. Se l'immagine contiene testo, il testo va scritto davvero come testo, non lasciato dentro l'immagine dove non si può ingrandire né leggere con il lettore schermo.",
+          "parole_chiave": [
+            "testo alternativo",
+            "immagine decorativa",
+            "testo dentro immagine",
+            "descrizione del contenuto",
+            "rumore per il lettore schermo"
+          ],
+          "follow_up": {
+            "domanda": "Quando usi un testo alternativo vuoto?",
+            "risposta": "Quando l'immagine è puramente decorativa e non trasmette informazione: uno sfondo, un separatore, un'icona che accompagna un testo già esplicito. Lasciandolo vuoto indichi di ignorarla, mentre omettere del tutto l'attributo fa annunciare il nome del file, che è la cosa peggiore. Il test pratico è chiedersi cosa perderebbe l'utente se l'immagine non ci fosse: se non perde nulla, va vuoto."
+          }
+        },
+        {
+          "id": "accessibility-011",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono i landmark roles?",
+          "risposta": "Sono ruoli che marcano le grandi sezioni della pagina, così chi usa le tecnologie assistive può saltare direttamente a quella che gli interessa invece di ascoltare tutto dall'inizio. In pratica corrispondono agli elementi strutturali del documento, e il vantaggio è che danno una mappa della pagina. Sono utili anche per chi naviga da tastiera quando la pagina è lunga e non vuole attraversare ogni volta tutto il menu.",
+          "parole_chiave": [
+            "landmark",
+            "sezioni della pagina",
+            "mappa del documento",
+            "salto rapido",
+            "elementi strutturali"
+          ],
+          "follow_up": {
+            "domanda": "Quali sono i principali?",
+            "risposta": "L'intestazione, il contenuto principale, la navigazione, il contenuto complementare e il piè di pagina, che corrispondono agli elementi strutturali del documento. Ci sono anche i moduli di ricerca e le regioni etichettate, utili quando una sezione ha bisogno di un nome riconoscibile. Quello che conta è che il contenuto principale sia uno solo per pagina: con più di uno, la scorciatoia perde significato."
+          }
+        },
+        {
+          "id": "accessibility-012",
+          "priorita": "BASSA",
+          "domanda": "Cos'è il focus trap e come si implementa?",
+          "risposta": "È la tecnica che confina il focus da tastiera dentro un componente finché è aperto, tipicamente una finestra di dialogo o un pannello laterale. Serve perché senza confinamento il tasto di tabulazione porta l'utente fuori dal componente, su elementi della pagina sottostante che non vede e che non dovrebbe poter attivare. Quando il componente si chiude, il focus torna sull'elemento che lo aveva aperto.",
+          "parole_chiave": [
+            "confinamento del focus",
+            "tabulazione in ciclo",
+            "componente aperto",
+            "ritorno al trigger"
+          ],
+          "follow_up": {
+            "domanda": "Come gestisci la tabulazione oltre l'ultimo elemento?",
+            "risposta": "Il focus torna al primo elemento interattivo del componente, creando un ciclo, invece di uscire. È il comportamento che rende possibile attraversare tutti i controlli senza finire fuori. Se il componente si chiude, il focus va riportato al punto di partenza, altrimenti l'utente si ritrova all'inizio della pagina e deve ricercare dove era."
+          }
+        },
+        {
+          "id": "accessibility-013",
+          "priorita": "BASSA",
+          "domanda": "Come gestisci il reduced motion?",
+          "risposta": "Alcune persone soffrono di disturbi vestibolari per cui animazioni, parallasse e movimenti bruschi provocano nausea o vertigini, e il sistema operativo permette di dichiarare questa preferenza. Rispettarla significa disattivare le animazioni non essenziali, mantenendo solo quelle che servono a capire un cambiamento di stato. Non è una rifinitura: su un'animazione di sfondo molto evidente, ignorare la preferenza rende il sito inutilizzabile per una parte degli utenti.",
+          "parole_chiave": [
+            "riduzione del movimento",
+            "preferenza di sistema",
+            "disturbi vestibolari",
+            "animazioni non essenziali",
+            "accessibilità reale"
+          ],
+          "follow_up": {
+            "domanda": "Come si integra in CSS?",
+            "risposta": "Con una regola condizionale che intercetta la preferenza di sistema e azzera animazioni e transizioni, oppure le riduce a una durata minima mantenendo il cambio di stato. Applicarla in modo selettivo è meglio che azzerare tutto indiscriminatamente: se un'animazione comunica che qualcosa è cambiato, meglio ridurla che eliminarla, altrimenti si perde informazione."
+          }
+        },
+        {
+          "id": "accessibility-014",
+          "priorita": "BASSA",
+          "domanda": "Cosa sono gli skip links?",
+          "risposta": "Sono link che permettono di saltare la navigazione e andare direttamente al contenuto, e servono a chi naviga da tastiera: senza, ogni volta che cambi pagina devi attraversare tutto il menu prima di arrivare al contenuto. Di solito sono invisibili e compaiono solo quando ricevono il focus da tastiera, così non disturbano l'aspetto grafico. Sembrano un dettaglio, ma su un sito con menu lungo sono la differenza tra usabile e inutilizzabile.",
+          "parole_chiave": [
+            "salto alla navigazione",
+            "contenuto principale",
+            "visibile al focus",
+            "navigazione da tastiera"
+          ],
+          "follow_up": {
+            "domanda": "Come li implementi?",
+            "risposta": "Con un collegamento ancorato all'identificativo del contenuto principale, nascosto alla vista ma non alle tecnologie assistive, che diventa visibile quando riceve il focus. L'accortezza è che l'elemento di destinazione esista davvero e sia raggiungibile, altrimenti il salto non funziona e il link diventa un inganno. Va messo come primissimo elemento della pagina, prima di tutto il resto."
+          }
+        }
+      ]
+    }
+  ]
+}

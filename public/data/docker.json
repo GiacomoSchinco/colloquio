@@ -3,8 +3,8 @@
     "tecnologia": "Docker",
     "slug": "docker",
     "schema": 2,
-    "versione": 1,
-    "aggiornato": "2026-10-14",
+    "versione": 2,
+    "aggiornato": "2026-10-15",
     "totale_domande": 24
   },
   "argomenti": [
@@ -361,7 +361,7 @@
           "id": "docker-021",
           "priorita": "ALTA",
           "domanda": "Come rendi un container pronto per la produzione?",
-          "risposta": "L'immagine va costruita una volta e promossa tra gli ambienti, senza ricostruzioni diverse per ambiente, perché altrimenti stai rilasciando un artefatto che non è quello che hai testato. Poi: utente non root, filesystem di sola lettura dove possibile, un solo processo, healthcheck, limiti di risorse dichiarati, log su standard output raccolti dall'esterno e configurazione iniettata dall'ambiente. Infine il processo deve gestire il segnale di arresto per chiudersi finendo le richieste in corso, invece di essere ucciso dopo il timeout.",
+          "risposta": "Per un container pronto alla produzione uso un’immagine piccola e aggiornata, multi-stage build dove utile, utente non root, privilegi minimi, healthcheck o probe, log su stdout/stderr, limiti di risorse e segreti esterni. L’immagine va costruita e verificata una volta e promossa fra ambienti. “Un processo per container” è una buona linea guida per una responsabilità principale, non un divieto tecnico assoluto.",
           "parole_chiave": [
             "non root",
             "sola lettura",

@@ -3,7 +3,7 @@
     "tecnologia": "C#",
     "slug": "csharp",
     "schema": 2,
-    "versione": 1,
+    "versione": 2,
     "aggiornato": "2026-10-15",
     "totale_domande": 55
   },
@@ -32,7 +32,7 @@
           "id": "csharp-002",
           "priorita": "ALTA",
           "domanda": "Che differenza c'è tra tipo valore e tipo riferimento?",
-          "risposta": "Un tipo valore, come `int` o una `struct`, contiene direttamente i dati: assegnarlo o passarlo a un metodo copia il valore, e non può essere null se non usi la variante nullable. Un tipo riferimento, come una classe, contiene un riferimento a un oggetto sull'heap: assegnarlo copia il riferimento, quindi due variabili possono puntare allo stesso oggetto e le modifiche si vedono da entrambe. Le stringhe sono un tipo riferimento, ma essendo immutabili si comportano di fatto come valori quando le modifichi.",
+          "risposta": "I value type, come int e struct, contengono il proprio valore: l’assegnazione ne copia i dati. I reference type, come le classi, passano riferimenti agli oggetti: copiare una variabile copia il riferimento, non l’oggetto. La distinzione non è semplicemente “struct nello stack, class nell’heap”: la posizione dipende dal contesto, per esempio campi, array e boxing. Anche i riferimenti possono essere null, secondo le annotazioni nullable.",
           "parole_chiave": [
             "tipo valore",
             "tipo riferimento",
@@ -214,7 +214,7 @@
           "id": "csharp-013",
           "priorita": "ALTA",
           "domanda": "Che differenza c'è tra classe astratta e interfaccia?",
-          "risposta": "L'interfaccia definisce un contratto di comportamento senza stato: una classe può implementarne quante vuole, quindi è lo strumento quando vuoi trattare allo stesso modo oggetti diversi. La classe astratta è una classe incompleta che può contenere campi, costruttori e implementazioni già pronte, ma se ne eredita una sola, quindi rappresenta una relazione di tipo più forte. In pratica si programma verso le interfacce e si usa la classe astratta quando c'è codice comune da condividere tra le varianti.",
+          "risposta": "Un’interfaccia descrive un contratto che classi o struct possono implementare; una classe può implementare più interfacce. Una classe astratta fornisce una base comune, può conservare stato di istanza e inizializzare dati tramite costruttori, ma se ne può ereditare una sola. In C# moderno un’interfaccia può anche avere implementazioni di default e membri statici: non è corretto dire che contenga esclusivamente firme senza codice.",
           "parole_chiave": [
             "interfaccia",
             "classe astratta",
@@ -262,7 +262,7 @@
           "id": "csharp-016",
           "priorita": "MEDIA",
           "domanda": "Cosa sono i record e in cosa differiscono dalle classi?",
-          "risposta": "Il record è un tipo pensato per i dati: il compilatore genera uguaglianza di valore, `ToString` leggibile, `GetHashCode` coerente e il metodo `with` per copiare cambiando qualche proprietà. Una classe normale è un tipo pensato per il comportamento, dove l'uguaglianza resta per riferimento finché non la definisci tu. I record possono essere classi o struct: scegli il record quando il tipo rappresenta un dato immutabile, come un DTO o un valore di dominio, e la classe quando lo stato evolve nel tempo.",
+          "risposta": "Un record in C# è pensato per modellare dati e fornisce uguaglianza basata sui valori, un ToString utile e il supporto a with per creare copie con variazioni. Esistono record class (tipo riferimento) e record struct (tipo valore). Un record non è automaticamente e profondamente immutabile: dipende dalle proprietà dichiarate e dagli oggetti contenuti.",
           "parole_chiave": [
             "record",
             "uguaglianza di valore",
@@ -278,7 +278,7 @@
           "id": "csharp-017",
           "priorita": "MEDIA",
           "domanda": "Quando scegli una `struct` invece di una classe?",
-          "risposta": "La struct è un tipo valore: non ha bisogno di una allocazione sull'heap e viene copiata a ogni assegnazione. La scegli quando i dati sono piccoli, immutabili e usati intensamente, come coordinate, importi o identificatori, perché riduci allocazioni e pressione sul garbage collector; la eviti quando è grande, quando serve identità condivisa o quando prevedi modifiche da più punti del codice. Ricorda che la copia è il comportamento di default: se una struct cambia dentro una collezione, la modifica può non propagarsi.",
+          "risposta": "Scelgo una struct per piccoli valori con semantica di valore, ad esempio coordinate o intervalli, spesso immutabili. La struct viene copiata quando la assegno o la passo per valore; oggetti grandi possono quindi comportare copie costose. Non è vero che una struct risiede sempre nello stack o che non possa mai causare allocazioni: può essere campo di un oggetto sull’heap o essere sottoposta a boxing.",
           "parole_chiave": [
             "struct",
             "tipo valore",
@@ -310,7 +310,7 @@
           "id": "csharp-019",
           "priorita": "ALTA",
           "domanda": "Cosa fa `using` e cosa succede se dimentichi di liberare una risorsa?",
-          "risposta": "`using` chiama `Dispose` alla fine del blocco, anche se dentro è scattata un'eccezione, perché il compilatore lo traduce in un `try` con `finally`. Serve per le risorse non gestite o costose: file, connessioni, stream, client HTTP, transazioni. Se dimentichi di liberarle, la risorsa resta occupata più del necessario, il pool si esaurisce ed è il classico caso in cui l'applicazione rallenta sotto carico senza un errore evidente nei log.",
+          "risposta": "using garantisce la chiamata a Dispose sulle risorse che implementano IDisposable, anche quando il blocco termina con un’eccezione; per IAsyncDisposable esiste await using. È utile per stream, connessioni e altre risorse da rilasciare in modo deterministico. Attenzione a HttpClient: di norma non ne creo e distruggo uno per ogni richiesta; utilizzo IHttpClientFactory oppure un client condiviso configurato per gestire il ciclo delle connessioni.",
           "parole_chiave": [
             "IDisposable",
             "using",

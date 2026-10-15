@@ -3,9 +3,9 @@
     "tecnologia": "Spring",
     "slug": "spring",
     "schema": 2,
-    "versione": 1,
-    "aggiornato": "2026-10-14",
-    "totale_domande": 46
+    "versione": 2,
+    "aggiornato": "2026-10-15",
+    "totale_domande": 48
   },
   "argomenti": [
     {
@@ -438,7 +438,7 @@
           "id": "spring-026",
           "priorita": "ALTA",
           "domanda": "Come funziona l'autenticazione JWT in Spring?",
-          "risposta": "Il client invia le credenziali, il server le verifica e restituisce un token firmato che contiene le informazioni necessarie. A ogni richiesta successiva il client manda quel token nell'header di autorizzazione, e un filtro personalizzato ne verifica firma e scadenza: se è valido popola il contesto di sicurezza e la richiesta prosegue come autenticata. La cosa importante da dire al colloquio è che il token è firmato ma non cifrato, quindi chi lo intercetta ne legge il contenuto e dentro non ci metti dati sensibili.",
+          "risposta": "In Spring Security un’API che riceve JWT può essere configurata come OAuth2 Resource Server: valida firma, scadenza, issuer e, quando necessario, audience e autorizzazioni; non serve necessariamente scrivere un filtro JWT personalizzato. Il flusso di emissione dei token appartiene al server di autorizzazione o al login implementato nell’architettura. Distinguo validazione del token e decisioni di autorizzazione sugli endpoint.",
           "parole_chiave": [
             "JWT",
             "token firmato",
@@ -744,7 +744,7 @@
           "id": "spring-044",
           "priorita": "MEDIA",
           "domanda": "Come funziona la protezione CSRF?",
-          "risposta": "Il server genera un token per sessione. Le richieste che modificano dati (POST, PUT) devono includere questo token. Se non c'è, il server rifiuta. Impedisce che un sito malevolo faccia richieste a nome tuo.",
+          "risposta": "CSRF è un attacco che sfrutta credenziali inviate automaticamente dal browser, per esempio cookie di sessione. Per le applicazioni che usano cookie si usano token anti-CSRF e attributi SameSite, secondo la configurazione. Su API realmente stateless che usano soltanto un bearer token inviato esplicitamente nell’header Authorization il rischio CSRF è diverso e la protezione può essere disabilitata in modo consapevole. Non tutte le richieste POST richiedono lo stesso schema di token.",
           "parole_chiave": [
             "token",
             "sessione",
@@ -787,6 +787,41 @@
           "follow_up": {
             "domanda": "Perché non proteggere solo gli indirizzi?",
             "risposta": "Perché un indirizzo è una delle porte di accesso, non l'unica: un lavoro pianificato, un altro servizio o una chiamata interna non passano da lì, quindi resterebbero senza controllo. Mettere la regola sul metodo significa che vale per tutti i modi in cui quel codice viene raggiunto. La contropartita è che la mappa dei permessi non è più in un unico posto, e va cercata nel codice."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Integrazioni per colloqui",
+      "domande": [
+        {
+          "id": "spring-047",
+          "priorita": "ALTA",
+          "domanda": "Cosa cambia passando da Spring Boot 2 a Spring Boot 3?",
+          "risposta": "Spring Boot 3 usa una base moderna di Java e Jakarta EE: molte importazioni passano da javax.* a jakarta.*. La migrazione richiede verificare dipendenze, configurazioni di sicurezza, versioni dei driver e librerie compatibili. Prima aggiorno e testo un ramo dedicato, invece di sostituire le versioni alla cieca.",
+          "parole_chiave": [
+            "Spring Boot 2",
+            "Spring Boot 3",
+            "Jakarta"
+          ],
+          "follow_up": {
+            "domanda": "Perché questa migrazione può rompere la compilazione?",
+            "risposta": "Perché il cambio di namespace e di API non è solo una modifica di numero di versione."
+          }
+        },
+        {
+          "id": "spring-048",
+          "priorita": "ALTA",
+          "domanda": "Perché @Transactional potrebbe non funzionare in una chiamata interna alla stessa classe?",
+          "risposta": "Spesso Spring applica @Transactional tramite un proxy. Se un metodo della classe chiama direttamente un altro metodo annotato nella stessa istanza, la chiamata può saltare il proxy e quindi non attivare la transazione attesa. Una soluzione è spostare la responsabilità transazionale su un altro bean o ripensare i confini del servizio.",
+          "parole_chiave": [
+            "Transactional",
+            "proxy",
+            "self invocation"
+          ],
+          "follow_up": {
+            "domanda": "A cosa serve propagation REQUIRES_NEW?",
+            "risposta": "Ad avviare una transazione indipendente sospendendo quella esistente, se il transaction manager lo supporta."
           }
         }
       ]

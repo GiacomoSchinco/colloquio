@@ -3,9 +3,9 @@
     "tecnologia": ".NET",
     "slug": "dotnet",
     "schema": 2,
-    "versione": 1,
+    "versione": 2,
     "aggiornato": "2026-10-15",
-    "totale_domande": 55
+    "totale_domande": 57
   },
   "argomenti": [
     {
@@ -79,7 +79,7 @@
           "id": "dotnet-005",
           "priorita": "MEDIA",
           "domanda": "Come funziona NuGet e cosa sono le dipendenze transitive?",
-          "risposta": "NuGet è il gestore di pacchetti di .NET: dichiari un pacchetto con una versione o un intervallo nel file di progetto e il ripristino scarica anche tutte le dipendenze che quel pacchetto richiede. Le versioni si risolvono scegliendo la più alta richiesta tra tutti i percorsi di dipendenza, quindi un pacchetto indiretto può finire a una versione diversa da quella che ti aspetti. Il file di lock, generato con il ripristino bloccato, serve proprio a congelare la risoluzione e rendere le build riproducibili.",
+          "risposta": "NuGet gestisce pacchetti diretti e transitivi definiti nel grafo delle dipendenze. Nel restore non sceglie sempre la versione più alta: si applicano regole come lowest applicable version, direct-dependency-wins e gestione di dipendenze fra rami. Per capire un conflitto controllo dotnet list package --include-transitive e dotnet nuget why; per build riproducibili posso usare packages.lock.json con locked mode.",
           "parole_chiave": [
             "NuGet",
             "dipendenze transitive",
@@ -88,7 +88,7 @@
           ],
           "follow_up": {
             "domanda": "Perché una build può funzionare in locale e fallire in pipeline?",
-            "risposta": "Perché senza file di lock il ripristino può risolvere versioni diverse in momenti diversi, per esempio perché è uscita una versione nuova di un pacchetto indiretto. La soluzione è attivare la modalità bloccata e versionare il file di lock, così tutti ottengono le stesse versioni. In alternativa si fissano le versioni dirette esattamente, ma è il lock che copre anche le dipendenze profonde."
+            "risposta": "Le differenze fra locale e pipeline possono dipendere da SDK, runtime, feed, cache o dipendenze variabili. Il lock file aiuta a fissare le versioni risolte, ma non risolve da solo tutte le differenze di ambiente né i problemi di librerie native."
           }
         },
         {
@@ -388,7 +388,7 @@
           "id": "dotnet-024",
           "priorita": "MEDIA",
           "domanda": "Perché `new HttpClient()` è rischioso e cosa offre `IHttpClientFactory`?",
-          "risposta": "Creare un `HttpClient` per ogni chiamata significa creare ogni volta un nuovo gestore di connessioni, con il rischio di esaurire le porte disponibili e di perdere il riuso delle connessioni. Tenere invece un'istanza statica per tutta l'applicazione risolve il primo problema ma non aggiorna la risoluzione DNS, quindi perde i cambi di indirizzo dei servizi. `IHttpClientFactory` gestisce il ciclo di vita dei gestori, li riusa e li ricicla periodicamente, e permette di configurare client tipizzati con base address, timeout e policy di resilienza.",
+          "risposta": "Creare e distruggere un HttpClient per ogni richiesta ostacola il riuso delle connessioni e può esaurire le porte. Le strategie raccomandate sono IHttpClientFactory, che riusa gli handler, oppure un HttpClient condiviso con SocketsHttpHandler.PooledConnectionLifetime, per gestire anche i cambi DNS. Non è vero che un client singleton non possa mai gestire il rinnovo DNS.",
           "parole_chiave": [
             "HttpClient",
             "IHttpClientFactory",
@@ -909,6 +909,43 @@
           "follow_up": {
             "domanda": "Perché non applicare le migrazioni all'avvio dell'applicazione?",
             "risposta": "Perché con più istanze che partono insieme c'è il rischio che più processi provino ad applicare la stessa migrazione contemporaneamente, e perché un errore durante l'avvio impedisce all'applicazione di partire, magari durante un rilascio già in corso. In più l'operazione richiede permessi di modifica dello schema che il processo applicativo non dovrebbe avere. In sviluppo automatico, in produzione passo esplicito."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Integrazioni per colloqui",
+      "domande": [
+        {
+          "id": "dotnet-056",
+          "priorita": "ALTA",
+          "domanda": "Come diagnostichi una dipendenza NuGet transitiva e un errore di libreria nativa?",
+          "risposta": "Controllo dotnet list package --include-transitive e dotnet nuget why per ricostruire da dove arriva un pacchetto. Se una DLL .NET cerca una libreria nativa come libdb2.so, distinguo risoluzione dei pacchetti dal caricamento della libreria su sistema operativo e architettura corretti. Verifico runtime RID, dipendenze native, percorso di caricamento e versione dei driver.",
+          "parole_chiave": [
+            "NuGet",
+            "transitive",
+            "RID",
+            "DB2",
+            "libdb2"
+          ],
+          "follow_up": {
+            "domanda": "Perché il codice compila ma fallisce a runtime?",
+            "risposta": "Perché il compilatore può conoscere l’assembly gestito mentre il loader del sistema non trova una sua dipendenza nativa."
+          }
+        },
+        {
+          "id": "dotnet-057",
+          "priorita": "MEDIA",
+          "domanda": "Come propaghi il CancellationToken da un endpoint al database?",
+          "risposta": "ASP.NET Core rende disponibile HttpContext.RequestAborted: lo passo ai servizi e alle API asincrone, comprese le query che supportano la cancellazione. Se il client chiude la richiesta posso interrompere lavoro inutile. Gestisco OperationCanceledException senza trasformare sempre una normale cancellazione in errore applicativo.",
+          "parole_chiave": [
+            "CancellationToken",
+            "RequestAborted",
+            "async"
+          ],
+          "follow_up": {
+            "domanda": "Annullare il token garantisce che ogni operazione si interrompa?",
+            "risposta": "No: la cancellazione è cooperativa; ogni libreria deve supportarla e verificarla."
           }
         }
       ]

@@ -3,8 +3,8 @@
     "tecnologia": "Angular",
     "slug": "angular",
     "schema": 2,
-    "versione": 1,
-    "aggiornato": "2026-10-14",
+    "versione": 2,
+    "aggiornato": "2026-10-15",
     "totale_domande": 78
   },
   "argomenti": [
@@ -48,7 +48,7 @@
           "id": "angular-003",
           "priorita": "ALTA",
           "domanda": "Cosa sono i componenti standalone e perché sono diventati il default?",
-          "risposta": "Un componente standalone dichiara da sé le proprie dipendenze con imports, invece di essere dichiarato dentro un NgModule. È diventato il default dalla v17 perché elimina la burocrazia dei moduli nel caso normale: un componente, i suoi import, fatto. I moduli restano utili per organizzare domini grandi o quando serve uno scope di provider condiviso, ma per il codice nuovo non li usi più.",
+          "risposta": "Un componente standalone importa direttamente le dipendenze necessarie al template e non deve essere dichiarato in un NgModule. Il CLI crea applicazioni standalone per impostazione predefinita dalla versione 17; dalla versione 19 il flag standalone del componente è true di default anche quando non viene scritto. NgModule rimane supportato per interoperabilità con librerie e progetti esistenti.",
           "parole_chiave": [
             "standalone",
             "imports",
@@ -267,7 +267,7 @@
           "id": "angular-016",
           "priorita": "ALTA",
           "domanda": "Cosa sono i Signal in Angular e perché sono stati introdotti?",
-          "risposta": "Sono un modo per rappresentare lo stato reattivo: un Signal contiene un valore e notifica chi lo legge quando cambia, così Angular sa esattamente quali parti della view aggiornare invece di ricontrollare tutto l'albero. Il vantaggio rispetto a RxJS è la granularità e la semplicità: per un contatore o un valore derivato non serve un Observable con subscribe e unsubscribe. Nella pratica convivono: Signal per lo stato locale, RxJS per i flussi asincroni come le chiamate HTTP.",
+          "risposta": "Un Signal contiene stato reattivo: quando viene letto in un template o in un computed, Angular può tracciare la dipendenza e aggiornare i consumatori quando cambia. È comodo per valori sincroni e derivati; RxJS resta utile per flussi nel tempo, debounce e cancellazione di richieste. Non significa che Angular aggiorni sempre un singolo nodo senza alcun altro controllo di change detection.",
           "parole_chiave": [
             "reattività fine",
             "computed",
@@ -333,7 +333,7 @@
           "id": "angular-020",
           "priorita": "MEDIA",
           "domanda": "Come si aggiorna un signal e perché usare update() invece di set()?",
-          "risposta": "Con set() sostituisci il valore, con update() ricevi il valore precedente e restituisci quello nuovo. update() serve quando il nuovo valore dipende dal vecchio, come incrementare un contatore o aggiungere un elemento a una lista: così non leggi e non scrivi in due passaggi separati, e non rischi di perdere un aggiornamento. È la stessa differenza che c'è tra assegnare una variabile e usare una funzione di aggiornamento in useState di React.",
+          "risposta": "set(nuovoValore) assegna direttamente; update(valoreCorrente => nuovoValore) calcola il nuovo stato a partire dal precedente. Per esempio count.update(n => n + 1). Con gli oggetti conviene usare aggiornamenti immutabili affinché il riferimento cambi e la notifica si propaghi. Non serve sostenere che due istruzioni set siano sempre soggette alla stessa stale closure di React: i Signal possono essere letti sincronicamente.",
           "parole_chiave": [
             "set()",
             "update()",
@@ -522,7 +522,7 @@
           "id": "angular-031",
           "priorita": "ALTA",
           "domanda": "Come funziona la change detection con strategia OnPush?",
-          "risposta": "Con OnPush Angular ricontrolla il componente solo su eventi espliciti: un @Input che cambia per riferimento, un evento del template, un async pipe che emette, o una notifica dei Signal. Non parte più un giro globale dopo ogni evento asincrono, ma solo dai componenti che hanno davvero un motivo di cambiare. È quello che usi quasi sempre in produzione, perché con la strategia Default i cicli diventano il collo di bottiglia sulle applicazioni grandi. La trappola classica è mutare l'oggetto invece di sostituirlo: il riferimento non cambia e la view non si aggiorna.",
+          "risposta": "Con ChangeDetectionStrategy.OnPush Angular può saltare il controllo di sottoalberi quando non ha motivi per verificarli. Un nuovo input, un evento gestito nella vista, AsyncPipe, Signal letto nel template o markForCheck possono rendere il componente da controllare. OnPush non significa semplicemente che non esiste più change detection globale: il comportamento concreto dipende anche da zone.js e dall’architettura zoneless. Evito di mutare direttamente gli input.",
           "parole_chiave": [
             "OnPush",
             "immutabilità",
@@ -539,7 +539,7 @@
           "id": "angular-032",
           "priorita": "ALTA",
           "domanda": "Perché il track nei cicli @for è importante?",
-          "risposta": "Perché dice ad Angular come identificare ogni elemento della lista, così quando la lista cambia sa quali nodi riusare e quali creare o distruggere. Senza track, o con un track basato sull'indice, un inserimento in testa può far ricostruire tutto e perdere lo stato dei componenti figli, per esempio un campo di input che si svuota. Con un identificatore stabile, tipicamente l'id dell'elemento, Angular sposta i nodi esistenti e ne crea solo quelli nuovi. Nelle liste grandi la differenza si misura in secondi, non in millisecondi.",
+          "risposta": "La clausola track di @for fornisce un’identità stabile agli elementi, così Angular può riutilizzare viste e DOM durante inserimenti, rimozioni e riordini. Se gli elementi hanno un id stabile uso track item.id; track $index è adeguato soprattutto per liste statiche. Usare l’indice su liste riordinabili rischia di associare stato e focus all’elemento sbagliato: non significa necessariamente che Angular ricrei tutti i nodi a ogni modifica.",
           "parole_chiave": [
             "@for",
             "track",

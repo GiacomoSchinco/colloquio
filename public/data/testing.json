@@ -3,9 +3,9 @@
     "tecnologia": "Testing",
     "slug": "testing",
     "schema": 2,
-    "versione": 1,
-    "aggiornato": "2026-10-14",
-    "totale_domande": 12
+    "versione": 2,
+    "aggiornato": "2026-10-15",
+    "totale_domande": 15
   },
   "argomenti": [
     {
@@ -206,6 +206,59 @@
           "follow_up": {
             "domanda": "Qual è un buon valore?",
             "risposta": "Dipende dal codice: la logica di dominio e i calcoli meritano copertura alta, mentre i getter e il codice di configurazione non ne hanno bisogno. Un numero come obiettivo aziendale porta a test inutili pur di raggiungerlo. L'uso sano è guardare il report per trovare i rami mai eseguiti, e decidere caso per caso se quello è un buco da coprire o codice che si può eliminare."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Integrazioni per colloqui",
+      "domande": [
+        {
+          "id": "testing-013",
+          "priorita": "ALTA",
+          "domanda": "Come testi un form React con validazione e messaggi di errore?",
+          "risposta": "Renderizzo il form, inserisco dati con userEvent, invio e verifico l’errore vicino al campo o l’invio corretto. Preferisco query per ruolo, label e testo accessibile. Per richieste asincrone aspetto il feedback dell’utente e simulo la rete senza dipendere da servizi reali.",
+          "parole_chiave": [
+            "React Testing Library",
+            "userEvent",
+            "form",
+            "validation"
+          ],
+          "follow_up": {
+            "domanda": "Perché eviti di controllare le implementazioni interne?",
+            "risposta": "Perché un refactoring non dovrebbe rompere il test se il comportamento per l’utente è invariato."
+          }
+        },
+        {
+          "id": "testing-014",
+          "priorita": "ALTA",
+          "domanda": "Come simuli API REST nei test frontend con MSW?",
+          "risposta": "Mock Service Worker intercetta le richieste di rete e risponde con dati controllati, anche errori e latenze. Così il componente continua a fare le proprie fetch o chiamate client senza cambiare implementazione. È utile per verificare loader, tabella vuota, successo e messaggio di errore.",
+          "parole_chiave": [
+            "MSW",
+            "mock",
+            "API",
+            "testing"
+          ],
+          "follow_up": {
+            "domanda": "Perché è meglio di mockare ogni funzione interna?",
+            "risposta": "Perché testa il comportamento al confine HTTP e rende i test meno legati ai dettagli di implementazione."
+          }
+        },
+        {
+          "id": "testing-015",
+          "priorita": "MEDIA",
+          "domanda": "Qual è la differenza tra Jest, Vitest e React Testing Library?",
+          "risposta": "Jest e Vitest sono test runner con asserzioni e mock; React Testing Library aiuta a renderizzare componenti e a interagirvi. Non sono alternative dirette: posso usare RTL con uno dei due runner. In un progetto Vite, Vitest può integrarsi bene con la configurazione esistente.",
+          "parole_chiave": [
+            "Jest",
+            "Vitest",
+            "RTL",
+            "runner"
+          ],
+          "follow_up": {
+            "domanda": "Che cosa verifica un test RTL?",
+            "risposta": "Che la UI reagisca come la vede e la usa una persona."
           }
         }
       ]

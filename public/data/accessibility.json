@@ -3,9 +3,9 @@
     "tecnologia": "Accessibilità",
     "slug": "accessibility",
     "schema": 2,
-    "versione": 1,
-    "aggiornato": "2026-10-14",
-    "totale_domande": 14
+    "versione": 2,
+    "aggiornato": "2026-10-15",
+    "totale_domande": 15
   },
   "argomenti": [
     {
@@ -245,6 +245,27 @@
           "follow_up": {
             "domanda": "Come li implementi?",
             "risposta": "Con un collegamento ancorato all'identificativo del contenuto principale, nascosto alla vista ma non alle tecnologie assistive, che diventa visibile quando riceve il focus. L'accortezza è che l'elemento di destinazione esista davvero e sia raggiungibile, altrimenti il salto non funziona e il link diventa un inganno. Va messo come primissimo elemento della pagina, prima di tutto il resto."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Integrazioni per colloqui",
+      "domande": [
+        {
+          "id": "accessibility-015",
+          "priorita": "MEDIA",
+          "domanda": "Come verifichi manualmente l’accessibilità di una pagina?",
+          "risposta": "Provo la navigazione soltanto da tastiera, verifico ordine e visibilità del focus, nomi accessibili dei controlli, errori dei form e funzionamento dei dialog. Affianco controlli automatici con axe o Lighthouse, sapendo che non trovano tutti i problemi. Per componenti critici provo anche con uno screen reader.",
+          "parole_chiave": [
+            "accessibilità",
+            "WCAG",
+            "axe",
+            "tastiera"
+          ],
+          "follow_up": {
+            "domanda": "Perché il punteggio automatico non basta?",
+            "risposta": "Perché molte difficoltà dipendono dal significato e dal flusso di utilizzo, non solo dagli attributi HTML."
           }
         }
       ]

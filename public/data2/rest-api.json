@@ -1,0 +1,782 @@
+{
+  "meta": {
+    "tecnologia": "REST API e HTTP",
+    "slug": "rest-api",
+    "schema": 2,
+    "versione": 1,
+    "aggiornato": "2026-10-14",
+    "totale_domande": 45
+  },
+  "argomenti": [
+    {
+      "nome": "Fondamentali",
+      "domande": [
+        {
+          "id": "rest-api-001",
+          "priorita": "ALTA",
+          "domanda": "Cosa significa che un metodo HTTP è idempotente?",
+          "risposta": "Significa che fare più volte la stessa richiesta produce lo stesso effetto di farla una volta sola. GET, PUT e DELETE sono idempotenti: leggere o cancellare due volte la stessa risorsa dà lo stesso risultato. POST non lo è, perché ogni chiamata crea una nuova risorsa. È un concetto utile per progettare API sicure e per gestire i retry senza effetti collaterali.",
+          "parole_chiave": [
+            "idempotente",
+            "GET",
+            "PUT",
+            "DELETE",
+            "POST"
+          ],
+          "follow_up": {
+            "domanda": "Perché è importante nei retry?",
+            "risposta": "Perché se una richiesta fallisce per un problema di rete, posso riprovarla in sicurezza se è idempotente, senza rischiare di creare duplicati. Con un POST invece un retry potrebbe creare due risorse, quindi serve più attenzione, per esempio con un idempotency key lato server."
+          }
+        },
+        {
+          "id": "rest-api-002",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono i metodi HTTP GET, POST, PUT, DELETE?",
+          "risposta": "Sono i metodi HTTP che usi nelle API REST, ognuno con un significato preciso. GET legge dati, POST crea una nuova risorsa, PUT sostituisce una risorsa per intero, PATCH ne aggiorna solo una parte e DELETE la cancella. Usarli nel modo giusto rende le API prevedibili e conformi allo standard REST, così chiunque le consuma sa cosa aspettarsi.",
+          "parole_chiave": [
+            "GET",
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE",
+            "REST"
+          ],
+          "follow_up": {
+            "domanda": "Differenza tra PUT e PATCH?",
+            "risposta": "PUT sostituisce l'intera risorsa: gli mandi la versione completa e lui la rimpiazza. PATCH aggiorna solo i campi che invii, lasciando il resto com'è. Per gli aggiornamenti parziali PATCH è più efficiente, perché eviti di rispedire dati che non stanno cambiando e riduci il rischio di sovrascrivere qualcosa per errore."
+          }
+        },
+        {
+          "id": "rest-api-003",
+          "priorita": "ALTA",
+          "domanda": "Come gestisci validazione ed errori in una API Spring?",
+          "risposta": "La validazione si fa con le annotazioni di Bean Validation, come @NotNull, @Size o @Email sugli oggetti di input, attivate nel controller con @Valid: se i dati non sono validi, Spring lancia un errore prima di entrare nella logica. Per una gestione centralizzata degli errori si usa @RestControllerAdvice con @ExceptionHandler, che intercetta le eccezioni e restituisce risposte di errore coerenti, con un formato unico e i codici di stato giusti.",
+          "parole_chiave": [
+            "Valid",
+            "RestControllerAdvice",
+            "ExceptionHandler",
+            "validazione"
+          ],
+          "follow_up": {
+            "domanda": "Perché centralizzare gli errori invece di gestirli nel controller?",
+            "risposta": "Perché eviti di ripetere la stessa logica in ogni endpoint e garantisci risposte di errore uniformi: stesso formato, stessi codici di stato, nessun dettaglio interno esposto. Il codice dei controller resta pulito e concentrato sulla logica."
+          }
+        },
+        {
+          "id": "rest-api-004",
+          "priorita": "ALTA",
+          "domanda": "Come progetti una API REST di qualità: DTO, paginazione e versioning?",
+          "risposta": "Non si espongono mai direttamente le entità JPA: si usano DTO, oggetti pensati per il contratto dell'API, che evitano di rivelare la struttura interna e i campi sensibili. Per le liste si implementa la paginazione, per esempio con Pageable in Spring Data, restituendo i dati insieme alle informazioni su pagina e totale. Il versioning, come /api/v1/..., permette di evolvere l'API senza rompere i client esistenti.",
+          "parole_chiave": [
+            "DTO",
+            "paginazione",
+            "versioning",
+            "Pageable"
+          ],
+          "follow_up": {
+            "domanda": "Perché non esporre direttamente le entità?",
+            "risposta": "Perché le entità sono legate al database e cambiano con esso: esporle accoppia il contratto dell'API allo schema dei dati e rischia di rivelare campi interni. I DTO disaccoppiano i due mondi e permettono di cambiare il modello senza rompere i client."
+          }
+        },
+        {
+          "id": "rest-api-005",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono i principi REST?",
+          "risposta": "REST è uno stile architetturale, non uno standard: le risorse sono identificate da URL, si manipolano con i metodi HTTP, si scambiano come rappresentazioni di solito in JSON, e ogni richiesta è autonoma senza stato di sessione sul server. Gli status code comunicano l'esito. Il punto da dire al colloquio è che RESTful significa che rispetti quei vincoli: usare URL con dentro i verbi non è REST, anche se l'API funziona.",
+          "parole_chiave": [
+            "REST",
+            "risorse",
+            "metodi HTTP",
+            "stateless",
+            "rappresentazioni"
+          ],
+          "follow_up": {
+            "domanda": "Perché /getUtenteById non è REST?",
+            "risposta": "Perché mette un verbo nell'URL e usa il percorso come una chiamata a procedura, mentre in REST il percorso identifica la risorsa e il metodo HTTP esprime l'azione. L'equivalente corretto sarebbe /utenti/{id} con GET. Funziona ugualmente, ma perdi i vantaggi di uniformità, cache e prevedibilità che rendono REST utile."
+          }
+        },
+        {
+          "id": "rest-api-006",
+          "priorita": "ALTA",
+          "domanda": "Spiega i metodi HTTP principali.",
+          "risposta": "GET legge una risorsa e non deve avere effetti collaterali. POST crea una risorsa nuova o avvia un'operazione, e ripeterlo crea duplicati. PUT sostituisce completamente la risorsa indicata. PATCH ne modifica una parte. DELETE la rimuove. La differenza tra PUT e PATCH è quella che genera più discussioni: se nel corpo mandi solo alcuni campi, per convenzione è una modifica parziale, non una sostituzione.",
+          "parole_chiave": [
+            "GET",
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE",
+            "sostituzione o modifica"
+          ],
+          "follow_up": {
+            "domanda": "Che differenza c'è tra PUT e PATCH nel caso dei campi assenti?",
+            "risposta": "Con PUT i campi assenti vengono azzerati, perché stai dichiarando lo stato completo della risorsa: sostituisci tutto. Con PATCH i campi assenti restano com'erano, perché stai descrivendo solo la modifica. È una differenza sostanziale nei test e sulla persistenza dei dati, ed è il motivo per cui conviene documentare quale delle due semantiche l'API adotta davvero."
+          }
+        },
+        {
+          "id": "rest-api-007",
+          "priorita": "ALTA",
+          "domanda": "Cosa significa idempotenza e quali metodi sono idempotenti?",
+          "risposta": "Idempotente significa che ripetere la stessa richiesta produce lo stesso effetto sullo stato del server di eseguirla una volta sola. Lo sono GET, PUT, DELETE e HEAD: cancellare due volte la stessa risorsa lascia il sistema nello stesso stato in cui l'avrebbe lasciato una sola cancellazione. Non lo sono POST e PATCH, ed è il motivo per cui su un pagamento o su un ordine serve una chiave di idempotenza fornita dal client per riconoscere il duplicato.",
+          "parole_chiave": [
+            "idempotenza",
+            "ripetizione sicura",
+            "chiave di idempotenza",
+            "POST",
+            "ritentativi"
+          ],
+          "follow_up": {
+            "domanda": "Perché l'idempotenza conta quando si fanno i ritentativi?",
+            "risposta": "Perché una chiamata può fallire per un problema di rete dopo che il server ha già eseguito l'operazione: il client non lo sa e ritenta. Se l'endpoint è idempotente il secondo tentativo non fa danni, se non lo è crei un duplicato. Con una chiave di idempotenza il server riconosce che è la stessa richiesta e non la riapplica, il che rende sicuri anche i POST."
+          }
+        },
+        {
+          "id": "rest-api-008",
+          "priorita": "ALTA",
+          "domanda": "Quali classi di status code HTTP conosci?",
+          "risposta": "Le classi dicono di chi è il problema. Il successo include la lettura riuscita, la creazione con l'indicazione della nuova risorsa e la risposta senza contenuto dopo un'eliminazione. Il gruppo dei reindirizzamenti riguarda il `redirect` e gli asset non modificati. Gli errori del client indicano una richiesta sbagliata: non valida, non autenticata, non autorizzata, non trovata, in conflitto, non elaborabile. Gli errori del server indicano che il problema è tuo, dal guasto generico a quello di un servizio a monte indisponibile.",
+          "parole_chiave": [
+            "classi di status",
+            "successo",
+            "errori del client",
+            "errori del server",
+            "semantica"
+          ],
+          "follow_up": {
+            "domanda": "Che differenza c'è tra 401 e 403?",
+            "risposta": "Il primo dice che non sei autenticato o che il token non è valido, quindi la soluzione è fornire credenziali: è il caso in cui il client deve rifare il login. Il secondo dice che sei autenticato ma non hai i permessi per quella risorsa, e rifare il login non cambierebbe nulla. Confonderli manda il client in un ciclo di autenticazione inutile, che è un bug visibile all'utente."
+          }
+        },
+        {
+          "id": "rest-api-009",
+          "priorita": "ALTA",
+          "domanda": "Come implementi la paginazione in un'API?",
+          "risposta": "Con paginazione a scostamento usi numero di pagina e dimensione: è semplice e ti permette di saltare a una pagina qualsiasi, ma su grandi volumi il database deve comunque scorrere tutte le righe precedenti, e con dati che cambiano spesso vedi duplicati o salti tra una pagina e l'altra. Con la paginazione a cursore il server restituisce un riferimento all'ultimo elemento letto, e la pagina successiva riparte da lì: più stabile ed efficiente, a costo di non poter saltare direttamente a metà elenco. La risposta include sempre anche i metadati, come il totale e il riferimento per la pagina successiva.",
+          "parole_chiave": [
+            "paginazione a scostamento",
+            "paginazione a cursore",
+            "metadati",
+            "dati che cambiano",
+            "efficienza"
+          ],
+          "follow_up": {
+            "domanda": "Perché la paginazione a scostamento mostra duplicati?",
+            "risposta": "Perché tra una richiesta e la successiva qualcuno può inserire o eliminare righe, e allora l'ordinamento si sposta: una riga che era in fondo alla pagina due finisce in cima alla pagina tre, e la vedi due volte. Con il cursore riparti da un punto preciso nell'ordinamento, quindi le righe nuove non spostano quelle già lette. È il motivo per cui i feed usano il cursore."
+          }
+        },
+        {
+          "id": "rest-api-010",
+          "priorita": "ALTA",
+          "domanda": "Come si autentica un client verso un'API?",
+          "risposta": "Le opzioni principali sono le credenziali di base, che vanno solo su connessione cifrata, una chiave API per gli accessi da sistema a sistema, i token firmati e il framework di autorizzazione delegata per i casi in cui una terza parte accede per conto di un utente. La scelta dipende da chi chiama: un servizio interno, una singola pagina web o un'applicazione che agisce per conto di qualcun altro sono situazioni diverse. L'errore da evitare è mettere una chiave di sistema dentro codice che gira nel browser, dove chiunque la può leggere.",
+          "parole_chiave": [
+            "autenticazione di base",
+            "chiave API",
+            "token",
+            "autorizzazione delegata",
+            "client pubblico"
+          ],
+          "follow_up": {
+            "domanda": "Perché una chiave API nel frontend è un problema?",
+            "risposta": "Perché finisce nel bundle JavaScript e chiunque apra gli strumenti del browser la legge, insieme a tutto ciò che può fare con quella chiave. Le chiavi di sistema servono per comunicazioni tra server, dove il codice non è visibile. Per il browser servono flussi che non espongono il segreto, come l'autorizzazione delegata con scambio di codice."
+          }
+        },
+        {
+          "id": "rest-api-011",
+          "priorita": "ALTA",
+          "domanda": "Spiega OAuth2 e i suoi flussi principali.",
+          "risposta": "È un framework di autorizzazione che permette a un'applicazione di accedere a risorse protette per conto di un utente senza mai vedere la sua password. Il flusso più usato è quello con codice di autorizzazione, adatto ad applicazioni web e mobili, oggi sempre accompagnato dall'estensione che protegge i client pubblici; per le comunicazioni tra servizi si usa il flusso con credenziali del client. Alla fine ottieni un token di accesso, tipicamente con scadenza breve, e un token di rinnovo.",
+          "parole_chiave": [
+            "autorizzazione delegata",
+            "codice di autorizzazione",
+            "credenziali del client",
+            "token di accesso",
+            "token di rinnovo"
+          ],
+          "follow_up": {
+            "domanda": "OAuth2 autentica o autorizza?",
+            "risposta": "Autorizza: dice cosa un'applicazione può fare su una risorsa per conto dell'utente, non chi è l'utente. Per l'identità esiste un livello sopra, basato su un token di identità firmato. Il malinteso è diffuso ma importante: usare OAuth2 per autenticare porta a implementazioni sbagliate, ed è il motivo per cui le specifiche oggi sono separate."
+          }
+        },
+        {
+          "id": "rest-api-012",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono i JWT e come sono composti?",
+          "risposta": "È un token composto da tre parti separate da punti: un'intestazione che dichiara algoritmo e tipo, un corpo con le informazioni, e una firma che garantisce che il contenuto non sia stato alterato. Il server verifica la firma e non deve conservare sessioni, quindi è adatto a scalare in orizzontale. Il punto cruciale da dire è che è firmato ma non cifrato: chiunque lo intercetti ne legge il contenuto, quindi dentro non ci metti dati sensibili.",
+          "parole_chiave": [
+            "JWT",
+            "tre parti",
+            "firma",
+            "senza stato",
+            "contenuto leggibile"
+          ],
+          "follow_up": {
+            "domanda": "Come revochi un token se non c'è uno stato sul server?",
+            "risposta": "Non lo revochi direttamente: è il costo dell'assenza di stato. Si mitiga con scadenze brevi, così la finestra di abuso è limitata, e con un token di rinnovo che puoi invalidare conservandone lo stato. Chi ha bisogno di revoca immediata mantiene una lista di token annullati, ma così reintroduce lo stato che il token voleva evitare."
+          }
+        },
+        {
+          "id": "rest-api-013",
+          "priorita": "ALTA",
+          "domanda": "Cos'è il CORS?",
+          "risposta": "È il meccanismo con cui il browser decide se una pagina di un'origine può leggere una risposta di un'origine diversa: è una protezione del browser, non del server, e serve a evitare che un sito legga dati da un altro usando la tua sessione. Il server autorizza le origini con gli header dedicati. Per le richieste che non rientrano nei casi semplici il browser invia prima una richiesta di verifica con il metodo OPTIONS, che serve a chiedere il permesso prima di quella vera.",
+          "parole_chiave": [
+            "CORS",
+            "stessa origine",
+            "header di autorizzazione",
+            "richiesta di verifica",
+            "OPTIONS"
+          ],
+          "follow_up": {
+            "domanda": "CORS è una misura di sicurezza del server o del browser?",
+            "risposta": "È una misura del browser: lui applica la restrizione e blocca la lettura. Questo significa che un client che non è un browser, come uno script o uno strumento da riga di comando, non è soggetto a CORS e può chiamare l'API. Per questo CORS non va confuso con l'autenticazione: non protegge l'API, protegge l'utente nel browser."
+          }
+        },
+        {
+          "id": "rest-api-014",
+          "priorita": "ALTA",
+          "domanda": "Come gestisci le operazioni asincrone o i job lunghi?",
+          "risposta": "Non si tiene la richiesta aperta: si accetta il lavoro e si risponde subito con lo status che indica che è stato preso in carico, insieme all'indirizzo dove consultare lo stato del lavoro. Il client interroga quell'endpoint finché il risultato è pronto, oppure riceve una notifica tramite webhook. È il pattern corretto per generazione di report, elaborazioni lunghe e importazioni, e va preferito al timeout della richiesta, che degrada l'esperienza e occupa risorse.",
+          "parole_chiave": [
+            "lavoro asincrono",
+            "presa in carico",
+            "endpoint di stato",
+            "webhook",
+            "polling"
+          ],
+          "follow_up": {
+            "domanda": "Perché non tenere la richiesta aperta fino alla fine?",
+            "risposta": "Perché il client, il bilanciatore o il gateway hanno timeout e la connessione cade a metà lavoro, lasciando l'utente senza risposta e senza sapere se l'operazione è stata eseguita. Inoltre occupi una connessione per tutta la durata, e con molte richieste di questo tipo esaurisci le risorse del server. Accettare e poi notificare è più robusto in ogni scenario reale."
+          }
+        },
+        {
+          "id": "rest-api-015",
+          "priorita": "ALTA",
+          "domanda": "Come funziona la cache HTTP lato API?",
+          "risposta": "Si controlla con gli header HTTP: si dichiara per quanto tempo la risposta è valida e con quali condizioni può essere riusata, e si fornisce un identificativo della versione della risorsa per la validazione, così il client può chiedere se è cambiata e ricevere una risposta senza corpo se non lo è. La cache può stare nel browser, in una rete di distribuzione o in memoria nel server. La regola è non cachare dati personali o sensibili senza controlli, e non cachare ciò che cambia continuamente.",
+          "parole_chiave": [
+            "header di cache",
+            "validazione",
+            "ETag",
+            "risposta non modificata",
+            "CDN"
+          ],
+          "follow_up": {
+            "domanda": "Che differenza c'è tra non cachare e richiedere la validazione?",
+            "risposta": "Non cachare significa che il client scarica tutto ogni volta; la validazione significa che conserva la copia ma chiede al server se è ancora valida, e il server risponde con un esito breve che non contiene il corpo se nulla è cambiato. La seconda è quasi sempre preferibile, perché risparmia la banda pur garantendo dati aggiornati. Il primo caso resta per contenuti che non devono mai essere riusati, come i dati di una schermata riservata."
+          }
+        },
+        {
+          "id": "rest-api-016",
+          "priorita": "ALTA",
+          "domanda": "Path parameter vs query parameter: quando usarli?",
+          "risposta": "I parametri di percorso identificano la risorsa: senza quel valore l'indirizzo non ha senso. Quelli di query servono a filtrare, ordinare o paginare una collezione. La regola è chiedersi se il valore fa parte dell'identità di ciò che chiedi: se sì sta nel percorso, se è un'opzione su come lo vuoi vedere sta nella query. Seguire questa convenzione rende l'API prevedibile e documentabile in modo naturale.",
+          "parole_chiave": [
+            "parametro di percorso",
+            "parametro di query",
+            "identità della risorsa",
+            "opzioni di vista"
+          ],
+          "follow_up": {
+            "domanda": "Perché l'URL con i filtri è anche utile?",
+            "risposta": "Perché diventa condivisibile e ricaricabile: chi riceve il link vede esattamente la stessa vista, e il tasto indietro del browser funziona come ci si aspetta. Se tieni i filtri solo in memoria, ogni ricarica li perde e i link che mandi non riproducono la situazione. È un vantaggio concreto che si ottiene solo con i filtri nella query."
+          }
+        },
+        {
+          "id": "rest-api-017",
+          "priorita": "ALTA",
+          "domanda": "Cosa significa che un'API è stateless?",
+          "risposta": "Significa che il server non conserva niente tra una richiesta e l'altra: ogni richiesta porta con sé tutte le informazioni necessarie, token compreso. Il vantaggio pratico è la scalabilità orizzontale, perché qualsiasi istanza può servire qualsiasi richiesta senza che le sessioni debbano essere condivise o replicate. Il costo è che lo stato che ti serve davvero, come un carrello o un flusso a più passi, lo devi mettere da qualche parte: nel client, in un token o in un archivio condiviso.",
+          "parole_chiave": [
+            "stateless",
+            "nessun stato di sessione",
+            "scalabilità orizzontale",
+            "stato nel client",
+            "archivio condiviso"
+          ],
+          "follow_up": {
+            "domanda": "Se elimini lo stato dal server, dove finisce quello che serve?",
+            "risposta": "Nel client, se non è sensibile e non deve essere garantito, oppure in un archivio condiviso come una cache distribuita, se più istanze devono vederlo. La terza possibilità è portarlo nel token, che funziona ma diventa rapidamente troppo grande e non è revocabile. La scelta dipende da quanto lo stato deve essere affidabile: un carrello no, un saldo sì."
+          }
+        },
+        {
+          "id": "rest-api-018",
+          "priorita": "ALTA",
+          "domanda": "Come documenti e specifichi un'API?",
+          "risposta": "Con una descrizione formale in un file, secondo lo standard OpenAPI, che elenca endpoint, parametri, schemi e risposte. Da quel file si generano client tipizzati, stub del server e una pagina di prova interattiva. Il valore vero è che la documentazione diventa eseguibile: se non è allineata al codice i test falliscono, quindi non invecchia come un documento scritto a mano.",
+          "parole_chiave": [
+            "OpenAPI",
+            "contratto",
+            "generazione dei client",
+            "documentazione interattiva",
+            "allineamento"
+          ],
+          "follow_up": {
+            "domanda": "Perché un contratto formale aiuta anche il frontend?",
+            "risposta": "Perché il frontend può generare i tipi e i client dalle stesse definizioni, quindi non deve indovinare la forma dei dati né scoprire a runtime che un campo è cambiato. Il contratto diventa il punto di accordo tra i due lati, e le divergenze emergono in fase di build invece che in produzione. È la differenza tra concordare a voce e avere una fonte verificabile."
+          }
+        },
+        {
+          "id": "rest-api-019",
+          "priorita": "ALTA",
+          "domanda": "Quali sono le best practice di sicurezza per un'API REST?",
+          "risposta": "Connessione cifrata sempre, autenticazione solida con token a scadenza breve e possibilità di rinnovo, validazione rigorosa di tutto ciò che entra per evitare iniezioni, limiti sul numero di richieste, e nessun dettaglio interno nei messaggi di errore. A questo si aggiungono la configurazione corretta delle origini consentite, la custodia delle chiavi in un gestore di segreti e il monitoraggio con tracciamento delle richieste. La parte che si dimentica più spesso è la validazione dell'input: si dà per scontato che il client mandi quello che ci si aspetta.",
+          "parole_chiave": [
+            "cifratura",
+            "validazione degli input",
+            "token a scadenza breve",
+            "gestione dei segreti",
+            "monitoraggio"
+          ],
+          "follow_up": {
+            "domanda": "Perché validare l'input è più critico di quanto sembri?",
+            "risposta": "Perché il client non è sotto il tuo controllo: chiunque può inviare una richiesta arbitraria, non solo la tua interfaccia. La validazione lato client è comodità per l'utente, quella lato server è l'unica che conta. Oltre agli attacchi, ti protegge dai dati incoerenti che altrimenti finiscono nel database e sono difficili da ripulire dopo."
+          }
+        },
+        {
+          "id": "rest-api-020",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci la paginazione di una lista che arriva da API?",
+          "risposta": "Dipende dal backend, ma di solito uso query param come page e limit, oppure il cursor-based per grandi dataset. Lato frontend tengo la pagina o il cursore nello stato, e quando l'utente scrolla o clicca 'carica altro' faccio la chiamata successiva accodando i risultati. Con TanStack Query sfrutto la cache per non rifare richieste già fatte.",
+          "parole_chiave": [
+            "paginazione",
+            "limit",
+            "offset",
+            "cursor"
+          ],
+          "follow_up": {
+            "domanda": "Offset o cursor-based?",
+            "risposta": "L'offset è più semplice e va bene per dataset piccoli. Il cursor-based è più robusto su dati grandi e che cambiano spesso, perché non soffre degli spostamenti che l'offset ha quando si inseriscono o cancellano elementi in mezzo. Se il backend lo supporta, preferisco il cursor."
+          }
+        },
+        {
+          "id": "rest-api-021",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci l'autenticazione in una chiamata API?",
+          "risposta": "Di solito uso un token JWT che il server mi rilascia al login e che allego a ogni richiesta nell'header Authorization, tipicamente come Bearer token. Per non ripetere il codice a ogni chiamata uso un interceptor che aggiunge l'header automaticamente a tutte le richieste. Se il token scade, intercetto il 401 e gestisco il refresh o il redirect al login.",
+          "parole_chiave": [
+            "JWT",
+            "token",
+            "Authorization",
+            "interceptor"
+          ],
+          "follow_up": {
+            "domanda": "Dove salvi il token?",
+            "risposta": "Dipende dal livello di sicurezza che serve. In localStorage è semplice e comodo, ma è esposto agli attacchi XSS perché qualsiasi script può leggerlo. In un cookie httpOnly il token non è accessibile via JavaScript ed è più sicuro, però bisogna gestire il CSRF lato server. Per questo la scelta va fatta insieme a chi progetta il backend."
+          }
+        },
+        {
+          "id": "rest-api-022",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci la paginazione in un'API REST?",
+          "risposta": "Con la paginazione a scostamento: il client passa numero di pagina, dimensione e ordinamento nella query string, e il server restituisce solo quella porzione più i metadati, come il totale e il numero di pagine. È l'approccio semplice e va bene finché i dati non sono enormi. Con volumi grandi o dati che cambiano di continuo conviene il cursore, perché la pagina a scostamento deve far scorrere tutte le righe precedenti e può mostrare duplicati o salti.",
+          "parole_chiave": [
+            "paginazione",
+            "scostamento",
+            "cursore",
+            "metadati",
+            "dati che cambiano"
+          ],
+          "follow_up": {
+            "domanda": "Perché non restituire tutto?",
+            "risposta": "Perché con migliaia di record la risposta diventa enorme e lenta da trasferire, e il client fatica a gestirla in memoria. In più il database legge comunque tutto per restituirlo, quindi paghi il costo anche lato server. La paginazione mantiene le risposte piccole e costanti, indipendenti da quanto cresce la tabella dietro."
+          }
+        },
+        {
+          "id": "rest-api-023",
+          "priorita": "MEDIA",
+          "domanda": "Come si versiona un'API?",
+          "risposta": "Le strategie praticabili sono tre: la versione nel percorso, quella in un header di negoziazione e quella come parametro di query. Quella nel percorso è la più diffusa perché si vede subito e non richiede configurazioni particolari, mentre quella nell'header è più corretta dal punto di vista teorico ma più difficile da provare a mano. Il punto che conta davvero è che la versione venga introdotta solo quando rompi la compatibilità, e che la precedente resti attiva per un tempo annunciato.",
+          "parole_chiave": [
+            "versionamento",
+            "versione nel percorso",
+            "negoziazione",
+            "compatibilità",
+            "deprecazione"
+          ],
+          "follow_up": {
+            "domanda": "Quando NON versioni l'API?",
+            "risposta": "Quando aggiungi un campo alla risposta o un nuovo endpoint opzionale: i client esistenti continuano a funzionare. Versionare ogni cambiamento moltiplica le superfici da mantenere senza motivo. La versione la introduci quando cambi semanticamente qualcosa che i client già usano, e in quel caso comunichi anche la data di dismissione della precedente."
+          }
+        },
+        {
+          "id": "rest-api-024",
+          "priorita": "MEDIA",
+          "domanda": "REST vs GraphQL: quali sono le differenze?",
+          "risposta": "REST espone più endpoint che restituiscono una rappresentazione fissa: è prevedibile, si cacha bene e sfrutta tutta l'infrastruttura HTTP. Il difetto è che a volte ricevi più di quello che ti serve e altre volte devi fare più chiamate per mettere insieme una schermata. GraphQL usa un endpoint solo e lascia al client scegliere esattamente i campi tramite uno schema tipizzato, il che risolve entrambi i problemi ma complica la cache e richiede attenzione alle query che generano troppe letture. Non è un sostituto migliore, è uno scambio diverso.",
+          "parole_chiave": [
+            "over-fetching",
+            "under-fetching",
+            "schema tipizzato",
+            "cache",
+            "problema N+1"
+          ],
+          "follow_up": {
+            "domanda": "Perché GraphQL complica la cache?",
+            "risposta": "Perché le richieste sono POST sullo stesso percorso e il corpo varia, quindi la cache HTTP che si basa sull'URL non funziona: ogni query è una richiesta diversa. Bisogna spostare la cache a livello di applicazione, tipicamente sugli identificativi dei singoli oggetti. In REST la cache la ottieni quasi gratis, ed è un vantaggio concreto su contenuti pubblici."
+          }
+        },
+        {
+          "id": "rest-api-025",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è il content negotiation?",
+          "risposta": "È il meccanismo con cui client e server concordano il formato: il client dice cosa è disposto a ricevere con l'header delle preferenze e cosa sta inviando con quello del tipo di contenuto, e il server risponde con un formato fra quelli accettati. Se non può soddisfare nessuna preferenza risponde con lo status dedicato. Nella pratica quasi tutti usano JSON e il meccanismo sembra invisibile, ma è quello che permette di servire XML a un client vecchio senza cambiare gli endpoint.",
+          "parole_chiave": [
+            "negoziazione del contenuto",
+            "header delle preferenze",
+            "tipo di contenuto",
+            "formato non accettabile"
+          ],
+          "follow_up": {
+            "domanda": "Perché in pratica si usa quasi solo JSON?",
+            "risposta": "Perché il frontend consuma JavaScript, quindi JSON non richiede conversioni, ed è leggibile e compatto. Concordare formati diversi resta utile quando hai client eterogenei, per esempio un sistema vecchio che parla XML, e lì la negoziazione ti evita di duplicare gli endpoint. È una capacità da conoscere anche se raramente la usi."
+          }
+        },
+        {
+          "id": "rest-api-026",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è il rate limiting e perché serve?",
+          "risposta": "Limita quante richieste un client può fare in una finestra di tempo, e serve a proteggere il servizio dagli abusi, dalle richieste impazzite di un client difettoso e dagli attacchi di saturazione. Si implementa con algoritmi a secchio o a finestra scorrevole, e si comunica al client quanto margine gli resta tramite header dedicati. Quando il limite è superato si risponde con lo status che indica troppe richieste, ed è buona pratica indicare quando riprovare.",
+          "parole_chiave": [
+            "rate limiting",
+            "secchio di token",
+            "finestra scorrevole",
+            "header informativi",
+            "troppe richieste"
+          ],
+          "follow_up": {
+            "domanda": "Perché rispondere 429 senza dire quando riprovare è un problema?",
+            "risposta": "Perché il client deve indovinare e tende a ritentare subito, peggiorando la saturazione che il limite voleva contenere. Indicando il tempo di attesa, un client corretto aspetta e il sistema si stabilizza. È un esempio di come il comportamento del client dipenda da quello che l'API comunica."
+          }
+        },
+        {
+          "id": "rest-api-027",
+          "priorita": "MEDIA",
+          "domanda": "Come strutturi una risposta di errore standard?",
+          "risposta": "Una buona risposta di errore contiene le stesse cose in tutti gli endpoint: il momento, lo status, un codice interno stabile, un messaggio comprensibile e il percorso della richiesta, più eventualmente il dettaglio dei campi non validi. Esiste anche uno standard per formalizzarla, che conviene citare. Il valore è nel client: potendo contare su una struttura fissa, la gestione degli errori si scrive una volta e i log si correlano con un identificativo.",
+          "parole_chiave": [
+            "formato degli errori",
+            "codice stabile",
+            "RFC 7807",
+            "coerenza",
+            "identificativo di correlazione"
+          ],
+          "follow_up": {
+            "domanda": "Perché un codice di errore interno è utile se hai già lo status HTTP?",
+            "risposta": "Perché lo status è una categoria e il codice interno dice esattamente quale caso si è verificato: duecento errori diversi sono tutti un 400 per il client, ma tu vuoi distinguerli per gestirli e per contarli nelle metriche. Inoltre un codice interno stabile resta valido anche se un giorno cambi lo status. Va però documentato, altrimenti è solo un numero opaco."
+          }
+        },
+        {
+          "id": "rest-api-028",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è il Richardson Maturity Model?",
+          "risposta": "È un modello a quattro livelli che misura quanto un'API è RESTful. Al livello zero c'è un solo endpoint usato in stile procedurale; al primo le risorse hanno URI distinti; al secondo si usano correttamente i metodi e gli status; al terzo si aggiunge l'ipertesto, dove le risposte contengono i link alle azioni possibili. È utile come vocabolario per discutere la maturità di un'API, e va ricordato che quasi tutte le API dette REST si fermano al secondo livello senza che questo sia un problema.",
+          "parole_chiave": [
+            "modello di maturità",
+            "livelli",
+            "ipertesto",
+            "metodi e status",
+            "vocabolario"
+          ],
+          "follow_up": {
+            "domanda": "Quasi nessuna API è al terzo livello: è un problema?",
+            "risposta": "No, ed è utile dirlo in colloquio: l'ipertesto completo funziona bene in teoria ma richiede client generici che quasi nessuno scrive, perché i client concreti conoscono già le proprie rotte. Quello che conta davvero è il secondo livello: risorse sensate, metodi corretti e status appropriati. Il modello serve a inquadrare i compromessi, non a stabilire un obiettivo da raggiungere."
+          }
+        },
+        {
+          "id": "rest-api-029",
+          "priorita": "MEDIA",
+          "domanda": "Cosa significa HATEOAS?",
+          "risposta": "È il principio per cui la risposta contiene anche i link alle azioni possibili sulla risorsa, in modo che il client scopra gli indirizzi invece di averli scritti nel codice. In teoria il client naviga l'API come si naviga una pagina web. In pratica si usa poco, e il valore concreto è nella documentazione e nella generazione dei client più che nel comportamento a runtime. Se lo citi, accompagnalo dal contesto di quando aiuta davvero.",
+          "parole_chiave": [
+            "ipertesto",
+            "link nella risposta",
+            "scoperta dell API",
+            "accoppiamento",
+            "uso limitato"
+          ],
+          "follow_up": {
+            "domanda": "Che vantaggio darebbe concretamente?",
+            "risposta": "Disaccoppiare il client dagli indirizzi: se il backend cambia la struttura dei percorsi, il client continua a funzionare perché segue i link ricevuti invece di costruirli da sé. Il costo è un client più complesso e risposte più grandi, e per questo nella maggior parte dei casi si preferisce documentare bene e accettare l'accoppiamento sugli indirizzi."
+          }
+        },
+        {
+          "id": "rest-api-030",
+          "priorita": "MEDIA",
+          "domanda": "Differenza tra REST, SOAP e gRPC.",
+          "risposta": "SOAP è un protocollo rigido basato su XML con un contratto formale, pesante da usare ma con molte garanzie standardizzate, ed è ancora presente in ambienti bancari e pubblici. REST è lo stile leggero basato su HTTP e JSON, il più diffuso sul web. gRPC usa il protocollo a due, un formato binario compatto e chiamate tipizzate, ed è molto efficiente tra servizi interni, con lo svantaggio di essere poco pratico da consumare direttamente da un browser. La scelta dipende da chi sono i client e da quanto conta l'efficienza.",
+          "parole_chiave": [
+            "SOAP",
+            "REST",
+            "gRPC",
+            "protocollo binario",
+            "scelta del contesto"
+          ],
+          "follow_up": {
+            "domanda": "Quando ha senso spostare le comunicazioni interne su gRPC?",
+            "risposta": "Quando il traffico tra servizi è intenso e il formato testuale diventa il collo di bottiglia, oppure quando vuoi che il contratto tra servizi sia verificato dal compilatore invece che dalla documentazione. Il guadagno è misurabile in banda e in latenza. Il costo è l'attrito con il mondo esterno: l'API pubblica resta REST, e gRPC resta la lingua interna."
+          }
+        },
+        {
+          "id": "rest-api-031",
+          "priorita": "BASSA",
+          "domanda": "Cos'è l'idempotenza?",
+          "risposta": "Un'operazione è idempotente se ripeterla più volte dà lo stesso risultato. DELETE è idempotente: cancellare due volte la stessa risorsa dà lo stesso esito (è cancellata). POST no: due POST creano due risorse.",
+          "parole_chiave": [
+            "ripetizione",
+            "stesso risultato",
+            "sicurezza"
+          ],
+          "follow_up": {
+            "domanda": "Perché è importante?",
+            "risposta": "Per i retry: se una richiesta fallisce e la ripeti, non vuoi effetti collaterali doppi."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Formati e markup",
+      "domande": [
+        {
+          "id": "rest-api-032",
+          "priorita": "ALTA",
+          "domanda": "Cos'è JSON e perché è il formato dominante nei web service?",
+          "risposta": "JSON è un formato testuale per rappresentare dati strutturati, basato su coppie chiave-valore e array. È leggero, leggibile sia dagli umani sia dalle macchine, e soprattutto si mappa in modo naturale sugli oggetti dei linguaggi di programmazione: qualunque client può trasformarlo in strutture native con una riga. Per questo è diventato lo standard per lo scambio di dati nelle API REST, soppiantando XML che è più verboso.",
+          "parole_chiave": [
+            "JSON",
+            "chiave-valore",
+            "API",
+            "scambio dati"
+          ],
+          "follow_up": {
+            "domanda": "Quali tipi di dato supporta JSON?",
+            "risposta": "Stringhe, numeri, booleani, null, oggetti e array. Non ha tipi come le date, che vanno rappresentate come stringhe con una convenzione, ed è per questo che spesso servono piccole conversioni tra il modello del backend e quello del client."
+          }
+        },
+        {
+          "id": "rest-api-033",
+          "priorita": "ALTA",
+          "domanda": "Come funziona un'architettura REST e cosa sono le risorse?",
+          "risposta": "REST è uno stile architetturale per i web service basato su risorse, identificate da URL, su cui si opera con i metodi HTTP standard: GET per leggere, POST per creare, PUT per aggiornare e DELETE per cancellare. Ogni risorsa è un'entità del dominio, come un utente o un ordine, e le risposte sono di solito in JSON. È stateless: ogni richiesta contiene tutto ciò che serve per essere compresa, e questo lo rende semplice e scalabile.",
+          "parole_chiave": [
+            "REST",
+            "risorse",
+            "GET",
+            "POST",
+            "stateless"
+          ],
+          "follow_up": {
+            "domanda": "Cosa distingue una API REST ben progettata?",
+            "risposta": "URL che identificano risorse e non azioni, uso corretto dei metodi HTTP e dei codici di stato, e assenza di stato lato server. Per esempio /utenti/123 con GET restituisce l'utente, con DELETE lo elimina: il verbo è nel metodo, non nell'URL."
+          }
+        },
+        {
+          "id": "rest-api-034",
+          "priorita": "MEDIA",
+          "domanda": "Che differenza c'è tra HTML e XML?",
+          "risposta": "HTML è un linguaggio di markup con tag predefiniti, pensato per strutturare e mostrare contenuti in una pagina web: il browser sa come renderizzare ogni tag. XML è un metalinguaggio: non ha tag predefiniti, ma regole per definire i propri, ed è pensato per trasportare e descrivere dati in modo strutturato e leggibile dalle macchine. In pratica HTML descrive presentazione, XML descrive dati, ed è la base di formati come SOAP.",
+          "parole_chiave": [
+            "HTML",
+            "XML",
+            "markup",
+            "dati"
+          ],
+          "follow_up": {
+            "domanda": "Quali regole rendono un documento XML ben formato?",
+            "risposta": "Un solo elemento radice, tag chiusi correttamente e annidati senza sovrapposizioni, attributi tra virgolette e case sensitivity. Un documento che rispetta queste regole è ben formato, e può essere validato contro uno schema come XSD o DTD."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Sicurezza e integrazione",
+      "domande": [
+        {
+          "id": "rest-api-035",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono i Refresh Token e Access Token in JWT?",
+          "risposta": "Il token di accesso è quello che accompagna le chiamate alle API e ha vita breve, nell'ordine dei minuti: essendo di breve durata, se viene intercettato la finestra di abuso resta limitata. Il token di rinnovo ha vita più lunga e serve solo a ottenere un nuovo token di accesso senza far rifare il login all'utente. Il dettaglio importante è dove conservi il token di rinnovo: se lo metti dove il codice della pagina può leggerlo, un difetto di iniezione lo espone, quindi va in un cookie non accessibile da JavaScript.",
+          "parole_chiave": [
+            "token di accesso",
+            "token di rinnovo",
+            "scadenza breve",
+            "dove conservarlo",
+            "cookie protetto"
+          ],
+          "follow_up": {
+            "domanda": "Perché non usare un solo token a lunga durata?",
+            "risposta": "Perché allunghi la finestra in cui un token rubato resta valido, e non puoi revocarlo se non mantieni uno stato. Con la coppia di token il rischio si concentra sul rinnovo, che è usato di rado e può essere invalidato lato server. È il compromesso standard tra sicurezza e comodità, e va scelto consapevolmente."
+          }
+        },
+        {
+          "id": "rest-api-036",
+          "priorita": "ALTA",
+          "domanda": "Spiega la differenza tra XSS e CSRF e come prevenirli.",
+          "risposta": "L'iniezione di script è un attacco in cui codice malevolo finisce nella pagina e viene eseguito dal browser di altri utenti: si previene codificando correttamente l'output e, nei framework moderni, evitando di inserire HTML non fidato, che è la difesa predefinita. La falsificazione di richiesta cross-site è diversa: sfrutta la sessione già attiva della vittima per farle compiere un'azione che non voleva, e si previene con cookie che non seguono le richieste da altri siti e con un token anti-falsificazione. La differenza chiave è che la prima attacca il tuo codice, la seconda sfrutta la fiducia che il sito ha nel browser.",
+          "parole_chiave": [
+            "iniezione di script",
+            "falsificazione cross-site",
+            "codifica dell output",
+            "cookie same-site",
+            "differenza di attacco"
+          ],
+          "follow_up": {
+            "domanda": "Perché il token anti-falsificazione non serve se usi solo l'header di autorizzazione?",
+            "risposta": "Perché la falsificazione funziona sfruttando i cookie, che il browser allega automaticamente a ogni richiesta: un sito esterno può far partire una richiesta e i cookie viaggiano con essa. Se invece l'autenticazione viaggia in un header che imposti tu nel codice, il sito esterno non può aggiungerlo, quindi l'attacco non funziona. È il motivo per cui le API con token e i siti con cookie hanno difese diverse."
+          }
+        },
+        {
+          "id": "rest-api-037",
+          "priorita": "ALTA",
+          "domanda": "Spiega la differenza tra pagination lato client e lato server.",
+          "risposta": "Con la paginazione lato client scarichi tutto l'insieme e poi tagli nel browser: sembra semplice, ma il costo lo paghi in tempo di caricamento, memoria e banda, e diventa insostenibile appena il volume cresce. Con quella lato server chiedi solo la porzione che serve, quindi il payload resta piccolo e costante. La scelta lato server è la norma quando i dati stanno in un database, mentre quella lato client ha senso solo su insiemi piccoli e già in memoria.",
+          "parole_chiave": [
+            "paginazione lato client",
+            "paginazione lato server",
+            "dimensione del payload",
+            "scalabilità"
+          ],
+          "follow_up": {
+            "domanda": "Quali problemi porta la paginazione lato client?",
+            "risposta": "Il primo è il tempo di attesa iniziale, che cresce con i dati; il secondo è la memoria occupata, che su dispositivi modesti diventa un problema; il terzo è che stai trasferendo informazioni che nessuno vedrà mai. In più, se il filtro è lato client, non puoi filtrare su dati che non hai scaricato. Ha senso solo quando l'insieme è piccolo e cambia di rado."
+          }
+        },
+        {
+          "id": "rest-api-038",
+          "priorita": "ALTA",
+          "domanda": "Quali sono i codici di stato HTTP più importanti per API REST?",
+          "risposta": "Per le operazioni riuscite: la lettura normale, la creazione con l'indicazione della nuova risorsa e la risposta senza corpo dopo un'eliminazione. Per gli errori del client: richiesta non valida, identità non verificata, permessi mancanti, risorsa inesistente, conflitto di stato e dati sintatticamente corretti ma non accettabili. Per gli errori del server: guasto generico e servizio temporaneamente non disponibile. Usarli correttamente è parte del contratto dell'API, non un dettaglio.",
+          "parole_chiave": [
+            "status di successo",
+            "errori del client",
+            "errori del server",
+            "creazione",
+            "conflitto"
+          ],
+          "follow_up": {
+            "domanda": "Quando usi 409 e quando 422?",
+            "risposta": "Il 409 indica un conflitto con lo stato attuale della risorsa: stai inserendo un valore che esiste già, o stai modificando una versione superata da qualcun altro. Il 422 indica invece che il corpo è ben formato e sintatticamente valido, ma non supera una regola di validazione di dominio. La differenza è tra un conflitto con ciò che c'è e un contenuto che non rispetta le regole."
+          }
+        },
+        {
+          "id": "rest-api-039",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono gli HTTP-only cookie e perché sono sicuri?",
+          "risposta": "Sono cookie marcati in modo che il codice JavaScript della pagina non possa leggerli né modificarli: il browser li invia solo nelle richieste. Servono perché il modo più comune di rubare una sessione è proprio leggere il cookie dallo script iniettato nella pagina, e questa marcatura lo impedisce. Da sola non basta: va abbinata alla protezione dalle iniezioni, alla cifratura della connessione e alla restrizione sulle richieste da altri siti.",
+          "parole_chiave": [
+            "cookie protetto",
+            "non leggibile da script",
+            "furto di sessione",
+            "difesa in profondità"
+          ],
+          "follow_up": {
+            "domanda": "Un cookie protetto da script basta da solo?",
+            "risposta": "No: impedisce la lettura da JavaScript ma non protegge dall'invio automatico nelle richieste, quindi un sito esterno potrebbe comunque far compiere azioni per conto dell'utente. Servono insieme la restrizione sulle richieste cross-site e la cifratura. E resta il fatto che la difesa migliore dall'iniezione è non inserire contenuti non fidati, perché se lo script gira può comunque agire per conto dell'utente."
+          }
+        },
+        {
+          "id": "rest-api-040",
+          "priorita": "MEDIA",
+          "domanda": "Spiega il flusso OAuth 2.0 PKCE per SPA.",
+          "risposta": "È un'estensione dell'autorizzazione delegata pensata per i client che non possono custodire un segreto, come le applicazioni a pagina singola e le app mobili. Funziona così: il client genera un valore casuale e gli calcola un riassunto, manda il riassunto all'inizio del flusso e il valore originale quando scambia il codice di autorizzazione; il server verifica che il secondo corrisponda al primo. Serve a impedire che chi intercetta il codice di autorizzazione possa usarlo per conto proprio, perché non conosce il valore originale.",
+          "parole_chiave": [
+            "protezione del codice",
+            "client pubblico",
+            "valore casuale",
+            "riassunto",
+            "intercettazione"
+          ],
+          "follow_up": {
+            "domanda": "Perché nel flusso con codice ma senza questa estensione c'era un problema?",
+            "risposta": "Perché lo scambio del codice avveniva con un segreto del client, che nelle applicazioni a pagina singola non è un segreto: il codice è scaricabile da chiunque. Di conseguenza chi intercettava il codice poteva completare lo scambio e ottenere i token. L'estensione sostituisce il segreto fisso con un valore monouso legato a quella singola richiesta."
+          }
+        },
+        {
+          "id": "rest-api-041",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono gli interceptors in Axios e come li usi?",
+          "risposta": "Sono funzioni che si inseriscono nel percorso della chiamata e possono modificare la richiesta in uscita o gestire la risposta e l'errore in entrata, prima che il codice che ha fatto la chiamata li veda. Servono per tutto ciò che è trasversale: aggiungere il token di autenticazione, tracciare le richieste, rinnovare la sessione quando scade, gestire gli errori in un punto solo. Il vantaggio è non ripetere quelle operazioni in ogni chiamata, il rischio è che l'ordine e gli effetti diventano poco visibili quando crescono di numero.",
+          "parole_chiave": [
+            "interceptor",
+            "trasversale",
+            "token",
+            "rinnovo",
+            "ordine di esecuzione"
+          ],
+          "follow_up": {
+            "domanda": "Come gestisci il rinnovo concorrente con gli interceptor?",
+            "risposta": "Il problema è che più chiamate falliscono insieme per token scaduto e ognuna avvia un rinnovo, moltiplicando le richieste e invalidandosi a vicenda. La soluzione è serializzare: la prima rinnova e le altre attendono la stessa promessa di rinnovo, poi tutte riprovano con il token nuovo. Senza questa accortezza il comportamento è intermittente e difficile da riprodurre."
+          }
+        },
+        {
+          "id": "rest-api-042",
+          "priorita": "MEDIA",
+          "domanda": "Spiega la differenza tra request cancellation con AbortController e timeout.",
+          "risposta": "Annullare una richiesta interrompe davvero il trasferimento: la connessione viene chiusa e il server, se ne tiene conto, smette di elaborare. Il timeout invece è solo una tua decisione di smettere di aspettare: l'operazione continua dall'altra parte e il risultato viene comunque prodotto, anche se tu non lo leggera. La differenza conta quando l'operazione ha effetti: annullare è sicuro, andare in timeout su una scrittura no, perché non sai se è stata applicata.",
+          "parole_chiave": [
+            "annullamento",
+            "timeout",
+            "chiusura della connessione",
+            "smettere di attendere",
+            "effetti sul server"
+          ],
+          "follow_up": {
+            "domanda": "Quando l'annullamento è essenziale?",
+            "risposta": "Quando la richiesta diventa inutile: l'utente ha cambiato pagina, ha scritto altro nella ricerca, ha chiuso il componente. In quei casi tenerla viva consuma banda e può far arrivare una risposta vecchia che sovrascrive quella nuova. È il motivo per cui l'annullamento è collegato al problema delle condizioni di corsa."
+          }
+        },
+        {
+          "id": "rest-api-043",
+          "priorita": "MEDIA",
+          "domanda": "Cosa è il retry pattern e come implementarlo nelle chiamate API?",
+          "risposta": "È ritentare automaticamente un'operazione fallita, aumentando progressivamente l'attesa tra i tentativi per non martellare un servizio già in difficoltà. Ha senso solo sui guasti transitori: errori di rete, indisponibilità temporanea, timeout. Su un errore di richiesta non valida ritentare è inutile, e sui ritentativi va aggiunta una componente casuale all'attesa, altrimenti tutti i client riprovano nello stesso istante e il servizio cade di nuovo.",
+          "parole_chiave": [
+            "ritentativi",
+            "guasti transitori",
+            "attesa crescente",
+            "componente casuale",
+            "quando non ritentare"
+          ],
+          "follow_up": {
+            "domanda": "Perché serve una componente casuale nell'attesa?",
+            "risposta": "Perché se tutti i client falliscono insieme e riprovano dopo lo stesso intervallo, generano un picco simultaneo che riabbatte il servizio appena si era ripreso: si chiama effetto gregge. Aggiungendo una variazione casuale, le richieste si distribuiscono nel tempo. È un dettaglio che si scopre solo ragionando sul comportamento collettivo, non sul singolo client."
+          }
+        },
+        {
+          "id": "rest-api-044",
+          "priorita": "MEDIA",
+          "domanda": "Spiega l'uso di fetch API vs Axios in progetti enterprise.",
+          "risposta": "La funzione nativa del browser è più leggera e non aggiunge dipendenze, ma richiede più codice intorno: non considera gli errori di stato come fallimenti, quindi devi controllare tu la risposta, e per annullare o impostare un timeout usi le API native. La libreria più diffusa offre già trasformazione automatica in JSON, annullamento, timeout e gli interceptor per il comportamento trasversale: sono proprio gli interceptor a essere il motivo principale per cui viene scelta in contesti grandi. Con l'arrivo di funzionalità native equivalenti, la scelta dipende da quanto codice di contorno vuoi scrivere e mantenere.",
+          "parole_chiave": [
+            "funzione nativa",
+            "libreria",
+            "interceptor",
+            "gestione degli errori",
+            "dipendenze"
+          ],
+          "follow_up": {
+            "domanda": "Qual è il dettaglio della funzione nativa che sorprende di più?",
+            "risposta": "Che non lancia un errore sugli status di errore: una risposta 500 arriva come un successo, quindi devi controllare esplicitamente lo stato, e se te ne dimentichi il codice tratta un fallimento come un dato valido. È la causa più frequente di bug silenziosi con la funzione nativa. Le librerie più diffuse ti lanciano un'eccezione e ti costringono a gestirla."
+          }
+        },
+        {
+          "id": "rest-api-045",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono i webhook e come si integrano nel frontend?",
+          "risposta": "Sono notifiche che il tuo server invia a un indirizzo esterno quando accade un evento, in modo asincrono e senza che chi riceve debba chiedere. Nel frontend il discorso cambia: il browser non può ricevere una chiamata diretta perché non ha un indirizzo pubblico, quindi le notifiche devono passare dal tuo backend, che le inoltra alla pagina con una connessione persistente, tipicamente eventi inviati dal server o un canale bidirezionale. È una distinzione che in colloquio mostra se hai chiaro il modello di rete.",
+          "parole_chiave": [
+            "webhook",
+            "notifica server a server",
+            "nessun indirizzo pubblico",
+            "eventi inviati dal server",
+            "inoltro"
+          ],
+          "follow_up": {
+            "domanda": "Quindi come fai arrivare aggiornamenti in tempo reale al browser?",
+            "risposta": "Con una connessione persistente aperta dal browser: gli eventi inviati dal server per aggiornamenti in una sola direzione, o un canale bidirezionale quando serve anche inviare. Il backend resta il punto di ricezione delle notifiche esterne e fa da ponte. Il polling è l'alternativa semplice, ma consuma richieste inutili e introduce ritardo."
+          }
+        }
+      ]
+    }
+  ]
+}

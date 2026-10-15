@@ -3,9 +3,9 @@
     "tecnologia": "Soft Skills e Colloquio",
     "slug": "soft-skills",
     "schema": 2,
-    "versione": 1,
-    "aggiornato": "2026-10-14",
-    "totale_domande": 26
+    "versione": 2,
+    "aggiornato": "2026-10-15",
+    "totale_domande": 27
   },
   "argomenti": [
     {
@@ -435,6 +435,26 @@
           "follow_up": {
             "domanda": "Come scegli una libreria?",
             "risposta": "Guardo la manutenzione, la community e se risolve davvero il mio problema senza aggiungere complessità. Preferisco librerie piccole e focalizzate, che posso sostituire facilmente, piuttosto che strumenti pesanti che invadono tutto il progetto."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Integrazioni per colloqui",
+      "domande": [
+        {
+          "id": "soft-skills-027",
+          "priorita": "ALTA",
+          "domanda": "Come strutturi una risposta con metodo STAR?",
+          "risposta": "Racconto una Situazione, il Task affidato, l’Azione che ho svolto personalmente e il Risultato osservabile. Scelgo un episodio reale e distinguo cosa ho fatto io da cosa ha fatto il team. Se non ho metriche affidabili descrivo un risultato concreto senza inventare percentuali.",
+          "parole_chiave": [
+            "STAR",
+            "colloquio",
+            "esperienza"
+          ],
+          "follow_up": {
+            "domanda": "Quanto deve durare una risposta STAR?",
+            "risposta": "Circa un minuto per una domanda comportamentale semplice, ampliabile se il recruiter chiede dettagli."
           }
         }
       ]

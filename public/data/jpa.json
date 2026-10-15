@@ -3,8 +3,8 @@
     "tecnologia": "JPA e Hibernate",
     "slug": "jpa",
     "schema": 2,
-    "versione": 1,
-    "aggiornato": "2026-10-14",
+    "versione": 2,
+    "aggiornato": "2026-10-15",
     "totale_domande": 11
   },
   "argomenti": [
@@ -32,7 +32,7 @@
           "id": "jpa-002",
           "priorita": "ALTA",
           "domanda": "Cos'è il problema N+1 e come lo risolvi?",
-          "risposta": "Hai una lista di 100 post, ognuno con commenti. Invece di 1 query per tutto, ne vengono fatte 101: una per i post e 100 per i commenti di ciascun post. Una follia. Si risolve con JOIN FETCH che carica tutto in una volta sola.",
+          "risposta": "Il problema N+1 nasce quando prima carico N entità con una query e poi eseguo una query aggiuntiva per ciascuna relazione: con 100 entità posso arrivare a 101 query. Posso risolverlo in base al caso con JOIN FETCH, EntityGraph, batch fetching o proiezioni DTO. JOIN FETCH sulle collezioni può complicare paginazione e duplicati, quindi non è una soluzione universale.",
           "parole_chiave": [
             "N+1 query",
             "lazy loading",
@@ -41,7 +41,7 @@
           ],
           "follow_up": {
             "domanda": "Come fai JOIN FETCH?",
-            "risposta": "Nella query JPQL: `SELECT p FROM Post p JOIN FETCH p.comments`. Così i commenti vengono caricati insieme ai post."
+            "risposta": "Un esempio JPQL è SELECT DISTINCT p FROM Post p LEFT JOIN FETCH p.comments. Serve però valutare cardinalità e paginazione: per liste paginate spesso conviene prima paginare gli ID e poi caricare i dettagli, oppure usare DTO mirati."
           }
         },
         {
@@ -128,7 +128,7 @@
           "id": "jpa-008",
           "priorita": "MEDIA",
           "domanda": "Ottimistic vs pessimistic locking",
-          "risposta": "Ottimistico: non blocchi nulla, aggiungi un campo @Version. Se due persone modificano lo stesso record, il secondo che salva riceve un errore. Pessimistico: blocchi la riga appena la leggi, nessun altro può toccarla finché non hai finito.",
+          "risposta": "Nel locking ottimistico di JPA uso spesso @Version: al salvataggio viene controllata la versione e una modifica concorrente può generare un’eccezione. Nel locking pessimistico chiedo un blocco al database tramite lock mode, per esempio PESSIMISTIC_WRITE: il comportamento effettivo dipende dal database e dalla transazione. Preferisco l’ottimistico quando i conflitti sono rari, il pessimistico quando il requisito lo giustifica.",
           "parole_chiave": [
             "@Version",
             "blocco",

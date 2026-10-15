@@ -3,9 +3,9 @@
     "tecnologia": "React",
     "slug": "react",
     "schema": 2,
-    "versione": 1,
-    "aggiornato": "2026-10-14",
-    "totale_domande": 59
+    "versione": 2,
+    "aggiornato": "2026-10-15",
+    "totale_domande": 64
   },
   "argomenti": [
     {
@@ -15,7 +15,7 @@
           "id": "react-001",
           "priorita": "ALTA",
           "domanda": "Cos'è React e perché lo usiamo?",
-          "risposta": "React è una libreria JavaScript per costruire interfacce utente a componenti. L'idea di base è che descrivi come deve apparire la UI in base allo stato, e React si occupa di tutto il resto: aggiorna il DOM da solo, applicando solo le modifiche necessarie, senza che tu debba selezionare e toccare gli elementi a mano. Questo rende il codice più prevedibile, più facile da testare e più semplice da mantenere quando l'app cresce, perché ogni pezzo di UI è un componente riutilizzabile con la sua logica.",
+          "risposta": "React è una libreria JavaScript per creare interfacce tramite componenti. Descrivo la UI in funzione di props e stato; quando cambiano, React ricalcola la parte interessata e riconcilia il risultato con il DOM. Non è corretto dire che ogni singolo render modifica solo un nodo o che il Virtual DOM rende sempre più veloce la pagina: il vantaggio principale è il modello dichiarativo e componibile.",
           "parole_chiave": [
             "libreria",
             "componenti",
@@ -65,7 +65,7 @@
           "id": "react-004",
           "priorita": "ALTA",
           "domanda": "Come si scrive un componente oggi: funzionale o a classe?",
-          "risposta": "Oggi si scrivono solo componenti funzionali con gli Hooks. I componenti a classe appartengono al passato: servivano per avere stato e lifecycle method, ma con useState e useEffect i funzionali fanno esattamente le stesse cose con molto meno codice, senza dover gestire il this e con una logica che puoi riusare facilmente tra componenti diversi tramite hook custom. Le classi le trovi ormai solo su progetti legacy, e anche lì si tende a migrarle solo quando serve davvero.",
+          "risposta": "Nei progetti nuovi si preferiscono i componenti funzione con gli Hook: consentono di gestire stato, effetti e logica riutilizzabile senza classi. I componenti a classe restano supportati e possono esistere nei progetti legacy; alcuni error boundary classici usano ancora una classe. Quindi non direi che le classi sono scomparse o che React le vieta.",
           "parole_chiave": [
             "funzionale",
             "classe",
@@ -75,14 +75,14 @@
           ],
           "follow_up": {
             "domanda": "Perché le classi sono sparite?",
-            "risposta": "Perché gli Hooks hanno tolto l'unico vero motivo per usarle. Prima stato locale e ciclo di vita richiedevano una classe, oggi li hai dentro una semplice funzione. Il risultato è codice più compatto e leggibile, niente this da bindare, e soprattutto la possibilità di estrarre la logica in hook custom e riusarla ovunque. La community si è spostata in massa sui funzionali, e React stesso ormai li considera il modo standard di scrivere componenti."
+            "risposta": "Le classi sono ancora supportate; gli Hook hanno reso molto più semplice comporre e condividere logica nei componenti funzione. Non serve riscrivere automaticamente tutte le classi di un progetto esistente."
           }
         },
         {
           "id": "react-005",
           "priorita": "ALTA",
           "domanda": "Cosa sono gli Hooks e quali usi più spesso?",
-          "risposta": "Gli Hooks sono funzioni speciali che ti permettono di usare stato e altre funzionalità di React dentro i componenti funzionali, senza bisogno delle classi. I più comuni sono useState, per tenere uno stato locale, e useEffect, per gestire gli effetti collaterali come chiamate API, subscription o aggiornamenti del DOM. Poi uso anche useRef per accedere a elementi o valori che non devono far scattare un render, useMemo e useCallback quando mi serve ottimizzare, e a volte scrivo hook custom per estrarre logica riusabile tra più componenti.",
+          "risposta": "Gli Hook sono funzioni che collegano un componente alle funzionalità di React: useState gestisce stato, useEffect sincronizza sistemi esterni, useRef mantiene un valore fra i render senza innescarli e useMemo/useCallback sono ottimizzazioni da applicare quando servono. Un custom Hook estrae logica riusabile. Gli Hook vanno chiamati al livello superiore di un componente o di un altro Hook, non in condizioni o cicli.",
           "parole_chiave": [
             "useState",
             "useEffect",
@@ -91,14 +91,14 @@
           ],
           "follow_up": {
             "domanda": "Cosa metti nell'array delle dipendenze di useEffect?",
-            "risposta": "L'array delle dipendenze dice a React da cosa dipende l'effetto: ci metto tutte le variabili e le props che l'effetto usa, e ogni volta che una di queste cambia React ripulisce e riesegue l'effetto. Se l'array è vuoto, l'effetto gira una sola volta al mount. Se lo ometto del tutto, gira a ogni render, e di solito è un errore perché può creare loop o chiamate inutili."
+            "risposta": "Inserisco tutte le dipendenze reattive lette dentro l’effetto. Con [] l’effetto si esegue al montaggio, ma in sviluppo con StrictMode React può fare un ciclo aggiuntivo setup-cleanup-setup; quindi non va descritto come “esattamente una sola volta” in ogni ambiente."
           }
         },
         {
           "id": "react-006",
           "priorita": "ALTA",
           "domanda": "Come funziona useEffect e quali sono i casi d'uso?",
-          "risposta": "Serve a sincronizzarsi con qualcosa che sta fuori da React: una chiamata di rete, una sottoscrizione, un listener o un accesso diretto al DOM. Il secondo parametro decide quando rieseguirlo: con l'array vuoto parte una volta dopo il montaggio, con delle dipendenze parte quando quelle cambiano, e senza array parte dopo ogni render. La funzione che restituisci è la pulizia, ed è la parte che si dimentica più spesso, lasciando listener e timer attivi su componenti che non esistono più.",
+          "risposta": "useEffect serve a sincronizzare il componente con sistemi esterni, per esempio una sottoscrizione, un timer o una richiesta. Senza array di dipendenze si riesegue dopo ogni commit; con [id] quando id cambia; con [] dopo il montaggio, tenendo conto del controllo extra di StrictMode in sviluppo. L’effetto può restituire una funzione di cleanup, eseguita prima del setup successivo e allo smontaggio. Per valori derivati da props/state, di norma non serve useEffect.",
           "parole_chiave": [
             "useEffect",
             "array di dipendenze",
@@ -131,7 +131,7 @@
           "id": "react-008",
           "priorita": "ALTA",
           "domanda": "Come gestisci lo stato in un'app React di media grandezza?",
-          "risposta": "Divido bene lo stato in due categorie: stato dell'interfaccia e dati del server. Per lo stato locale uso useState, che va benissimo finché resta dentro un componente o poco più. Per lo stato condiviso tra più componenti uso Context quando è semplice, o una libreria leggera come Zustand quando cambia spesso o diventa complesso. Per i dati che arrivano dal server invece uso TanStack Query, perché gestisce da solo cache, refetch, stato di caricamento e di errore, e mi evita un sacco di boilerplate.",
+          "risposta": "Distinguo lo stato locale della UI dai dati remoti. Uso useState o useReducer per lo stato locale e Context per valori trasversali semplici. Se lo stato condiviso diventa complesso posso scegliere Redux Toolkit o Zustand in base allo stack del team. Per il server state scelgo una soluzione di caching/fetching come TanStack Query oppure RTK Query se utilizzo Redux. Non esiste uno state manager sempre migliore.",
           "parole_chiave": [
             "useState",
             "Context",
@@ -141,7 +141,7 @@
           ],
           "follow_up": {
             "domanda": "Perché non usi solo Redux?",
-            "risposta": "Redux resta valido per stati molto complessi e molto condivisi, ma per la maggior parte delle app è più macchina di quanto serve: tanti file e tanto boilerplate. Zustand fa lo stesso lavoro con un'API molto più snella, e TanStack Query copre tutta la parte dati del server che in passato si infilava a forza dentro Redux. Oggi la scelta dipende dal tipo di stato, non da un'unica libreria."
+            "risposta": "Redux Toolkit riduce molto il boilerplate del vecchio Redux; offre slice, reducer e middleware, e RTK Query per dati remoti. La scelta dipende dal progetto e dalla struttura già esistente, non solo dalla quantità di codice."
           }
         },
         {
@@ -246,7 +246,7 @@
           "id": "react-015",
           "priorita": "ALTA",
           "domanda": "Come funziona il ciclo di vita di un componente React funzionale?",
-          "risposta": "Si riduce a tre momenti: il componente viene montato, si aggiorna quando cambiano props o state, e viene smontato. Nei componenti funzionali lo gestisci con useEffect: dipendenze vuote per l'operazione da fare al montaggio, dipendenze specifiche per reagire a un cambiamento, e la funzione di pulizia che restituisci per lo smontaggio. Il ciclo di vita non è più un elenco di metodi come nelle classi, ma dipende da come dichiari le dipendenze.",
+          "risposta": "Il ciclo di vita riguarda montaggio, aggiornamenti e smontaggio. Nei componenti funzione non lo riproduco meccanicamente come tre eventi: descrivo il render e uso gli Effect soltanto per sincronizzarmi con sistemi esterni. La funzione di cleanup disfa il setup precedente. In StrictMode lo sviluppo esegue controlli extra; per questo un effetto con [] non va usato come garanzia di chiamata unica globale.",
           "parole_chiave": [
             "montaggio",
             "aggiornamento",
@@ -263,7 +263,7 @@
           "id": "react-016",
           "priorita": "ALTA",
           "domanda": "Qual è la differenza tra useEffect con dipendenze vuote [] e senza secondo parametro?",
-          "risposta": "Senza il secondo parametro l'effetto viene rieseguito dopo ogni render, quindi praticamente sempre. Con l'array vuoto viene eseguito una sola volta, subito dopo il primo montaggio. È una distinzione che genera bug classici: mettere una chiamata di rete senza array di dipendenze significa rifarla a ogni render, e se quell'effetto aggiorna lo state entri in un ciclo infinito.",
+          "risposta": "Omettendo le dipendenze, useEffect viene eseguito dopo ogni commit. Con [] segue il montaggio, con [x] segue il montaggio e i cambi di x; React in sviluppo con StrictMode può ripetere il ciclo di setup e cleanup iniziale. In generale elenco le dipendenze reattive effettivamente lette nell’effetto, evitando effetti inutili per calcoli che posso fare direttamente in render.",
           "parole_chiave": [
             "array di dipendenze",
             "ogni render",
@@ -554,7 +554,7 @@
           "id": "react-034",
           "priorita": "MEDIA",
           "domanda": "Quali sono i vantaggi di StrictMode?",
-          "risposta": "StrictMode attiva controlli aggiuntivi solo in sviluppo: esegue di proposito un doppio render e monta e smonta due volte gli effetti, proprio per far emergere effetti collaterali scritti male. Non cambia nulla in produzione, quindi se vedi un comportamento strano solo in sviluppo il problema è nel tuo codice, e StrictMode lo sta rendendo visibile. Il vantaggio vero è che ti obbliga a scrivere effetti eseguibili due volte senza rompere niente, che è la condizione per essere pronti alle funzionalità future.",
+          "risposta": "StrictMode abilita controlli aggiuntivi in sviluppo: React può ripetere il rendering dei componenti e il ciclo setup-cleanup degli Effect per individuare render non puri e cleanup mancanti. Non significa che ogni effetto venga raddoppiato sempre in produzione, né che tutti i componenti vengano davvero smontati due volte in qualsiasi configurazione.",
           "parole_chiave": [
             "StrictMode",
             "doppio render",
@@ -980,6 +980,93 @@
           "follow_up": {
             "domanda": "Perché un valore derivato salvato nello stato è rischioso?",
             "risposta": "Perché diventa una seconda fonte di verità che devi aggiornare a mano a ogni modifica collegata: prima o poi ne dimentichi una e il dato mostrato non corrisponde più. Lo conservi solo se il calcolo è davvero costoso, e in quel caso accetti di doverti ricordare di aggiornarlo."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Integrazioni per colloqui",
+      "domande": [
+        {
+          "id": "react-060",
+          "priorita": "ALTA",
+          "domanda": "Come funziona Redux Toolkit con slice, reducer e dispatch?",
+          "risposta": "Redux Toolkit è il modo consigliato per configurare Redux con meno boilerplate. Uno slice definisce nome, stato iniziale, reducer e action; il componente legge con useSelector e invia azioni con useDispatch. Il reducer descrive come cambia lo stato, e Immer consente una sintassi che sembra mutabile pur creando aggiornamenti immutabili.",
+          "parole_chiave": [
+            "redux",
+            "redux toolkit",
+            "createSlice",
+            "dispatch",
+            "useSelector"
+          ],
+          "follow_up": {
+            "domanda": "Qual è la differenza tra stato locale e Redux?",
+            "risposta": "Tengo lo stato locale vicino al componente; Redux serve quando più aree distanti condividono uno stato articolato."
+          }
+        },
+        {
+          "id": "react-061",
+          "priorita": "ALTA",
+          "domanda": "Quando usi createAsyncThunk, RTK Query e TanStack Query?",
+          "risposta": "createAsyncThunk gestisce il ciclo di un’operazione asincrona tramite action pending, fulfilled e rejected. RTK Query e TanStack Query sono più mirati ai dati del server: offrono cache, deduplicazione e refetch. Se il progetto usa Redux spesso RTK Query si integra bene; per un’app senza Redux TanStack Query è una scelta naturale.",
+          "parole_chiave": [
+            "createAsyncThunk",
+            "RTK Query",
+            "TanStack Query",
+            "cache"
+          ],
+          "follow_up": {
+            "domanda": "Dove metti loader ed errori?",
+            "risposta": "Nei flag di stato della richiesta, mostrando loading, error e dati in modo coerente nella UI."
+          }
+        },
+        {
+          "id": "react-062",
+          "priorita": "ALTA",
+          "domanda": "Come testi un componente React con React Testing Library?",
+          "risposta": "Renderizzo il componente e simulo ciò che fa l’utente: cerco elementi per ruolo e nome accessibile, eseguo clic o inserimento di dati e verifico cosa appare. Testo il comportamento visibile, non lo stato interno degli Hook. Per API asincrone uso mock di rete e attendo il risultato con query asincrone.",
+          "parole_chiave": [
+            "RTL",
+            "Jest",
+            "userEvent",
+            "screen",
+            "findBy"
+          ],
+          "follow_up": {
+            "domanda": "Che differenza c’è tra getBy, queryBy e findBy?",
+            "risposta": "getBy si aspetta l’elemento subito; queryBy restituisce null se manca; findBy attende che compaia."
+          }
+        },
+        {
+          "id": "react-063",
+          "priorita": "ALTA",
+          "domanda": "Come eviti race condition in una ricerca React che chiama API?",
+          "risposta": "Se l’utente cerca prima “ro” e poi “roma”, la risposta più vecchia può arrivare per ultima e sovrascrivere quella nuova. Uso AbortController o un identificatore della richiesta corrente e applico solo il risultato più recente. Una libreria per server state può offrire strumenti di cancellazione e cache.",
+          "parole_chiave": [
+            "race condition",
+            "AbortController",
+            "debounce",
+            "fetch"
+          ],
+          "follow_up": {
+            "domanda": "Debounce basta a risolvere il problema?",
+            "risposta": "No: riduce le richieste ma non garantisce l’ordine delle risposte."
+          }
+        },
+        {
+          "id": "react-064",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci navigazione e parametri URL in React Router?",
+          "risposta": "Definisco le rotte con i relativi componenti; leggo i parametri di percorso e query tramite gli Hook del router e uso navigate o Link per muovermi senza ricaricare la pagina. Lo stato che deve sopravvivere a un refresh, come un filtro condivisibile, può stare nella query string. Devo conoscere differenze fra navigazione nella SPA e history del browser.",
+          "parole_chiave": [
+            "React Router",
+            "useNavigate",
+            "useSearchParams",
+            "history"
+          ],
+          "follow_up": {
+            "domanda": "Quando preferisci la query string allo stato locale?",
+            "risposta": "Quando un filtro o una pagina devono essere condivisi con un link, segnalibri o pulsanti Indietro/Avanti."
           }
         }
       ]

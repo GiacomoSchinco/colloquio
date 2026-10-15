@@ -3,8 +3,8 @@
     "tecnologia": "Fondamenti di Informatica",
     "slug": "fondamenti",
     "schema": 2,
-    "versione": 1,
-    "aggiornato": "2026-10-14",
+    "versione": 2,
+    "aggiornato": "2026-10-15",
     "totale_domande": 5
   },
   "argomenti": [
@@ -15,7 +15,7 @@
           "id": "fondamenti-001",
           "priorita": "ALTA",
           "domanda": "Cos'è un algoritmo e perché il legame tra algoritmi e strutture dati è così importante?",
-          "risposta": "Un algoritmo è una sequenza finita e ordinata di passi che, partendo da un input, produce un output in modo deterministico. Le strutture dati sono il modo in cui organizziamo i dati in memoria. La scelta della struttura giusta cambia radicalmente l'efficienza di un algoritmo: cercare in una lista è diverso da cercare in una hash map, e capire questa relazione è ciò che distingue un buon programmatore da uno che scrive solo codice che funziona a caso.",
+          "risposta": "Un algoritmo è una procedura finita di passi definiti che risolve un problema o calcola un risultato. Può essere deterministico oppure includere scelte casuali; quindi “deterministico” non è un requisito universale. Le strutture dati organizzano le informazioni: per esempio una lista richiede in genere O(n) per cercare un elemento, mentre una tabella hash offre spesso O(1) medio, con compromessi su memoria e ordine.",
           "parole_chiave": [
             "algoritmo",
             "strutture dati",
@@ -31,7 +31,7 @@
           "id": "fondamenti-002",
           "priorita": "ALTA",
           "domanda": "Che differenza c'è tra linguaggi compilati e linguaggi interpretati?",
-          "risposta": "Un linguaggio compilato viene tradotto tutto in codice macchina da un compilatore prima dell'esecuzione, producendo un file eseguibile: di solito è più veloce a runtime. Un linguaggio interpretato viene eseguito riga per riga da un interprete, senza una fase di compilazione esplicita: è più flessibile e comodo per lo sviluppo, ma tendenzialmente più lento. Java è un caso interessante, perché compila in bytecode che poi la JVM interpreta o compila just-in-time.",
+          "risposta": "Compilazione e interpretazione sono modalità di esecuzione, non due gruppi rigidi di linguaggi. Un compilatore traduce codice in un’altra rappresentazione, per esempio sorgente C# in IL o Java in bytecode; il runtime può poi interpretare o compilare JIT il codice intermedio. JavaScript usa motori che combinano interpretazione e compilazione JIT. Le prestazioni dipendono dall’implementazione, non solo dall’etichetta “compilato”.",
           "parole_chiave": [
             "compilato",
             "interpretato",

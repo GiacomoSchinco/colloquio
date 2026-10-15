@@ -1,0 +1,428 @@
+{
+  "meta": {
+    "tecnologia": "Docker",
+    "slug": "docker",
+    "schema": 2,
+    "versione": 1,
+    "aggiornato": "2026-10-14",
+    "totale_domande": 24
+  },
+  "argomenti": [
+    {
+      "nome": "Fondamentali",
+      "domande": [
+        {
+          "id": "docker-001",
+          "priorita": "ALTA",
+          "domanda": "Cos'è Docker e che differenza c'è tra immagine e container?",
+          "risposta": "Un'immagine è il pacchetto immutabile con l'applicazione e le sue dipendenze: file e metadati, uguale ovunque. Un container è un'istanza in esecuzione di quell'immagine, con il suo filesystem scrivibile sopra gli strati di sola lettura e il suo spazio di processi e rete. Da un'immagine puoi avviare dieci container, ed è questo che risolve il problema vero: non c'è più differenza tra la tua macchina e il server, perché entrambi eseguono la stessa immagine.",
+          "parole_chiave": [
+            "immagine",
+            "container",
+            "strati di sola lettura",
+            "portabilità"
+          ],
+          "follow_up": {
+            "domanda": "Un container è una macchina virtuale leggera?",
+            "risposta": "No, e la differenza è sostanziale: un container è un processo isolato sul kernel dell'host, con namespace e cgroup a limitarne vista e risorse, mentre la macchina virtuale ha un kernel suo e un hypervisor. Per questo il container parte in millisecondi e pesa megabyte. Il rovescio è che condivide il kernel, quindi l'isolamento è più debole."
+          }
+        },
+        {
+          "id": "docker-002",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra docker run e Docker Compose?",
+          "risposta": "docker run avvia un singolo container con i suoi parametri sulla riga di comando: va bene per una prova, ma diventa ingestibile quando i container sono cinque e le opzioni trenta. Docker Compose descrive l'intero sistema in un file, servizi, reti e volumi compresi, e lo avvii con un comando solo: è riproducibile e versionabile nel repository. In sviluppo Compose è la scelta normale, in produzione il ruolo passa a un orchestratore.",
+          "parole_chiave": [
+            "docker run",
+            "Compose",
+            "riproducibilità",
+            "file di configurazione"
+          ],
+          "follow_up": {
+            "domanda": "Perché non usare Compose in produzione?",
+            "risposta": "Perché non gestisce il failover: se un nodo muore, i container che ci giravano non vengono ricreati altrove. Compose è pensato per una singola macchina, mentre la produzione richiede repliche distribuite, healthcheck con riavvio automatico e orchestrazione, che è il mestiere di Kubernetes o di un orchestratore gestito."
+          }
+        },
+        {
+          "id": "docker-003",
+          "priorita": "ALTA",
+          "domanda": "A cosa serve un registro di immagini e come gestisci le versioni?",
+          "risposta": "Il registro è dove pubblichi le immagini perché altri le possano scaricare: un repository con un nome e poi i tag. Il tag latest è comodo e pericoloso, perché non identifica nulla di preciso e può cambiare sotto i piedi: in produzione usi un tag di versione esplicito o, meglio, il digest dell'immagine, che è immutabile. Il flusso tipico è che la pipeline costruisce l'immagine, la pubblica con un tag derivato dal commit, e il deploy riferisce quel tag.",
+          "parole_chiave": [
+            "registry",
+            "tag",
+            "latest",
+            "digest",
+            "immutabilità"
+          ],
+          "follow_up": {
+            "domanda": "Perché il tag latest è sconsigliato in produzione?",
+            "risposta": "Perché due deploy con lo stesso tag possono eseguire codice diverso: non hai modo di sapere quale versione gira, né di tornare a una precedente in modo affidabile. Con un tag di versione o con il digest sai esattamente cosa stai eseguendo, e il rollback diventa deterministico."
+          }
+        },
+        {
+          "id": "docker-004",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra un container e un processo sull'host?",
+          "risposta": "Un container è comunque un processo, ma parte in un ambiente isolato: ha il suo filesystem radice, la sua vista sui processi, la sua rete e i suoi limiti di CPU e memoria. L'isolamento lo fornisce il kernel con namespace e cgroup, non un hypervisor, quindi il costo di avvio è quello di un processo. L'applicazione dentro vede un sistema minimo e non l'host: è per questo che si comporta allo stesso modo su macchine diverse.",
+          "parole_chiave": [
+            "namespace",
+            "cgroup",
+            "isolamento",
+            "kernel condiviso"
+          ],
+          "follow_up": {
+            "domanda": "Perché dentro un container ci metti un solo processo?",
+            "risposta": "Perché il container vive finché vive il suo processo principale: se ne metti due, il secondo non viene gestito e i log si mescolano. Un processo per container rende chiaro cosa è in esecuzione, cosa è morto e quale componente scalare. Se ti servono più processi, sono più container che si parlano su una rete."
+          }
+        },
+        {
+          "id": "docker-005",
+          "priorita": "MEDIA",
+          "domanda": "Come funziona la comunicazione tra container?",
+          "risposta": "Su una rete definita da Docker i container si raggiungono per nome del servizio, perché c'è un risolutore DNS interno che li registra. Non serve conoscere gli indirizzi IP, che cambiano a ogni riavvio. Le porte pubblicate servono per l'accesso dall'esterno: tra container non le usi, perché comunicano sulla rete interna alla porta reale su cui il servizio ascolta.",
+          "parole_chiave": [
+            "rete bridge",
+            "DNS interno",
+            "nome del servizio",
+            "porte"
+          ],
+          "follow_up": {
+            "domanda": "Perché tra container non ti serve pubblicare le porte?",
+            "risposta": "Perché sono già sulla stessa rete e si vedono direttamente alla porta su cui il servizio ascolta. Pubblicare la porta ha senso solo se vuoi raggiungere quel servizio dal tuo computer, per esempio un database in sviluppo: esporla verso l'esterno senza motivo è solo superficie di attacco in più."
+          }
+        },
+        {
+          "id": "docker-006",
+          "priorita": "MEDIA",
+          "domanda": "Che cosa succede ai dati quando un container viene distrutto?",
+          "risposta": "Vengono persi, perché il filesystem scrivibile del container sparisce con lui: è la conseguenza del fatto che il container è effimero. Per conservare dati usi i volumi, gestiti da Docker e indipendenti dal ciclo di vita del container, oppure i bind mount verso una cartella dell'host. La conseguenza pratica è che non metti mai lo stato in una cartella del container se hai intenzione di sopravvivergli.",
+          "parole_chiave": [
+            "effimero",
+            "volumi",
+            "bind mount",
+            "stato"
+          ],
+          "follow_up": {
+            "domanda": "Volume o bind mount: quando usi l'uno e quando l'altro?",
+            "risposta": "Il bind mount lo usi in sviluppo, perché monti il codice dal tuo disco e vedi subito le modifiche senza ricostruire l'immagine. Il volume lo usi in produzione, perché Docker gestisce dove sta fisicamente, funziona su macchine diverse e ha prestazioni migliori sui database."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Immagini e Dockerfile",
+      "domande": [
+        {
+          "id": "docker-007",
+          "priorita": "ALTA",
+          "domanda": "A cosa serve un Dockerfile e come costruisci un'immagine?",
+          "risposta": "Il Dockerfile è una sequenza di istruzioni: FROM sceglie l'immagine di partenza, COPY e RUN preparano il contenuto, EXPOSE documenta la porta, CMD o ENTRYPOINT dicono cosa eseguire all'avvio. Con docker build costruisci l'immagine dandole nome e tag, e ogni istruzione diventa uno strato che resta in cache. L'ordine conta: quello che cambia raramente va scritto prima, così le ricostruzioni successive riusano la cache.",
+          "parole_chiave": [
+            "FROM",
+            "COPY",
+            "RUN",
+            "CMD",
+            "cache degli strati"
+          ],
+          "follow_up": {
+            "domanda": "Perché copi il file delle dipendenze e installi prima di copiare il codice?",
+            "risposta": "Perché l'invalidazione della cache si propaga agli strati successivi: se copi prima tutto il codice, ogni piccola modifica invalida lo strato di installazione e reinstalli le dipendenze ogni volta. Copiando prima solo il manifest e installando, quel passaggio resta in cache finché non cambiano le dipendenze."
+          }
+        },
+        {
+          "id": "docker-008",
+          "priorita": "ALTA",
+          "domanda": "Cos'è un multi-stage build e perché lo usi?",
+          "risposta": "Nel Dockerfile usi più FROM e ogni sezione è uno stage: nel primo compili e produci l'artefatto, nel secondo copi solo il risultato e costruisci l'immagine finale. Il vantaggio è che l'immagine finale non contiene compilatori, sorgenti e dipendenze di build: passa da centinaia di megabyte a poche decine e ha meno superficie di attacco. È la tecnica standard per le applicazioni compilate, e in un progetto Java separa la build dal runtime.",
+          "parole_chiave": [
+            "multi-stage",
+            "build",
+            "runtime",
+            "dimensione",
+            "superficie di attacco"
+          ],
+          "follow_up": {
+            "domanda": "Perché un'immagine piccola è meglio anche oltre lo spazio su disco?",
+            "risposta": "Perché si scarica e si avvia più in fretta, quindi deploy e scaling sono più rapidi. In più contiene meno software, quindi meno vulnerabilità da patchare: un'immagine con un compilatore dentro ha decine di pacchetti che in esecuzione non ti servono ma che continui a dover aggiornare."
+          }
+        },
+        {
+          "id": "docker-009",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono gli strati di un'immagine e come funziona la cache?",
+          "risposta": "Ogni istruzione del Dockerfile produce uno strato immutabile, e gli strati si impilano per formare il filesystem dell'immagine. Docker tiene in cache gli strati e, quando ricostruisci, riusa quelli i cui input non sono cambiati: la prima istruzione diversa invalida tutto ciò che viene dopo. Per questo l'ordine del Dockerfile e il file .dockerignore non sono dettagli: un file inutile nel contesto di build rompe la cache e gonfia l'immagine.",
+          "parole_chiave": [
+            "strati",
+            "cache",
+            "invalidazione",
+            ".dockerignore"
+          ],
+          "follow_up": {
+            "domanda": "Perché il .dockerignore è importante?",
+            "risposta": "Perché tutto quello che non escludi viene inviato al demone come contesto di build e può finire nell'immagine: la cartella delle dipendenze, i file di log, un file .env con i segreti. Oltre alla dimensione è un problema di sicurezza, perché stai spedendo file che non devono uscire dalla tua macchina."
+          }
+        },
+        {
+          "id": "docker-010",
+          "priorita": "MEDIA",
+          "domanda": "ENTRYPOINT e CMD: che differenza c'è?",
+          "risposta": "ENTRYPOINT definisce il comando che viene eseguito, CMD gli fornisce gli argomenti predefiniti. Se chi avvia il container passa un comando, quel comando sostituisce CMD ma non ENTRYPOINT: è per questo che con ENTRYPOINT puoi costruire immagini il cui comportamento si estende dall'esterno. La forma consigliata è la sintassi a lista, che non passa da una shell e quindi gestisce correttamente i segnali.",
+          "parole_chiave": [
+            "ENTRYPOINT",
+            "CMD",
+            "argomenti",
+            "sintassi exec",
+            "segnali"
+          ],
+          "follow_up": {
+            "domanda": "Perché la sintassi a lista è preferibile a quella con la shell?",
+            "risposta": "Perché con la forma shell il processo principale è la shell e non l'applicazione: i segnali come SIGTERM arrivano alla shell e non al processo. All'arresto il container viene quindi ucciso dopo il timeout invece di chiudersi in modo pulito. Con la forma a lista l'applicazione è il processo uno e riceve i segnali."
+          }
+        },
+        {
+          "id": "docker-011",
+          "priorita": "MEDIA",
+          "domanda": "Come riduci la dimensione di un'immagine?",
+          "risposta": "Parti da un'immagine base minima, come una variante slim o una distribuzione essenziale, e usa il multi-stage per non portarti dietro gli strumenti di build. Poi raggruppi i comandi di installazione in un solo RUN e pulisci le cache nella stessa istruzione, perché cancellarle in uno strato successivo non le rimuove: lo strato precedente le contiene comunque. Infine escludi con .dockerignore tutto quello che non serve, che è la causa più banale di immagini gonfie.",
+          "parole_chiave": [
+            "immagine base",
+            "multi-stage",
+            "RUN unico",
+            "pulizia nella stessa istruzione"
+          ],
+          "follow_up": {
+            "domanda": "Perché cancellare i file di cache in un RUN successivo non funziona?",
+            "risposta": "Perché ogni istruzione crea uno strato e gli strati sono immutabili: cancellando in uno strato nuovo, i file restano presenti in quello vecchio e continuano a pesare nel risultato finale. La pulizia va fatta nella stessa istruzione che li crea, così non vengono mai committati."
+          }
+        },
+        {
+          "id": "docker-012",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci i segreti nelle immagini Docker?",
+          "risposta": "Non li metti nell'immagine: né con ENV né con COPY, perché restano negli strati e chiunque abbia l'immagine può leggerli, anche se li cancelli dopo. In build usi i segreti di build, che non finiscono negli strati, e a runtime passi i valori con variabili d'ambiente o file montati, meglio ancora da un gestore di segreti. La regola è che l'immagine deve essere pubblicabile senza contenere nulla di riservato.",
+          "parole_chiave": [
+            "segreti",
+            "ENV",
+            "build secret",
+            "gestore di segreti"
+          ],
+          "follow_up": {
+            "domanda": "Perché una variabile d'ambiente non è un posto sicuro?",
+            "risposta": "Perché è visibile a chi ha accesso al container, e in alcuni sistemi compare nelle informazioni di processo o nei report di errore. È comunque meglio che averla dentro l'immagine, ma non è una cassaforte: per i segreti veri si usa un gestore dedicato che li inietta all'avvio e li può ruotare."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Dati e Reti",
+      "domande": [
+        {
+          "id": "docker-013",
+          "priorita": "ALTA",
+          "domanda": "Come funzionano i volumi e quando ne usi uno?",
+          "risposta": "Un volume è uno spazio gestito da Docker e montato dentro il container, che sopravvive alla sua distruzione. Lo usi per tutto ciò che deve durare: i dati di un database, i file caricati dagli utenti, i certificati. La differenza con il bind mount è che non decidi tu il percorso sull'host: Docker lo gestisce, e questo rende il volume portabile tra macchine e più performante su Windows e macOS.",
+          "parole_chiave": [
+            "volumi",
+            "persistenza",
+            "portabilità",
+            "database"
+          ],
+          "follow_up": {
+            "domanda": "Un volume è la scelta giusta per un database in produzione?",
+            "risposta": "Su una singola macchina sì, ma su un orchestratore no: lì il volume è locale al nodo, quindi se il carico si sposta su un altro nodo i dati non lo seguono. In quel caso usi volumi agganciati a uno storage di rete, o meglio un database gestito, che è la scelta che ti evita backup e failover a mano."
+          }
+        },
+        {
+          "id": "docker-014",
+          "priorita": "ALTA",
+          "domanda": "Come funzionano le reti in Docker?",
+          "risposta": "Per difetto i container stanno su una rete bridge, isolata dal resto e con un DNS interno che risolve i nomi dei container: è per questo che si parlano per nome. Le reti definite dall'utente hanno il vantaggio di essere isolate tra loro, quindi due gruppi di servizi su reti diverse non si vedono se non glielo consenti. La rete host, che toglie l'isolamento di rete, la usi solo in casi specifici dove serve prestazione di rete o un componente che deve vedere l'host.",
+          "parole_chiave": [
+            "bridge",
+            "rete definita dall utente",
+            "isolamento",
+            "DNS",
+            "host"
+          ],
+          "follow_up": {
+            "domanda": "Perché conviene creare reti separate per gruppi di servizi?",
+            "risposta": "Perché l'isolamento è difesa in profondità: se un servizio viene compromesso non raggiunge automaticamente tutto il resto. In più rende esplicito il diagramma di comunicazione: le reti che definisci sono la mappa di chi può parlare con chi."
+          }
+        },
+        {
+          "id": "docker-015",
+          "priorita": "MEDIA",
+          "domanda": "Come esponi un servizio all'esterno e cosa sono le porte?",
+          "risposta": "Il container ascolta su una porta interna, dichiarata con EXPOSE che è solo documentazione, e dall'esterno la raggiungi pubblicandola con l'opzione che mappa porta host e porta container. Se pubblichi solo sull'indirizzo locale la porta è raggiungibile dalla tua macchina, che è quello che vuoi per un database in sviluppo. In produzione davanti ai container metti un reverse proxy o un bilanciatore, che si occupa di TLS, instradamento e limiti.",
+          "parole_chiave": [
+            "EXPOSE",
+            "pubblicazione porte",
+            "reverse proxy",
+            "TLS"
+          ],
+          "follow_up": {
+            "domanda": "Perché EXPOSE non apre davvero la porta?",
+            "risposta": "Perché è una dichiarazione di intenti scritta nei metadati dell'immagine: serve a documentare e a far comunicare i container tra loro. L'apertura verso l'esterno avviene solo quando pubblichi la porta all'avvio, quindi un EXPOSE senza pubblicazione non espone nulla."
+          }
+        },
+        {
+          "id": "docker-016",
+          "priorita": "MEDIA",
+          "domanda": "Come limiti le risorse di un container?",
+          "risposta": "Con le opzioni di runtime imposti i limiti di memoria e CPU: senza limiti un container può consumare tutta la memoria dell'host e far morire gli altri, che è il modo più rapido per far cadere un servizio in produzione. Il caso classico è la memoria, dove superato il limite il processo viene terminato. Nei sistemi orchestrati gli stessi limiti si dichiarano nel manifesto, e l'orchestratore li usa anche per decidere dove collocare i carichi.",
+          "parole_chiave": [
+            "limiti di memoria",
+            "CPU",
+            "out of memory",
+            "richieste e limiti"
+          ],
+          "follow_up": {
+            "domanda": "Che differenza c'è tra richiesta e limite di risorsa?",
+            "risposta": "La richiesta è quanto il sistema deve garantire per programmare il carico, il limite è il tetto che non può superare. Lo scheduler usa le richieste per decidere dove mettere i carichi e i limiti per proteggere gli altri. Dichiarare solo i limiti senza richieste porta a calcolare male la capienza e a nodi sovraccarichi."
+          }
+        },
+        {
+          "id": "docker-017",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è un healthcheck in Docker?",
+          "risposta": "È un comando che Docker esegue periodicamente dentro il container per capire se il servizio è davvero funzionante, non solo se il processo è vivo. Il risultato cambia lo stato del container in healthy o unhealthy, e questo permette a chi lo gestisce di riavviarlo o di escluderlo dal traffico. La differenza importante è tra processo avviato e applicazione pronta a servire richieste: senza healthcheck un servizio che risponde con errore viene trattato come sano.",
+          "parole_chiave": [
+            "healthcheck",
+            "healthy",
+            "unhealthy",
+            "prontezza"
+          ],
+          "follow_up": {
+            "domanda": "Perché controllare solo che il processo sia attivo non basta?",
+            "risposta": "Perché un servizio può essere in esecuzione e non rispondere: database irraggiungibile, pool di connessioni esaurito, blocco interno. In quel caso il processo è vivo ma inutile, e il bilanciatore continua a mandargli traffico. Un healthcheck che verifica una chiamata reale distingue i due casi."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Compose",
+      "domande": [
+        {
+          "id": "docker-018",
+          "priorita": "ALTA",
+          "domanda": "Come strutturi un file Compose per lo sviluppo?",
+          "risposta": "Dichiari i servizi con immagine o build, le variabili d'ambiente da un file esterno, i volumi, le dipendenze tra servizi e le reti. In sviluppo monti il codice come bind mount in modo da non ricostruire a ogni modifica, e usi un file di override per le differenze locali così il file base resta valido anche altrove. Con un comando avvii tutto il sistema, e i log li vedi insieme con un prefisso per servizio, che è il vero guadagno rispetto a cinque terminali aperti.",
+          "parole_chiave": [
+            "services",
+            "depends_on",
+            "bind mount",
+            "override",
+            "file env"
+          ],
+          "follow_up": {
+            "domanda": "Perché tenere i valori in un file .env esterno?",
+            "risposta": "Perché il file Compose resta versionabile senza contenere segreti o configurazioni della tua macchina. Chi clona il repository copia il file di esempio e mette i suoi valori. Così eviti che password di sviluppo finiscano nel repository e che il file di configurazione diventi un punto di conflitto tra colleghi."
+          }
+        },
+        {
+          "id": "docker-019",
+          "priorita": "MEDIA",
+          "domanda": "Cosa fa depends_on e perché non basta?",
+          "risposta": "depends_on controlla l'ordine di avvio, quindi garantisce che il container del database parta prima dell'applicazione. Non garantisce però che il database sia pronto ad accettare connessioni: il processo può essere partito e non ancora inizializzato. Per questo l'applicazione deve avere un retry sulla connessione o un healthcheck con condizione, altrimenti in sviluppo vedi errori di connessione rifiutata al primo avvio che spariscono al secondo.",
+          "parole_chiave": [
+            "depends_on",
+            "ordine di avvio",
+            "healthcheck",
+            "retry"
+          ],
+          "follow_up": {
+            "domanda": "Come fai ad aspettare che un servizio sia davvero pronto?",
+            "risposta": "Usi la condizione basata sull'healthcheck nella dipendenza: il servizio che dipende parte solo quando quello richiesto è healthy. In alternativa, e in modo più robusto, l'applicazione ritenta la connessione con un ritardo crescente, che è quello che deve fare comunque in produzione, dove l'ordine di avvio non è garantito."
+          }
+        },
+        {
+          "id": "docker-020",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci più ambienti con Compose?",
+          "risposta": "Con un file base e file di override per ambiente: Compose li combina in ordine e il risultato è la configurazione effettiva di quell'ambiente. Nel base metti struttura, servizi e reti, negli override le differenze come le porte pubblicate in sviluppo o i limiti in produzione. La cosa da evitare è la copia del file con qualche valore cambiato: due file quasi identici divergono e nessuno ricorda più quale sia aggiornato.",
+          "parole_chiave": [
+            "file base",
+            "override",
+            "ambienti",
+            "duplicazione"
+          ],
+          "follow_up": {
+            "domanda": "Perché duplicare il file Compose per ambiente è un problema?",
+            "risposta": "Perché ogni modifica va fatta in due posti e prima o poi ne dimentichi uno: il servizio nuovo esiste in sviluppo e non in produzione, e te ne accorgi al deploy. Con il file base e gli override la struttura è una sola e le differenze sono esplicite e poche."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Best Practices",
+      "domande": [
+        {
+          "id": "docker-021",
+          "priorita": "ALTA",
+          "domanda": "Come rendi un container pronto per la produzione?",
+          "risposta": "L'immagine va costruita una volta e promossa tra gli ambienti, senza ricostruzioni diverse per ambiente, perché altrimenti stai rilasciando un artefatto che non è quello che hai testato. Poi: utente non root, filesystem di sola lettura dove possibile, un solo processo, healthcheck, limiti di risorse dichiarati, log su standard output raccolti dall'esterno e configurazione iniettata dall'ambiente. Infine il processo deve gestire il segnale di arresto per chiudersi finendo le richieste in corso, invece di essere ucciso dopo il timeout.",
+          "parole_chiave": [
+            "non root",
+            "sola lettura",
+            "healthcheck",
+            "segnali",
+            "log su stdout"
+          ],
+          "follow_up": {
+            "domanda": "Perché il processo deve gestire SIGTERM?",
+            "risposta": "Perché è il segnale che l'orchestratore manda per dire di chiudersi: se lo ignori, dopo un tempo di grazia il container viene ucciso di forza e le richieste in corso vengono interrotte. Gestendolo, l'applicazione smette di accettare traffico nuovo, completa quello in corso e si chiude, e durante un rilascio gli utenti non si accorgono di nulla."
+          }
+        },
+        {
+          "id": "docker-022",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci i log di un container?",
+          "risposta": "L'applicazione scrive i log sull'uscita standard e sull'errore standard, non su file dentro il container: così il sistema esterno li raccoglie e li conserva, mentre il container resta effimero. Docker li espone con il comando dei log per il debug locale, ma in produzione li raccoglie un agente che li manda a un sistema centralizzato, dove puoi cercarli e correlarli tra servizi. Scrivere su file dentro il container è l'errore classico: quando il container viene distrutto quei log spariscono.",
+          "parole_chiave": [
+            "stdout",
+            "log centralizzati",
+            "effimero",
+            "correlazione"
+          ],
+          "follow_up": {
+            "domanda": "Perché i log su file vengono considerati un errore?",
+            "risposta": "Perché il filesystem del container è effimero e su un orchestratore finisce con il carico: perdi la storia proprio quando ti serve capire cosa è successo. Inoltre senza un identificativo di correlazione non riesci a seguire una richiesta che attraversa più servizi. I log vanno pensati come un flusso da raccogliere, non come file da conservare."
+          }
+        },
+        {
+          "id": "docker-023",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci le vulnerabilità nelle immagini?",
+          "risposta": "Scansioni l'immagine a ogni build nella pipeline, così il problema emerge prima del rilascio e non a posteriori, e imposti una soglia: le vulnerabilità critiche bloccano il deploy, le altre finiscono in un report da pianificare. Accanto alla scansione conta la manutenzione: ricostruire periodicamente anche senza cambi di codice, con immagini base aggiornate, perché il software di base accumula vulnerabilità nel tempo. Un'immagine base ferma da un anno è essa stessa il problema principale.",
+          "parole_chiave": [
+            "scansione",
+            "severità",
+            "immagini base",
+            "ricostruzione periodica"
+          ],
+          "follow_up": {
+            "domanda": "Perché aggiornare l'immagine base conta più che analizzare le tue dipendenze?",
+            "risposta": "Perché buona parte delle vulnerabilità arriva dal sistema operativo e dai pacchetti della base, non dal codice che hai scritto. Le tue dipendenze le controlli con gli strumenti del linguaggio, ma se la base è vecchia ti porti dietro centinaia di pacchetti non aggiornati. Ricostruire con una base aggiornata risolve in un colpo la maggior parte dei problemi."
+          }
+        },
+        {
+          "id": "docker-024",
+          "priorita": "MEDIA",
+          "domanda": "Come fai il debug di un container che non parte o si riavvia?",
+          "risposta": "Prima guardi i log, che spesso dicono già tutto: porta occupata, file mancante, variabile d'ambiente assente. Se il container esce subito, lo avvii con un comando diverso che tenga il processo vivo, per esempio una shell, ed entri a controllare cosa c'è dentro l'immagine. Quando il problema è in build, ispezioni gli strati e verifichi se il file che ti serve è arrivato nel contesto. Il caso dei riavvii continui è quasi sempre l'healthcheck o una risorsa insufficiente.",
+          "parole_chiave": [
+            "docker logs",
+            "shell nel container",
+            "docker exec",
+            "healthcheck"
+          ],
+          "follow_up": {
+            "domanda": "Cosa fai se il container esce troppo in fretta per entrarci?",
+            "risposta": "Lo avvii sovrascrivendo il comando con una shell interattiva, così il container resta attivo e puoi controllare file, permessi e variabili. In alternativa ispezioni l'immagine senza avviarla, guardando la cronologia degli strati. È il modo per distinguere se il problema è nell'immagine, nella configurazione o nel comando di avvio."
+          }
+        }
+      ]
+    }
+  ]
+}

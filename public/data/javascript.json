@@ -3,9 +3,9 @@
     "tecnologia": "JavaScript",
     "slug": "javascript",
     "schema": 2,
-    "versione": 1,
-    "aggiornato": "2026-10-14",
-    "totale_domande": 17
+    "versione": 2,
+    "aggiornato": "2026-10-15",
+    "totale_domande": 19
   },
   "argomenti": [
     {
@@ -288,6 +288,43 @@
           "follow_up": {
             "domanda": "Come dai feedback?",
             "risposta": "Do feedback in modo costruttivo: spiego sempre il perché di una critica e, dove posso, propongo un'alternativa. Critico il codice, mai la persona, e riconosco anche quello che è fatto bene. L'obiettivo è che l'altro migliori e capisca, non che si senta attaccato."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Integrazioni per colloqui",
+      "domande": [
+        {
+          "id": "javascript-018",
+          "priorita": "ALTA",
+          "domanda": "Qual è la differenza tra Promise.all, allSettled e race?",
+          "risposta": "Promise.all restituisce tutti i risultati quando tutte le promise riescono e rifiuta al primo errore. allSettled attende tutti gli esiti, anche quelli falliti. race si conclude con il primo risultato o errore che si assesta. Non confondo race con una cancellazione automatica delle altre promise.",
+          "parole_chiave": [
+            "Promise",
+            "all",
+            "allSettled",
+            "race"
+          ],
+          "follow_up": {
+            "domanda": "Come gestisci chiamate indipendenti con errori parziali?",
+            "risposta": "Uso allSettled se devo mostrare anche i risultati riusciti quando alcuni servizi falliscono."
+          }
+        },
+        {
+          "id": "javascript-019",
+          "priorita": "ALTA",
+          "domanda": "Cos’è l’event propagation e quando usi stopPropagation?",
+          "risposta": "Un evento DOM attraversa cattura, target e bubbling. Posso registrare gestori su elementi antenati invece che su ogni figlio: è la event delegation. stopPropagation interrompe la propagazione successiva ma non sostituisce preventDefault, che evita l’azione predefinita del browser.",
+          "parole_chiave": [
+            "event delegation",
+            "bubbling",
+            "capture",
+            "stopPropagation"
+          ],
+          "follow_up": {
+            "domanda": "Perché la delega eventi è utile per liste dinamiche?",
+            "risposta": "Perché un unico listener sull’antenato gestisce anche figli creati successivamente."
           }
         }
       ]

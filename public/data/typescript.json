@@ -3,9 +3,9 @@
     "tecnologia": "TypeScript",
     "slug": "typescript",
     "schema": 2,
-    "versione": 1,
-    "aggiornato": "2026-10-14",
-    "totale_domande": 31
+    "versione": 2,
+    "aggiornato": "2026-10-15",
+    "totale_domande": 33
   },
   "argomenti": [
     {
@@ -31,7 +31,7 @@
           "id": "typescript-002",
           "priorita": "ALTA",
           "domanda": "Come tipizzi una risposta API?",
-          "risposta": "Definisco un'interfaccia o un type che descrive la forma del payload che mi aspetto, e lo uso come generics nella funzione che fa la chiamata. In questo modo, appena i dati arrivano, ho autocompletamento su tutti i campi e il compilatore mi ferma subito se provo ad accedere a una proprietà che non esiste o a usare un tipo sbagliato. Questo rende il codice che consuma l'API molto più sicuro e facile da modificare.",
+          "risposta": "Definisco un type o una interface per descrivere il payload che mi aspetto e tipizzo la funzione di chiamata. Questo dà autocompletamento e controlli in sviluppo, ma NON valida il JSON che arriva dalla rete: i tipi TypeScript spariscono a runtime. Per dati esterni non affidabili aggiungo una validazione runtime, per esempio con uno schema, e gestisco i casi in cui il contratto non è rispettato.",
           "parole_chiave": [
             "interfacce",
             "payload",
@@ -346,7 +346,7 @@
           "id": "typescript-021",
           "priorita": "MEDIA",
           "domanda": "Spiega la differenza tra unknown, never e void.",
-          "risposta": "Il tipo sconosciuto accetta tutto in ingresso e ti obbliga a verificare prima di usare, quindi è ciò che vuoi sui dati che arrivano dall'esterno. Il tipo mai rappresenta l'impossibilità di avere un valore e serve per i controlli di esaustività. Il tipo vuoto indica che una funzione termina senza restituire nulla di utile, quindi non è né un valore mancante né un'assenza. Sono tre concetti che si confondono perché hanno tutti a che fare con l'assenza, ma indicano situazioni diverse.",
+          "risposta": "unknown può ricevere qualunque valore ma richiede un controllo prima dell’uso; never indica che nessun valore è possibile e serve, per esempio, per verifiche esaustive; void indica che non si usa un risultato significativo da una funzione. Sono concetti distinti: unknown richiede narrowing, never indica impossibilità, void riguarda il valore di ritorno ignorato.",
           "parole_chiave": [
             "unknown",
             "never",
@@ -356,7 +356,7 @@
           ],
           "follow_up": {
             "domanda": "Perché una funzione che restituisce void può essere assegnata a un tipo che restituisce un valore?",
-            "risposta": "Perché void significa che il valore di ritorno non verrà usato, non che non esista: il chiamante si impegna a ignorarlo. È il motivo per cui puoi passare una funzione che non restituisce nulla dove ne serve una che restituisce qualcosa, se quel qualcosa non ti serve. Capire questo evita di aggiungere ritorni inutili solo per soddisfare la firma."
+            "risposta": "È il contrario di quanto spesso si dice: una funzione che restituisce number può essere assegnata a una callback tipizzata () => void, perché il chiamante ne ignora il risultato. Una funzione () => void non può in generale sostituire () => number, che invece promette un numero."
           }
         },
         {
@@ -465,7 +465,7 @@
           "id": "typescript-028",
           "priorita": "MEDIA",
           "domanda": "Cosa sono i nominal vs structural typing in TypeScript?",
-          "risposta": "La tipizzazione strutturale confronta la forma degli oggetti: due tipi sono compatibili se hanno le proprietà necessarie, indipendentemente da come sono dichiarati. La tipizzazione nominale richiederebbe che il tipo dichiarasse esplicitamente di essere quello, come accade in altri linguaggi con l'ereditarietà delle classi. Questa scelta rende il sistema flessibile e adatto a lavorare con dati che arrivano da fuori, ma ha un effetto collaterale da conoscere: due tipi con la stessa struttura sono intercambiabili anche quando nel dominio sono cose diverse.",
+          "risposta": "TypeScript è strutturale: due tipi con la stessa forma possono risultare compatibili anche se hanno nomi diversi. Nella tipizzazione nominale conta l’identità dichiarata del tipo. Se devo distinguere, per esempio, UserId da OrderId, posso usare branded types, spesso con una proprietà simbolica nominale solo a livello di tipo; un discriminante è invece utile per distinguere varianti di una union.",
           "parole_chiave": [
             "tipizzazione strutturale",
             "tipizzazione nominale",
@@ -526,6 +526,43 @@
           "follow_up": {
             "domanda": "Perché evitare gli enum?",
             "risposta": "Perché generano codice che finisce nel bundle e non sempre viene eliminato dal raggruppatore, e perché quelli numerici accettano valori arbitrari senza avvisarti, quindi il controllo che ti aspettavi non c'è. A questo si aggiunge la conversione dei valori, che confonde. Su un'applicazione dove il peso conta, sostituirli con oggetti di costanti è quasi sempre un guadagno gratuito."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Integrazioni per colloqui",
+      "domande": [
+        {
+          "id": "typescript-032",
+          "priorita": "ALTA",
+          "domanda": "Perché tipizzare la risposta API non significa validarla?",
+          "risposta": "TypeScript controlla il codice staticamente ma non modifica il JSON ricevuto. Anche se scrivo Promise<User>, il server può restituire dati incompleti o sbagliati. Ai confini dell’app validerei i dati a runtime, poi userei il tipo risultante nel resto del frontend.",
+          "parole_chiave": [
+            "runtime validation",
+            "DTO",
+            "TypeScript",
+            "schema"
+          ],
+          "follow_up": {
+            "domanda": "Quando usi zod o uno schema equivalente?",
+            "risposta": "Quando il backend o una fonte esterna può restituire dati che non posso assumere sicuri."
+          }
+        },
+        {
+          "id": "typescript-033",
+          "priorita": "ALTA",
+          "domanda": "Come funziona una discriminated union con un esempio?",
+          "risposta": "Definisco varianti che condividono un campo letterale, ad esempio {status:\"loading\"} oppure {status:\"success\",data:User[]}. In uno switch su status TypeScript restringe automaticamente il tipo e rende disponibili solo i campi validi in quel ramo. È un modo leggibile per modellare loading, errore e successo.",
+          "parole_chiave": [
+            "discriminated union",
+            "narrowing",
+            "never",
+            "stato"
+          ],
+          "follow_up": {
+            "domanda": "Come verifichi che uno switch gestisca tutte le varianti?",
+            "risposta": "Con un controllo esaustivo sul tipo never nel ramo di default."
           }
         }
       ]

@@ -1,0 +1,534 @@
+{
+  "meta": {
+    "tecnologia": "TypeScript",
+    "slug": "typescript",
+    "schema": 2,
+    "versione": 1,
+    "aggiornato": "2026-10-14",
+    "totale_domande": 31
+  },
+  "argomenti": [
+    {
+      "nome": "Fondamentali",
+      "domande": [
+        {
+          "id": "typescript-001",
+          "priorita": "ALTA",
+          "domanda": "Perché usare TypeScript invece di JavaScript?",
+          "risposta": "TypeScript è JavaScript con in più un sistema di tipi: aggiungi annotazioni ai dati e lui controlla che tutto torni già mentre scrivi, prima ancora di eseguire il codice. I vantaggi sono tanti: molti errori saltano fuori a compile time invece che in produzione, il codice diventa auto-documentato e più leggibile, e l'editor ti aiuta con autocompletamento, navigazione e refactoring. Su progetti con più persone e con tanti dati che si muovono, è un salto di qualità enorme.",
+          "parole_chiave": [
+            "tipi",
+            "errori a compile time",
+            "leggibilità",
+            "IDE"
+          ],
+          "follow_up": {
+            "domanda": "TypeScript esiste a runtime?",
+            "risposta": "No, TypeScript esiste solo in fase di sviluppo: viene compilato in JavaScript e a runtime i tipi spariscono del tutto. Questo vuol dire che non ti protegge dai dati che arrivano dall'esterno, tipo le risposte di una API. Per quello serve una validazione a runtime, e la soluzione più comune è Zod, che controlla i dati in ingresso e ti restituisce anche i tipi TypeScript."
+          }
+        },
+        {
+          "id": "typescript-002",
+          "priorita": "ALTA",
+          "domanda": "Come tipizzi una risposta API?",
+          "risposta": "Definisco un'interfaccia o un type che descrive la forma del payload che mi aspetto, e lo uso come generics nella funzione che fa la chiamata. In questo modo, appena i dati arrivano, ho autocompletamento su tutti i campi e il compilatore mi ferma subito se provo ad accedere a una proprietà che non esiste o a usare un tipo sbagliato. Questo rende il codice che consuma l'API molto più sicuro e facile da modificare.",
+          "parole_chiave": [
+            "interfacce",
+            "payload",
+            "generics",
+            "risposta"
+          ],
+          "follow_up": {
+            "domanda": "Come validi a runtime?",
+            "risposta": "A runtime con una libreria come Zod, perché TypeScript sparisce una volta compilato e non può proteggerti da un server che ti manda un campo mancante o di tipo sbagliato. Zod valida i dati in ingresso al confine dell'app, e se qualcosa non torna intercetta l'errore prima che entri nel resto del codice, restituendoti oltretutto i tipi già pronti."
+          }
+        },
+        {
+          "id": "typescript-003",
+          "priorita": "ALTA",
+          "domanda": "unknown vs any",
+          "risposta": "any è un tipo che disattiva del tutto i controlli: puoi fare qualsiasi cosa con un valore any e TypeScript non ti dice niente, quindi perdi la sicurezza che la tecnologia ti dà. unknown è la versione sicura dello stesso concetto: rappresenta un valore di cui non conosci il tipo, ma prima di usarlo sei obbligato a verificarne il tipo o a fare un cast. In pratica, quando non sai cosa arriva, unknown ti costringe a fare i controlli del caso, mentre any li salta.",
+          "parole_chiave": [
+            "type safety",
+            "narrowing",
+            "top type",
+            "controllo"
+          ],
+          "follow_up": {
+            "domanda": "Quando useresti any?",
+            "risposta": "Quasi mai. Solo per migrazioni graduali da JavaScript o API esterne non tipizzate. Anche lì, meglio unknown con narrowing."
+          }
+        },
+        {
+          "id": "typescript-004",
+          "priorita": "ALTA",
+          "domanda": "Spiega la differenza tra interface e type in TypeScript.",
+          "risposta": "L'interfaccia descrive la forma di un oggetto ed è estendibile, anche da altre interfacce, e due dichiarazioni con lo stesso nome si fondono automaticamente. L'alias di tipo è un nome che dai a un tipo qualsiasi, quindi è l'unico modo per dare un nome a un'unione, a una tupla o a un tipo condizionale. La convenzione pratica è usare l'interfaccia per le forme degli oggetti, soprattutto se pubblici e destinati a essere estesi, e l'alias per tutto il resto.",
+          "parole_chiave": [
+            "interface",
+            "type",
+            "unioni",
+            "estensione",
+            "fusione di dichiarazioni"
+          ],
+          "follow_up": {
+            "domanda": "Perché per le API pubbliche si preferisce interface?",
+            "risposta": "Perché la fusione delle dichiarazioni permette a chi consuma la libreria di aggiungere campi tramite un'estensione, cosa che con un alias non puoi fare. In più i messaggi di errore del compilatore sono più leggibili con le interfacce, perché mostra il nome invece di espandere la definizione. Sono vantaggi concreti quando il tipo è usato da altri, irrilevanti quando resta interno."
+          }
+        },
+        {
+          "id": "typescript-005",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono i generics in TypeScript? Fai un esempio.",
+          "risposta": "Sono parametri di tipo che rendono una funzione o una classe riutilizzabile mantenendo il legame tra ciò che entra e ciò che esce. Invece di scrivere un tipo generico e perdere le informazioni, dichiari una variabile di tipo e il compilatore la risolve al momento della chiamata: se passi una lista di stringhe ottieni una stringa, non un valore qualsiasi. Il vantaggio rispetto al tipo più ampio è che la relazione tra input e output viene verificata invece di essere data per buona.",
+          "parole_chiave": [
+            "generics",
+            "parametro di tipo",
+            "riutilizzabilità",
+            "inferenza",
+            "legame tra input e output"
+          ],
+          "follow_up": {
+            "domanda": "Che differenza c'è tra usare un generico e usare il tipo più ampio?",
+            "risposta": "Con il generico il compilatore ricorda quale tipo hai passato e ti avvisa se lo usi male; con il tipo più ampio accetta tutto e perdi i controlli. Ad esempio una funzione che restituisce l'elemento più ampio possibile non ti fa sbagliare, ma non ti protegge nemmeno. È la differenza tra scrivere codice che compila sempre e codice in cui gli errori emergono."
+          }
+        },
+        {
+          "id": "typescript-006",
+          "priorita": "ALTA",
+          "domanda": "Spiega i utility types Partial, Pick, Omit, Record.",
+          "risposta": "Sono trasformazioni pronte sull'uso: quella che rende opzionali tutte le proprietà serve per le modifiche parziali, quella che estrae solo alcune chiavi per le viste ridotte, quella che le rimuove per escludere campi, e quella che mappa un insieme di chiavi su un tipo di valore per i dizionari. La cosa importante è che descrivono il tipo invece di copiarlo, quindi se cambi l'originale i tipi derivati si aggiornano da soli. Copiare la forma a mano e modificarla è il modo per farli divergere.",
+          "parole_chiave": [
+            "utility types",
+            "proprietà opzionali",
+            "estrazione di chiavi",
+            "esclusione",
+            "dizionari"
+          ],
+          "follow_up": {
+            "domanda": "Perché la versione parziale di un tipo è utile nelle API?",
+            "risposta": "Perché la modifica di una risorsa manda spesso solo i campi cambiati, quindi il corpo della richiesta non è il tipo completo ma la sua versione con tutto opzionale. Derivandola dall'originale eviti di mantenere due definizioni e garantisci che i nomi dei campi restino allineati. Se domani aggiungi un campo al modello, la versione parziale lo include automaticamente."
+          }
+        },
+        {
+          "id": "typescript-007",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono le type guards e come si implementano?",
+          "risposta": "Sono controlli eseguiti a runtime che permettono al compilatore di restringere il tipo di un valore in quel ramo di codice. Si fanno con gli operatori che TypeScript riconosce, come il controllo del tipo primitivo, la verifica di istanza o la presenza di una proprietà, oppure con una funzione che dichiara esplicitamente il tipo che sta verificando. Il caso in cui servono davvero è quando il valore arriva da fuori, perché lì il tipo che hai dichiarato è solo una promessa.",
+          "parole_chiave": [
+            "type guard",
+            "type narrowing",
+            "controllo a runtime",
+            "verifica di proprietà",
+            "dati esterni"
+          ],
+          "follow_up": {
+            "domanda": "Perché servono se ho già tipizzato la risposta dell'API?",
+            "risposta": "Perché l'annotazione è una tua affermazione, non una verifica: se il server cambia e non manda più quel campo, il compilatore non se ne accorge e il codice fallisce a runtime come se il tipo fosse sbagliato. Con una validazione a runtime il problema emerge al confine, dove puoi gestirlo. Nelle applicazioni serie questa verifica si fa con una libreria di schemi, non a mano."
+          }
+        },
+        {
+          "id": "typescript-008",
+          "priorita": "ALTA",
+          "domanda": "Spiega gli enum di TypeScript e quando usarli.",
+          "risposta": "Sono insiemi di costanti con nome, e hanno la particolarità di generare codice a runtime: esistono davvero nell'esecuzione, non solo durante la compilazione. Questo li rende utili quando ti serve iterare sui valori, ma li rende anche pesanti e con comportamenti poco intuitivi sui valori numerici. Oggi si preferiscono gli oggetti costanti con la dichiarazione di sola lettura, che restano valori semplici e non generano codice in più, e in molti casi un'unione di stringhe è sufficiente.",
+          "parole_chiave": [
+            "enum",
+            "codice a runtime",
+            "oggetto costante",
+            "unione di stringhe",
+            "alternativa"
+          ],
+          "follow_up": {
+            "domanda": "Perché il team TypeScript ne sconsiglia l'uso?",
+            "risposta": "Perché hanno comportamenti inattesi, soprattutto su quelli numerici, che accettano qualsiasi numero senza segnalare l'errore, e perché generano codice che non sempre viene eliminato dal raggruppatore. Con valori in sola lettura ottieni il controllo sui tipi senza generare nulla a runtime, quindi in applicazioni dove il peso del bundle conta la differenza si sente."
+          }
+        },
+        {
+          "id": "typescript-009",
+          "priorita": "ALTA",
+          "domanda": "Come funziona il type narrowing in TypeScript?",
+          "risposta": "È l'analisi con cui il compilatore capisce un tipo più specifico per una variabile in base ai controlli che hai scritto. Le condizioni, i controlli di tipo e le funzioni di verifica restringono il tipo dentro quel ramo, e fuori torna quello di partenza. È la ragione per cui lavorare con unioni di tipi è praticabile: non scrivi conversioni forzate, scrivi controlli che il compilatore comprende.",
+          "parole_chiave": [
+            "narrowing",
+            "analisi del flusso",
+            "unioni",
+            "controlli",
+            "nessun cast"
+          ],
+          "follow_up": {
+            "domanda": "Perché il narrowing con le proprietà opzionali a volte non funziona come ti aspetti?",
+            "risposta": "Perché il compilatore analizza una lettura per volta: se controlli una proprietà e poi ne leggi un'altra, la prima verifica non si applica alla seconda. Si risolve estraendo il valore in una variabile locale e controllando quella, oppure verificando la proprietà sull'oggetto una volta sola. È un limite dell'analisi che produce errori apparentemente incomprensibili."
+          }
+        },
+        {
+          "id": "typescript-010",
+          "priorita": "ALTA",
+          "domanda": "Spiega il non-null assertion operator (!) e i suoi rischi.",
+          "risposta": "È l'operatore che dice al compilatore di ignorare i casi nullo e indefinito per quel valore, togliendoli dal tipo. Il vantaggio è una scrittura più breve, il rischio è che il compilatore non verifica più nulla in quel punto e tu ti assumi la responsabilità: se il valore è davvero assente, ottieni un errore a runtime senza che nessuno ti abbia avvisato. Va usato quando hai già verificato fuori, in quel punto specifico.",
+          "parole_chiave": [
+            "asserzione di non nullità",
+            "assenza di verifica",
+            "errore a runtime",
+            "quando è accettabile",
+            "responsabilità"
+          ],
+          "follow_up": {
+            "domanda": "In quali casi è legittimo usarlo?",
+            "risposta": "Quando il compilatore non può sapere ciò che invece sai tu per costruzione: per esempio un elemento recuperato poco prima che esiste certamente, o un riferimento inizializzato subito dopo. Fuori da questi casi è un modo per zittire il compilatore, e il conto arriva come errore in produzione. Esistono alternative più sicure, come il controllo esplicito o l'operatore di coalescenza con un valore predefinito."
+          }
+        },
+        {
+          "id": "typescript-011",
+          "priorita": "MEDIA",
+          "domanda": "Differenza tra enum e union di stringhe in TypeScript?",
+          "risposta": "Entrambi rappresentano un insieme finito di valori, ma le union di stringhe tipo 'rosso' | 'verde' | 'blu' sono più semplici e restano solo tipi, mentre gli enum generano codice JavaScript a runtime. Oggi si preferiscono le union: meno sorprese, più leggere, e si integrano meglio con l'autocompletamento. Gli enum li uso solo se serve davvero un oggetto a runtime.",
+          "parole_chiave": [
+            "enum",
+            "union",
+            "runtime",
+            "stringhe"
+          ],
+          "follow_up": {
+            "domanda": "Perché le union sono preferite?",
+            "risposta": "Perché non aggiungono codice a runtime e non hanno i problemi degli enum numerici, dove i valori sono poco leggibili. In più TypeScript stesso, con const enum o le union, spinge verso soluzioni più leggere. Alla fine una union di stringhe è quasi sempre sufficiente."
+          }
+        },
+        {
+          "id": "typescript-012",
+          "priorita": "MEDIA",
+          "domanda": "Come restringi il tipo di una variabile in TypeScript?",
+          "risposta": "Con il type narrowing: uso controlli che restringono il tipo dentro un blocco. I più comuni sono typeof per i primitivi, instanceof per le classi, l'operatore in per gli oggetti, e le discriminated union con un campo discriminante. In questo modo TypeScript sa esattamente con che tipo sta lavorando in ogni ramo del codice.",
+          "parole_chiave": [
+            "narrowing",
+            "typeof",
+            "instanceof",
+            "discriminated union"
+          ],
+          "follow_up": {
+            "domanda": "Cosa è una discriminated union?",
+            "risposta": "È un'unione di tipi che condividono un campo discriminante, tipo { tipo: 'cerchio', raggio: number } | { tipo: 'quadrato', lato: number }. Switchando su quel campo, TypeScript restringe automaticamente al tipo giusto e ti dà accesso solo alle sue proprietà."
+          }
+        },
+        {
+          "id": "typescript-013",
+          "priorita": "MEDIA",
+          "domanda": "A cosa serve l'operatore satisfies?",
+          "risposta": "satisfies verifica che un valore rispetti un tipo, senza però cambiare il tipo inferito dal valore. In pratica tieni la precisione dell'inferenza e in più hai il controllo: se il valore non rispetta il tipo, TypeScript ti segnala l'errore. È utile per oggetti di configurazione dove vuoi i literal esatti ma anche la validazione.",
+          "parole_chiave": [
+            "satisfies",
+            "inferenza",
+            "validazione",
+            "literal"
+          ],
+          "follow_up": {
+            "domanda": "Esempio?",
+            "risposta": "Con const palette = { rosso: '#ff0000' } as const, scrivendo palette = {...} satisfies Record<string, string> controlli che tutte le chiavi siano stringhe, ma mantieni 'rosso' come chiave letterale e '#ff0000' come stringa esatta, non generica."
+          }
+        },
+        {
+          "id": "typescript-014",
+          "priorita": "MEDIA",
+          "domanda": "Cosa significa 'strict mode' in TypeScript?",
+          "risposta": "La strict mode è una configurazione del tsconfig che attiva tutti i controlli severi insieme: null checks, no implicit any, controlli sui tipi delle funzioni e così via. Il vantaggio è che TypeScript diventa molto più preciso nel segnalarti i problemi, e molti bug escono fuori subito in fase di scrittura. Il costo è che devi essere più rigoroso: niente variabili senza tipo, niente accessi a proprietà potenzialmente assenti senza prima verificarle.",
+          "parole_chiave": [
+            "strict",
+            "tsconfig",
+            "null",
+            "any"
+          ],
+          "follow_up": {
+            "domanda": "Lo attivi sempre?",
+            "risposta": "Sì, su progetti nuovi la attivo sempre da subito, perché è più facile scrivere codice corretto fin dall'inizio che sistemare tutto dopo. Su progetti esistenti può richiedere un po' di tempo per sistemare gli errori accumulati, ma si fa in modo incrementale e ne vale assolutamente la pena."
+          }
+        },
+        {
+          "id": "typescript-015",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono i tipi Readonly e le tuple?",
+          "risposta": "Readonly<T> rende tutte le proprietà di un tipo di sola lettura, utile per difendere i dati da modifiche accidentali. Le tuple sono array con lunghezza e tipi fissi per ogni posizione, tipo [string, number]. Le uso quando voglio garantire a compile time che una struttura non venga mutata o che un array abbia esattamente la forma che mi aspetto.",
+          "parole_chiave": [
+            "Readonly",
+            "tuple",
+            "immutabilità",
+            "posizioni"
+          ],
+          "follow_up": {
+            "domanda": "Dove le usi?",
+            "risposta": "Readonly per i dati di configurazione o le props che non devono cambiare, le tuple per cose come coppie chiave-valore o i risultati di una funzione che ritorna più valori ordinati. Sono piccoli accorgimenti che spostano molti errori dal runtime alla scrittura."
+          }
+        },
+        {
+          "id": "typescript-016",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci i tipi per le props di un componente React?",
+          "risposta": "Definisco un'interfaccia o un type che descrive tutte le props del componente, e lo passo come generics al componente. In questo modo chi usa il componente ha autocompletamento e il compilatore gli segnala subito se dimentica una prop o passa un tipo sbagliato. Se una prop è opzionale uso il punto interrogativo, e se ha un valore di default lo gestisco nella firma della funzione o con defaultProps.",
+          "parole_chiave": [
+            "Props",
+            "interface",
+            "opzionale",
+            "generics"
+          ],
+          "follow_up": {
+            "domanda": "E per i children?",
+            "risposta": "Per i children uso React.ReactNode, che copre stringhe, elementi, array e qualsiasi cosa React possa renderizzare. Se voglio includere i children senza dichiararli a mano uso React.PropsWithChildren, che li aggiunge automaticamente al mio tipo. In questo modo il componente accetta contenuti annidati senza dover riscrivere la prop ogni volta."
+          }
+        },
+        {
+          "id": "typescript-017",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono i mapped types e conditional types?",
+          "risposta": "I tipi mappati costruiscono un nuovo tipo iterando sulle proprietà di uno esistente e trasformandole, ed è così che sono fatti gli strumenti di utilità della libreria standard. I tipi condizionali scelgono un tipo in base a una relazione, con la stessa forma di un operatore ternario applicato ai tipi: se il tipo estende un altro allora uno, altrimenti l'altro. Sono gli strumenti con cui si scrivono le librerie, e capirli serve a leggere le definizioni che usi, più che a scriverne tutti i giorni.",
+          "parole_chiave": [
+            "tipi mappati",
+            "tipi condizionali",
+            "trasformazione",
+            "estende",
+            "librerie"
+          ],
+          "follow_up": {
+            "domanda": "Quando scrivi tipi condizionali nel tuo codice?",
+            "risposta": "Raramente: quando scrivi funzioni che devono adattare il tipo di ritorno in base al tipo di ingresso, tipicamente utility interne di un progetto o definizioni di wrapper. La maggior parte del lavoro quotidiano si fa con i tipi mappati già pronti nella libreria standard. Scriverne troppi rende i messaggi di errore incomprensibili, ed è un costo che si paga in manutenzione."
+          }
+        },
+        {
+          "id": "typescript-018",
+          "priorita": "MEDIA",
+          "domanda": "Spiega il tipo never e quando viene usato.",
+          "risposta": "È il tipo che rappresenta l'assenza di valori possibili: non lo incontrerai mai come tipo di un dato. Si usa per le funzioni che non terminano mai, tipicamente perché lanciano sempre un errore, e per il controllo di esaustività nelle diramazioni. Il secondo uso è quello prezioso: mettendo l'assegnazione a quel tipo nel ramo finale, se domani aggiungi un caso all'unione il compilatore ti avvisa che quel ramo ora è raggiungibile.",
+          "parole_chiave": [
+            "never",
+            "assenza di valori",
+            "esaustività",
+            "unioni",
+            "protezione in compilazione"
+          ],
+          "follow_up": {
+            "domanda": "Come funziona in pratica il controllo di esaustività?",
+            "risposta": "Dichiari una variabile di tipo never nel ramo predefinito della diramazione: se hai gestito tutti i casi della tua unione, quel ramo è irraggiungibile e il valore è compatibile; se ne dimentichi uno, il compilatore segnala che quel tipo non è assegnabile. È il modo per far fallire la compilazione quando qualcuno aggiunge un caso e dimentica di gestirlo, che è esattamente quando vuoi saperlo."
+          }
+        },
+        {
+          "id": "typescript-019",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono keyof e typeof in TypeScript?",
+          "risposta": "L'operatore che ricava un tipo da un valore esiste anche nel sistema dei tipi ed estrae il tipo di una variabile, di un oggetto o del risultato di una funzione. L'altro operatore prende un tipo di oggetto e produce l'unione dei nomi delle sue proprietà. Combinati sono utili per derivare i tipi invece di riscriverli: prendi le chiavi di un oggetto di configurazione reale e le usi come tipo, così i due restano allineati.",
+          "parole_chiave": [
+            "derivazione dei tipi",
+            "chiavi di un tipo",
+            "unione di letterali",
+            "allineamento",
+            "fonte unica"
+          ],
+          "follow_up": {
+            "domanda": "Perché derivare le chiavi da un oggetto è meglio che scriverle?",
+            "risposta": "Perché se aggiungi una proprietà all'oggetto il tipo si aggiorna da solo, mentre l'elenco scritto a mano resta indietro e il compilatore non ti avvisa. Il vantaggio è avere una sola fonte di verità: l'oggetto reale. È lo stesso principio per cui non duplichi una struttura ma la derivi."
+          }
+        },
+        {
+          "id": "typescript-020",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono i type predicates (is) in TypeScript?",
+          "risposta": "È la firma di una funzione di verifica che dichiara il tipo che sta controllando: se la funzione restituisce vero, il compilatore sa che la variabile è di quel tipo e restringe di conseguenza. Serve quando il controllo non si può esprimere con gli operatori nativi, cioè quando dipende da una logica tua. A differenza di una semplice funzione che restituisce un booleano, questa comunica il risultato anche al sistema dei tipi, ed è la differenza che la rende utile.",
+          "parole_chiave": [
+            "type predicate",
+            "funzione di verifica",
+            "restrizione del tipo",
+            "booleano tipizzato",
+            "logica personalizzata"
+          ],
+          "follow_up": {
+            "domanda": "Che differenza c'è rispetto a una funzione che restituisce un booleano?",
+            "risposta": "Che la funzione normale non dice nulla al compilatore: lui vede un vero o falso e non trae conclusioni sul tipo, quindi dentro il ramo il valore resta quello di partenza. Con la firma della verifica il compilatore sa quale tipo hai confermato e ti lascia usarlo. È l'unico modo per incapsulare una verifica di tipo e riusarla mantenendo i controlli."
+          }
+        },
+        {
+          "id": "typescript-021",
+          "priorita": "MEDIA",
+          "domanda": "Spiega la differenza tra unknown, never e void.",
+          "risposta": "Il tipo sconosciuto accetta tutto in ingresso e ti obbliga a verificare prima di usare, quindi è ciò che vuoi sui dati che arrivano dall'esterno. Il tipo mai rappresenta l'impossibilità di avere un valore e serve per i controlli di esaustività. Il tipo vuoto indica che una funzione termina senza restituire nulla di utile, quindi non è né un valore mancante né un'assenza. Sono tre concetti che si confondono perché hanno tutti a che fare con l'assenza, ma indicano situazioni diverse.",
+          "parole_chiave": [
+            "unknown",
+            "never",
+            "void",
+            "assenza di valore",
+            "ritorno di funzione"
+          ],
+          "follow_up": {
+            "domanda": "Perché una funzione che restituisce void può essere assegnata a un tipo che restituisce un valore?",
+            "risposta": "Perché void significa che il valore di ritorno non verrà usato, non che non esista: il chiamante si impegna a ignorarlo. È il motivo per cui puoi passare una funzione che non restituisce nulla dove ne serve una che restituisce qualcosa, se quel qualcosa non ti serve. Capire questo evita di aggiungere ritorni inutili solo per soddisfare la firma."
+          }
+        },
+        {
+          "id": "typescript-022",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono i module augmentation in TypeScript?",
+          "risposta": "È la tecnica con cui estendi le dichiarazioni di tipo di una libreria esterna senza modificarne i sorgenti: dichiari di nuovo il modulo e aggiungi ciò che manca. Serve quando una libreria non espone i tipi di tutto quello che offre, tipicamente perché utilizza un'estensione o un plugin non tipizzato. Va usata con parsimonia e documentata, perché le dichiarazioni vivono fuori dalla libreria e nessuno le trova cercandole nella documentazione.",
+          "parole_chiave": [
+            "module augmentation",
+            "librerie esterne",
+            "tipi mancanti",
+            "plugin",
+            "documentazione"
+          ],
+          "follow_up": {
+            "domanda": "Qual è il rischio principale?",
+            "risposta": "Che la dichiarazione diventi falsa senza che nessuno se ne accorga: se la libreria aggiunge quella proprietà con un tipo diverso, la tua dichiarazione la copre e il compilatore non ti avvisa. Un altro rischio è che resti lì dopo che la libreria ha aggiunto i tipi, creando un conflitto. Conviene rileggerle a ogni aggiornamento, e tenerle in un file unico facilita il controllo."
+          }
+        },
+        {
+          "id": "typescript-023",
+          "priorita": "MEDIA",
+          "domanda": "Spiega il concetto di declaration merging.",
+          "risposta": "È la capacità del compilatore di unire più dichiarazioni con lo stesso nome in una sola definizione: vale per le interfacce, i namespace e i moduli. È il meccanismo che permette a una libreria di essere estesa da chi la usa, e per questo è alla base dell'estensione dei tipi nelle API pubbliche. Funziona solo con le dichiarazioni che il linguaggio prevede, quindi non con gli alias di tipo, ed è una distinzione da ricordare quando scegli come dichiarare un tipo.",
+          "parole_chiave": [
+            "fusione di dichiarazioni",
+            "stesso nome",
+            "interfacce",
+            "estensibilità",
+            "non con gli alias"
+          ],
+          "follow_up": {
+            "domanda": "Perché gli alias di tipo non si fondono?",
+            "risposta": "Perché un alias è un nome alternativo che punta a un tipo, e due nomi uguali che puntano a tipi diversi sarebbero un conflitto, non una composizione. Il compilatore non ha un modo sensato di unirli, quindi segnala l'errore. Le interfacce invece descrivono una forma, e unire due forme è un'operazione che ha sempre senso."
+          }
+        },
+        {
+          "id": "typescript-024",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono i template literal types in TypeScript?",
+          "risposta": "Sono tipi costruiti a partire da stringhe letterali componendoli tra loro, con la stessa sintassi delle stringhe interpolate ma applicata ai tipi. Servono a generare insiemi di stringhe ammesse senza elencarle tutte: da un prefisso e da un'unione di nomi ottieni tutte le combinazioni valide. L'uso più frequente è derivare il nome di un evento o di una variabile di ambiente da un'altra definizione, mantenendo i due allineati.",
+          "parole_chiave": [
+            "template literal types",
+            "stringhe letterali",
+            "composizione",
+            "derivazione",
+            "senza duplicare"
+          ],
+          "follow_up": {
+            "domanda": "Come ti proteggono nei nomi degli eventi?",
+            "risposta": "Perché se il tuo tipo dichiara che i nomi valgono un prefisso più il nome dell'oggetto, il compilatore rifiuta una stringa scritta male invece di accettarla come semplice testo. Ottieni l'autocompletamento e l'errore in compilazione, senza mantenere un elenco manuale che invecchia. È un caso in cui il sistema dei tipi ti risparmia una classe intera di errori di battitura."
+          }
+        },
+        {
+          "id": "typescript-025",
+          "priorita": "MEDIA",
+          "domanda": "Spiega la differenza tra ReadonlyArray e readonly modifier.",
+          "risposta": "L'array di sola lettura è un tipo che a livello di tipi non ha i metodi che modificano il contenuto, quindi se provi ad aggiungere o rimuovere elementi il compilatore protesta. L'operatore di sola lettura applicato alla sintassi dell'array è la forma equivalente e più breve. È una protezione a livello di tipi, non a runtime: impedisce gli errori durante lo sviluppo, non rende immutabile l'oggetto in esecuzione.",
+          "parole_chiave": [
+            "array di sola lettura",
+            "modificatori rimossi",
+            "protezione in compilazione",
+            "non a runtime",
+            "sintassi breve"
+          ],
+          "follow_up": {
+            "domanda": "Perché parlare di protezione solo a livello di tipi è importante?",
+            "risposta": "Perché non impedisce a nessuno di modificare l'array se il riferimento viene passato a codice che non ha quel tipo: la protezione vale per il codice che vede quel tipo. È la stessa natura di tutte le garanzie di TypeScript, che scompaiono a runtime. Serve a te e al tuo team per non sbagliare, non a proteggere i dati da chi non rispetta i contratti."
+          }
+        },
+        {
+          "id": "typescript-026",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono le assertion functions in TypeScript?",
+          "risposta": "Sono funzioni che dichiarano di verificare una condizione e, se terminano senza errore, il compilatore considera vera quella condizione per il codice successivo, restringendo di conseguenza i tipi. La differenza con una funzione di verifica che restituisce un booleano è che qui non c'è un valore di ritorno da controllare: la funzione o passa o lancia. Si usano tipicamente per le verifiche all'inizio di una funzione che, se falliscono, non ha senso proseguire.",
+          "parole_chiave": [
+            "funzione di asserzione",
+            "condizione asserita",
+            "restringimento",
+            "o passa o lancia",
+            "verifiche iniziali"
+          ],
+          "follow_up": {
+            "domanda": "Perché richiedono una dichiarazione di tipo esplicita?",
+            "risposta": "Perché il compilatore non può dedurre da solo l'intenzione: una funzione che verifica e lancia non è distinguibile da una che fa altro e lancia. Serve la firma che dichiara esplicitamente cosa garantisce. In più vanno chiamate su una variabile con nome stabile, perché su un'espressione il restringimento non si applica a nulla di riutilizzabile."
+          }
+        },
+        {
+          "id": "typescript-027",
+          "priorita": "MEDIA",
+          "domanda": "Spiega indexed access types e lookup types.",
+          "risposta": "È la sintassi che a livello di tipo legge il tipo di una proprietà specifica di un altro tipo. Serve per restare sincronizzati con la fonte di verità: invece di riscrivere il tipo di quel campo, lo ricavi dal tipo originale, così se quello cambia anche la derivazione cambia. Si usa molto nelle funzioni generiche, dove il tipo della proprietà dipende da una chiave passata come parametro, e lì è ciò che permette di mantenere il legame tra chiave e valore.",
+          "parole_chiave": [
+            "accesso indicizzato",
+            "lettura di proprietà",
+            "derivazione",
+            "generici",
+            "legame chiave valore"
+          ],
+          "follow_up": {
+            "domanda": "Perché è indispensabile nelle funzioni che ricevono una chiave?",
+            "risposta": "Perché senza di esso il tipo di ritorno sarebbe generico e perderesti il legame: passi il nome di una proprietà e ottieni un valore di tipo indefinito, quindi perdi i controlli e devi forzare. Con l'accesso indicizzato il compilatore sa che se la chiave è quella, il valore è di quel tipo esatto, e il legame resta verificato lungo tutta la funzione."
+          }
+        },
+        {
+          "id": "typescript-028",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono i nominal vs structural typing in TypeScript?",
+          "risposta": "La tipizzazione strutturale confronta la forma degli oggetti: due tipi sono compatibili se hanno le proprietà necessarie, indipendentemente da come sono dichiarati. La tipizzazione nominale richiederebbe che il tipo dichiarasse esplicitamente di essere quello, come accade in altri linguaggi con l'ereditarietà delle classi. Questa scelta rende il sistema flessibile e adatto a lavorare con dati che arrivano da fuori, ma ha un effetto collaterale da conoscere: due tipi con la stessa struttura sono intercambiabili anche quando nel dominio sono cose diverse.",
+          "parole_chiave": [
+            "tipizzazione strutturale",
+            "tipizzazione nominale",
+            "forma dell oggetto",
+            "compatibilità",
+            "effetto collaterale"
+          ],
+          "follow_up": {
+            "domanda": "Come recuperi una distinzione tra due tipi strutturalmente identici?",
+            "risposta": "Aggiungendo una proprietà che li differenzia nel dominio, come un campo discriminante con un valore letterale diverso per ognuno: è la tecnica dell'unione discriminata. In alternativa si usa un identificatore privato che rende il tipo non più compatibile per struttura. La scelta più comune è la prima, perché il campo discriminante serve anche a restringere i tipi nelle diramazioni."
+          }
+        },
+        {
+          "id": "typescript-029",
+          "priorita": "MEDIA",
+          "domanda": "Come tipizzi una funzione che accetta props generiche?",
+          "risposta": "Con un parametro di tipo sulla funzione: dichiari un tipo generico e lo usi sia nella forma delle props sia dove serve. Il compilatore lo risolve al momento della chiamata, quindi se passi una lista di stringhe sa che dentro il componente troverai stringhe e non valori qualsiasi. Il guadagno rispetto a un tipo ampio è che il legame tra ciò che entra e ciò che esce resta verificato, e l'errore arriva in compilazione invece che a runtime.",
+          "parole_chiave": [
+            "generics",
+            "inferenza",
+            "legame input-output",
+            "riuso tipizzato",
+            "type safety"
+          ],
+          "follow_up": {
+            "domanda": "Come restringi il tipo generico?",
+            "risposta": "Con un vincolo: dichiari che quel tipo deve estendere una forma, per esempio che deve avere un identificativo. Così dentro la funzione puoi accedere a quel campo senza controlli, perché il compilatore sa che c'è. Senza il vincolo il generico accetta qualunque cosa e non puoi usare nessuna proprietà, che è il caso in cui ti accorgi di averlo reso troppo permissivo."
+          }
+        },
+        {
+          "id": "typescript-030",
+          "priorita": "MEDIA",
+          "domanda": "Come funziona il type inference?",
+          "risposta": "Il compilatore deduce il tipo dal valore assegnato o dal contesto in cui la variabile viene usata, senza che tu scriva l'annotazione. Serve a non riempire il codice di tipi ovvi, che è la principale fonte di rumore: se assegni un numero, il tipo è numero, e ripeterlo non aggiunge nulla. Il limite è che il tipo dedotto è quello che il compilatore riesce a vedere, e a volte è più ampio di quanto vorresti.",
+          "parole_chiave": [
+            "inferenza",
+            "tipi dedotti",
+            "contesto",
+            "rumore nel codice"
+          ],
+          "follow_up": {
+            "domanda": "Quando annoti esplicitamente?",
+            "risposta": "Sulle interfacce pubbliche, sulle funzioni esportate e su tutto ciò che altri useranno dall'esterno: lì il tipo è un contratto e va dichiarato, non dedotto, altrimenti un cambio interno si propaga silenziosamente a chi ti usa. Anche quando l'inferenza produce un tipo troppo ampio, l'annotazione serve a restringere. La regola è annotare il confine, lasciar dedurre l'interno."
+          }
+        },
+        {
+          "id": "typescript-031",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci gli enum in TypeScript moderno?",
+          "risposta": "Oggi si preferiscono oggetti di costanti in sola lettura, perché restano valori semplici, non generano codice aggiuntivo e si comportano come ci si aspetta. Gli enum tradizionali hanno invece comportamenti poco intuitivi, soprattutto quelli numerici, che accettano qualunque numero senza segnalare l'errore. Se ti serve solo un insieme chiuso di stringhe, spesso un'unione di tipi letterali è già sufficiente e non produce nulla a runtime.",
+          "parole_chiave": [
+            "enum",
+            "oggetto di costanti",
+            "sola lettura",
+            "codice generato",
+            "unione di stringhe"
+          ],
+          "follow_up": {
+            "domanda": "Perché evitare gli enum?",
+            "risposta": "Perché generano codice che finisce nel bundle e non sempre viene eliminato dal raggruppatore, e perché quelli numerici accettano valori arbitrari senza avvisarti, quindi il controllo che ti aspettavi non c'è. A questo si aggiunge la conversione dei valori, che confonde. Su un'applicazione dove il peso conta, sostituirli con oggetti di costanti è quasi sempre un guadagno gratuito."
+          }
+        }
+      ]
+    }
+  ]
+}

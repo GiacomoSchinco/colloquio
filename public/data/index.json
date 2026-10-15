@@ -1,9 +1,9 @@
 {
   "meta": {
     "schema": 2,
-    "versione": 5,
+    "versione": 6,
     "aggiornato": "2026-10-15",
-    "totale_domande": 718,
+    "totale_domande": 748,
     "totale_argomenti": 24,
     "totale_file": 26
   },
@@ -18,11 +18,11 @@
         "typescript"
       ],
       "file": null,
-      "totale": 56,
-      "blocchi": 4,
-      "con_follow_up": 56,
+      "totale": 60,
+      "blocchi": 6,
+      "con_follow_up": 60,
       "priorita": {
-        "ALTA": 19,
+        "ALTA": 23,
         "MEDIA": 37,
         "BASSA": 0
       }
@@ -35,12 +35,12 @@
         "react"
       ],
       "file": "react.json",
-      "totale": 59,
-      "blocchi": 2,
-      "con_follow_up": 59,
+      "totale": 64,
+      "blocchi": 3,
+      "con_follow_up": 64,
       "priorita": {
-        "ALTA": 27,
-        "MEDIA": 27,
+        "ALTA": 31,
+        "MEDIA": 28,
         "BASSA": 5
       }
     },
@@ -69,12 +69,12 @@
         "accessibility"
       ],
       "file": "accessibility.json",
-      "totale": 14,
-      "blocchi": 1,
-      "con_follow_up": 14,
+      "totale": 15,
+      "blocchi": 2,
+      "con_follow_up": 15,
       "priorita": {
         "ALTA": 4,
-        "MEDIA": 7,
+        "MEDIA": 8,
         "BASSA": 3
       }
     },
@@ -86,11 +86,11 @@
         "web-performance"
       ],
       "file": "web-performance.json",
-      "totale": 23,
-      "blocchi": 1,
-      "con_follow_up": 23,
+      "totale": 24,
+      "blocchi": 2,
+      "con_follow_up": 24,
       "priorita": {
-        "ALTA": 14,
+        "ALTA": 15,
         "MEDIA": 7,
         "BASSA": 2
       }
@@ -120,12 +120,12 @@
         "java"
       ],
       "file": "java.json",
-      "totale": 54,
-      "blocchi": 5,
-      "con_follow_up": 54,
+      "totale": 55,
+      "blocchi": 6,
+      "con_follow_up": 55,
       "priorita": {
         "ALTA": 39,
-        "MEDIA": 13,
+        "MEDIA": 14,
         "BASSA": 2
       }
     },
@@ -137,11 +137,11 @@
         "spring"
       ],
       "file": "spring.json",
-      "totale": 46,
-      "blocchi": 4,
-      "con_follow_up": 46,
+      "totale": 48,
+      "blocchi": 5,
+      "con_follow_up": 48,
       "priorita": {
-        "ALTA": 23,
+        "ALTA": 25,
         "MEDIA": 18,
         "BASSA": 5
       }
@@ -188,12 +188,12 @@
         "dotnet"
       ],
       "file": "dotnet.json",
-      "totale": 55,
-      "blocchi": 5,
-      "con_follow_up": 55,
+      "totale": 57,
+      "blocchi": 6,
+      "con_follow_up": 57,
       "priorita": {
-        "ALTA": 20,
-        "MEDIA": 30,
+        "ALTA": 21,
+        "MEDIA": 31,
         "BASSA": 5
       }
     },
@@ -205,12 +205,12 @@
         "sql"
       ],
       "file": "sql.json",
-      "totale": 40,
-      "blocchi": 1,
-      "con_follow_up": 40,
+      "totale": 42,
+      "blocchi": 2,
+      "con_follow_up": 42,
       "priorita": {
-        "ALTA": 23,
-        "MEDIA": 14,
+        "ALTA": 24,
+        "MEDIA": 15,
         "BASSA": 3
       }
     },
@@ -222,11 +222,11 @@
         "rest-api"
       ],
       "file": "rest-api.json",
-      "totale": 45,
-      "blocchi": 3,
-      "con_follow_up": 45,
+      "totale": 47,
+      "blocchi": 4,
+      "con_follow_up": 47,
       "priorita": {
-        "ALTA": 25,
+        "ALTA": 27,
         "MEDIA": 19,
         "BASSA": 1
       }
@@ -239,11 +239,11 @@
         "architettura"
       ],
       "file": "architettura.json",
-      "totale": 27,
-      "blocchi": 4,
-      "con_follow_up": 27,
+      "totale": 28,
+      "blocchi": 5,
+      "con_follow_up": 28,
       "priorita": {
-        "ALTA": 8,
+        "ALTA": 9,
         "MEDIA": 16,
         "BASSA": 3
       }
@@ -273,12 +273,12 @@
         "testing"
       ],
       "file": "testing.json",
-      "totale": 12,
-      "blocchi": 1,
-      "con_follow_up": 12,
+      "totale": 15,
+      "blocchi": 2,
+      "con_follow_up": 15,
       "priorita": {
-        "ALTA": 5,
-        "MEDIA": 6,
+        "ALTA": 7,
+        "MEDIA": 7,
         "BASSA": 1
       }
     },
@@ -290,11 +290,11 @@
         "cybersecurity"
       ],
       "file": "cybersecurity.json",
-      "totale": 6,
-      "blocchi": 1,
-      "con_follow_up": 6,
+      "totale": 7,
+      "blocchi": 2,
+      "con_follow_up": 7,
       "priorita": {
-        "ALTA": 4,
+        "ALTA": 5,
         "MEDIA": 2,
         "BASSA": 0
       }
@@ -324,11 +324,11 @@
         "git"
       ],
       "file": "git.json",
-      "totale": 10,
-      "blocchi": 1,
-      "con_follow_up": 10,
+      "totale": 11,
+      "blocchi": 2,
+      "con_follow_up": 11,
       "priorita": {
-        "ALTA": 4,
+        "ALTA": 5,
         "MEDIA": 6,
         "BASSA": 0
       }
@@ -375,12 +375,12 @@
         "kubernetes"
       ],
       "file": "kubernetes.json",
-      "totale": 24,
-      "blocchi": 6,
-      "con_follow_up": 24,
+      "totale": 25,
+      "blocchi": 7,
+      "con_follow_up": 25,
       "priorita": {
         "ALTA": 9,
-        "MEDIA": 15,
+        "MEDIA": 16,
         "BASSA": 0
       }
     },
@@ -392,11 +392,11 @@
         "ci-cd"
       ],
       "file": "ci-cd.json",
-      "totale": 15,
-      "blocchi": 3,
-      "con_follow_up": 15,
+      "totale": 17,
+      "blocchi": 4,
+      "con_follow_up": 17,
       "priorita": {
-        "ALTA": 7,
+        "ALTA": 9,
         "MEDIA": 8,
         "BASSA": 0
       }
@@ -409,11 +409,11 @@
         "soft-skills"
       ],
       "file": "soft-skills.json",
-      "totale": 26,
-      "blocchi": 2,
-      "con_follow_up": 26,
+      "totale": 27,
+      "blocchi": 3,
+      "con_follow_up": 27,
       "priorita": {
-        "ALTA": 11,
+        "ALTA": 12,
         "MEDIA": 15,
         "BASSA": 0
       }
@@ -424,14 +424,14 @@
       "slug": "accessibility",
       "nome": "Accessibilità",
       "file": "accessibility.json",
-      "totale": 14,
+      "totale": 15,
       "perPrio": {
         "ALTA": 4,
-        "MEDIA": 7,
+        "MEDIA": 8,
         "BASSA": 3
       },
-      "blocchi": 1,
-      "con_follow_up": 14,
+      "blocchi": 2,
+      "con_follow_up": 15,
       "argomento": "accessibility"
     },
     {
@@ -452,42 +452,42 @@
       "slug": "architettura",
       "nome": "Architettura e Design",
       "file": "architettura.json",
-      "totale": 27,
+      "totale": 28,
       "perPrio": {
-        "ALTA": 8,
+        "ALTA": 9,
         "MEDIA": 16,
         "BASSA": 3
       },
-      "blocchi": 4,
-      "con_follow_up": 27,
+      "blocchi": 5,
+      "con_follow_up": 28,
       "argomento": "architettura"
     },
     {
       "slug": "ci-cd",
       "nome": "CI/CD",
       "file": "ci-cd.json",
-      "totale": 15,
+      "totale": 17,
       "perPrio": {
-        "ALTA": 7,
+        "ALTA": 9,
         "MEDIA": 8,
         "BASSA": 0
       },
-      "blocchi": 3,
-      "con_follow_up": 15,
+      "blocchi": 4,
+      "con_follow_up": 17,
       "argomento": "ci-cd"
     },
     {
       "slug": "cybersecurity",
       "nome": "Cybersecurity",
       "file": "cybersecurity.json",
-      "totale": 6,
+      "totale": 7,
       "perPrio": {
-        "ALTA": 4,
+        "ALTA": 5,
         "MEDIA": 2,
         "BASSA": 0
       },
-      "blocchi": 1,
-      "con_follow_up": 6,
+      "blocchi": 2,
+      "con_follow_up": 7,
       "argomento": "cybersecurity"
     },
     {
@@ -522,14 +522,14 @@
       "slug": "git",
       "nome": "Git e Versioning",
       "file": "git.json",
-      "totale": 10,
+      "totale": 11,
       "perPrio": {
-        "ALTA": 4,
+        "ALTA": 5,
         "MEDIA": 6,
         "BASSA": 0
       },
-      "blocchi": 1,
-      "con_follow_up": 10,
+      "blocchi": 2,
+      "con_follow_up": 11,
       "argomento": "git"
     },
     {
@@ -550,28 +550,28 @@
       "slug": "java",
       "nome": "Java",
       "file": "java.json",
-      "totale": 54,
+      "totale": 55,
       "perPrio": {
         "ALTA": 39,
-        "MEDIA": 13,
+        "MEDIA": 14,
         "BASSA": 2
       },
-      "blocchi": 5,
-      "con_follow_up": 54,
+      "blocchi": 6,
+      "con_follow_up": 55,
       "argomento": "java"
     },
     {
       "slug": "javascript",
       "nome": "JavaScript",
       "file": "javascript.json",
-      "totale": 17,
+      "totale": 19,
       "perPrio": {
-        "ALTA": 7,
+        "ALTA": 9,
         "MEDIA": 10,
         "BASSA": 0
       },
-      "blocchi": 2,
-      "con_follow_up": 17,
+      "blocchi": 3,
+      "con_follow_up": 19,
       "argomento": "html-js-ts"
     },
     {
@@ -592,14 +592,14 @@
       "slug": "kubernetes",
       "nome": "Kubernetes",
       "file": "kubernetes.json",
-      "totale": 24,
+      "totale": 25,
       "perPrio": {
         "ALTA": 9,
-        "MEDIA": 15,
+        "MEDIA": 16,
         "BASSA": 0
       },
-      "blocchi": 6,
-      "con_follow_up": 24,
+      "blocchi": 7,
+      "con_follow_up": 25,
       "argomento": "kubernetes"
     },
     {
@@ -634,28 +634,28 @@
       "slug": "react",
       "nome": "React",
       "file": "react.json",
-      "totale": 59,
+      "totale": 64,
       "perPrio": {
-        "ALTA": 27,
-        "MEDIA": 27,
+        "ALTA": 31,
+        "MEDIA": 28,
         "BASSA": 5
       },
-      "blocchi": 2,
-      "con_follow_up": 59,
+      "blocchi": 3,
+      "con_follow_up": 64,
       "argomento": "react"
     },
     {
       "slug": "rest-api",
       "nome": "REST API e HTTP",
       "file": "rest-api.json",
-      "totale": 45,
+      "totale": 47,
       "perPrio": {
-        "ALTA": 25,
+        "ALTA": 27,
         "MEDIA": 19,
         "BASSA": 1
       },
-      "blocchi": 3,
-      "con_follow_up": 45,
+      "blocchi": 4,
+      "con_follow_up": 47,
       "argomento": "rest-api"
     },
     {
@@ -676,84 +676,84 @@
       "slug": "soft-skills",
       "nome": "Soft Skills e Colloquio",
       "file": "soft-skills.json",
-      "totale": 26,
+      "totale": 27,
       "perPrio": {
-        "ALTA": 11,
+        "ALTA": 12,
         "MEDIA": 15,
         "BASSA": 0
       },
-      "blocchi": 2,
-      "con_follow_up": 26,
+      "blocchi": 3,
+      "con_follow_up": 27,
       "argomento": "soft-skills"
     },
     {
       "slug": "spring",
       "nome": "Spring",
       "file": "spring.json",
-      "totale": 46,
+      "totale": 48,
       "perPrio": {
-        "ALTA": 23,
+        "ALTA": 25,
         "MEDIA": 18,
         "BASSA": 5
       },
-      "blocchi": 4,
-      "con_follow_up": 46,
+      "blocchi": 5,
+      "con_follow_up": 48,
       "argomento": "spring"
     },
     {
       "slug": "sql",
       "nome": "SQL e Database",
       "file": "sql.json",
-      "totale": 40,
+      "totale": 42,
       "perPrio": {
-        "ALTA": 23,
-        "MEDIA": 14,
+        "ALTA": 24,
+        "MEDIA": 15,
         "BASSA": 3
       },
-      "blocchi": 1,
-      "con_follow_up": 40,
+      "blocchi": 2,
+      "con_follow_up": 42,
       "argomento": "sql"
     },
     {
       "slug": "testing",
       "nome": "Testing",
       "file": "testing.json",
-      "totale": 12,
+      "totale": 15,
       "perPrio": {
-        "ALTA": 5,
-        "MEDIA": 6,
+        "ALTA": 7,
+        "MEDIA": 7,
         "BASSA": 1
       },
-      "blocchi": 1,
-      "con_follow_up": 12,
+      "blocchi": 2,
+      "con_follow_up": 15,
       "argomento": "testing"
     },
     {
       "slug": "typescript",
       "nome": "TypeScript",
       "file": "typescript.json",
-      "totale": 31,
+      "totale": 33,
       "perPrio": {
-        "ALTA": 10,
+        "ALTA": 12,
         "MEDIA": 21,
         "BASSA": 0
       },
-      "blocchi": 1,
-      "con_follow_up": 31,
+      "blocchi": 2,
+      "con_follow_up": 33,
       "argomento": "html-js-ts"
     },
     {
       "slug": "web-performance",
       "nome": "Performance Web",
       "file": "web-performance.json",
-      "totale": 23,
+      "totale": 24,
       "perPrio": {
-        "ALTA": 14,
+        "ALTA": 15,
         "MEDIA": 7,
         "BASSA": 2
       },
-      "blocchi": 1,
-      "con_follow_up": 23,
+      "blocchi": 2,
+      "con_follow_up": 24,
       "argomento": "web-performance"
     }
   ]

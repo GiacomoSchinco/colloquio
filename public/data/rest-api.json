@@ -3,9 +3,9 @@
     "tecnologia": "REST API e HTTP",
     "slug": "rest-api",
     "schema": 2,
-    "versione": 1,
-    "aggiornato": "2026-10-14",
-    "totale_domande": 45
+    "versione": 2,
+    "aggiornato": "2026-10-15",
+    "totale_domande": 47
   },
   "argomenti": [
     {
@@ -15,7 +15,7 @@
           "id": "rest-api-001",
           "priorita": "ALTA",
           "domanda": "Cosa significa che un metodo HTTP è idempotente?",
-          "risposta": "Significa che fare più volte la stessa richiesta produce lo stesso effetto di farla una volta sola. GET, PUT e DELETE sono idempotenti: leggere o cancellare due volte la stessa risorsa dà lo stesso risultato. POST non lo è, perché ogni chiamata crea una nuova risorsa. È un concetto utile per progettare API sicure e per gestire i retry senza effetti collaterali.",
+          "risposta": "Un’operazione HTTP è idempotente se applicare più volte la stessa richiesta intenzionale ha sul server lo stesso effetto di applicarla una volta. GET, HEAD, PUT e DELETE sono definiti idempotenti nella semantica HTTP, anche se il codice applicativo deve rispettarne il contratto. POST in generale non lo è, ma può esserlo in casi specifici grazie a un’idempotency key o a una logica applicativa. Le risposte e i codici di stato possono cambiare fra tentativi.",
           "parole_chiave": [
             "idempotente",
             "GET",
@@ -99,7 +99,7 @@
           "id": "rest-api-006",
           "priorita": "ALTA",
           "domanda": "Spiega i metodi HTTP principali.",
-          "risposta": "GET legge una risorsa e non deve avere effetti collaterali. POST crea una risorsa nuova o avvia un'operazione, e ripeterlo crea duplicati. PUT sostituisce completamente la risorsa indicata. PATCH ne modifica una parte. DELETE la rimuove. La differenza tra PUT e PATCH è quella che genera più discussioni: se nel corpo mandi solo alcuni campi, per convenzione è una modifica parziale, non una sostituzione.",
+          "risposta": "GET recupera una rappresentazione ed è safe; POST invia dati da elaborare secondo la semantica della risorsa, spesso creando un elemento ma non necessariamente; PUT crea o sostituisce lo stato della risorsa bersaglio; PATCH applica modifiche parziali; DELETE chiede la rimozione. PUT e DELETE sono idempotenti per definizione, PATCH non lo è necessariamente. Una risposta diversa al secondo tentativo non annulla l’idempotenza dell’effetto sul server.",
           "parole_chiave": [
             "GET",
             "POST",
@@ -286,7 +286,7 @@
           "id": "rest-api-017",
           "priorita": "ALTA",
           "domanda": "Cosa significa che un'API è stateless?",
-          "risposta": "Significa che il server non conserva niente tra una richiesta e l'altra: ogni richiesta porta con sé tutte le informazioni necessarie, token compreso. Il vantaggio pratico è la scalabilità orizzontale, perché qualsiasi istanza può servire qualsiasi richiesta senza che le sessioni debbano essere condivise o replicate. Il costo è che lo stato che ti serve davvero, come un carrello o un flusso a più passi, lo devi mettere da qualche parte: nel client, in un token o in un archivio condiviso.",
+          "risposta": "REST richiede interazioni stateless: ciascuna richiesta contiene le informazioni necessarie per essere interpretata e il server non deve basarsi sul contesto della sessione delle richieste precedenti. Questo non vuol dire che il server non memorizzi nulla: conserva normalmente dati e risorse persistenti, e può usare cache o altri stati applicativi. La separazione facilita scalabilità e affidabilità.",
           "parole_chiave": [
             "stateless",
             "nessun stato di sessione",
@@ -521,7 +521,7 @@
           "id": "rest-api-031",
           "priorita": "BASSA",
           "domanda": "Cos'è l'idempotenza?",
-          "risposta": "Un'operazione è idempotente se ripeterla più volte dà lo stesso risultato. DELETE è idempotente: cancellare due volte la stessa risorsa dà lo stesso esito (è cancellata). POST no: due POST creano due risorse.",
+          "risposta": "Idempotenza significa che ripetere la stessa richiesta ha lo stesso effetto desiderato sullo stato del server di una sola esecuzione. È una proprietà utile per retry, specialmente per PUT e DELETE. Non richiede di ricevere sempre lo stesso codice HTTP: un DELETE può rispondere 204 la prima volta e 404 dopo senza perdere la proprietà di idempotenza.",
           "parole_chiave": [
             "ripetizione",
             "stesso risultato",
@@ -595,7 +595,7 @@
           "id": "rest-api-035",
           "priorita": "ALTA",
           "domanda": "Cosa sono i Refresh Token e Access Token in JWT?",
-          "risposta": "Il token di accesso è quello che accompagna le chiamate alle API e ha vita breve, nell'ordine dei minuti: essendo di breve durata, se viene intercettato la finestra di abuso resta limitata. Il token di rinnovo ha vita più lunga e serve solo a ottenere un nuovo token di accesso senza far rifare il login all'utente. Il dettaglio importante è dove conservi il token di rinnovo: se lo metti dove il codice della pagina può leggerlo, un difetto di iniezione lo espone, quindi va in un cookie non accessibile da JavaScript.",
+          "risposta": "L’access token autorizza l’accesso a un’API per un tempo limitato; il refresh token, quando previsto, serve a ottenere nuovi access token senza ripetere sempre il login. Non è corretto supporre che entrambi siano necessariamente JWT: spesso il refresh token è una stringa opaca custodita e ruotata dal server. Proteggo soprattutto il refresh token da esposizione e riutilizzo.",
           "parole_chiave": [
             "token di accesso",
             "token di rinnovo",
@@ -662,7 +662,7 @@
           "id": "rest-api-039",
           "priorita": "MEDIA",
           "domanda": "Cosa sono gli HTTP-only cookie e perché sono sicuri?",
-          "risposta": "Sono cookie marcati in modo che il codice JavaScript della pagina non possa leggerli né modificarli: il browser li invia solo nelle richieste. Servono perché il modo più comune di rubare una sessione è proprio leggere il cookie dallo script iniettato nella pagina, e questa marcatura lo impedisce. Da sola non basta: va abbinata alla protezione dalle iniezioni, alla cifratura della connessione e alla restrizione sulle richieste da altri siti.",
+          "risposta": "Un cookie HttpOnly non è leggibile da JavaScript, perciò riduce il rischio di furto del token tramite script malevoli. Non è però “sicuro” da solo: lo aggiungo a Secure per HTTPS, SameSite secondo il flusso e a misure contro CSRF. Inoltre XSS resta pericoloso anche se il cookie è HttpOnly, perché lo script malevolo può comunque inviare richieste dal browser della vittima.",
           "parole_chiave": [
             "cookie protetto",
             "non leggibile da script",
@@ -774,6 +774,43 @@
           "follow_up": {
             "domanda": "Quindi come fai arrivare aggiornamenti in tempo reale al browser?",
             "risposta": "Con una connessione persistente aperta dal browser: gli eventi inviati dal server per aggiornamenti in una sola direzione, o un canale bidirezionale quando serve anche inviare. Il backend resta il punto di ricezione delle notifiche esterne e fa da ponte. Il polling è l'alternativa semplice, ma consuma richieste inutili e introduce ritardo."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Integrazioni per colloqui",
+      "domande": [
+        {
+          "id": "rest-api-046",
+          "priorita": "ALTA",
+          "domanda": "Come lavori sul frontend quando Swagger/OpenAPI non è ancora pronto?",
+          "risposta": "Concordo con il backend un contratto provvisorio: endpoint, filtri, payload, errori, ordinamento e paginazione. Creo un mock locale che riproduce i casi di successo, lista vuota e errore, mantenendo la stessa forma di risposta attesa. Isolo l’adattatore dei dati in un service, così quando arriva OpenAPI sostituisco i mock senza riscrivere i componenti.",
+          "parole_chiave": [
+            "OpenAPI",
+            "Swagger",
+            "mock",
+            "DTO"
+          ],
+          "follow_up": {
+            "domanda": "Cosa fai se il payload definitivo differisce?",
+            "risposta": "Aggiorno i tipi e il mapping nel service, testo tutti gli stati della UI e verifico il contratto con il backend."
+          }
+        },
+        {
+          "id": "rest-api-047",
+          "priorita": "ALTA",
+          "domanda": "Quando un endpoint risponde 202 Accepted invece di 200 o 201?",
+          "risposta": "202 significa che la richiesta è stata accettata ma il lavoro non è ancora completato, per esempio per un’elaborazione lunga. Restituisco un identificativo o un URL per verificarne lo stato. 200 indica un successo con risposta e 201 la creazione di una risorsa, normalmente con Location.",
+          "parole_chiave": [
+            "HTTP 202",
+            "job",
+            "async",
+            "polling"
+          ],
+          "follow_up": {
+            "domanda": "Come gestisce il frontend il job asincrono?",
+            "risposta": "Mostra presa in carico, legge periodicamente lo stato o ascolta notifiche e gestisce completamento ed errore."
           }
         }
       ]

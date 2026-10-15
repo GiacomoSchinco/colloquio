@@ -1,0 +1,917 @@
+{
+  "meta": {
+    "tecnologia": ".NET",
+    "slug": "dotnet",
+    "schema": 2,
+    "versione": 1,
+    "aggiornato": "2026-10-15",
+    "totale_domande": 55
+  },
+  "argomenti": [
+    {
+      "nome": "Piattaforma .NET",
+      "domande": [
+        {
+          "id": "dotnet-001",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra .NET Framework e .NET moderno, e cosa si usa oggi?",
+          "risposta": ".NET Framework è la vecchia piattaforma legata a Windows, con aggiornamenti di versione major molto distanziati e una gestione del runtime a livello di sistema. .NET moderno, nato come .NET Core e oggi chiamato semplicemente .NET, è multipiattaforma, open source e distribuito con numeri di versione annuali, quindi puoi avere più runtime affiancati sulla stessa macchina. Oggi si parte da .NET moderno per qualsiasi progetto nuovo; .NET Framework resta solo per applicazioni legacy che non si possono migrare.",
+          "parole_chiave": [
+            ".NET Framework",
+            ".NET",
+            "multipiattaforma",
+            "versione LTS"
+          ],
+          "follow_up": {
+            "domanda": "Cosa conta nella scelta tra LTS e versione standard?",
+            "risposta": "Le versioni con supporto a lungo termine durano tre anni e sono la scelta predefinita per i sistemi in produzione, mentre quelle standard hanno supporto più breve ma anticipano novità. Se l'azienda aggiorna volentieri e ha una buona pipeline, una versione standard è praticabile, altrimenti si sceglie la LTS e si pianifica il passaggio alla successiva. Quello che non conviene è restare su una versione fuori supporto, perché non arrivano più correzioni di sicurezza."
+          }
+        },
+        {
+          "id": "dotnet-002",
+          "priorita": "ALTA",
+          "domanda": "Cos'è un assembly e come si organizza una solution?",
+          "risposta": "L'assembly è l'unità di distribuzione e di versione del codice compilato: contiene l'IL, i metadati dei tipi e il manifesto con le dipendenze, e ha un nome univoco con la sua versione. Nella pratica corrisponde di norma a un file DLL o EXE prodotto da un progetto. La solution è invece un contenitore logico che raggruppa più progetti correlati, con dipendenze tra loro, e serve a compilare e organizzare il lavoro in Visual Studio o con la riga di comando.",
+          "parole_chiave": [
+            "assembly",
+            "solution",
+            "metadati",
+            "progetto"
+          ],
+          "follow_up": {
+            "domanda": "Come organizzi i progetti in una solution di media complessità?",
+            "risposta": "Separando per responsabilità e non per tecnologia: tipicamente un progetto di dominio con le regole, uno di applicazione con i casi d'uso, uno di infrastruttura per database e servizi esterni, e uno di presentazione con le API. Il criterio pratico è che le dipendenze puntino verso il centro, così il dominio non conosce il database né il web. Se ti accorgi che i progetti si richiamano a vicenda, la separazione non sta portando valore e va semplificata."
+          }
+        },
+        {
+          "id": "dotnet-003",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra compilazione JIT e AOT?",
+          "risposta": "Con il JIT il codice IL viene tradotto in istruzioni native al primo utilizzo, metodo per metodo, quindi l'avvio include un costo di compilazione ma il runtime può ottimizzare in base al caso reale, per esempio inlining e specializzazioni sui tipi generici usati. Con l'AOT il codice nativo viene prodotto in fase di pubblicazione, quindi l'avvio è più rapido e non serve il compilatore JIT sulla macchina, ma perdi parte delle ottimizzazioni dinamiche e alcune funzionalità basate sulla reflection. La scelta dipende dallo scenario: servizi a lungo attivo e programmi da riga di comando hanno esigenze opposte.",
+          "parole_chiave": [
+            "JIT",
+            "AOT",
+            "Native AOT",
+            "avvio"
+          ],
+          "follow_up": {
+            "domanda": "Cosa limita il Native AOT?",
+            "risposta": "Il fatto che il codice venga compilato in anticipo: la reflection dinamica, la generazione di codice a runtime e il caricamento di assembly a caldo non sono disponibili o vanno dichiarati in anticipo. Le librerie che usano molto la reflection, come alcuni serializzatori o ORM, richiedono configurazioni specifiche o un generatore di sorgenti. Va valutato prima di partire, perché convertire a posteriori una codebase che si appoggia alla reflection è un lavoro serio."
+          }
+        },
+        {
+          "id": "dotnet-004",
+          "priorita": "MEDIA",
+          "domanda": "Cosa contiene un file `.csproj` e cosa sono i target framework?",
+          "risposta": "Il file di progetto è un file XML che dichiara il tipo di output, il target framework, le proprietà di compilazione, i pacchetti e i riferimenti ai progetti. Il target framework, indicato per esempio con `net8.0`, dice quali API sono disponibili e su quale runtime il prodotto girerà, e si possono elencare più target con `TargetFrameworks` per produrre più varianti dallo stesso codice. È il punto in cui si dichiara anche se il progetto è eseguibile o una libreria e se usa le funzionalità moderne come i nullable reference types.",
+          "parole_chiave": [
+            "csproj",
+            "target framework",
+            "SDK-style",
+            "multi-targeting"
+          ],
+          "follow_up": {
+            "domanda": "A cosa serve il multi-targeting?",
+            "risposta": "A scrivere una libreria che funziona su più piattaforme, come .NET moderno e .NET Framework, usando direttive condizionali per il codice che differisce. In questo modo mantieni un solo progetto e un solo pacchetto invece di duplicare tutto. Il costo è una compilazione più lunga e la necessità di testare davvero su ogni target, perché il codice condizionale tende a divergere."
+          }
+        },
+        {
+          "id": "dotnet-005",
+          "priorita": "MEDIA",
+          "domanda": "Come funziona NuGet e cosa sono le dipendenze transitive?",
+          "risposta": "NuGet è il gestore di pacchetti di .NET: dichiari un pacchetto con una versione o un intervallo nel file di progetto e il ripristino scarica anche tutte le dipendenze che quel pacchetto richiede. Le versioni si risolvono scegliendo la più alta richiesta tra tutti i percorsi di dipendenza, quindi un pacchetto indiretto può finire a una versione diversa da quella che ti aspetti. Il file di lock, generato con il ripristino bloccato, serve proprio a congelare la risoluzione e rendere le build riproducibili.",
+          "parole_chiave": [
+            "NuGet",
+            "dipendenze transitive",
+            "lock file",
+            "riproducibilità"
+          ],
+          "follow_up": {
+            "domanda": "Perché una build può funzionare in locale e fallire in pipeline?",
+            "risposta": "Perché senza file di lock il ripristino può risolvere versioni diverse in momenti diversi, per esempio perché è uscita una versione nuova di un pacchetto indiretto. La soluzione è attivare la modalità bloccata e versionare il file di lock, così tutti ottengono le stesse versioni. In alternativa si fissano le versioni dirette esattamente, ma è il lock che copre anche le dipendenze profonde."
+          }
+        },
+        {
+          "id": "dotnet-006",
+          "priorita": "MEDIA",
+          "domanda": "Che differenza c'è tra `dotnet build`, `dotnet run` e `dotnet publish`?",
+          "risposta": "`build` compila il progetto e produce gli assembly nella cartella di output, senza eseguirli, ed è quello che usa la pipeline per verificare che tutto compili. `run` compila se necessario e avvia l'applicazione, quindi serve nello sviluppo quotidiano. `publish` prepara invece l'artefatto distribuibile, raccogliendo le dipendenze, applicando la configurazione richiesta e, secondo le opzioni, producendo un pacchetto self-contained o un'immagine container.",
+          "parole_chiave": [
+            "build",
+            "run",
+            "publish",
+            "artefatto"
+          ],
+          "follow_up": {
+            "domanda": "Cosa cambia `publish` con la configurazione Release?",
+            "risposta": "Che il compilatore applica le ottimizzazioni e non genera i simboli di debug nello stesso modo, quindi il codice è più veloce e pensato per la distribuzione. È anche il presupposto per un profilo di pubblicazione con trimming o con AOT. In pipeline conviene sempre pubblicare in Release e con `--no-restore` dopo aver fatto il ripristino, così la fase di build è più rapida e deterministica."
+          }
+        },
+        {
+          "id": "dotnet-007",
+          "priorita": "MEDIA",
+          "domanda": "A cosa serve `global.json` e come si gestisce la versione dell'SDK in un team?",
+          "risposta": "`global.json` fissa la versione dell'SDK di .NET usata per compilare il progetto, con la possibilità di indicare che deve essere esattamente quella o che è ammessa una versione più recente. Serve a evitare che una macchina con un SDK diverso produca risultati diversi, e in pipeline garantisce che si usi la versione prevista. Per il runtime di destinazione la dichiarazione resta il target framework nel file di progetto: sono due cose distinte che vengono spesso confuse.",
+          "parole_chiave": [
+            "global.json",
+            "SDK",
+            "riproducibilità",
+            "pipeline"
+          ],
+          "follow_up": {
+            "domanda": "Serve anche in un'applicazione che gira in un container?",
+            "risposta": "Serve in fase di compilazione, quindi nella pipeline e sulle macchine degli sviluppatori; nel container di runtime invece conta solo la versione dell'immagine base. Se l'SDK della pipeline è più vecchio del target framework dichiarato, la build fallisce subito con un messaggio chiaro. Per questo conviene allineare le immagini di build della pipeline alla versione di `global.json`, invece di affidarsi a quella installata per caso."
+          }
+        },
+        {
+          "id": "dotnet-008",
+          "priorita": "BASSA",
+          "domanda": "Cosa sono i file `Directory.Build.props` e perché usarli in una solution?",
+          "risposta": "Sono file MSBuild che vengono importati automaticamente dai progetti a partire dalla cartella in cui si trovano, quindi metti in un solo punto le proprietà comuni: versione del linguaggio, nullable, trattare gli avvisi come errori, metadati del pacchetto. Il vantaggio è che una solution con trenta progetti non ripete le stesse dieci righe trenta volte e le regole non divergono. Nella stessa famiglia ci sono `Directory.Packages.props` per le versioni dei pacchetti centralizzate e `Directory.Build.targets` per le personalizzazioni.",
+          "parole_chiave": [
+            "Directory.Build.props",
+            "MSBuild",
+            "centralizzazione",
+            "convenzioni"
+          ],
+          "follow_up": {
+            "domanda": "Cosa centralizzi di solito?",
+            "risposta": "La versione del linguaggio e il target framework, `TreatWarningsAsErrors`, il nullable abilitato, l'analisi statica, i metadati di pacchetto come autore e licenza e il versionamento del build. Così un progetto nuovo eredita subito le regole del team senza che nessuno debba ricordarle. È anche il posto naturale per la versione del prodotto, magari collegata al numero di build della pipeline."
+          }
+        },
+        {
+          "id": "dotnet-009",
+          "priorita": "MEDIA",
+          "domanda": "Che differenza c'è tra le configurazioni Debug e Release?",
+          "risposta": "In Debug il codice viene compilato senza ottimizzazioni e con i simboli di debug, quindi i breakpoint e il passaggio passo passo funzionano in modo prevedibile, mentre in Release il codice è ottimizzato e alcune variabili possono risultare non visibili al debugger perché eliminate o spostate. La configurazione controlla anche le costanti di compilazione, come `DEBUG` e `TRACE`, quindi blocchi di codice possono esistere in una build e non nell'altra. È il motivo per cui un problema che si vede solo in produzione va riprodotto con una build Release.",
+          "parole_chiave": [
+            "Debug",
+            "Release",
+            "ottimizzazioni",
+            "costanti di compilazione"
+          ],
+          "follow_up": {
+            "domanda": "Cosa non va mai messo dietro la costante `DEBUG`?",
+            "risposta": "Logica applicativa o controlli di sicurezza, perché in Release spariscono e il comportamento cambia tra gli ambienti. La costante `DEBUG` serve per strumenti di diagnostica, verifiche di invarianti in sviluppo o dump di dettaglio, non per decidere cosa fa il programma. Se ti accorgi che una funzionalità funziona in locale ma non in produzione proprio per questo, hai la conferma del problema."
+          }
+        },
+        {
+          "id": "dotnet-010",
+          "priorita": "MEDIA",
+          "domanda": "Che differenza c'è tra garbage collector workstation e server?",
+          "risposta": "La modalità workstation usa un heap e un thread per la raccolta, ed è pensata per le applicazioni desktop dove la reattività dell'interfaccia conta più del throughput. La modalità server crea più heap, uno per core, con thread dedicati, quindi sfrutta le macchine multi-core e riduce le pause complessive, ma consuma più memoria. In ASP.NET Core la modalità server è il default quando non è specificato diversamente, e si controlla con le impostazioni del runtime o del file di progetto.",
+          "parole_chiave": [
+            "workstation GC",
+            "server GC",
+            "throughput",
+            "latenza"
+          ],
+          "follow_up": {
+            "domanda": "Quando passare a workstation in un servizio?",
+            "risposta": "Quando l'ambiente è vincolato in memoria, per esempio molti container piccoli sullo stesso nodo, e ogni processo con heap multipli consumerebbe troppo. In quei casi la modalità workstation riduce l'impronta e consente più istanze, al prezzo di un throughput minore per singola istanza. È una decisione da prendere misurando, non per principio, e si verifica con i contatori del runtime sotto carico reale."
+          }
+        },
+        {
+          "id": "dotnet-011",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra pubblicazione framework-dependent e self-contained?",
+          "risposta": "Nella pubblicazione framework-dependent l'artefatto contiene solo il tuo codice e richiede che la macchina abbia installato il runtime nella versione giusta: è più piccolo e si aggiorna insieme al runtime di sistema. Nella self-contained il runtime viene incluso, quindi l'applicazione gira su una macchina senza .NET installato, al prezzo di un pacchetto molto più grande e di un aggiornamento del runtime che dipende da te. Container e servizi gestiti tendono alla prima, distribuzioni desktop e ambienti chiusi alla seconda.",
+          "parole_chiave": [
+            "framework-dependent",
+            "self-contained",
+            "runtime",
+            "deployment"
+          ],
+          "follow_up": {
+            "domanda": "Cosa cambia con il trimming e il single file?",
+            "risposta": "Il trimming rimuove il codice non raggiungibile, riducendo molto la dimensione del pacchetto, ma può tagliare via codice usato solo tramite reflection se non è dichiarato correttamente. Il single file impacchetta tutto in un solo eseguibile per comodità di distribuzione, a costo di un primo avvio più lento perché il contenuto va estratto. Entrambe sono opzioni utili, ma vanno verificate con test sul pacchetto pubblicato, non solo in sviluppo."
+          }
+        },
+        {
+          "id": "dotnet-012",
+          "priorita": "BASSA",
+          "domanda": "A cosa serve `launchSettings.json` e cosa sono i profili di avvio?",
+          "risposta": "Descrive come avviare l'applicazione in sviluppo: variabili d'ambiente, porta, URL di base e se lanciare il browser. Ogni profilo è una combinazione di queste impostazioni, così puoi avere un profilo per lavorare in locale e uno per simulare l'ambiente di staging. È un file di sviluppo e di norma non viene versionato per la parte che contiene preferenze personali, perché in produzione la configurazione arriva dall'ambiente o da un sistema di gestione dei segreti.",
+          "parole_chiave": [
+            "launchSettings",
+            "profili",
+            "variabili d'ambiente",
+            "sviluppo"
+          ],
+          "follow_up": {
+            "domanda": "Come si imposta l'ambiente di esecuzione?",
+            "risposta": "Con la variabile `ASPNETCORE_ENVIRONMENT`, che vale `Development`, `Staging` o `Production`, e che determina quali file `appsettings` vengono caricati e il livello di dettaglio delle pagine di errore. Attenzione a non lasciare `Development` in produzione, perché vengono mostrati dettagli sulle eccezioni e il comportamento della pipeline cambia. È una delle prime cose da verificare quando si controlla un deploy."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "ASP.NET Core",
+      "domande": [
+        {
+          "id": "dotnet-013",
+          "priorita": "ALTA",
+          "domanda": "Cos'è ASP.NET Core e in cosa differisce da ASP.NET classico?",
+          "risposta": "ASP.NET Core è il framework web moderno di .NET: multipiattaforma, modulare e con un server HTTP integrato, Kestrel, quindi l'applicazione è autonoma e non richiede un web server esterno come IIS. Il modello di configurazione è unificato e basato su dependency injection e sulla pipeline di middleware, mentre ASP.NET classico usava moduli e gestori di IIS, un ciclo di vita legato a `System.Web` e meno componibilità. Il risultato è un'applicazione più semplice da testare, da containerizzare e da distribuire.",
+          "parole_chiave": [
+            "ASP.NET Core",
+            "Kestrel",
+            "middleware",
+            "cross-platform"
+          ],
+          "follow_up": {
+            "domanda": "Come si integra IIS o Nginx in questo quadro?",
+            "risposta": "Come reverse proxy davanti a Kestrel, che gestisce TLS, compressione, caching e la distribuzione del carico tra più istanze. In un container o in un cluster il proxy è di norma l'ingress o un load balancer gestito, mentre IIS comparve come proxy quando si distribuisce su Windows. In tutti i casi l'applicazione resta la stessa: cambia chi le sta davanti, non il codice."
+          }
+        },
+        {
+          "id": "dotnet-014",
+          "priorita": "ALTA",
+          "domanda": "Descrivi cosa succede a una richiesta HTTP in ASP.NET Core.",
+          "risposta": "Kestrel accetta la connessione e produce un `HttpContext` con richiesta, risposta e servizi dell'ambito corrente. La richiesta attraversa la pipeline di middleware nell'ordine di registrazione: gestione degli errori, inoltro degli header, file statici, routing, autenticazione, autorizzazione e infine l'endpoint scelto, con il suo controller o la sua lambda. L'endpoint esegue la logica, di solito passando per un servizio, e il risultato viene serializzato nella risposta; poi il percorso si riavvolge all'indietro, dando a ogni middleware la possibilità di intervenire sull'uscita.",
+          "parole_chiave": [
+            "pipeline",
+            "HttpContext",
+            "Kestrel",
+            "endpoint"
+          ],
+          "follow_up": {
+            "domanda": "Perché l'ordine dei middleware è così importante?",
+            "risposta": "Perché ogni middleware vede solo ciò che gli è passato davanti: se metti l'autorizzazione prima dell'autenticazione, l'utente non è ancora riconosciuto e le richieste vengono rifiutate; se metti il routing dopo un middleware che interrompe la catena, l'endpoint non viene mai raggiunto. L'ordine di riferimento mette la gestione degli errori all'inizio e gli endpoint alla fine, con routing e autenticazione nel mezzo. È uno degli errori più frequenti quando si aggiunge un middleware senza pensare a dove va inserito."
+          }
+        },
+        {
+          "id": "dotnet-015",
+          "priorita": "ALTA",
+          "domanda": "Cos'è un middleware e come ne scrivi uno?",
+          "risposta": "Il middleware è un componente che riceve il contesto della richiesta e un riferimento al passo successivo della catena, e decide se passare la palla, modificare la richiesta o la risposta, oppure interrompere il flusso. Si scrive come metodo che accetta `HttpContext` e `RequestDelegate` e restituisce un'attività, registrato con `Use` quando vuole passare al passo successivo o con `Run` quando termina la catena. Esempi tipici sono la gestione degli errori, il logging con identificativo di correlazione, l'arricchimento degli header e la misura dei tempi.",
+          "parole_chiave": [
+            "middleware",
+            "RequestDelegate",
+            "catena",
+            "Use"
+          ],
+          "follow_up": {
+            "domanda": "Quando scrivi un middleware tuo invece di un filtro?",
+            "risposta": "Quando la logica riguarda tutta la richiesta, indipendentemente dall'endpoint, e deve agire prima del routing o anche sulle richieste che non raggiungono un endpoint, come i file statici. I filtri invece si applicano alla fase di azione o al risultato e hanno accesso al contesto MVC. Per una funzionalità trasversale come la correlazione dei log o la gestione centralizzata degli errori, il middleware è il posto giusto."
+          }
+        },
+        {
+          "id": "dotnet-016",
+          "priorita": "ALTA",
+          "domanda": "Controller e Minimal API: quando scegli uno e quando l'altro?",
+          "risposta": "Le Minimal API raggruppano le rotte in poche righe nel punto di configurazione dell'applicazione e vanno benissimo per servizi piccoli, per endpoint semplici e per i microservizi con poche responsabilità. I controller restano preferibili quando l'applicazione è grande: convenzioni comuni, filtri, validazione, documentazione e organizzazione in cartelle aiutano a mantenere il codice leggibile con molti endpoint. Nel mezzo c'è il raggruppamento delle rotte minimal in metodi dedicati, che dà struttura senza il peso del framework MVC.",
+          "parole_chiave": [
+            "Minimal API",
+            "controller",
+            "convenzioni",
+            "endpoint routing"
+          ],
+          "follow_up": {
+            "domanda": "Le Minimal API supportano filtri e validazione come i controller?",
+            "risposta": "Sì, con i gruppi di endpoint, i filtri di endpoint e la validazione nativa introdotta nelle versioni recenti per i parametri con attributi di validazione. Molte delle comodità dei controller sono quindi disponibili anche lì, con una sintassi più diretta. La differenza pratica resta l'organizzazione su larga scala: con centinaia di endpoint i controller offrono un percorso più facile da seguire."
+          }
+        },
+        {
+          "id": "dotnet-017",
+          "priorita": "MEDIA",
+          "domanda": "Perché servono entrambi `AddControllers` e `MapControllers`?",
+          "risposta": "Sono due fasi diverse della stessa cosa: `AddControllers` registra nella dependency injection i servizi necessari a MVC, come la risoluzione dei controller, il model binding e i formattatori, mentre `MapControllers` dichiara nel routing quali endpoint esistono. La separazione riflette il modello di ASP.NET Core, in cui la configurazione dei servizi avviene in un punto e la costruzione della pipeline in un altro. Se dimentichi la seconda, l'applicazione si avvia ma ogni richiesta risponde con un errore perché nessun endpoint è mappato.",
+          "parole_chiave": [
+            "AddControllers",
+            "MapControllers",
+            "builder",
+            "pipeline"
+          ],
+          "follow_up": {
+            "domanda": "Cosa cambia con `AddMvc`?",
+            "risposta": "`AddMvc` è un metodo più ampio che registra anche le funzionalità pensate per le pagine e le API convenzionali, quindi carica più servizi di quelli che un'API ha bisogno. Per un servizio che espone solo JSON conviene `AddControllers` con i formattatori, oppure `AddControllersWithViews` se servono anche le viste. La scelta più mirata riduce il lavoro di avvio e rende esplicito ciò che l'applicazione usa davvero."
+          }
+        },
+        {
+          "id": "dotnet-018",
+          "priorita": "ALTA",
+          "domanda": "Cosa fa l'attributo `[ApiController]` e come funziona la validazione?",
+          "risposta": "`[ApiController]` attiva le convenzioni pensate per le API: richiede il routing per attributi, deduce da dove arrivano i parametri, per esempio dal body o dalla query, e converte automaticamente in risposta 400 i modelli non validi. La validazione si dichiara con gli attributi sulle proprietà del modello, come `[Required]` o `[Range]`, e viene eseguita prima che il metodo del controller parta. Il risultato è che nel controller non scrivi più i controlli di validazione ripetuti, ma hai comunque la responsabilità di verificare che il modello sia sensato dal punto di vista del dominio.",
+          "parole_chiave": [
+            "ApiController",
+            "validazione",
+            "ModelState",
+            "400"
+          ],
+          "follow_up": {
+            "domanda": "Cosa non coprono gli attributi di validazione?",
+            "risposta": "Le regole che dipendono dallo stato del sistema, come l'unicità di un codice o la compatibilità tra due campi contro i dati esistenti: quelle richiedono una verifica applicativa, di solito nel servizio, e vanno comunicate con un errore chiaro. Anche le regole incrociate tra proprietà richiedono validatori dedicati o un controllo nel servizio. Gli attributi restano utilissimi per la forma del dato, non per la sua coerenza con il mondo."
+          }
+        },
+        {
+          "id": "dotnet-019",
+          "priorita": "MEDIA",
+          "domanda": "Come funziona il model binding e da dove arrivano i dati?",
+          "risposta": "Il model binding costruisce gli argomenti del metodo a partire dalla richiesta, cercando i dati in fonti diverse e combinandole se il tipo ha più proprietà. Con le convenzioni di `[ApiController]` i dati semplici arrivano dalla query o dalla rotta e i tipi complessi dal body JSON, mentre puoi forzare la fonte con `[FromRoute]`, `[FromQuery]`, `[FromBody]`, `[FromHeader]` o `[FromForm]`. Il risultato è che scrivi un metodo con un oggetto già popolato invece di leggere a mano ogni parametro.",
+          "parole_chiave": [
+            "model binding",
+            "FromBody",
+            "FromQuery",
+            "FromRoute"
+          ],
+          "follow_up": {
+            "domanda": "Perché un body JSON non arriva nel modello?",
+            "risposta": "Di solito perché il parametro non è marcato come proveniente dal body, manca il `Content-Type` corretto, oppure l'applicazione non ha un formattatore JSON configurato per quel tipo. Il caso classico è un parametro complesso che l'applicazione prova a leggere dalla query, quindi arriva null o vuoto. Diagnosticarlo è rapido se guardi il `ModelState`, che contiene gli errori di binding e deserializzazione."
+          }
+        },
+        {
+          "id": "dotnet-020",
+          "priorita": "ALTA",
+          "domanda": "Come gestisci errori e codici di stato in modo coerente?",
+          "risposta": "Con un formato unico per le risposte di errore, di norma `ProblemDetails`, che è lo standard e contiene titolo, stato, dettaglio e, se vuoi, un identificativo di correlazione. La gestione centralizzata si fa con un middleware o con il gestore di eccezioni, che cattura le eccezioni non gestite, le registra con il contesto e restituisce una risposta uniforme, mentre per gli errori attesi il servizio restituisce un esito e il controller lo traduce nel codice giusto. Così il client sa sempre cosa aspettarsi e il codice di stato riflette il significato dell'errore.",
+          "parole_chiave": [
+            "ProblemDetails",
+            "UseExceptionHandler",
+            "codici di stato",
+            "correlazione"
+          ],
+          "follow_up": {
+            "domanda": "Perché non restituire sempre 200 con un campo di errore?",
+            "risposta": "Perché rompi il contratto HTTP: i client, i proxy, i sistemi di monitoraggio e le librerie di retry si basano sui codici di stato, quindi un 200 che nasconde un errore rende impossibile distinguere i casi e produce metriche false. Un campo di errore nel corpo va bene per i dettagli, non al posto dello stato. L'eccezione è quando l'errore è di validazione parziale e il risultato è comunque utile al client."
+          }
+        },
+        {
+          "id": "dotnet-021",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono i filtri in ASP.NET Core e quale usi per cosa?",
+          "risposta": "I filtri sono punti di estensione intorno all'esecuzione di un'azione: quelli di autorizzazione decidono se la richiesta può procedere, quelli di azione eseguono logica prima e dopo il metodo, quelli di eccezione intercettano gli errori e quelli di risultato agiscono sulla risposta. Si possono applicare a livello di azione, di controller o globalmente, ed è così che si implementano validazioni personalizzate, logging e trasformazioni comuni. La differenza con il middleware è l'ambito: i filtri hanno accesso al contesto MVC e agli argomenti dell'azione, quindi possono usare informazioni che al middleware non servono.",
+          "parole_chiave": [
+            "filtri",
+            "action filter",
+            "exception filter",
+            "MVC"
+          ],
+          "follow_up": {
+            "domanda": "Quando preferisci un middleware a un filtro?",
+            "risposta": "Quando la logica deve valere anche per le richieste che non arrivano a un'azione, come i file statici, o quando è precedente al routing. Per il logging di correlazione, la compressione e gli header di sicurezza il middleware è il posto naturale. Per regole legate al singolo endpoint o che dipendono dai parametri dell'azione, il filtro è più adatto e più leggibile."
+          }
+        },
+        {
+          "id": "dotnet-022",
+          "priorita": "MEDIA",
+          "domanda": "Come funziona il routing e cosa cambia tra attribute routing e conventional?",
+          "risposta": "Con il routing per attributi la rotta è dichiarata vicino all'azione, per esempio con `[HttpGet(\"{id}\")]`, quindi è immediato capire quale URL corrisponde a quella operazione; è la forma normale per le API. Nel routing convenzionale la rotta segue un modello comune, come `{controller}/{action}/{id?}`, e per le API è sconsigliato perché rende opachi i contratti. In entrambi i casi si possono aggiungere vincoli sui segmenti, come un identificativo numerico o un formato di data, e le rotte vengono confrontate con un ordine di specificità.",
+          "parole_chiave": [
+            "routing",
+            "attribute routing",
+            "vincoli",
+            "endpoint"
+          ],
+          "follow_up": {
+            "domanda": "A cosa servono i vincoli nelle rotte?",
+            "risposta": "A evitare che una richiesta ambigua finisca sull'endpoint sbagliato e a scartare subito i casi impossibili: un vincolo numerico su un identificativo impedisce che `abc` venga interpretato come identificativo e fallisca più avanti nella conversione. Riducono anche i conflitti tra rotte simili, perché il confronto avviene su un insieme più piccolo di candidati. Vanno usati con misura, perché troppe regole rendono le rotte difficili da seguire."
+          }
+        },
+        {
+          "id": "dotnet-023",
+          "priorita": "ALTA",
+          "domanda": "Come implementi autenticazione e autorizzazione in un'API?",
+          "risposta": "L'autenticazione stabilisce chi è l'utente e si configura con uno schema, tipicamente il bearer token JWT validato tramite l'autorità emittente, mentre l'autorizzazione decide cosa può fare e si dichiara con `[Authorize]`, con i ruoli o, meglio, con policy basate su requisiti. Le policy sono preferibili ai ruoli perché esprimono il permesso invece dell'appartenenza: `RequirePolicy(\"PuoCancellareOrdini\")` resta leggibile se i ruoli cambiano. Conviene proteggere tutto per default e aprire esplicitamente le sole rotte pubbliche, così una dimenticanza non espone dati.",
+          "parole_chiave": [
+            "JWT",
+            "Authorize",
+            "policy",
+            "requisiti"
+          ],
+          "follow_up": {
+            "domanda": "Cosa controlli in un token JWT prima di fidarti?",
+            "risposta": "La firma con la chiave corretta, l'emittente, il destinatario e la scadenza, più eventuali claim che usi per le decisioni: se salti uno di questi controlli, un token di un altro sistema o scaduto potrebbe essere accettato. La libreria fa la maggior parte del lavoro se la configuri con i valori giusti, compresa la rotazione delle chiavi. Attenzione a non usare i token come contenitore di dati sensibili: sono firmati, non cifrati, e chiunque li legga vede il contenuto."
+          }
+        },
+        {
+          "id": "dotnet-024",
+          "priorita": "MEDIA",
+          "domanda": "Perché `new HttpClient()` è rischioso e cosa offre `IHttpClientFactory`?",
+          "risposta": "Creare un `HttpClient` per ogni chiamata significa creare ogni volta un nuovo gestore di connessioni, con il rischio di esaurire le porte disponibili e di perdere il riuso delle connessioni. Tenere invece un'istanza statica per tutta l'applicazione risolve il primo problema ma non aggiorna la risoluzione DNS, quindi perde i cambi di indirizzo dei servizi. `IHttpClientFactory` gestisce il ciclo di vita dei gestori, li riusa e li ricicla periodicamente, e permette di configurare client tipizzati con base address, timeout e policy di resilienza.",
+          "parole_chiave": [
+            "HttpClient",
+            "IHttpClientFactory",
+            "socket exhaustion",
+            "resilienza"
+          ],
+          "follow_up": {
+            "domanda": "Come aggiungi retry e timeout in modo sensato?",
+            "risposta": "Con una policy di resilienza applicata al client, che ritenta solo sugli errori transitori, come un 503 o un timeout di rete, e con un limite al numero di tentativi e un'attesa crescente tra i tentativi. Il retry non va mai applicato a richieste non idempotenti, altrimenti rischi di duplicare un pagamento. E il timeout complessivo deve restare più basso di quello del chiamante, per evitare che le attese si sommino a cascata."
+          }
+        },
+        {
+          "id": "dotnet-025",
+          "priorita": "MEDIA",
+          "domanda": "Come configuri CORS e perché l'ordine conta?",
+          "risposta": "CORS serve per far accedere un'applicazione web su un dominio diverso dai tuoi endpoint: si dichiara una policy con origini, metodi e header ammessi e la si applica con `UseCors` e, se serve per endpoint specifici, con `RequireCors`. Deve stare nella pipeline dopo il routing e prima dell'autorizzazione, perché la richiesta di verifica preliminare, la `preflight`, non porta credenziali e verrebbe rifiutata dall'autorizzazione. Le policy vanno tenute esplicite, evitando di consentire qualsiasi origine quando l'API gestisce dati autenticati.",
+          "parole_chiave": [
+            "CORS",
+            "preflight",
+            "policy",
+            "ordine middleware"
+          ],
+          "follow_up": {
+            "domanda": "Perché non conviene abilitare tutte le origini?",
+            "risposta": "Perché permette a qualsiasi sito di chiamare la tua API dal browser dell'utente, cosa che con i cookie di sessione diventa un problema di sicurezza concreto. L'elenco esplicito delle origini, e l'invio di credenziali solo dove serve, riduce la superficie. CORS protegge il browser dell'utente, non il server: le chiamate server-to-server non sono toccate, quindi la protezione vera resta l'autenticazione."
+          }
+        },
+        {
+          "id": "dotnet-026",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci il versioning di una API?",
+          "risposta": "Con una libreria di versioning che riconosce la versione dal segmento di URL, da un header o da un parametro di query, e con gruppi di endpoint per versione. La versione nel percorso, come `/v1/ordini`, è la più visibile e semplice da provare, mentre l'header evita di cambiare gli URL e piace di più a chi considera la versione una rappresentazione. In ogni caso le versioni vanno introdotte solo per cambiamenti incompatibili, con una politica di dismissione comunicata, e non a ogni rilascio.",
+          "parole_chiave": [
+            "versioning",
+            "breaking change",
+            "deprecazione",
+            "contratto"
+          ],
+          "follow_up": {
+            "domanda": "Cosa rende un cambiamento incompatibile?",
+            "risposta": "Rimuovere o rinominare un campo, cambiare tipo o significato di un campo esistente, rendere obbligatorio un parametro prima opzionale, cambiare i codici di stato o il formato degli errori. Aggiungere un campo opzionale o un nuovo endpoint invece è compatibile e non richiede una versione nuova. Distinguere le due categorie prima di rilasciare è ciò che evita di spezzare i client in produzione."
+          }
+        },
+        {
+          "id": "dotnet-027",
+          "priorita": "BASSA",
+          "domanda": "Cosa sono gli health check e come li esponi?",
+          "risposta": "Sono endpoint che riportano lo stato dell'applicazione e delle sue dipendenze, come database e servizi esterni, e servono agli orchestratori per capire se un'istanza è pronta o va riavviata. Si registrano con `AddHealthChecks` e si espongono con `MapHealthChecks`, con la possibilità di distinguere un controllo di liveness, che dice se il processo è vivo, da uno di readiness, che dice se può ricevere traffico. La distinzione conta perché un database momentaneamente lento non deve far riavviare un processo sano.",
+          "parole_chiave": [
+            "health check",
+            "liveness",
+            "readiness",
+            "orchestrazione"
+          ],
+          "follow_up": {
+            "domanda": "Perché non mettere controlli pesanti nella liveness?",
+            "risposta": "Perché il controllo viene chiamato spesso e se dipende da un sistema esterno lento, l'orchestratore interpreta il ritardo come guasto e riavvia istanze sane, peggiorando la situazione. La liveness deve rispondere in fretta e riguardare solo il processo, mentre le verifiche delle dipendenze vanno nella readiness o in un endpoint di diagnostica separato. È un errore che si vede in produzione come un ciclo di riavvii durante un rallentamento del database."
+          }
+        },
+        {
+          "id": "dotnet-028",
+          "priorita": "BASSA",
+          "domanda": "Come servono i file statici e come gestisci la cache?",
+          "risposta": "Con il middleware dei file statici, che serve il contenuto di una cartella senza passare dal codice applicativo, con l'elenco delle directory disabilitato e con il tipo di contenuto dedotto dall'estensione. Nei file di frontend compilati conviene usare nomi con hash, così il contenuto cambia nome a ogni build e si possono impostare cache molto lunghe con certezza di non servire versioni vecchie. In produzione i file statici, quando possibile, li serve un CDN o un reverse proxy, che sono più adatti e alleggeriscono l'applicazione.",
+          "parole_chiave": [
+            "file statici",
+            "cache",
+            "fingerprint",
+            "CDN"
+          ],
+          "follow_up": {
+            "domanda": "Cosa rischi servendo i file statici dall'applicazione?",
+            "risposta": "Che ogni file consumi banda e thread del tuo servizio, che è progettato per la logica applicativa e non per servire megabyte di immagini. In più perdi la possibilità di usare cache distribuite e compressione fatte bene. In un ambiente piccolo il middleware va benissimo, ma appena il traffico cresce è una delle prime cose da spostare su un livello dedicato."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Dependency injection, configurazione e osservabilità",
+      "domande": [
+        {
+          "id": "dotnet-029",
+          "priorita": "ALTA",
+          "domanda": "Come funziona la dependency injection in .NET e quali cicli di vita esistono?",
+          "risposta": "Il contenitore registra le implementazioni e le crea per te, iniettandole nei costruttori invece di farle istanziare alle classi. I cicli di vita sono tre: singleton, una sola istanza per tutta l'applicazione; scoped, una per richiesta o per ambito; transient, una nuova a ogni risoluzione. La scelta dipende dallo stato: un client HTTP o un servizio di configurazione sta bene come singleton, mentre il contesto di un database deve essere scoped perché rappresenta una sessione di lavoro, e i servizi senza stato possono essere transient.",
+          "parole_chiave": [
+            "dependency injection",
+            "singleton",
+            "scoped",
+            "transient"
+          ],
+          "follow_up": {
+            "domanda": "Dove registri i servizi e come tieni ordinata la configurazione?",
+            "risposta": "Di solito in un metodo di estensione per area funzionale, come `AddPersistence` o `AddApplicationServices`, richiamato dal punto di avvio: così il file di configurazione resta corto e ogni livello dichiara le proprie dipendenze. Per progetti grandi si possono usare i moduli di un contenitore più ricco o dei generatori, ma solo quando la dimensione lo richiede. Il criterio è che chi legge l'avvio capisca in poche righe quali sono le aree dell'applicazione."
+          }
+        },
+        {
+          "id": "dotnet-030",
+          "priorita": "ALTA",
+          "domanda": "Cos'è una captive dependency e perché è un problema?",
+          "risposta": "Una captive dependency nasce quando un servizio a vita lunga, come un singleton, dipende da un servizio a vita corta, come uno scoped: l'oggetto breve resta intrappolato dentro quello lungo e non viene mai rilasciato, quindi viene riusato oltre il suo ambito. Nel caso del contesto di un database significa condividere lo stesso contesto tra richieste diverse, con modifiche in attesa che si mescolano e un consumo di memoria che cresce. Il contenitore di .NET lo segnala all'avvio quando la validazione degli ambiti è attiva, quindi l'errore si vede subito.",
+          "parole_chiave": [
+            "captive dependency",
+            "ambito",
+            "singleton",
+            "validazione degli ambiti"
+          ],
+          "follow_up": {
+            "domanda": "Come si risolve?",
+            "risposta": "Iniettando la fabbrica invece dell'istanza: con `IServiceScopeFactory`, con un `Func<T>` o con un `IServiceProvider` e creando uno scope esplicito quando serve il servizio scoped. Così il singleton ottiene un'istanza breve nel momento in cui la usa e la rilascia alla fine. La soluzione non è mai cambiare il ciclo di vita del contesto del database in singleton, che porterebbe problemi molto peggiori di concorrenza."
+          }
+        },
+        {
+          "id": "dotnet-031",
+          "priorita": "MEDIA",
+          "domanda": "Come funziona la configurazione e da quali fonti legge?",
+          "risposta": "La configurazione è un insieme di coppie chiave-valore costruito da più provider in ordine di priorità: i file `appsettings.json` e quelli per ambiente, le variabili d'ambiente, gli argomenti di riga di comando e i provider aggiuntivi come un servizio di segreti. L'ultimo provider che definisce una chiave vince, quindi le variabili d'ambiente sovrascrivono i file, che è il meccanismo con cui si differenzia la configurazione tra ambienti. I valori possono essere letti come scalari, come sezioni legate a oggetti o attraverso il pattern delle opzioni.",
+          "parole_chiave": [
+            "IConfiguration",
+            "appsettings",
+            "variabili d'ambiente",
+            "provider"
+          ],
+          "follow_up": {
+            "domanda": "Perché l'ordine dei provider conta in produzione?",
+            "risposta": "Perché l'ambiente di esecuzione, come un cluster o un servizio gestito, inietta la configurazione tramite variabili d'ambiente o file montati, e quei valori devono avere la precedenza su quelli inclusi nel pacchetto. Se l'ordine è sbagliato rischi di usare la stringa di connessione di sviluppo anche in produzione, con errori confusi. È anche il motivo per cui non conviene mettere valori reali di produzione nei file versionati."
+          }
+        },
+        {
+          "id": "dotnet-032",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci i segreti in sviluppo e in produzione?",
+          "risposta": "In sviluppo si usa lo strumento dei segreti utente, che tiene i valori fuori dal repository, nelle impostazioni del profilo della macchina, e vengono caricati automaticamente. In produzione i segreti arrivano da variabili d'ambiente iniettate dalla piattaforma o da un servizio di gestione come Key Vault, con identità gestita per l'accesso. Quello che non si fa mai è mettere chiavi e stringhe di connessione nei file versionati o nei log, perché una volta nel repository il segreto va considerato compromesso e va ruotato.",
+          "parole_chiave": [
+            "segreti utente",
+            "Key Vault",
+            "identità gestita",
+            "rotazione"
+          ],
+          "follow_up": {
+            "domanda": "Come si ruota un segreto senza fermare l'applicazione?",
+            "risposta": "Leggendo la configurazione a runtime invece che una volta sola all'avvio, tramite un provider che ricarica i valori, e accettando temporaneamente sia il valore vecchio sia quello nuovo, così le istanze già attive continuano a funzionare durante il cambio. È il pattern che i servizi di gestione dei segreti supportano con le versioni. Se la chiave è invece incorporata nel pacchetto, l'unico modo è un nuovo rilascio, ed è proprio ciò che si vuole evitare."
+          }
+        },
+        {
+          "id": "dotnet-033",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è il pattern delle opzioni e perché non iniettare `IConfiguration` ovunque?",
+          "risposta": "Il pattern delle opzioni lega una sezione di configurazione a una classe tipizzata, che viene iniettata dove serve: così i valori hanno un nome, un tipo, una validazione e un unico posto in cui sono documentati. Iniettare `IConfiguration` dappertutto spinge a leggere chiavi come stringhe sparse nel codice, con errori che si scoprono solo a runtime e nessun controllo sui valori obbligatori. Le varianti sono `IOptions` per valori che non cambiano, `IOptionsSnapshot` per rileggerli a ogni richiesta e `IOptionsMonitor` per essere avvisati dei cambiamenti con un singleton.",
+          "parole_chiave": [
+            "options pattern",
+            "IOptions",
+            "IOptionsMonitor",
+            "validazione"
+          ],
+          "follow_up": {
+            "domanda": "Quale variante scegli in un servizio che gira a lungo?",
+            "risposta": "`IOptionsMonitor` se la configurazione può cambiare senza riavviare, perché notifica i cambiamenti e ti permette di adattarti; `IOptions` se i valori sono fissi e vuoi il minimo costo, perché è un singleton calcolato una volta. `IOptionsSnapshot` è scoped e quindi comodo nei controller, ma non va usato in un singleton. La scelta dipende anche dal provider di configurazione: senza ricarica automatica, le tre si comportano quasi allo stesso modo."
+          }
+        },
+        {
+          "id": "dotnet-034",
+          "priorita": "MEDIA",
+          "domanda": "Come funziona il logging strutturato e perché è meglio delle stringhe?",
+          "risposta": "Il logging di .NET si basa su un'astrazione con provider, quindi lo stesso codice scrive su console, su file o su un sistema centralizzato senza cambiare. Il logging strutturato passa i valori come parametri con nome, per esempio `log.LogInformation(\"Ordine {OrdineId} creato\", id)`, e il provider li conserva come campi separati: così puoi cercare e filtrare per identificativo invece di fare ricerche testuali. Il livello è configurabile per categoria, quindi puoi alzare il dettaglio di un'area senza riempire i log di tutta l'applicazione.",
+          "parole_chiave": [
+            "logging strutturato",
+            "ILogger",
+            "livelli",
+            "correlazione"
+          ],
+          "follow_up": {
+            "domanda": "Come colleghi i log della stessa richiesta?",
+            "risposta": "Con un identificativo di correlazione, di solito l'identificativo di tracciamento, che il framework propaga attraverso le chiamate HTTP e quindi anche verso i servizi a valle. Senza di esso, in un sistema distribuito ricostruire il percorso di una richiesta diventa un lavoro manuale. Per questo la prima cosa da fare quando si aggiunge l'osservabilità è garantire che quel valore viaggi in tutti i punti di ingresso e di uscita."
+          }
+        },
+        {
+          "id": "dotnet-035",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è OpenTelemetry e come lo integri in un'applicazione .NET?",
+          "risposta": "OpenTelemetry è uno standard per raccogliere tracce, metriche e log in un formato comune, così non resti legato a uno specifico fornitore. Nell'applicazione si configurano i tre segnali una volta sola e si scelgono gli esportatori, che mandano i dati al sistema di osservabilità che usa l'azienda, come una piattaforma gestita o un'istanza di Jaeger e Prometheus. Il vantaggio pratico sono le tracce distribuite, che mostrano il tempo speso in ogni chiamata, database incluso, e rendono evidente dove sta il collo di bottiglia.",
+          "parole_chiave": [
+            "OpenTelemetry",
+            "tracce distribuite",
+            "metriche",
+            "esportatori"
+          ],
+          "follow_up": {
+            "domanda": "Cosa strumenti automaticamente e cosa a mano?",
+            "risposta": "Le librerie e le integrazioni comuni producono tracce e metriche da sole: richieste HTTP in entrata e in uscita, query del database, code dei messaggi, runtime .NET. A mano aggiungi gli span delle operazioni di dominio che vuoi seguire, come l'elaborazione di un ordine, con attributi che ti servono per filtrare. L'obiettivo è che una richiesta lenta si spieghi guardando la traccia, senza dover leggere il codice."
+          }
+        },
+        {
+          "id": "dotnet-036",
+          "priorita": "MEDIA",
+          "domanda": "Come esegui lavoro in background in un'applicazione ASP.NET Core?",
+          "risposta": "Con un servizio in background, cioè una classe che implementa l'interfaccia dei servizi ospitati, registrata nel contenitore, che riceve il token di arresto e gira finché l'applicazione è viva. Si usa per attività periodiche come la pulizia di dati temporanei o il consumo di una coda, e va progettato per essere sicuro se più istanze dell'applicazione girano insieme. Per lavoretti brevi e legati a una richiesta, invece, attenzione a non lanciare attività senza attenderle, perché un arresto dell'applicazione le interromperebbe a metà.",
+          "parole_chiave": [
+            "BackgroundService",
+            "IHostedService",
+            "coda",
+            "arresto"
+          ],
+          "follow_up": {
+            "domanda": "Perché un lavoro in background non va fatto dentro una richiesta HTTP?",
+            "risposta": "Perché la richiesta ha un ciclo di vita breve e un contesto di servizi che viene rilasciato alla fine: il lavoro resterebbe senza dipendenze valide o verrebbe ucciso durante un riavvio del processo. Inoltre l'utente aspetterebbe inutilmente un'operazione che non riguarda la sua risposta. Lo schema corretto è accodare il lavoro e restituire subito, con un consumatore che lo esegue con le sue garanzie di ripetizione."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Entity Framework Core",
+      "domande": [
+        {
+          "id": "dotnet-037",
+          "priorita": "ALTA",
+          "domanda": "Cos'è Entity Framework Core e come si colloca rispetto ad ADO.NET o a un micro ORM?",
+          "risposta": "EF Core è un mappatore relazionale a oggetti: descrivi il modello con classi e configurazioni, e lui genera il SQL, gestisce le relazioni, il tracciamento delle modifiche e le migrazioni dello schema. ADO.NET sta a un livello più basso, con comandi e lettori da gestire a mano, quindi hai controllo totale e più codice da scrivere. Un micro ORM come Dapper sta nel mezzo: mappa i risultati delle query su oggetti senza gestire il tracciamento. La scelta dipende dal tipo di applicazione: dominio con molte entità per EF Core, query e report fortemente ottimizzati per il codice a mano.",
+          "parole_chiave": [
+            "EF Core",
+            "ORM",
+            "Dapper",
+            "ADO.NET"
+          ],
+          "follow_up": {
+            "domanda": "Si possono usare insieme nella stessa applicazione?",
+            "risposta": "Sì, ed è una combinazione comune: EF Core per le operazioni di dominio e il codice a mano o un micro ORM per le query di lettura complesse e i report, dove il controllo del SQL conta più della comodità. Serve però attenzione alla coerenza, per esempio usando la stessa connessione e la stessa transazione. È una scelta pragmatica, non un'ammissione che EF Core non funziona."
+          }
+        },
+        {
+          "id": "dotnet-038",
+          "priorita": "ALTA",
+          "domanda": "Come funziona il flusso code first con le migrazioni?",
+          "risposta": "Definisci le entità e le configurazioni, poi lo strumento genera una migrazione che descrive il passaggio dallo schema corrente a quello nuovo, con il codice per applicarlo e per annullarlo. Le migrazioni sono file versionati insieme al codice, e l'applicazione dello schema avviene con un comando, con una chiamata esplicita all'avvio oppure con uno script SQL generato per l'ambiente. Il vantaggio è che lo schema segue il codice e le modifiche sono tracciabili; il rischio è applicare migrazioni automaticamente all'avvio in produzione, dove un errore ferma tutte le istanze.",
+          "parole_chiave": [
+            "migrations",
+            "code first",
+            "schema",
+            "script SQL"
+          ],
+          "follow_up": {
+            "domanda": "Come gestisci una migrazione che deve trasformare i dati?",
+            "risposta": "Aggiungendo il codice di trasformazione dentro la migrazione, con istruzioni SQL mirate, così la modifica dello schema e quella dei dati viaggiano insieme e restano riproducibili. Attenzione alle migrazioni lunghe su tabelle grandi, che vanno spezzate in passi applicabili senza bloccare la produzione, per esempio aggiungendo la colonna, popolandola e solo dopo rendendola obbligatoria. La compatibilità con la versione precedente del codice durante il rilascio è la parte che si dimentica più spesso."
+          }
+        },
+        {
+          "id": "dotnet-039",
+          "priorita": "ALTA",
+          "domanda": "Perché il `DbContext` è scoped e non thread-safe?",
+          "risposta": "Il contesto conserva lo stato della sessione: le entità caricate, le modifiche in attesa, la connessione e la transazione corrente. Condividerlo tra thread o tra richieste significa mescolare modifiche di utenti diversi e usare la stessa connessione in parallelo, cosa che il contesto non supporta. Per questo la registrazione predefinita è scoped, una istanza per richiesta, e va evitato sia il singleton sia l'uso di più attività in parallelo sullo stesso contesto. Quando serve parallelismo, si aprono contesti separati.",
+          "parole_chiave": [
+            "DbContext",
+            "scoped",
+            "thread safety",
+            "sessione"
+          ],
+          "follow_up": {
+            "domanda": "Come si comporta il contesto all'interno di una richiesta lunga?",
+            "risposta": "Tiene in memoria tutte le entità caricate, quindi il change tracker cresce e le query successive confrontano con quella cache, il che può sorprendere se il database è cambiato nel frattempo. Per le operazioni di sola lettura conviene disattivare il tracciamento, e per elaborazioni lunghe si spezza il lavoro in ambiti separati. Un contesto che vive troppo è uno dei motivi più comuni di consumo di memoria inatteso."
+          }
+        },
+        {
+          "id": "dotnet-040",
+          "priorita": "ALTA",
+          "domanda": "Cosa fa `AsNoTracking` e quando lo usi?",
+          "risposta": "Disattiva il tracciamento delle entità per quella query: gli oggetti restituiti non vengono registrati nel change tracker e non verranno salvati da `SaveChanges`. Serve per tutte le letture che non devono modificare nulla, come elenchi, report, endpoint di sola lettura, perché riduce memoria e tempo di elaborazione, spesso in modo significativo su risultati grandi. Se usi il tracciamento, invece, ottieni la comodità di modificare l'entità e salvare, a costo di memoria e di query di verifica.",
+          "parole_chiave": [
+            "AsNoTracking",
+            "change tracker",
+            "performance",
+            "sola lettura"
+          ],
+          "follow_up": {
+            "domanda": "Che differenza c'è con una proiezione su DTO?",
+            "risposta": "La proiezione è ancora meglio quando non ti serve l'entità completa, perché selezioni solo le colonne che usi e non costruisci oggetti tracciati in nessun caso. Il DTO ti dà anche un contratto stabile verso l'esterno, che non si rompe quando cambi il modello di persistenza. In un'API l'approccio più pulito è proiettare sempre verso un DTO di risposta, mentre `AsNoTracking` resta utile quando ti serve l'entità completa senza tracciarla."
+          }
+        },
+        {
+          "id": "dotnet-041",
+          "priorita": "MEDIA",
+          "domanda": "Come funziona il change tracker e cosa fa `SaveChanges`?",
+          "risposta": "Il contesto tiene traccia delle entità caricate e confronta i loro valori con le copie originali, quindi sa quali proprietà sono cambiate; al momento del salvataggio raggruppa le modifiche per entità e genera le istruzioni di inserimento, aggiornamento e cancellazione. `SaveChanges` le esegue dentro una transazione implicita, quindi o passa tutto o non passa nulla, e restituisce il numero di righe coinvolte. È anche il punto in cui vengono risolti i valori generati dal database, come le chiavi autoincrementali.",
+          "parole_chiave": [
+            "change tracker",
+            "SaveChanges",
+            "transazione implicita",
+            "entità modificata"
+          ],
+          "follow_up": {
+            "domanda": "Perché a volte `SaveChanges` non salva nulla?",
+            "risposta": "Perché hai modificato un oggetto non tracciato o hai usato una query senza tracciamento, quindi il contesto non sa che qualcosa è cambiato. Il rimedio è allegare l'oggetto con lo stato corretto oppure rileggerlo dal contesto prima di modificarlo. È un errore silenzioso e insidioso, perché il codice sembra corretto e il salvataggio non solleva eccezioni."
+          }
+        },
+        {
+          "id": "dotnet-042",
+          "priorita": "ALTA",
+          "domanda": "Come eviti il problema delle N+1 query e come carichi le relazioni?",
+          "risposta": "Il problema nasce quando carichi un elenco e poi accedi a una relazione per ogni elemento: invece di una query ne partono cento e una, con un impatto enorme. Si risolve caricando in anticipo con `Include`, oppure proiettando direttamente i dati che servono con una `Select`, che è spesso la soluzione migliore perché porta solo le colonne necessarie. Il caricamento esplicito con `Load` serve per casi mirati, mentre quello pigro, che carica quando accedi alla proprietà, è comodo ma facile da attivare per sbaglio in un ciclo.",
+          "parole_chiave": [
+            "N+1",
+            "Include",
+            "proiezione",
+            "lazy loading"
+          ],
+          "follow_up": {
+            "domanda": "Perché il lazy loading è sconsigliato nelle API?",
+            "risposta": "Perché nasconde il numero di query: una serializzazione che tocca una proprietà può innescare decine di accessi al database senza che si veda nel codice. In più richiede che il contesto resti vivo durante la serializzazione, il che lega la rappresentazione alla persistenza. Nei servizi esposti è preferibile decidere esplicitamente cosa caricare e proiettare su un DTO."
+          }
+        },
+        {
+          "id": "dotnet-043",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci le transazioni in Entity Framework Core?",
+          "risposta": "Per un singolo `SaveChanges` hai già una transazione implicita, quindi le modifiche dello stesso salvataggio sono atomiche. Quando devi raggruppare più salvataggi o operazioni diverse sulla stessa connessione, apri una transazione esplicita, esegui, e confermi o annulli, usando `await using` e `CommitAsync` con il token di annullamento. Con più contesti o più database, la transazione distribuita è un'altra cosa e va evitata: meglio progettare l'operazione in modo idempotente o con compensazioni.",
+          "parole_chiave": [
+            "transazione",
+            "BeginTransaction",
+            "atomicità",
+            "idempotenza"
+          ],
+          "follow_up": {
+            "domanda": "Cosa fai se il salvataggio riesce ma l'operazione successiva fallisce?",
+            "risposta": "Se le due cose sono dentro la stessa transazione, l'annullamento riporta tutto indietro, quindi è la soluzione preferita. Se invece l'operazione successiva è fuori dal database, come l'invio di un'email, la transazione non basta e serve un meccanismo di compensazione o di pubblicazione affidabile degli eventi. In quei casi conviene registrare l'intenzione nel database e inviarla in un secondo momento, con ripetizione in caso di errore."
+          }
+        },
+        {
+          "id": "dotnet-044",
+          "priorita": "MEDIA",
+          "domanda": "Come gestisci i conflitti di concorrenza tra più utenti?",
+          "risposta": "Si usa la concorrenza ottimistica: si aggiunge alla tabella una colonna di versione, marcata come token di concorrenza, che cambia a ogni aggiornamento; nella clausola di aggiornamento viene inclusa la versione letta, quindi se qualcun altro ha modificato la riga nel frattempo l'istruzione non tocca nulla. EF Core segnala la cosa con un'eccezione dedicata, e il tuo codice decide cosa fare: avvisare l'utente, rileggere, applicare una regola di fusione o rifiutare la modifica. È il comportamento atteso quasi sempre, perché bloccare le righe penalizza tutti.",
+          "parole_chiave": [
+            "concorrenza ottimistica",
+            "RowVersion",
+            "DbUpdateConcurrencyException",
+            "conflitto"
+          ],
+          "follow_up": {
+            "domanda": "Quando useresti la concorrenza pessimistica?",
+            "risposta": "Quando il costo di un conflitto è alto e le operazioni sono brevi, per esempio su un contatore o su una prenotazione con disponibilità limitata, dove conviene bloccare la riga durante l'operazione. Va fatto con molta attenzione, perché il blocco tiene in attesa gli altri e allunga i tempi. In alternativa si gestisce il conflitto con un aggiornamento condizionale e si ripete l'operazione, che spesso è più semplice di un lock."
+          }
+        },
+        {
+          "id": "dotnet-045",
+          "priorita": "MEDIA",
+          "domanda": "Come mappi relazioni e tipi complessi con la configurazione di EF Core?",
+          "risposta": "Le relazioni si esprimono con le proprietà di navigazione e, quando serve, con la configurazione esplicita: uno a molti con una collezione su un lato e un riferimento dall'altro, molti a molti con una collezione da entrambe le parti e una tabella di collegamento, uno a uno con una chiave esterna condivisa. Nelle relazioni si dichiarano anche i comportamenti di cancellazione, per evitare cancellazioni a cascata indesiderate. La configurazione sta in classi che implementano l'interfaccia di configurazione delle entità, applicate nel metodo di costruzione del modello, ed è preferibile agli attributi perché tiene il dominio indipendente dalla persistenza.",
+          "parole_chiave": [
+            "relazioni",
+            "navigazione",
+            "OnModelCreating",
+            "cascade"
+          ],
+          "follow_up": {
+            "domanda": "Cosa fai con un oggetto di valore che non ha senso come tabella?",
+            "risposta": "Lo mappi come tipo posseduto, cioè una parte dell'entità salvata nelle stesse colonne, oppure lo trasformi con un convertitore di valori se il formato è semplice, come una lista serializzata. La scelta dipende da come interroghi i dati: se devi filtrare per quel valore, meglio una colonna dedicata o una tabella. Se lo usi solo insieme all'entità, il tipo posseduto evita una tabella in più e mantiene il modello più fedele al dominio."
+          }
+        },
+        {
+          "id": "dotnet-046",
+          "priorita": "MEDIA",
+          "domanda": "Quando usi SQL scritto a mano con EF Core?",
+          "risposta": "Quando la query è troppo complessa per essere espressa bene in LINQ o quando il piano generato è inefficiente e serve un controllo preciso: EF Core permette di eseguire query SQL e di mapparne il risultato su tipi, oppure di richiamare stored procedure o funzioni con parametri. In alternativa, per le modifiche di massa esistono le operazioni di aggiornamento ed eliminazione dirette, che evitano di caricare migliaia di entità per cambiarne una proprietà. Il codice SQL va tenuto in un punto identificabile del progetto, con parametri sempre, mai concatenando stringhe.",
+          "parole_chiave": [
+            "FromSql",
+            "SQL raw",
+            "parametri",
+            "bulk update"
+          ],
+          "follow_up": {
+            "domanda": "Cosa devi ricordare usando SQL a mano?",
+            "risposta": "Che perdi parte dei benefici dell'ORM: le modifiche fatte con SQL diretto non passano dal change tracker, quindi gli oggetti già caricati possono essere disallineati, e le query scritte a mano non si aggiornano se cambi il modello. Va bene, ma serve saperlo e isolare queste eccezioni in un punto del codice. È anche l'occasione per verificare il piano di esecuzione, che è il vero motivo per cui ci si scende a questo livello."
+          }
+        },
+        {
+          "id": "dotnet-047",
+          "priorita": "MEDIA",
+          "domanda": "Come testi il codice che usa Entity Framework Core?",
+          "risposta": "Il provider in memoria è comodo per verificare la logica, ma non riproduce il comportamento relazionale: non applica i vincoli, non traduce le stesse query e non solleva gli stessi errori, quindi può dare falsi positivi. Per test realistici si usa SQLite in memoria, che è relazionale e veloce, oppure un database vero in container, che è la soluzione più fedele per i test di integrazione. La strategia comune è unit test con provider leggero per la logica del dominio e test di integrazione su database reale per le query.",
+          "parole_chiave": [
+            "test",
+            "InMemory provider",
+            "SQLite",
+            "Testcontainers"
+          ],
+          "follow_up": {
+            "domanda": "Perché le differenze tra provider contano nei test?",
+            "risposta": "Perché query che funzionano su un provider possono non essere traducibili su un altro, e questo è esattamente il tipo di errore che vuoi scoprire in pipeline invece che in produzione. Inoltre i vincoli di integrità, il comportamento delle transazioni e la gestione delle date differiscono. Se testi solo con il provider in memoria, stai verificando il tuo codice in un mondo che non esiste."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Test, performance e deployment",
+      "domande": [
+        {
+          "id": "dotnet-048",
+          "priorita": "ALTA",
+          "domanda": "Come organizzi i test in .NET e quali strumenti usi?",
+          "risposta": "Con un framework di test come xUnit, NUnit o MSTest, e con una libreria di asserzioni che rende le verifiche leggibili: la struttura del test resta preparazione, azione e verifica, e il nome descrive il comportamento atteso, non il metodo chiamato. La piramide è la guida usuale: molti test unitari veloci sulla logica, test di integrazione sui confini con database e servizi, pochi test end-to-end sui flussi critici. La differenza tra unitario e di integrazione deve restare nel nome del progetto o nella cartella, così la pipeline può eseguirli in momenti diversi.",
+          "parole_chiave": [
+            "xUnit",
+            "piramide dei test",
+            "unit test",
+            "test di integrazione"
+          ],
+          "follow_up": {
+            "domanda": "Come gestisci i dati di test condivisi tra più test?",
+            "risposta": "Evitando lo stato condiviso mutabile, perché l'ordine di esecuzione è arbitrario e i test che dipendono l'uno dall'altro diventano fragili. Nei test di integrazione si usa una fixture che prepara e ripulisce l'ambiente, con un database o uno schema per classe, e i dati vengono creati dentro ogni test. Se un test passa da solo e fallisce in gruppo, quasi sempre è colpa di uno stato condiviso."
+          }
+        },
+        {
+          "id": "dotnet-049",
+          "priorita": "MEDIA",
+          "domanda": "Come funziona il mocking e cosa non vale la pena simulare?",
+          "risposta": "Il mock è un oggetto che sostituisce una dipendenza e registra come è stato usato: con una libreria come Moq o NSubstitute si definisce cosa restituire e quali chiamate attendersi. Serve per isolare la classe in prova da database, rete e tempo, e per verificare interazioni che altrimenti sarebbero difficili da osservare. Non ha senso invece simulare tipi di dati, collezioni o classi con logica semplice, per cui è meglio usare oggetti veri: un mock in più rende il test più difficile da capire senza aggiungere copertura.",
+          "parole_chiave": [
+            "mock",
+            "stub",
+            "Moq",
+            "isolamento"
+          ],
+          "follow_up": {
+            "domanda": "Perché verificare ogni interazione è un cattivo segnale?",
+            "risposta": "Perché lega il test ai dettagli implementativi: cambiando la sequenza delle chiamate il test si rompe anche se il comportamento resta corretto, e questo scoraggia il refactoring. Di norma conviene verificare il risultato osservabile e al massimo le interazioni che contano davvero, come l'invio di un'email. Se un test si rompe a ogni modifica interna, sta testando l'implementazione invece del comportamento."
+          }
+        },
+        {
+          "id": "dotnet-050",
+          "priorita": "ALTA",
+          "domanda": "Come fai un test di integrazione di una API ASP.NET Core?",
+          "risposta": "Con la classe di hosting per i test, che avvia l'applicazione in memoria e ti dà un client HTTP per chiamare gli endpoint, quindi verifichi routing, binding, filtri, autenticazione e serializzazione insieme, che è esattamente ciò che i test unitari non coprono. Si sovrascrivono i servizi esterni con doppi o con container, si sostituisce la configurazione e si usa un database reale o in container. È il livello di test che dà più fiducia quando si rifattorizza l'infrastruttura, perché lavora sul comportamento dell'applicazione reale.",
+          "parole_chiave": [
+            "WebApplicationFactory",
+            "test di integrazione",
+            "endpoint",
+            "ambiente di test"
+          ],
+          "follow_up": {
+            "domanda": "Cosa verifichi in un test di integrazione di un endpoint?",
+            "risposta": "Lo status code e il corpo della risposta, ma anche gli effetti: che il dato sia stato scritto, che l'evento sia stato pubblicato, che l'autorizzazione abbia bloccato chi non ha i permessi. Verificare solo il 200 è la trappola più comune, perché il test passa anche se l'endpoint non fa nulla. Per questo conviene sempre controllare almeno un effetto collaterale osservabile."
+          }
+        },
+        {
+          "id": "dotnet-051",
+          "priorita": "MEDIA",
+          "domanda": "Come misuri le prestazioni e dove guardi per prime?",
+          "risposta": "Prima di tutto con una misura: benchmark per il codice caldo e profilazione per l'applicazione in esecuzione, guardando allocazioni, tempo di garbage collection, query lente e contatori del runtime. Gli strumenti di diagnostica di .NET mostrano allocazioni, thread, code e attività in corso, mentre un benchmark mette a confronto due implementazioni con numeri ripetibili. L'ordine di intervento tipico è query al database, allocazioni inutili nei percorsi caldi, serializzazione e chiamate di rete, mentre l'ottimizzazione dei cicli viene molto dopo.",
+          "parole_chiave": [
+            "benchmark",
+            "profilazione",
+            "allocazioni",
+            "query lente"
+          ],
+          "follow_up": {
+            "domanda": "Perché ottimizzare senza misurare è un problema?",
+            "risposta": "Perché il collo di bottiglia quasi mai è dove sembra, e il codice ottimizzato rischia di diventare meno leggibile senza migliorare nulla. In più le prestazioni cambiano con il carico reale, quindi una microottimizzazione misurata su un caso isolato può non contare in produzione. La sequenza corretta è misurare, identificare il punto che pesa, correggere e rimisurare."
+          }
+        },
+        {
+          "id": "dotnet-052",
+          "priorita": "MEDIA",
+          "domanda": "Come fai il deployment di un'applicazione .NET?",
+          "risposta": "L'aspetto più diffuso è il container: un'immagine di build con l'SDK, una di runtime più piccola per l'esecuzione, con l'applicazione pubblicata copiata dentro, così l'artefatto è identico in tutti gli ambienti. In alternativa si pubblica un pacchetto e lo si distribuisce su un servizio, su una macchina con IIS e un reverse proxy o su un'applicazione desktop. In ogni caso la configurazione arriva dall'ambiente, non dal pacchetto, e il processo gira con un utente senza privilegi.",
+          "parole_chiave": [
+            "container",
+            "Dockerfile multi-stage",
+            "publish",
+            "configurazione"
+          ],
+          "follow_up": {
+            "domanda": "Cosa deve avere un Dockerfile fatto bene?",
+            "risposta": "Una prima fase che ripristina le dipendenze e compila, una seconda che copia solo il risultato pubblicato su un'immagine di runtime, così l'immagine finale non contiene il compilatore e resta piccola. Serve anche un utente non privilegiato, una porta dichiarata e una gestione corretta dei segnali di arresto, che ASP.NET Core supporta con l'arresto controllato. Copiare il codice sorgente nell'immagine finale è l'errore più comune da evitare."
+          }
+        },
+        {
+          "id": "dotnet-053",
+          "priorita": "MEDIA",
+          "domanda": "Come imposti una pipeline di integrazione continua per .NET?",
+          "risposta": "Le fasi tipiche sono ripristino con cache dei pacchetti, compilazione in Release trattando gli avvisi come errori, analisi statica, test unitari e di integrazione con la pubblicazione dei risultati, pubblicazione dell'artefatto e solo infine il rilascio, con passi separati per ambiente. Il ripristino bloccato e la versione dell'SDK fissata rendono la pipeline riproducibile, e i test veloci vanno prima di quelli lenti per dare feedback rapido. Il rilascio si fa con lo stesso artefatto promosso tra gli ambienti, non ricompilando per ogni ambiente.",
+          "parole_chiave": [
+            "CI/CD",
+            "artifact",
+            "build riproducibile",
+            "promozione"
+          ],
+          "follow_up": {
+            "domanda": "Perché non ricompilare per ogni ambiente?",
+            "risposta": "Perché quello che è stato testato in staging deve essere esattamente ciò che finisce in produzione: ricompilando introduci variabili, come dipendenze risolte diversamente o un SDK diverso, e perdi la corrispondenza tra test e rilascio. Le differenze tra ambienti si gestiscono con la configurazione, non con il codice. Il concetto chiave è il medesimo artefatto promosso, con al massimo passi di trasformazione espliciti e tracciati."
+          }
+        },
+        {
+          "id": "dotnet-054",
+          "priorita": "MEDIA",
+          "domanda": "Cosa controlli prima di portare un'applicazione .NET in produzione?",
+          "risposta": "La configurazione dell'ambiente, perché `Development` attivo espone dettagli sugli errori, i segreti fuori dal repository e gestiti dal sistema, le migrazioni applicate in modo controllato e non automatico all'avvio, i log con correlazione e senza dati personali, gli health check collegati all'orchestratore e i limiti di timeout e di dimensione delle richieste. Controllo anche che l'applicazione si comporti bene allo spegnimento, chiudendo le richieste in corso, e che esistano metriche per capire lo stato senza accedere alla macchina.",
+          "parole_chiave": [
+            "checklist",
+            "produzione",
+            "health check",
+            "configurazione"
+          ],
+          "follow_up": {
+            "domanda": "Cosa verifichi se le prestazioni crollano appena c'è traffico?",
+            "risposta": "Comincio dalle query e dal numero di connessioni disponibili, poi dalle allocazioni e dall'attività del garbage collector, e infine dal numero di thread del pool, perché un'operazione sincrona che blocca può portare a esaurire i thread. Guardare le metriche del runtime insieme ai tempi delle dipendenze restringe il campo in fretta. Nella maggior parte dei casi il problema è una query inefficiente o una chiamata esterna fatta in modo sincrono."
+          }
+        },
+        {
+          "id": "dotnet-055",
+          "priorita": "BASSA",
+          "domanda": "Come gestisci le migrazioni del database durante un rilascio?",
+          "risposta": "Generando lo script SQL dalla migrazione e applicandolo come passo esplicito del rilascio, con revisione, invece di far partire le migrazioni automaticamente all'avvio dell'applicazione: così vedi cosa succede prima, hai un log e puoi annullare se serve. Le migrazioni devono essere compatibili con la versione precedente del codice, perché durante un rilascio graduale convivono istanze vecchie e nuove, quindi si aggiungono campi e li si rendono obbligatori solo in un passo successivo. Il rollback va preparato prima, non improvvisato durante l'incidente.",
+          "parole_chiave": [
+            "migrazione",
+            "script SQL",
+            "compatibilità",
+            "rollback"
+          ],
+          "follow_up": {
+            "domanda": "Perché non applicare le migrazioni all'avvio dell'applicazione?",
+            "risposta": "Perché con più istanze che partono insieme c'è il rischio che più processi provino ad applicare la stessa migrazione contemporaneamente, e perché un errore durante l'avvio impedisce all'applicazione di partire, magari durante un rilascio già in corso. In più l'operazione richiede permessi di modifica dello schema che il processo applicativo non dovrebbe avere. In sviluppo automatico, in produzione passo esplicito."
+          }
+        }
+      ]
+    }
+  ]
+}

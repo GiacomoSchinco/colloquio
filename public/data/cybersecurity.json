@@ -3,9 +3,9 @@
     "tecnologia": "Cybersecurity",
     "slug": "cybersecurity",
     "schema": 2,
-    "versione": 1,
-    "aggiornato": "2026-10-14",
-    "totale_domande": 6
+    "versione": 2,
+    "aggiornato": "2026-10-15",
+    "totale_domande": 7
   },
   "argomenti": [
     {
@@ -48,7 +48,7 @@
           "id": "cybersecurity-003",
           "priorita": "ALTA",
           "domanda": "Quali sono le vulnerabilità web più comuni secondo l'OWASP Top 10?",
-          "risposta": "Le più diffuse sono il broken access control, cioè permessi mal gestiti, i fallimenti crittografici, l'injection come la SQL injection, il design insicuro, le configurazioni errate, i componenti vulnerabili e non aggiornati, e gli errori di autenticazione. L'OWASP Top 10 è il riferimento per capire dove concentrare le difese, e un programmatore deve conoscerlo per non introdurre questi problemi in fase di sviluppo.",
+          "risposta": "OWASP Top 10 è una classificazione periodicamente aggiornata dei rischi più importanti nelle applicazioni web, non una lista immutabile delle sole vulnerabilità più frequenti. Fra i temi ricorrenti ci sono problemi di controllo accessi, configurazione, supply chain, crittografia, injection e autenticazione. In colloquio citerei la versione specifica del Top 10 che sto usando e almeno due esempi di prevenzione concreta.",
           "parole_chiave": [
             "OWASP",
             "SQL injection",
@@ -106,6 +106,27 @@
           "follow_up": {
             "domanda": "Cosa fa un penetration test?",
             "risposta": "Simula l'attacco di un malintenzionato per trovare vulnerabilità sfruttabili, ma in modo autorizzato e controllato. A differenza di una scansione automatica, combina strumenti e ragionamento umano per verificare se una debolezza è davvero sfruttabile e con quale impatto."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Integrazioni per colloqui",
+      "domande": [
+        {
+          "id": "cybersecurity-007",
+          "priorita": "ALTA",
+          "domanda": "Come devono essere conservate le password di utenti?",
+          "risposta": "Non salvo password in chiaro e non uso cifratura reversibile come sostituto dell’hashing. Uso un algoritmo per password come Argon2id, scrypt o bcrypt con salt univoco e parametri adeguati. Aggiungo rate limiting e procedure sicure di reset e rotazione delle credenziali.",
+          "parole_chiave": [
+            "password",
+            "Argon2",
+            "salt",
+            "hash"
+          ],
+          "follow_up": {
+            "domanda": "Perché non basta SHA-256?",
+            "risposta": "È troppo veloce e facilita tentativi massivi: gli algoritmi per password sono deliberatamente costosi."
           }
         }
       ]

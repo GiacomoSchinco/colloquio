@@ -3,9 +3,9 @@
     "tecnologia": "CI/CD",
     "slug": "ci-cd",
     "schema": 2,
-    "versione": 1,
-    "aggiornato": "2026-10-14",
-    "totale_domande": 15
+    "versione": 2,
+    "aggiornato": "2026-10-15",
+    "totale_domande": 17
   },
   "argomenti": [
     {
@@ -268,6 +268,44 @@
           "follow_up": {
             "domanda": "Perché i feature flag vanno rimossi?",
             "risposta": "Perché ogni flag è una diramazione nel codice che raddoppia i percorsi da testare, e con venti flag le combinazioni diventano ingestibili. In più il codice morto dietro un flag che non verrà mai più acceso resta lì e confonde chi legge. La pratica sana è assegnare a ogni flag una scadenza e una persona che lo rimuove."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Integrazioni per colloqui",
+      "domande": [
+        {
+          "id": "ci-cd-016",
+          "priorita": "ALTA",
+          "domanda": "Come strutturi una pipeline Azure DevOps per un frontend React?",
+          "risposta": "Una pipeline YAML può installare la versione corretta di Node, eseguire npm ci, lint, test e build, pubblicare l’artefatto e distribuirlo per ambiente dopo controlli o approvazioni. Mantengo segreti e variabili d’ambiente fuori dal codice. Un errore di test o di qualità blocca il rilascio secondo le policy del team.",
+          "parole_chiave": [
+            "Azure DevOps",
+            "YAML",
+            "npm ci",
+            "pipeline",
+            "artifact"
+          ],
+          "follow_up": {
+            "domanda": "Perché preferisci npm ci a npm install nella pipeline?",
+            "risposta": "Perché usa il lockfile come fonte stabile delle dipendenze ed è pensato per ambienti automatizzati."
+          }
+        },
+        {
+          "id": "ci-cd-017",
+          "priorita": "ALTA",
+          "domanda": "Come usi SonarQube e il Quality Gate nella pipeline?",
+          "risposta": "SonarQube analizza il codice e segnala problemi di qualità, vulnerabilità e duplicazioni secondo le regole configurate. La pipeline invia i risultati, attende il Quality Gate quando richiesto e blocca il merge o il deploy se la policy non è rispettata. Gli alert richiedono comunque revisione: un numero non sostituisce il giudizio tecnico.",
+          "parole_chiave": [
+            "SonarQube",
+            "quality gate",
+            "coverage",
+            "CI"
+          ],
+          "follow_up": {
+            "domanda": "Che differenza c’è tra code coverage e qualità?",
+            "risposta": "Coverage misura quanto codice è stato eseguito dai test, non se i test sono validi o se la logica è corretta."
           }
         }
       ]

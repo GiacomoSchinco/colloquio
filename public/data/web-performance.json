@@ -3,9 +3,9 @@
     "tecnologia": "Performance Web",
     "slug": "web-performance",
     "schema": 2,
-    "versione": 1,
-    "aggiornato": "2026-10-14",
-    "totale_domande": 23
+    "versione": 2,
+    "aggiornato": "2026-10-15",
+    "totale_domande": 24
   },
   "argomenti": [
     {
@@ -32,7 +32,7 @@
           "id": "web-performance-002",
           "priorita": "ALTA",
           "domanda": "Cosa sono i Core Web Vitals e perché sono importanti?",
-          "risposta": "Sono un insieme ristretto di metriche che descrivono l'esperienza reale: quanto ci mette a comparire il contenuto principale, quanto è reattiva la pagina alle interazioni e quanto è stabile il layout mentre carica. Sono importanti perché misurano quello che l'utente percepisce, non quello che il server dichiara, e quindi sono la base su cui si interviene con priorità. Vengono rilevate sugli utenti reali, quindi includono dispositivi lenti e reti pessime che nei tuoi test locali non vedi.",
+          "risposta": "I Core Web Vitals misurano tre aspetti dell’esperienza: LCP (tempo di comparsa del contenuto principale), INP (reattività alle interazioni) e CLS (stabilità visiva). Per valutare la qualità si usa soprattutto il 75° percentile dei dati degli utenti reali: indicativamente LCP entro 2,5 s, INP entro 200 ms e CLS entro 0,1 sono buoni risultati. Distinguo i dati reali dai test sintetici di laboratorio.",
           "parole_chiave": [
             "Core Web Vitals",
             "caricamento percepito",
@@ -168,7 +168,7 @@
           "id": "web-performance-010",
           "priorita": "ALTA",
           "domanda": "Cosa sono i memory leak in React e come prevenirli?",
-          "risposta": "Si verificano quando il codice mantiene riferimenti a cose che non servono più: un listener o un timer attivo su un componente già smontato continua a girare e a trattenere in memoria tutto ciò che tocca. Si prevengono restituendo la funzione di pulizia dagli effetti, che rimuove il listener o cancella il timer, e chiudendo le sottoscrizioni. Il sintomo tipico è un'applicazione che rallenta dopo molte navigazioni, perché il lavoro fantasma si accumula.",
+          "risposta": "Un memory leak accade quando oggetti o risorse non più necessari restano raggiungibili e non vengono liberati, per esempio listener, timer, subscription o cache senza limiti. In React pulisco ciò che apro negli Effect e annullo o ignoro richieste obsolete. Non ogni aggiornamento di stato dopo unmount equivale automaticamente a una perdita di memoria: verifico quali risorse rimangono vive.",
           "parole_chiave": [
             "perdita di memoria",
             "pulizia degli effetti",
@@ -400,6 +400,26 @@
           "follow_up": {
             "domanda": "Come lo ottimizzi?",
             "risposta": "Riducendo il lavoro nel percorso critico: servire il minimo CSS necessario per la prima schermata, rinviare gli script non indispensabili all'avvio, e scrivere il markup in modo che il browser non debba ricominciare. In più, animare con trasformazioni e opacità invece che con proprietà di posizionamento, perché quelle si risolvono nella fase finale e non fanno ricalcolare il layout."
+          }
+        }
+      ]
+    },
+    {
+      "nome": "Integrazioni per colloqui",
+      "domande": [
+        {
+          "id": "web-performance-024",
+          "priorita": "ALTA",
+          "domanda": "Cos’è INP e come la migliori in una web app?",
+          "risposta": "Interaction to Next Paint misura il tempo di reazione percepito alle interazioni. Se la UI risponde lentamente, guardo long task sul main thread, render costosi, listener e lavoro sincrono. Posso spezzare il lavoro, ridurre JavaScript inutile, virtualizzare liste e differire attività non urgenti.",
+          "parole_chiave": [
+            "INP",
+            "Core Web Vitals",
+            "long task"
+          ],
+          "follow_up": {
+            "domanda": "INP si misura con test reali o solo in laboratorio?",
+            "risposta": "Soprattutto con dati real user monitoring; i test locali aiutano a individuare le cause."
           }
         }
       ]

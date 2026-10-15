@@ -1,0 +1,408 @@
+{
+  "meta": {
+    "tecnologia": "Performance Web",
+    "slug": "web-performance",
+    "schema": 2,
+    "versione": 1,
+    "aggiornato": "2026-10-14",
+    "totale_domande": 23
+  },
+  "argomenti": [
+    {
+      "nome": "Fondamentali",
+      "domande": [
+        {
+          "id": "web-performance-001",
+          "priorita": "ALTA",
+          "domanda": "Spiega la differenza tra debounce e throttle con esempi pratici.",
+          "risposta": "Limitano entrambi quanto spesso una funzione viene eseguita, ma in modo diverso. Il debounce rimanda l'esecuzione finché non passa un intervallo senza nuove chiamate: perfetto per la ricerca mentre si digita, perché scatta quando l'utente si ferma. Il throttle garantisce invece una frequenza massima costante, quindi la funzione viene chiamata a intervalli regolari durante l'attività: adatto allo scorrimento, dove vuoi aggiornamenti continui ma non a ogni pixel. Sbagliare la scelta si sente subito nell'esperienza.",
+          "parole_chiave": [
+            "debounce",
+            "throttle",
+            "ricerca mentre si digita",
+            "scorrimento",
+            "frequenza"
+          ],
+          "follow_up": {
+            "domanda": "Quale useresti su un pulsante che invia un ordine?",
+            "risposta": "Nessuno dei due come unica difesa: sul click la soluzione è disabilitare il pulsante durante l'invio, perché così comunichi anche all'utente che l'operazione è in corso. Il throttle servirebbe a limitare i clic ripetuti ma non risolve il problema di fondo, cioè che non si deve poter inviare due volte. Una chiave di idempotenza lato server copre il caso in cui la prima difesa fallisca."
+          }
+        },
+        {
+          "id": "web-performance-002",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono i Core Web Vitals e perché sono importanti?",
+          "risposta": "Sono un insieme ristretto di metriche che descrivono l'esperienza reale: quanto ci mette a comparire il contenuto principale, quanto è reattiva la pagina alle interazioni e quanto è stabile il layout mentre carica. Sono importanti perché misurano quello che l'utente percepisce, non quello che il server dichiara, e quindi sono la base su cui si interviene con priorità. Vengono rilevate sugli utenti reali, quindi includono dispositivi lenti e reti pessime che nei tuoi test locali non vedi.",
+          "parole_chiave": [
+            "Core Web Vitals",
+            "caricamento percepito",
+            "reattività",
+            "stabilità del layout",
+            "dati reali"
+          ],
+          "follow_up": {
+            "domanda": "Perché la stabilità del layout è una metrica?",
+            "risposta": "Perché un contenuto che si sposta mentre stai per toccarlo produce clic sbagliati e frustrazione, anche se la pagina è veloce. È la forma di degrado che rende un sito veloce e comunque sgradevole. Si combatte riservando lo spazio delle immagini e degli elementi che arrivano dopo, invece di inserirli senza dimensioni."
+          }
+        },
+        {
+          "id": "web-performance-003",
+          "priorita": "ALTA",
+          "domanda": "Spiega il processo di browser rendering pipeline.",
+          "risposta": "È la sequenza con cui il browser trasforma codice in pixel: interpreta lo script, calcola gli stili, determina posizioni e dimensioni, disegna i pixel e infine compone i livelli. La cosa importante è che le fasi hanno costi molto diversi: modificare una proprietà che richiede un nuovo calcolo di posizioni è molto più caro di cambiarne una che si risolve nella sola composizione. È per questo che animare con le trasformazioni è fluido mentre animare una proprietà di posizionamento fa scattare.",
+          "parole_chiave": [
+            "pipeline di rendering",
+            "stili",
+            "layout",
+            "paint",
+            "composizione"
+          ],
+          "follow_up": {
+            "domanda": "Quali proprietà animi per avere prestazioni buone?",
+            "risposta": "Trasformazioni e opacità, perché vengono risolte nella fase di composizione e non richiedono di ricalcolare posizioni né di ridisegnare. Animare invece larghezza o posizione obbliga il browser a rifare il calcolo del layout a ogni fotogramma, e su una pagina complessa il risultato è visibilmente a scatti. Quando serve muovere qualcosa, conviene sempre chiedersi se puoi esprimerlo come trasformazione."
+          }
+        },
+        {
+          "id": "web-performance-004",
+          "priorita": "ALTA",
+          "domanda": "Cos'è il tree shaking e come funziona?",
+          "risposta": "È l'eliminazione del codice morto: il raggruppatore analizza i moduli e rimuove le parti che nessuno importa, a partire dalla struttura statica degli import. Funziona bene con i moduli e male con le importazioni dinamiche scritte in modo opaco, perché lì non può sapere cosa verrà usato. La condizione pratica è usare importazioni statiche e non includere interi pacchetti quando ti serve una funzione sola.",
+          "parole_chiave": [
+            "tree shaking",
+            "codice morto",
+            "moduli",
+            "import statici",
+            "riduzione del bundle"
+          ],
+          "follow_up": {
+            "domanda": "Perché importare un intero pacchetto annulla il vantaggio?",
+            "risposta": "Perché se il pacchetto ha effetti collaterali all'importazione, il raggruppatore non può rimuovere le parti che non usi: le include tutte per sicurezza. Importando invece il singolo modulo puoi escludere il resto. Il rimedio è controllare il pacchetto con uno strumento di analisi e verificare quanto pesa davvero ciò che hai aggiunto."
+          }
+        },
+        {
+          "id": "web-performance-005",
+          "priorita": "ALTA",
+          "domanda": "Spiega la differenza tra microtasks e macrotasks nell'event loop.",
+          "risposta": "Il ciclo di eventi gestisce il lavoro asincrono con due code separate. I micro-compiti, come le promesse, vengono svuotati completamente prima che il browser possa ridisegnare o passare al lavoro successivo, quindi una catena di micro-compiti può ritardare il rendering. I macro-compiti, come i timer, aspettano il giro successivo e lasciano spazio al rendering e agli eventi dell'utente in mezzo. È la ragione per cui una promessa lunga può bloccare il disegno pur non essendo un ciclo infinito.",
+          "parole_chiave": [
+            "ciclo di eventi",
+            "micro-compiti",
+            "macro-compiti",
+            "priorità",
+            "rendering bloccato"
+          ],
+          "follow_up": {
+            "domanda": "Perché una catena di promesse può congelare l'interfaccia?",
+            "risposta": "Perché la coda dei micro-compiti viene svuotata per intero prima di ridisegnare, quindi se ogni promessa ne accoda un'altra il browser non arriva mai al rendering e la pagina sembra bloccata anche se l'interfaccia risponde ai clic. La soluzione è spezzare il lavoro cedendo il controllo, per esempio con un timer che crea un macro-compito. È un caso in cui il problema non è il codice lento ma la coda che non si esaurisce."
+          }
+        },
+        {
+          "id": "web-performance-006",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono i re-rendering in React e come prevenirli?",
+          "risposta": "Un nuovo render avviene quando cambia lo stato di un componente o quello di un suo antenato: React riesegue il componente per produrre un nuovo albero, e in molti casi il risultato è identico a prima. Si riduce spostando lo stato il più in basso possibile, isolando le parti costose dietro una memorizzazione e rendendo stabili i riferimenti di oggetti e funzioni passati come proprietà. La premessa però è misurare: applicare la memorizzazione ovunque peggiora le prestazioni, perché il confronto ha un costo.",
+          "parole_chiave": [
+            "re-render",
+            "stato in basso",
+            "memorizzazione",
+            "stabilità dei riferimenti",
+            "misurare"
+          ],
+          "follow_up": {
+            "domanda": "Perché spostare lo stato in basso è più efficace della memorizzazione?",
+            "risposta": "Perché risolve il problema all'origine: se lo stato vive nel componente che lo usa, cambiarlo non fa rieseguire nient'altro, mentre con la memorizzazione stai solo filtrando un lavoro che continua a essere generato. Inoltre la memorizzazione si rompe appena qualcuno passa una proprietà non stabile, quindi è fragile. La ristrutturazione dello stato è una soluzione strutturale, la memorizzazione una toppa mirata."
+          }
+        },
+        {
+          "id": "web-performance-007",
+          "priorita": "ALTA",
+          "domanda": "Spiega virtualization e quando è necessaria.",
+          "risposta": "Consiste nel disegnare solo gli elementi visibili nella finestra e sostituire gli altri con uno spazio vuoto della stessa altezza, così il DOM resta piccolo anche con migliaia di righe. È necessaria quando il numero di elementi è grande e la pagina scorre, ed è quello che rende praticabile mostrare elenchi enormi. In cambio c'è complessità: devi calcolare le altezze, gestire il caso in cui le righe hanno dimensioni diverse e mantenere la posizione dello scorrimento quando i dati cambiano.",
+          "parole_chiave": [
+            "virtualizzazione",
+            "finestra visibile",
+            "DOM ridotto",
+            "dimensioni variabili",
+            "complessità"
+          ],
+          "follow_up": {
+            "domanda": "Quando è una complicazione inutile?",
+            "risposta": "Quando le righe sono poche decine: il browser gestisce senza problemi qualche centinaio di elementi, quindi introdurre la virtualizzazione significa pagare complessità e perdere la ricerca nel testo della pagina senza guadagno. La soglia va valutata misurando, non decisa a priori. Se l'elenco supera il migliaio o se cresce nel tempo, allora la virtualizzazione si ripaga."
+          }
+        },
+        {
+          "id": "web-performance-008",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono le race conditions nelle chiamate API e come prevenirli?",
+          "risposta": "Succede quando due richieste partono in ordine ma le risposte arrivano invertite, e quella più vecchia sovrascrive lo stato con dati superati: l'utente cerca una cosa e vede quella digitata prima. Si previene annullando la richiesta precedente quando ne parte una nuova, oppure collegando il risultato alla richiesta che lo ha prodotto e scartando quelli non più attuali. Le librerie di gestione dati lo fanno per te se le usi nel modo corretto, ma il problema va riconosciuto.",
+          "parole_chiave": [
+            "condizioni di corsa",
+            "risposte invertite",
+            "annullamento",
+            "risultato obsoleto",
+            "ricerca"
+          ],
+          "follow_up": {
+            "domanda": "Perché questo bug è più probabile su reti lente?",
+            "risposta": "Perché la probabilità che una risposta vecchia arrivi dopo una nuova cresce quanto più variabile è la latenza, e su una rete mobile lo è molto. In locale con risposte immediatamente consistenti il problema non si presenta quasi mai, quindi arriva in produzione senza essere stato visto. È il tipo di difetto che si anticipa pensando al caso, non osservandolo."
+          }
+        },
+        {
+          "id": "web-performance-009",
+          "priorita": "ALTA",
+          "domanda": "Cos'è il bundle splitting e come si implementa?",
+          "risposta": "È la divisione del bundle in più file caricati quando servono, invece di un unico file con tutto. Si ottiene con le importazioni dinamiche, che il raggruppatore trasforma in file separati, e in React si combina con il caricamento differito dei componenti e con la suddivisione per rotta. Il risultato è che il primo caricamento contiene solo ciò che serve alla schermata iniziale, e il resto arriva navigando.",
+          "parole_chiave": [
+            "bundle splitting",
+            "importazioni dinamiche",
+            "suddivisione per rotta",
+            "caricamento su richiesta",
+            "primo caricamento"
+          ],
+          "follow_up": {
+            "domanda": "Come decidi dove tagliare?",
+            "risposta": "Partendo dal principale: l'idea è che il primo caricamento contenga solo il necessario per la prima schermata, quindi il confine naturale è la rotta e poi le funzionalità pesanti che si aprono su interazione, come editor o grafici. Tagliare in troppi frammenti peggiora le cose, perché ogni frammento è una richiesta con la sua latenza, e su reti lente molte richieste piccole sono peggio di poche più grandi."
+          }
+        },
+        {
+          "id": "web-performance-010",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono i memory leak in React e come prevenirli?",
+          "risposta": "Si verificano quando il codice mantiene riferimenti a cose che non servono più: un listener o un timer attivo su un componente già smontato continua a girare e a trattenere in memoria tutto ciò che tocca. Si prevengono restituendo la funzione di pulizia dagli effetti, che rimuove il listener o cancella il timer, e chiudendo le sottoscrizioni. Il sintomo tipico è un'applicazione che rallenta dopo molte navigazioni, perché il lavoro fantasma si accumula.",
+          "parole_chiave": [
+            "perdita di memoria",
+            "pulizia degli effetti",
+            "listener",
+            "timer",
+            "sottoscrizioni"
+          ],
+          "follow_up": {
+            "domanda": "Come ti accorgi di una perdita di memoria in produzione?",
+            "risposta": "Perché peggiora con l'uso invece che con il tempo: l'applicazione è reattiva al primo caricamento e rallenta dopo dieci minuti di navigazione, e ricaricando la pagina torna veloce. Quello è il segnale. Nel browser si conferma osservando la memoria che cresce senza scendere dopo la raccolta, tipicamente registrando un ciclo di navigazione."
+          }
+        },
+        {
+          "id": "web-performance-011",
+          "priorita": "ALTA",
+          "domanda": "Spiega le metriche First Contentful Paint (FCP) e Largest Contentful Paint (LCP).",
+          "risposta": "La prima misura quando viene disegnato il primo contenuto, quindi ti dice se l'utente vede qualcosa o se la pagina resta bianca. La seconda misura quando viene disegnato l'elemento più grande nella parte visibile, quindi approssima il momento in cui il contenuto principale è utilizzabile. La differenza è sostanziale: una pagina può mostrare subito un'intestazione e restare vuota nel corpo, e in quel caso la prima è buona mentre la seconda è pessima.",
+          "parole_chiave": [
+            "primo contenuto",
+            "elemento più grande",
+            "pagina bianca",
+            "contenuto principale",
+            "differenza"
+          ],
+          "follow_up": {
+            "domanda": "Quali sono le cause più comuni di un valore alto sulla seconda?",
+            "risposta": "Un'immagine pesante nell'area principale che parte in ritardo, un blocco di testo che dipende da una richiesta di dati lenta, o un font che ritarda il disegno del testo. Si interviene dando priorità a quell'elemento, servendo l'immagine in un formato adatto e la dimensione giusta, e rimuovendo dal percorso critico tutto ciò che non è necessario per mostrarlo."
+          }
+        },
+        {
+          "id": "web-performance-012",
+          "priorita": "ALTA",
+          "domanda": "Cos'è il code splitting basato su route in React?",
+          "risposta": "È la suddivisione del codice per rotta: ogni pagina scarica solo il proprio frammento, quindi chi apre la home non paga il peso della sezione di amministrazione. Si ottiene dichiarando le rotte con importazioni dinamiche, ed è il taglio più naturale perché corrisponde a come l'utente consuma l'applicazione. Il beneficio si misura sul primo caricamento, ed è la prima ottimizzazione da fare su un'applicazione a più sezioni.",
+          "parole_chiave": [
+            "suddivisione per rotta",
+            "frammento per pagina",
+            "primo caricamento",
+            "importazione dinamica",
+            "taglio naturale"
+          ],
+          "follow_up": {
+            "domanda": "Cosa rischia di annullare questo vantaggio?",
+            "risposta": "Un'importazione statica sfuggita in un modulo condiviso: se il file comune importa la sezione pesante, quella finisce nel bundle iniziale per tutti e il taglio non serve a nulla. Il modo per verificarlo è analizzare i frammenti generati e controllare che la sezione pesante sia in un file a sé. È un errore silenzioso, perché il codice funziona e solo il peso tradisce il problema."
+          }
+        },
+        {
+          "id": "web-performance-013",
+          "priorita": "ALTA",
+          "domanda": "Spiega il concetto di caching HTTP e strategie di cache.",
+          "risposta": "Il browser conserva le risorse e decide se riusarle in base agli header che il server invia: per quanto tempo la risposta è valida e se va richiesta una verifica della versione. Le strategie più comuni sono servire dalla copia locale e verificare in secondo piano per i dati che cambiano, e considerare la copia valida a lungo per gli asset che hanno un nome che cambia a ogni versione. Sui file statici il guadagno è enorme, perché il secondo caricamento non tocca la rete.",
+          "parole_chiave": [
+            "cache HTTP",
+            "validità",
+            "verifica della versione",
+            "server first o cache first",
+            "asset con nome versionato"
+          ],
+          "follow_up": {
+            "domanda": "Perché rinominare gli asset a ogni build è importante?",
+            "risposta": "Perché se il nome cambia insieme al contenuto puoi dichiarare quella risorsa valida per sempre senza rischiare di servire una versione vecchia: chi ha il nome nuovo scarica il file nuovo, chi ha il vecchio non lo chiede più. È il meccanismo che rende possibile la cache più aggressiva sui file statici, e senza di esso si finisce per cache brevi per paura di servire codice superato."
+          }
+        },
+        {
+          "id": "web-performance-014",
+          "priorita": "ALTA",
+          "domanda": "Spiega il concetto di lazy loading delle immagini.",
+          "risposta": "È rinviare il download delle immagini finché non si avvicinano alla parte visibile della pagina, così chi non scorre non scarica ciò che non vede. Si ottiene con l'attributo nativo sull'immagine, che il browser supporta da anni, oppure con API di osservazione per casi che l'attributo non copre. Il guadagno più grande è sul caricamento iniziale e sul consumo di banda degli utenti mobili, e va abbinato alle dimensioni dichiarate per non causare spostamenti del layout.",
+          "parole_chiave": [
+            "caricamento differito",
+            "attributo nativo",
+            "osservazione dell intersezione",
+            "banda",
+            "spostamenti del layout"
+          ],
+          "follow_up": {
+            "domanda": "Quali immagini non rendi differite?",
+            "risposta": "Quelle nella parte visibile al primo caricamento, soprattutto l'elemento principale: se le rinvii peggiori proprio la metrica che misura il contenuto principale. In quei casi conviene fare l'opposto, cioè caricarle con priorità alta. La regola è differire tutto ciò che sta sotto la piega, e solo quello."
+          }
+        },
+        {
+          "id": "web-performance-015",
+          "priorita": "MEDIA",
+          "domanda": "Spiega la differenza tra memoization e shallow comparison.",
+          "risposta": "La memorizzazione conserva il risultato di un calcolo e lo riusa quando gli ingressi sono gli stessi, evitando di ripetere il lavoro. Il confronto superficiale è la tecnica con cui si decide se gli ingressi sono gli stessi: confronta i valori primitivi direttamente e gli oggetti per riferimento, senza scendere in profondità. È il motivo per cui un oggetto ricreato con lo stesso contenuto risulta diverso, e la memorizzazione non si attiva.",
+          "parole_chiave": [
+            "memorizzazione",
+            "confronto superficiale",
+            "riferimenti",
+            "ingressi",
+            "costo del confronto"
+          ],
+          "follow_up": {
+            "domanda": "Perché non si fa un confronto profondo?",
+            "risposta": "Perché costerebbe quanto il lavoro che stai cercando di evitare, e su strutture annidate lo supererebbe, annullando il vantaggio. Il confronto superficiale è un compromesso: costa poco e copre la maggior parte dei casi. Se ti serve un confronto più preciso, lo scrivi per il caso specifico sapendo cosa conta davvero in quel confronto."
+          }
+        },
+        {
+          "id": "web-performance-016",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono i layout thrashing e come evitarli?",
+          "risposta": "Succede quando il codice alterna continuamente letture e scritture sul layout: leggere una misura dopo aver appena modificato lo stile obbliga il browser a ricalcolare tutto prima di rispondere, e in un ciclo questo si ripete per ogni elemento. Si evita raggruppando: prima tutte le letture, poi tutte le scritture, così il ricalcolo avviene una volta sola. È un problema tipico del codice che anima o misura molti elementi uno per uno.",
+          "parole_chiave": [
+            "thrashing del layout",
+            "letture e scritture",
+            "raggruppamento",
+            "ricalcolo forzato",
+            "cicli"
+          ],
+          "follow_up": {
+            "domanda": "Come si riconosce nel codice?",
+            "risposta": "Cercando nel ciclo l'alternanza tra una proprietà di misura, come la posizione o la dimensione, e una modifica di stile. Se le vedi vicine dentro un ciclo, il problema c'è. Nella pratica si separa in due cicli, oppure si legge una volta sola fuori dal ciclo quello che serve, e questo da solo elimina la maggior parte del ricalcolo."
+          }
+        },
+        {
+          "id": "web-performance-017",
+          "priorita": "MEDIA",
+          "domanda": "Spiega la differenza tra useMemo e React.memo.",
+          "risposta": "Sono strumenti per scopi diversi, e confonderli è l'errore tipico. Il primo è un hook che memorizza il risultato di un calcolo dentro un componente, quindi evita di rieseguire quel calcolo a ogni render. Il secondo è un involucro attorno a un componente che salta il render se le proprietà non sono cambiate. Uno agisce sul lavoro interno, l'altro sul fatto che il componente venga rieseguito.",
+          "parole_chiave": [
+            "useMemo",
+            "React.memo",
+            "calcolo interno",
+            "salto del render",
+            "scopi diversi"
+          ],
+          "follow_up": {
+            "domanda": "Si usano insieme?",
+            "risposta": "Sì, e spesso servono entrambi: il secondo evita il render quando le proprietà non cambiano, ma perché funzioni le proprietà devono avere riferimenti stabili, ed è qui che entra il primo insieme alla memorizzazione delle funzioni. Se usi solo il secondo con proprietà ricreate a ogni render, non ottieni nulla. È una catena in cui l'anello debole annulla il lavoro degli altri."
+          }
+        },
+        {
+          "id": "web-performance-018",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è il CSS containment e come aiuta le performance?",
+          "risposta": "È una proprietà CSS che dichiara al browser che il contenuto di quell'elemento è indipendente dal resto per quanto riguarda layout, stile e disegno, quindi le modifiche interne non possono influenzare l'esterno. Il browser può così limitare a quel sottoalbero il ricalcolo, invece di considerare l'intera pagina. Si guadagna su pagine grandi e molto dinamiche, e non serve su pagine piccole o prevalentemente statiche.",
+          "parole_chiave": [
+            "contenimento CSS",
+            "sottoalbero isolato",
+            "limitare il ricalcolo",
+            "pagine dinamiche",
+            "quando serve"
+          ],
+          "follow_up": {
+            "domanda": "È una proprietà da mettere ovunque?",
+            "risposta": "No: ha un costo e ha effetti collaterali, perché il contenimento cambia il modo in cui il contenuto può uscire dai bordi e interagire con l'esterno, quindi applicarla largamente può rompere posizionamenti e dimensionamenti. Va messa dove hai un problema misurato, tipicamente su liste grandi con contenuto che cambia, e verificata visivamente. È una di quelle ottimizzazioni che si fanno dopo aver profilato, non prima."
+          }
+        },
+        {
+          "id": "web-performance-019",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono FCP e LCP?",
+          "risposta": "La prima misura quando viene disegnato il primo contenuto, quindi ti dice se l'utente vede qualcosa o se la pagina resta bianca. La seconda misura quando viene disegnato l'elemento più grande nella parte visibile, quindi approssima il momento in cui il contenuto principale è utilizzabile. La differenza è sostanziale: una pagina può mostrare subito un'intestazione e restare vuota nel corpo, e in quel caso la prima è buona mentre la seconda è pessima.",
+          "parole_chiave": [
+            "primo contenuto",
+            "elemento più grande",
+            "pagina bianca",
+            "contenuto principale",
+            "differenza tra le due"
+          ],
+          "follow_up": {
+            "domanda": "Qual è un buon valore per la seconda?",
+            "risposta": "Sotto i due secondi e mezzo è considerato buono, sopra i quattro è scarso. Il modo più efficace per migliorarla è dare priorità all'elemento principale, servendo l'immagine nel formato e nella dimensione giusti, e togliendo dal percorso critico tutto ciò che non serve per mostrarlo. Spesso il problema è un'immagine pesante caricata in ritardo proprio dove l'utente guarda per primo."
+          }
+        },
+        {
+          "id": "web-performance-020",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono gli optimistic updates nelle API?",
+          "risposta": "È far vedere subito il risultato dell'azione aggiornando lo stato locale come se la richiesta fosse già andata a buon fine, senza aspettare la conferma del server. Serve a far percepire l'applicazione come immediata, e funziona quando il fallimento è raro, come su una preferenza o un like. Se la richiesta fallisce devi riportare lo stato a com'era e comunicarlo, altrimenti l'interfaccia mente all'utente e lui scopre l'errore più tardi.",
+          "parole_chiave": [
+            "aggiornamento ottimistico",
+            "stato locale",
+            "percezione di velocità",
+            "ripristino",
+            "quando usarlo"
+          ],
+          "follow_up": {
+            "domanda": "Quando è una scelta sbagliata?",
+            "risposta": "Quando l'operazione può fallire in modo significativo, come un pagamento, un invio definitivo o una prenotazione: mostrare un esito che poi viene annullato è peggio di far attendere mezzo secondo. In quei casi serve uno stato intermedio visibile che dica che l'operazione è in corso. La scelta dipende da quanto è grave un errore e da quanto è raro."
+          }
+        },
+        {
+          "id": "web-performance-021",
+          "priorita": "MEDIA",
+          "domanda": "Spiega il problema delle re-rendering con oggetti/array in React.",
+          "risposta": "Nasce dal confronto per riferimento: un oggetto o un array creato dentro il corpo del componente è un riferimento nuovo a ogni render, quindi qualsiasi confronto basato sull'identità lo considera diverso anche se il contenuto è identico. Le memorizzazioni non si attivano e il lavoro di ottimizzazione si perde. Si risolve creando quegli oggetti fuori dal componente quando sono costanti, o memorizzandoli, o passando proprietà primitive quando è possibile.",
+          "parole_chiave": [
+            "riferimenti instabili",
+            "creazione inline",
+            "confronto fallito",
+            "memorizzazione inutile",
+            "proprietà primitive"
+          ],
+          "follow_up": {
+            "domanda": "Qual è la soluzione più semplice in molti casi?",
+            "risposta": "Passare proprietà primitive invece di oggetti: se il figlio ha bisogno di un identificativo e di un nome, passagli quei due valori invece di un oggetto che li contiene. Il confronto sui valori primitivi funziona sempre, quindi non serve nessuna memorizzazione e il codice resta più semplice. Spesso il problema non è la memorizzazione mancante ma la forma delle proprietà."
+          }
+        },
+        {
+          "id": "web-performance-022",
+          "priorita": "BASSA",
+          "domanda": "Cos'è il preloading e il prefetching?",
+          "risposta": "Entrambe anticipano il caricamento, ma con obiettivi diversi. Il precaricamento dice al browser che una risorsa serve subito per questa pagina, quindi la scarica in anticipo rispetto a quando la scoprirebbe leggendo il codice. Il precaricamento predittivo invece scarica risorse che serviranno probabilmente tra poco, per esempio la pagina successiva o un componente che l'utente aprirà: è un'ipotesi, quindi va usata con misura perché consuma banda che potrebbe servire ad altro.",
+          "parole_chiave": [
+            "precaricamento",
+            "precaricamento predittivo",
+            "risorse critiche",
+            "priorità",
+            "consumo di banda"
+          ],
+          "follow_up": {
+            "domanda": "Quando usi il precaricamento?",
+            "risposta": "Per le risorse necessarie a mostrare la parte visibile: un font, l'immagine principale, il foglio di stile critico. Sono i casi in cui il browser, leggendo il codice, scoprirebbe la risorsa troppo tardi e il contenuto comparirebbe in ritardo. Il precaricamento predittivo lo riservi a un'azione probabile, come la pagina successiva di un percorso a step."
+          }
+        },
+        {
+          "id": "web-performance-023",
+          "priorita": "BASSA",
+          "domanda": "Cosa sono i Critical Rendering Path?",
+          "risposta": "È la sequenza con cui il browser trasforma il codice in pixel: legge l'HTML, calcola gli stili, determina posizioni e dimensioni, disegna e infine compone i livelli. La cosa importante è che le fasi hanno costi molto diversi, quindi ciò che rallenta davvero è ciò che obbliga a rifare il calcolo delle posizioni. Per questo animare con le trasformazioni è fluido mentre animare una proprietà di posizionamento fa scattare.",
+          "parole_chiave": [
+            "percorso critico di rendering",
+            "stili",
+            "layout",
+            "paint",
+            "composizione"
+          ],
+          "follow_up": {
+            "domanda": "Come lo ottimizzi?",
+            "risposta": "Riducendo il lavoro nel percorso critico: servire il minimo CSS necessario per la prima schermata, rinviare gli script non indispensabili all'avvio, e scrivere il markup in modo che il browser non debba ricominciare. In più, animare con trasformazioni e opacità invece che con proprietà di posizionamento, perché quelle si risolvono nella fase finale e non fanno ricalcolare il layout."
+          }
+        }
+      ]
+    }
+  ]
+}

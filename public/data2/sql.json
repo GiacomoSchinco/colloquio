@@ -1,0 +1,676 @@
+{
+  "meta": {
+    "tecnologia": "SQL e Database",
+    "slug": "sql",
+    "schema": 2,
+    "versione": 1,
+    "aggiornato": "2026-10-14",
+    "totale_domande": 40
+  },
+  "argomenti": [
+    {
+      "nome": "Fondamentali",
+      "domande": [
+        {
+          "id": "sql-001",
+          "priorita": "ALTA",
+          "domanda": "Cos'è un indice e quando serve?",
+          "risposta": "È come l'indice di un libro: senza, devi leggere tutte le pagine per trovare un argomento. Con l'indice, vai dritto. In un DB, accelera le SELECT ma rallenta INSERT/UPDATE perché deve aggiornare anche l'indice.",
+          "parole_chiave": [
+            "velocizza letture",
+            "rallenta scritture",
+            "B-tree",
+            "evita full scan"
+          ],
+          "follow_up": {
+            "domanda": "Quando un indice non viene usato?",
+            "risposta": "Se usi funzioni sulla colonna (WHERE UPPER(name) = 'X'), se cerchi con LIKE '%ciao', o se la tabella è piccola e il full scan è più veloce."
+          }
+        },
+        {
+          "id": "sql-002",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra progettazione concettuale, logica e fisica di un database?",
+          "risposta": "Sono i tre livelli della progettazione. Quella concettuale descrive i dati e le loro relazioni in modo indipendente dalla tecnologia, con il diagramma entità-relazione. Quella logica traduce lo schema concettuale nel modello di un DBMS specifico, tipicamente tabelle relazionali con chiavi e relazioni. Quella fisica decide come i dati vengono realmente memorizzati: indici, tipi fisici e organizzazione su disco. Ognuna aggiunge dettagli senza perdere di vista il livello superiore.",
+          "parole_chiave": [
+            "concettuale",
+            "logico",
+            "fisico",
+            "ER"
+          ],
+          "follow_up": {
+            "domanda": "Perché partire dal livello concettuale?",
+            "risposta": "Perché prima bisogna capire cosa rappresentare e come le entità si relazionano, senza farsi condizionare dalla tecnologia. Se parti direttamente dalle tabelle, rischi di modellare i vincoli sbagliati e di dover rifare tutto. Il modello concettuale è il progetto su cui tutto si appoggia."
+          }
+        },
+        {
+          "id": "sql-003",
+          "priorita": "ALTA",
+          "domanda": "Cos'è un diagramma entità-relazione?",
+          "risposta": "È la rappresentazione grafica del modello concettuale: le entità, cioè gli oggetti del dominio come clienti e ordini, sono disegnate come rettangoli, le relazioni tra loro come rombi o linee, e gli attributi come ovali collegati. Mostra chi è collegato a chi e con quale cardinalità. È il ponte tra i requisiti dell'utente e lo schema del database, e serve a validare il modello prima di scrivere una sola riga di SQL.",
+          "parole_chiave": [
+            "entità",
+            "relazioni",
+            "attributi",
+            "ER"
+          ],
+          "follow_up": {
+            "domanda": "Come si passa dallo schema ER alle tabelle?",
+            "risposta": "Ogni entità diventa una tabella, gli attributi diventano colonne, e le relazioni molti-a-molti diventano tabelle di collegamento con le chiavi delle due entità. Le relazioni uno-a-molti si rappresentano con una chiave esterna nella tabella lato molti. La cardinalità guida ogni scelta."
+          }
+        },
+        {
+          "id": "sql-004",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono le chiavi primarie e le chiavi esterne?",
+          "risposta": "La chiave primaria identifica in modo univoco ogni riga di una tabella: non può essere nulla e non può avere duplicati. La chiave esterna è una colonna che fa riferimento alla chiave primaria di un'altra tabella, creando il collegamento tra di esse e garantendo l'integrità referenziale: non puoi avere un ordine che punta a un cliente inesistente. Insieme sono il cuore del modello relazionale, perché legano i dati senza duplicarli.",
+          "parole_chiave": [
+            "chiave primaria",
+            "chiave esterna",
+            "univocità",
+            "integrità referenziale"
+          ],
+          "follow_up": {
+            "domanda": "Cos'è l'integrità referenziale?",
+            "risposta": "È la garanzia che ogni riferimento tra tabelle sia valido: una chiave esterna deve puntare a una riga esistente. Il DBMS la impone rifiutando operazioni che la violerebbero, come cancellare un cliente che ha ancora ordini collegati, a meno che non si definiscano politiche come la cancellazione a cascata."
+          }
+        },
+        {
+          "id": "sql-005",
+          "priorita": "ALTA",
+          "domanda": "Cos'è la normalizzazione e perché è importante?",
+          "risposta": "La normalizzazione è il processo di organizzazione delle tabelle per eliminare ridondanza e anomalie, scomponendo i dati in strutture più piccole e collegate. Segue forme normali progressive, dalla prima alla terza di solito, che impongono vincoli crescenti. Il vantaggio è evitare duplicazioni, che portano a incoerenze: se un dato è salvato in un solo posto, lo aggiorni una volta sola e non rischi versioni in conflitto.",
+          "parole_chiave": [
+            "normalizzazione",
+            "ridondanza",
+            "forme normali",
+            "anomalie"
+          ],
+          "follow_up": {
+            "domanda": "Cosa succede se non normalizzi?",
+            "risposta": "Ti ritrovi con dati duplicati che si contraddicono: cambi un indirizzo in una riga e in un'altra resta quello vecchio. Le anomalie di inserimento, modifica e cancellazione rendono i dati inaffidabili, e alla fine paghi con query sbagliate e correzioni a mano."
+          }
+        },
+        {
+          "id": "sql-006",
+          "priorita": "ALTA",
+          "domanda": "Che differenza c'è tra i comandi SQL DDL, DML e DQL?",
+          "risposta": "SQL si divide in sottoinsiemi. Il DDL, Data Definition Language, definisce la struttura: CREATE, ALTER e DROP per tabelle e vincoli. Il DML, Data Manipulation Language, modifica i dati: INSERT, UPDATE e DELETE. Il DQL, Data Query Language, interroga i dati: è il SELECT con tutte le sue clausole. Conoscerli aiuta a ragionare su cosa stai facendo: definire lo schema, manipolare i dati o leggerli.",
+          "parole_chiave": [
+            "DDL",
+            "DML",
+            "DQL",
+            "SELECT"
+          ],
+          "follow_up": {
+            "domanda": "In quale sottoinsieme rientra il SELECT?",
+            "risposta": "Nel DQL, perché legge e interroga i dati senza modificarli. È la parte di SQL più usata quotidianamente, con clausole come WHERE, JOIN, GROUP BY e ORDER BY per filtrare, collegare e ordinare i risultati."
+          }
+        },
+        {
+          "id": "sql-007",
+          "priorita": "ALTA",
+          "domanda": "Cosa fa una JOIN e quali tipi conosci?",
+          "risposta": "La JOIN combina righe di due o più tabelle in base a una condizione, di solito tra chiave esterna e chiave primaria. La INNER JOIN restituisce solo le righe che hanno corrispondenza in entrambe, la LEFT JOIN restituisce tutte le righe della tabella di sinistra e le corrispondenze a destra, mettendo NULL dove mancano, la RIGHT JOIN fa il contrario. Le JOIN sono il modo per ricostruire i dati che la normalizzazione ha distribuito su più tabelle.",
+          "parole_chiave": [
+            "JOIN",
+            "INNER",
+            "LEFT",
+            "NULL"
+          ],
+          "follow_up": {
+            "domanda": "Quando usi una LEFT JOIN invece di una INNER?",
+            "risposta": "Quando vuoi anche le righe che non hanno corrispondenza, per esempio tutti i clienti anche quelli senza ordini. La INNER li escluderebbe. La scelta dipende dalla domanda che stai facendo ai dati: cosa deve esserci anche se manca la controparte."
+          }
+        },
+        {
+          "id": "sql-008",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono le transazioni e le proprietà ACID?",
+          "risposta": "Una transazione è un insieme di operazioni che devono essere eseguite tutte o nessuna, come un'unità indivisibile: pensa a un bonifico che toglie soldi da un conto e li aggiunge all'altro. Le proprietà ACID la garantiscono: Atomicità, tutto o niente; Consistenza, i vincoli restano rispettati; Isolamento, le transazioni concorrenti non si interferiscono; Durabilità, una volta confermata, la modifica sopravvive anche ai guasti. Sono la garanzia che i dati restino affidabili.",
+          "parole_chiave": [
+            "transazioni",
+            "ACID",
+            "atomicità",
+            "consistenza"
+          ],
+          "follow_up": {
+            "domanda": "Perché l'atomicità è fondamentale?",
+            "risposta": "Perché senza di essa un errore a metà di un'operazione complessa lascerebbe i dati in uno stato incoerente: soldi tolti ma mai accreditati. Con l'atomicità, se una parte fallisce si annulla tutto, e il database torna allo stato iniziale valido."
+          }
+        },
+        {
+          "id": "sql-009",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono la primary key e la foreign key?",
+          "risposta": "La chiave primaria identifica in modo univoco ogni riga di una tabella: non può essere nulla né ripetuta. La chiave esterna è un vincolo che collega una colonna alla chiave primaria di un'altra tabella e garantisce l'integrità referenziale, cioè impedisce di inserire valori che puntano a righe inesistenti. È anche il punto in cui decidi cosa succede alla cancellazione della riga padre, con le regole di propagazione o di blocco.",
+          "parole_chiave": [
+            "chiave primaria",
+            "chiave esterna",
+            "integrità referenziale",
+            "vincoli"
+          ],
+          "follow_up": {
+            "domanda": "Perché una tabella può avere una sola chiave primaria ma molte chiavi esterne?",
+            "risposta": "Perché la chiave primaria definisce l'identità della riga e ce n'è una sola per definizione, mentre le chiavi esterne descrivono quante relazioni quella tabella ha verso altre. Una tabella di ordini può puntare al cliente, all'indirizzo e al metodo di pagamento: tre chiavi esterne diverse, tutte valide insieme."
+          }
+        },
+        {
+          "id": "sql-010",
+          "priorita": "ALTA",
+          "domanda": "Differenza tra INNER JOIN, LEFT JOIN e RIGHT JOIN.",
+          "risposta": "Il join interno restituisce solo le righe che hanno corrispondenza in entrambe le tabelle, quindi è quello che filtra implicitamente. Il join sinistro tiene tutte le righe della tabella di sinistra e riempie con null dove a destra non c'è corrispondenza, e quello destro fa l'operazione simmetrica. Il caso tipico è la ricerca degli orfani: con un join sinistro e una condizione di null trovi i record che non hanno corrispondenza.",
+          "parole_chiave": [
+            "join interno",
+            "join sinistro",
+            "join destro",
+            "righe orfane",
+            "null"
+          ],
+          "follow_up": {
+            "domanda": "Perché RIGHT JOIN si usa poco?",
+            "risposta": "Perché è equivalente a un LEFT JOIN invertendo l'ordine delle tabelle, quindi la maggior parte delle persone scrive sempre il sinistro per abitudine e leggibilità. Il risultato è identico, cambia solo da quale lato elenchi le tabelle. Mantenere una convenzione unica rende le query più facili da leggere in squadra."
+          }
+        },
+        {
+          "id": "sql-011",
+          "priorita": "ALTA",
+          "domanda": "Spiega le forme normali 1NF, 2NF e 3NF.",
+          "risposta": "La normalizzazione serve a ridurre la ridondanza e le incoerenze. La prima forma chiede valori atomici e nessun gruppo ripetuto, quindi niente liste dentro una colonna. La seconda chiede che ogni colonna non chiave dipenda dall'intera chiave, e conta quando la chiave è composta. La terza elimina le dipendenze transitive, cioè quelle colonne non chiave che dipendono da un'altra colonna non chiave invece che dalla chiave.",
+          "parole_chiave": [
+            "prima forma normale",
+            "seconda forma normale",
+            "terza forma normale",
+            "ridondanza",
+            "dipendenze transitive"
+          ],
+          "follow_up": {
+            "domanda": "Perché a volte si denormalizza di proposito?",
+            "risposta": "Perché le letture contano più delle scritture: se una join complessa è eseguita milioni di volte al giorno, tenere un valore duplicato e aggiornarlo quando cambia può essere un compromesso ragionevole. Il costo è che la coerenza la devi garantire tu, e va documentato: una denormalizzazione non spiegata diventa un bug per chi arriva dopo."
+          }
+        },
+        {
+          "id": "sql-012",
+          "priorita": "ALTA",
+          "domanda": "Cosa significa ACID?",
+          "risposta": "Sono le quattro garanzie di una transazione. L'atomicità dice che o si applica tutto o niente, la consistenza che il database passa da uno stato valido a un altro rispettando i vincoli, l'isolamento che le transazioni concorrenti non si vedono a metà lavoro, la durabilità che una volta confermata la modifica sopravvive a un guasto. Il colloquio spesso prosegue chiedendo cosa succede abbassando l'isolamento, ed è lì che si distinguono le risposte imparate a memoria.",
+          "parole_chiave": [
+            "atomicità",
+            "consistenza",
+            "isolamento",
+            "durabilità",
+            "transazioni"
+          ],
+          "follow_up": {
+            "domanda": "Quale delle quattro garanzie si paga di più in prestazioni?",
+            "risposta": "L'isolamento, perché per garantirlo il database deve bloccare o versionare i dati, e più sale il livello più cresce la contesa tra transazioni. La durabilità ha un costo di scrittura su disco, mitigato scrivendo prima su un registro. È per questo che in alcuni sistemi si abbassa l'isolamento consapevolmente, dopo aver valutato che la lettura sporca è accettabile."
+          }
+        },
+        {
+          "id": "sql-013",
+          "priorita": "ALTA",
+          "domanda": "Spiega i livelli di isolamento delle transazioni.",
+          "risposta": "I livelli decidono quali anomalie di concorrenza sono possibili. Al livello più basso si possono leggere dati non confermati, che poi vengono annullati; salendo si elimina la lettura sporca ma si può ottenere un valore diverso rileggendo la stessa riga nella stessa transazione; al livello ripetibile si stabilizza la lettura ma si possono ancora vedere righe nuove comparse; con il serializzabile le transazioni si comportano come se fossero eseguite una dopo l'altra. Ogni livello superiore costa in contesa, quindi si sceglie il minimo che il caso d'uso richiede.",
+          "parole_chiave": [
+            "lettura sporca",
+            "lettura non ripetibile",
+            "righe fantasma",
+            "serializzabile",
+            "contesa"
+          ],
+          "follow_up": {
+            "domanda": "Cosa sono le righe fantasma e perché il ripetibile non basta?",
+            "risposta": "Sono righe che entrano nel risultato di una query ripetuta perché qualcun altro le ha inserite nel frattempo: la query è la stessa, ma il risultato è cambiato. Il livello ripetibile garantisce stabilità sulle righe lette, non sull'insieme, quindi le righe nuove continuano a comparire. Solo il serializzabile le esclude, ed è il motivo per cui conta quando il tuo calcolo dipende da un totale."
+          }
+        },
+        {
+          "id": "sql-014",
+          "priorita": "ALTA",
+          "domanda": "Differenza tra WHERE e HAVING.",
+          "risposta": "Il filtro sulle righe agisce prima del raggruppamento e non può usare funzioni di aggregazione, perché al suo momento i gruppi non esistono ancora. Il filtro sui gruppi agisce dopo il raggruppamento e quindi accetta le aggregazioni. L'esempio che chiarisce tutto: prima scarti le righe con un filtro semplice, poi raggruppi e conti, e infine tieni solo i gruppi il cui conteggio supera una soglia.",
+          "parole_chiave": [
+            "filtro sulle righe",
+            "filtro sui gruppi",
+            "raggruppamento",
+            "aggregazioni",
+            "ordine di esecuzione"
+          ],
+          "follow_up": {
+            "domanda": "Perché scrivere un'aggregazione nel filtro semplice è un errore?",
+            "risposta": "Perché la query non compila: nel filtro semplice non esiste ancora alcun gruppo su cui calcolare l'aggregazione. È un errore che indica che ti serve il filtro sui gruppi, e capire questo sblocca la maggior parte delle query di reportistica sbagliate. Il modo per non sbagliare è ricordare l'ordine logico di esecuzione, non l'ordine in cui scrivi le clausole."
+          }
+        },
+        {
+          "id": "sql-015",
+          "priorita": "ALTA",
+          "domanda": "A cosa servono le funzioni aggregate? Fai un esempio.",
+          "risposta": "Prendono un insieme di righe e restituiscono un solo valore: conteggio, somma, media, minimo e massimo. Da sole lavorano su tutta la tabella, con il raggruppamento lavorano su ogni gruppo separatamente. Il caso che sorprende è che il conteggio di un'espressione salta i valori null, mentre quello dell'asterisco conta le righe: è la differenza che spiega i risultati che sembrano sbagliati.",
+          "parole_chiave": [
+            "aggregazioni",
+            "conteggio",
+            "somma",
+            "raggruppamento",
+            "null"
+          ],
+          "follow_up": {
+            "domanda": "Come si contano i valori distinti?",
+            "risposta": "Con la variante distinta dell'aggregazione, che conta i valori unici e non le occorrenze. È quello che usi per sapere quanti clienti diversi hanno ordinato, non quanti ordini ci sono stati. Ricorda che anche in questo caso i null vengono esclusi dal conteggio."
+          }
+        },
+        {
+          "id": "sql-016",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono le window functions?",
+          "risposta": "Calcolano un valore sulle righe correlate alla corrente senza fonderle in un gruppo, quindi aggiungono una colonna invece di ridurre le righe: è la differenza con il raggruppamento. Le usi per numerare, classificare e confrontare con la riga precedente o successiva. Il caso pratico più frequente è il totale progressivo: la somma che cresce riga dopo riga dentro una partizione.",
+          "parole_chiave": [
+            "window function",
+            "partition by",
+            "totali progressivi",
+            "riga precedente",
+            "senza collassare"
+          ],
+          "follow_up": {
+            "domanda": "Che differenza c'è tra ROW_NUMBER e RANK?",
+            "risposta": "In caso di parità ROW_NUMBER assegna comunque numeri diversi, quindi due righe con lo stesso valore ricevono numeri consecutivi arbitrari, mentre RANK assegna lo stesso numero a pari merito e poi salta. Se ti serve la posizione in classifica con i pari merito uguali usi RANK, se ti serve una riga per posizione e non ti importa chi vince usi ROW_NUMBER."
+          }
+        },
+        {
+          "id": "sql-017",
+          "priorita": "ALTA",
+          "domanda": "Come si gestiscono i NULL e a cosa serve COALESCE?",
+          "risposta": "Null significa valore sconosciuto, quindi non è uguale a zero né a stringa vuota, ed è per questo che non puoi confrontarlo con l'uguale: il risultato di quel confronto è sconosciuto, non vero o falso. Si verifica con gli operatori dedicati. La funzione di coalescenza restituisce il primo argomento non nullo, e serve esattamente quando vuoi un valore predefinito senza scrivere condizioni lunghe.",
+          "parole_chiave": [
+            "null",
+            "valore sconosciuto",
+            "is null",
+            "coalescenza",
+            "valore predefinito"
+          ],
+          "follow_up": {
+            "domanda": "Perché una condizione con NOT IN può non restituire nulla se c'è un null?",
+            "risposta": "Perché il confronto con null produce sconosciuto, e la negazione di sconosciuto resta sconosciuto: la riga viene scartata anche quando logicamente dovrebbe passare. Il rimedio è escludere esplicitamente i null nella sottoquery, o usare un exists. È una trappola classica, difficile da vedere in sviluppo dove i dati sporchi non ci sono."
+          }
+        },
+        {
+          "id": "sql-018",
+          "priorita": "ALTA",
+          "domanda": "Differenza tra DELETE, TRUNCATE e DROP.",
+          "risposta": "L'eliminazione selettiva rimuove le righe che corrispondono alla condizione, registra l'operazione riga per riga e può essere annullata con il rollback. Lo svuotamento cancella tutto il contenuto in modo molto più rapido, azzera i contatori automatici e non accetta condizioni. L'eliminazione della tabella porta via la struttura, quindi non è un'operazione sui dati ma una perdita dello schema. Confondere le ultime due è il modo più rapido per distruggere un ambiente.",
+          "parole_chiave": [
+            "delete",
+            "truncate",
+            "drop",
+            "rollback",
+            "struttura"
+          ],
+          "follow_up": {
+            "domanda": "Perché TRUNCATE è molto più veloce di DELETE?",
+            "risposta": "Perché non passa riga per riga: dealloca le pagine che contengono i dati, quindi il lavoro dipende dallo spazio occupato e non dal numero di righe. DELETE invece registra ogni riga nel registro delle transazioni, e su milioni di righe il registro diventa enorme. La contropartita è la granularità: con TRUNCATE non puoi scegliere cosa cancellare."
+          }
+        },
+        {
+          "id": "sql-019",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono gli indici e come funzionano?",
+          "risposta": "Un indice è una struttura ausiliaria, tipicamente ad albero, che permette di trovare le righe senza scorrere tutta la tabella. Accelera la ricerca e le join, ma costa: occupa spazio e va aggiornato a ogni inserimento o modifica, quindi le scritture rallentano. Vanno messi sulle colonne che usi nei filtri, nelle join e negli ordinamenti, e non su colonne con pochissimi valori distinti, dove non riducono abbastanza.",
+          "parole_chiave": [
+            "indice",
+            "albero bilanciato",
+            "costo in scrittura",
+            "selettività",
+            "scansione completa"
+          ],
+          "follow_up": {
+            "domanda": "Perché un indice su una colonna booleana è quasi inutile?",
+            "risposta": "Perché se i valori sono solo due, ogni ricerca dell'indice individua metà della tabella e il database decide che conviene scorrere tutto: l'indice non viene usato e resta solo il costo di mantenerlo. La selettività è la proprietà che conta: un indice serve quando restringe a una frazione piccola delle righe. Per colonne a bassa cardinalità servono indici compositi o parziali."
+          }
+        },
+        {
+          "id": "sql-020",
+          "priorita": "ALTA",
+          "domanda": "Come funziona GROUP BY?",
+          "risposta": "Raggruppa le righe che hanno gli stessi valori nelle colonne indicate e ti permette di applicare le aggregazioni a ogni gruppo. La regola da ricordare è che ogni colonna nella select che non è dentro un'aggregazione deve comparire nel raggruppamento, altrimenti il database non sa quale valore mostrare. L'uso tipico è il conteggio per categoria o il totale per periodo.",
+          "parole_chiave": [
+            "raggruppamento",
+            "colonne non aggregate",
+            "regola di validità",
+            "totali per categoria"
+          ],
+          "follow_up": {
+            "domanda": "Cosa succede se non metti la colonna nel GROUP BY?",
+            "risposta": "Che il database rifiuta la query, ed è un bene: senza quella regola potrebbe restituire un valore arbitrario tra quelli del gruppo e il risultato sarebbe imprevedibile. In alcuni database storici era permesso e produceva valori casuali, ed è uno dei motivi per cui oggi la regola è standard. È una protezione, non un fastidio."
+          }
+        },
+        {
+          "id": "sql-021",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono i deadlock e come si prevengono?",
+          "risposta": "Il deadlock è una situazione in cui due transazioni si bloccano a vicenda, ognuna in attesa di una risorsa che l'altra tiene: il database se ne accorge e ne annulla una per sbloccare il sistema, quindi la transazione annullata riceve un errore. Si previene accedendo alle risorse sempre nello stesso ordine, mantenendo le transazioni brevi e indicizzando bene, perché una scansione completa blocca più righe del necessario. È anche il motivo per cui conviene prevedere un tentativo di ripetizione sul lato applicativo.",
+          "parole_chiave": [
+            "deadlock",
+            "ordine di accesso",
+            "transazioni brevi",
+            "vittima",
+            "ripetizione"
+          ],
+          "follow_up": {
+            "domanda": "Cosa deve fare l'applicazione quando riceve un errore di deadlock?",
+            "risposta": "Riprovare la transazione, perché il database ha annullato una delle due per sbloccare la situazione e ritentare funziona quasi sempre. È un errore transitorio, non un errore del codice, quindi trattarlo come guasto permanente è sbagliato. Va però limitato il numero di tentativi, altrimenti un problema strutturale si trasforma in un ciclo."
+          }
+        },
+        {
+          "id": "sql-022",
+          "priorita": "ALTA",
+          "domanda": "Come ottimizzi una query lenta?",
+          "risposta": "Il primo passo è sempre il piano di esecuzione: mostra se il database sta scorrendo tutta la tabella dove basterebbe un indice, se le stime delle righe sono sbagliate o se ordina più del necessario. Su quella evidenza intervieni: aggiungi o correggi un indice, togli le funzioni applicate alle colonne nella condizione perché annullano l'indice, seleziona solo le colonne che servono. Ottimizzare a intuito, senza guardare il piano, è il modo più lungo di procedere.",
+          "parole_chiave": [
+            "piano di esecuzione",
+            "scansione completa",
+            "funzione sulle colonne",
+            "colonne necessarie",
+            "stime"
+          ],
+          "follow_up": {
+            "domanda": "Perché una funzione applicata a una colonna nel WHERE fa perdere l'indice?",
+            "risposta": "Perché il database dovrebbe calcolare la funzione su ogni riga per poter confrontare, quindi non può usare l'indice che è costruito sui valori originali. Vale per una data troncata, una conversione di tipo o una funzione di testo: la condizione diventa opaca. Il rimedio è riscrivere la condizione sui valori grezzi, oppure creare un indice sull'espressione se il database lo supporta."
+          }
+        },
+        {
+          "id": "sql-023",
+          "priorita": "ALTA",
+          "domanda": "Cosa sono le transazioni? A cosa servono COMMIT e ROLLBACK?",
+          "risposta": "Una transazione raggruppa più operazioni in un'unità che viene applicata per intero o per niente. Il commit rende permanenti le modifiche, il rollback le annulla riportando il database allo stato precedente all'inizio della transazione. Serve ogni volta che più scritture devono restare coerenti tra loro: se la seconda fallisce, senza transazione resti con dati a metà.",
+          "parole_chiave": [
+            "transazione",
+            "commit",
+            "rollback",
+            "atomicità",
+            "coerenza"
+          ],
+          "follow_up": {
+            "domanda": "Cosa succede se l'applicazione si interrompe a metà transazione?",
+            "risposta": "Che la transazione non è confermata, quindi il database la annulla alla riconnessione: nessuna delle modifiche resta. È la garanzia di atomicità che ti protegge da uno stato incoerente. Il punto delicato è dove apri e chiudi la transazione: se la tieni aperta mentre chiami un servizio esterno, stai occupando risorse per un tempo che non controlli."
+          }
+        },
+        {
+          "id": "sql-024",
+          "priorita": "MEDIA",
+          "domanda": "Che differenza c'è tra DDL, DML e DCL?",
+          "risposta": "Sono categorie di istruzioni. Il linguaggio di definizione struttura il database: crea, modifica ed elimina tabelle e indici. Il linguaggio di manipolazione lavora sui dati: legge, inserisce, aggiorna ed elimina righe. A questi si aggiungono il linguaggio di controllo, che gestisce i permessi, e quello delle transazioni, che controlla il commit e il rollback. La distinzione serve a inquadrare subito di che tipo di operazione si sta parlando.",
+          "parole_chiave": [
+            "DDL",
+            "DML",
+            "DCL",
+            "TCL",
+            "permessi"
+          ],
+          "follow_up": {
+            "domanda": "Perché TRUNCATE sta nel DDL e non nel DML?",
+            "risposta": "Perché non opera sulle righe ma sulla struttura: svuota la tabella come operazione di definizione, non rimuove righe una a una. È il motivo per cui non accetta una condizione e in molti database non può essere annullato dentro una transazione, a differenza di DELETE."
+          }
+        },
+        {
+          "id": "sql-025",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono il FULL OUTER JOIN e il CROSS JOIN?",
+          "risposta": "Il join esterno completo restituisce tutte le righe di entrambe le tabelle, riempiendo con null dove manca la corrispondenza: è supportato da PostgreSQL e SQL Server ma non da MySQL, dove si simula unendo un sinistro e un destro. Il prodotto cartesiano invece combina ogni riga della prima tabella con ogni riga della seconda, senza alcuna condizione. Va usato con consapevolezza, perché su tabelle grandi il numero di righe esplode in fretta.",
+          "parole_chiave": [
+            "full outer join",
+            "prodotto cartesiano",
+            "supporto per database",
+            "esplosione delle righe"
+          ],
+          "follow_up": {
+            "domanda": "Quando un CROSS JOIN è davvero utile?",
+            "risposta": "Quando ti servono tutte le combinazioni: generare una matrice di date e categorie per un report dove vuoi anche le combinazioni senza dati, oppure costruire scenari di test. In quei casi è lo strumento giusto e la dimensione resta controllata. Se ti accorgi di averlo scritto per sbaglio, il sintomo è un risultato enorme e senza senso."
+          }
+        },
+        {
+          "id": "sql-026",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è la SQL injection e come la previeni?",
+          "risposta": "È quando un utente malintenzionato scrive SQL dentro un campo di input sperando che venga eseguito. Esempio: nel campo nome scrive '; DROP TABLE users; --'. Si previene con prepared statements che trattano l'input come dato, mai come codice.",
+          "parole_chiave": [
+            "input malevolo",
+            "prepared statements",
+            "parametrizzazione"
+          ],
+          "follow_up": {
+            "domanda": "JPA previene automaticamente?",
+            "risposta": "Sì per query derivate e JPQL con parametri. No per native queries con concatenazione di stringhe: lì devi stare attento."
+          }
+        },
+        {
+          "id": "sql-027",
+          "priorita": "MEDIA",
+          "domanda": "Differenza tra UNION e UNION ALL.",
+          "risposta": "Il primo unisce i risultati e rimuove i duplicati, quindi il database deve confrontare tutto l'insieme e il costo si sente. Il secondo concatena senza deduplicare ed è più veloce. La regola è usare quello senza deduplicazione quando sai che i due insiemi non si sovrappongono, e quello con deduplicazione quando la sovrapposizione è possibile ma non vuoi vederla.",
+          "parole_chiave": [
+            "unione con deduplicazione",
+            "concatenazione",
+            "duplicati",
+            "prestazioni"
+          ],
+          "follow_up": {
+            "domanda": "Perché UNION può nascondere un bug?",
+            "risposta": "Perché rimuove in silenzio le righe doppie, e a volte quelle righe doppie erano il problema che stavi cercando. Se il risultato atteso è una concatenazione e ottieni meno righe, la deduplicazione ha cancellato qualcosa. Per diagnosticare conviene sempre partire dalla versione senza deduplicazione per vedere i dati reali."
+          }
+        },
+        {
+          "id": "sql-028",
+          "priorita": "MEDIA",
+          "domanda": "Differenza tra indice clustered e non-clustered.",
+          "risposta": "L'indice raggruppato determina l'ordine fisico delle righe, quindi ce n'è uno solo per tabella ed è quello che rende rapidissime le letture per quella chiave e gli intervalli. Quello non raggruppato è una struttura separata che contiene il valore indicizzato e un riferimento alla riga, quindi se ne possono avere molti. La conseguenza pratica è che una tabella può avere un solo ordine fisico, e tutte le altre ricerche rapide passano da indici secondari.",
+          "parole_chiave": [
+            "indice raggruppato",
+            "indice secondario",
+            "ordine fisico",
+            "riferimento alla riga"
+          ],
+          "follow_up": {
+            "domanda": "In PostgreSQL esiste la distinzione tra raggruppato e non raggruppato?",
+            "risposta": "Solo in parte: ogni tabella è un heap e tutti gli indici rimandano alla riga fisica, quindi un indice raggruppato vero non esiste come in SQL Server. Esiste il riordino fisico della tabella come operazione manuale, che però non si mantiene da sola. È una differenza tra database che vale la pena conoscere, perché la stessa domanda ha risposte diverse."
+          }
+        },
+        {
+          "id": "sql-029",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono le subquery e le subquery correlate?",
+          "risposta": "Una sottoquery è una query annidata dentro un'altra, e la puoi usare nella condizione, nella sorgente o nelle colonne. Si dice correlata quando fa riferimento a colonne della query esterna: in quel caso viene rivalutata per ogni riga esaminata, ed è lì che nasce il problema di prestazioni. Nella maggior parte dei casi si riscrive con una join o con una funzione finestra, ottenendo lo stesso risultato con una sola passata.",
+          "parole_chiave": [
+            "sottoquery",
+            "sottoquery correlata",
+            "rivalutazione per riga",
+            "join",
+            "riscrittura"
+          ],
+          "follow_up": {
+            "domanda": "Meglio una sottoquery o una join?",
+            "risposta": "Dipende dalla leggibilità: la sottoquery esprime bene l'intenzione quando chiedi se esiste qualcosa, come in un exists. Il problema è solo quella correlata dentro la lista delle colonne, che per ogni riga riesegue un calcolo. Prima di riscrivere conviene guardare il piano di esecuzione, perché i database moderni ottimizzano da soli molti di questi casi."
+          }
+        },
+        {
+          "id": "sql-030",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono le viste (VIEW) e le materialized view?",
+          "risposta": "Una vista è una query salvata che si comporta come una tabella virtuale: non contiene dati, ma incapsula una logica complessa e permette di esporre solo alcune colonne a chi non deve vederle tutte. La vista materializzata invece salva fisicamente il risultato, quindi le letture sono immediate ma il contenuto invecchia e va aggiornato. La scelta dipende da quanto costa la query e da quanto è accettabile mostrare dati di qualche minuto prima.",
+          "parole_chiave": [
+            "vista",
+            "vista materializzata",
+            "nessuna memorizzazione",
+            "aggiornamento",
+            "dati obsoleti"
+          ],
+          "follow_up": {
+            "domanda": "Quando una vista materializzata è la scelta giusta?",
+            "risposta": "Quando la query è costosa e i dati vengono letti molto più spesso di quanto cambino: un riepilogo giornaliero o una statistica che si consulta di continuo. Il vantaggio è il tempo di lettura, il costo è l'aggiornamento, che consuma risorse e introduce un ritardo accettabile solo se il caso d'uso lo tollera. Se i dati devono essere sempre freschi, non è la risposta."
+          }
+        },
+        {
+          "id": "sql-031",
+          "priorita": "MEDIA",
+          "domanda": "Differenza tra stored procedure e funzione.",
+          "risposta": "La procedura è un blocco di codice salvato che esegue una sequenza di operazioni, può gestire transazioni e non è obbligata a restituire nulla: la invochi esplicitamente. La funzione invece restituisce sempre un valore o una tabella ed è utilizzabile dentro un'espressione, quindi la puoi chiamare in una select o in una condizione. È questa differenza d'uso che guida la scelta più della forma.",
+          "parole_chiave": [
+            "stored procedure",
+            "funzione",
+            "valore di ritorno",
+            "utilizzabile in query"
+          ],
+          "follow_up": {
+            "domanda": "Perché la logica di business nel database è spesso considerata un problema?",
+            "risposta": "Perché diventa difficile da testare e da versionare come il resto del codice, e finisce per essere invisibile a chi legge l'applicazione: interroghi un endpoint e non sai quante cose succedono nel database. In più legarsi al dialetto di un database rende la migrazione molto più costosa. Restano casi in cui conviene, come elaborazioni massive di dati dove spostare i dati nell'applicazione sarebbe proibitivo."
+          }
+        },
+        {
+          "id": "sql-032",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono i trigger?",
+          "risposta": "Un trigger è codice eseguito automaticamente dal database quando avviene un inserimento, una modifica o una cancellazione, prima o dopo l'operazione. Servono per registri di audit, storicizzazione e vincoli che non riesci a esprimere con le chiavi. Il rischio è che il comportamento diventa implicito: chi scrive un semplice inserimento non sa che sta scatenando altro codice, e quando qualcosa non torna la causa è difficile da rintracciare.",
+          "parole_chiave": [
+            "trigger",
+            "audit",
+            "comportamento implicito",
+            "prima o dopo",
+            "manutenzione"
+          ],
+          "follow_up": {
+            "domanda": "Preferiresti un trigger o la logica nell'applicazione?",
+            "risposta": "Se il vincolo deve valere sempre, anche quando qualcuno modifica i dati da uno script o da uno strumento esterno, il trigger è l'unico posto che lo garantisce. Se invece è una regola di business che cambia spesso, l'applicazione è più facile da testare e versionare. La regola pratica è mettere nel database ciò che deve essere inviolabile, nell'applicazione ciò che deve essere flessibile."
+          }
+        },
+        {
+          "id": "sql-033",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è il connection pooling?",
+          "risposta": "Aprire una connessione al database è costoso (handshake, autenticazione). Il pool tiene un set di connessioni già aperte e le riusa. Quando il codice chiede una connessione, la prende dal pool e la restituisce quando ha finito.",
+          "parole_chiave": [
+            "riuso",
+            "performance",
+            "pool"
+          ],
+          "follow_up": {
+            "domanda": "Quale pool usa Spring Boot?",
+            "risposta": "HikariCP di default. È il più veloce e non devi configurarlo."
+          }
+        },
+        {
+          "id": "sql-034",
+          "priorita": "MEDIA",
+          "domanda": "Differenza tra database relazionale e NoSQL.",
+          "risposta": "Il database relazionale organizza i dati in tabelle con uno schema definito, supporta le join e garantisce le proprietà delle transazioni: è la scelta naturale per dati strutturati e molto collegati tra loro. Le basi non relazionali rinunciano a parte di queste garanzie per guadagnare flessibilità di schema e scalabilità orizzontale, ed esistono in forme diverse, da documento a chiave-valore. La scelta non è ideologica ma dipende dalla forma dei dati e da cosa ti serve garantire.",
+          "parole_chiave": [
+            "relazionale",
+            "non relazionale",
+            "schema flessibile",
+            "scalabilità orizzontale",
+            "compromessi"
+          ],
+          "follow_up": {
+            "domanda": "Perché Molte applicazioni usano entrambi?",
+            "risposta": "Perché risolvono problemi diversi: il relazionale per i dati che devono restare coerenti, ad esempio ordini e pagamenti, e un archivio chiave-valore per cose che devono essere velocissime e temporanee, come sessioni o cache. Aggiungere una seconda tecnologia però aumenta i costi operativi, quindi conviene farlo quando il beneficio è misurabile."
+          }
+        },
+        {
+          "id": "sql-035",
+          "priorita": "MEDIA",
+          "domanda": "A cosa serve il vincolo ON DELETE CASCADE?",
+          "risposta": "Definisce cosa accade alle righe figlie quando la riga a cui puntano viene cancellata. Con la propagazione automatica vengono eliminate anche loro, con l'azzeramento il riferimento diventa nullo, con il blocco la cancellazione viene rifiutata finché esistono riferimenti. La scelta è una decisione di dominio: se un ordine non ha senso senza il cliente, la propagazione può essere appropriata, ma su dati contabili di solito vuoi il blocco.",
+          "parole_chiave": [
+            "on delete cascade",
+            "propagazione",
+            "azzeramento",
+            "blocco",
+            "decisione di dominio"
+          ],
+          "follow_up": {
+            "domanda": "Perché CASCADE è pericoloso su dati importanti?",
+            "risposta": "Perché un singolo comando di cancellazione può propagarsi a catena su tabelle collegate e rimuovere molto più di quanto ti aspettavi, spesso in modo silenzioso. Sui dati che non puoi ricreare è meglio un blocco esplicito: ti costringe a decidere consapevolmente cosa fare. La propagazione va riservata ai casi in cui il figlio non ha davvero significato senza il padre."
+          }
+        },
+        {
+          "id": "sql-036",
+          "priorita": "MEDIA",
+          "domanda": "Cosa sono gli indici e quando migliorano le prestazioni?",
+          "risposta": "Un indice è una struttura che permette al database di trovare le righe senza scorrere l'intera tabella, un po' come l'indice analitico di un libro. Migliora le SELECT con filtri sulle colonne indicizzate e le JOIN, perché il motore salta direttamente ai dati cercati. Ma ha un costo: rallenta INSERT, UPDATE e DELETE, perché l'indice va aggiornato, e occupa spazio. Per questo si indicizzano le colonne usate nei WHERE, non tutte.",
+          "parole_chiave": [
+            "indice",
+            "prestazioni",
+            "WHERE",
+            "bilanciamento"
+          ],
+          "follow_up": {
+            "domanda": "Perché non indicizzare tutte le colonne?",
+            "risposta": "Perché ogni indice va mantenuto a ogni modifica dei dati, rallentando le scritture e consumando spazio. Un indice in più su una colonna mai filtrata è solo un costo senza beneficio. La regola è indicizzare con criterio, osservando le query reali."
+          }
+        },
+        {
+          "id": "sql-037",
+          "priorita": "MEDIA",
+          "domanda": "Cos'è il caching?",
+          "risposta": "È tenere in memoria i risultati di una lettura frequente, così non interroghi il database ogni volta. Funziona quando il dato viene letto molto più spesso di quanto venga modificato, come le categorie di un catalogo o le impostazioni di sistema. Il costo è la coerenza: devi decidere quando il dato scade o quando invalidarlo, e quella decisione è il vero lavoro, non l'attivazione della cache.",
+          "parole_chiave": [
+            "cache",
+            "letture frequenti",
+            "invalidazione",
+            "coerenza",
+            "costo del salvataggio"
+          ],
+          "follow_up": {
+            "domanda": "Come lo implementi in Spring?",
+            "risposta": "Con le annotazioni di caching di Spring su metodi del servizio, più un gestore come Redis se la cache deve essere condivisa tra istanze. È fondamentale capire quando il dato è invalidato: se metti in cache un risultato e poi lo modifichi senza invalidare, servi dati vecchi e il difetto sembra casuale. La strategia di invalidazione va decisa prima, non dopo."
+          }
+        },
+        {
+          "id": "sql-038",
+          "priorita": "BASSA",
+          "domanda": "Cos'è il CAP theorem?",
+          "risposta": "In un sistema distribuito non puoi avere tutto: Consistenza (tutti vedono gli stessi dati), Disponibilità (tutti ricevono risposta), e tolleranza alle Partizioni (funziona anche se la rete si spezza). Devi sceglierne due.",
+          "parole_chiave": [
+            "consistenza",
+            "disponibilità",
+            "partizione"
+          ],
+          "follow_up": {
+            "domanda": "Cosa scegli in un sistema bancario?",
+            "risposta": "Consistenza e Partizione (CP): preferisci non rispondere piuttosto che dare dati sbagliati."
+          }
+        },
+        {
+          "id": "sql-039",
+          "priorita": "BASSA",
+          "domanda": "Cos'è il batch processing?",
+          "risposta": "È elaborare grandi volumi di dati a blocchi invece che tutti insieme. Invece di caricare in memoria un milione di righe, ne processi mille alla volta, con un contenuto in memoria costante e controllato. Serve per importazioni, bonifiche e report notturni dove il volume rende impossibile tenere tutto in una volta. La differenza con una semplice paginazione è che qui l'obiettivo è la stabilità della memoria, non l'interfaccia.",
+          "parole_chiave": [
+            "elaborazione a blocchi",
+            "memoria costante",
+            "grandi volumi",
+            "importazioni",
+            "stabilità"
+          ],
+          "follow_up": {
+            "domanda": "Come lo implementi in Spring?",
+            "risposta": "Con il framework di batch di Spring: definisci un lavoro, i suoi passi, chi legge, chi trasforma e chi scrive, e la dimensione del blocco. Il vantaggio è che riparte dal punto giusto dopo un errore e tiene traccia di cosa ha già elaborato. Fatto a mano, il rischio è che al fallimento a metà riparta da capo e duplichi quello che aveva già scritto."
+          }
+        },
+        {
+          "id": "sql-040",
+          "priorita": "BASSA",
+          "domanda": "Cos'è il database sharding?",
+          "risposta": "È dividere i dati tra più database in base a una chiave, per esempio gli utenti con identificativo basso su un database e quelli con identificativo alto su un altro. Serve quando i volumi superano quello che una singola macchina può sostenere, anche con l'hardware migliore. È una scelta che si paga in complessità: le operazioni che attraversano gli shard diventano molto più difficili.",
+          "parole_chiave": [
+            "sharding",
+            "partizionamento",
+            "chiave di divisione",
+            "scalabilità orizzontale",
+            "complessità operativa"
+          ],
+          "follow_up": {
+            "domanda": "Quali problemi introduce?",
+            "risposta": "Le join tra dati di shard diversi non si possono fare, quindi devi duplicare o ristrutturare il modello. Le transazioni che coinvolgono più shard richiedono un coordinamento, quindi perdi l'atomicità semplice. E la scelta della chiave diventa quasi irreversibile: se distribuisci male, hai sbilanciato i carichi in modo difficile da correggere."
+          }
+        }
+      ]
+    }
+  ]
+}
