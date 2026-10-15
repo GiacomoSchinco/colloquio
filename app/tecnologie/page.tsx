@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import styles from "../_components/techList.module.css";
+import { impostaTitoloStampa } from "../_components/titoloStampa";
 
 interface Argomento {
   slug: string;
@@ -23,6 +24,10 @@ interface Indice {
 export default function ElencoPage() {
   const [indice, setIndice] = useState<Indice | null>(null);
   const [errore, setErrore] = useState<string | null>(null);
+
+  useEffect(() => {
+    impostaTitoloStampa("Argomenti");
+  }, []);
 
   useEffect(() => {
     fetch("/data/index.json")

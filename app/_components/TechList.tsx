@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import styles from "./techList.module.css";
+import { impostaTitoloStampa } from "./titoloStampa";
 
 type Priorita = "ALTA" | "MEDIA" | "BASSA";
 
@@ -57,6 +58,7 @@ export default function TechList({ slug }: { slug: string }) {
 
   const [files, setFiles] = useState<FileTecnologiaV2[] | null>(null);
   const [errore, setErrore] = useState<string | null>(null);
+  const [nomeArgomento, setNomeArgomento] = useState<string | null>(null);
 
   const [filtroPriorita, setFiltroPriorita] = useState<"tutte" | Priorita>("tutte");
   const [filtroBlocco, setFiltroBlocco] = useState<string>("tutti");
@@ -86,6 +88,7 @@ export default function TechList({ slug }: { slug: string }) {
 
         if (argomento) {
           daCaricare = argomento.files;
+          if (!annullato) setNomeArgomento(argomento.nome);
         } else {
           const singolo = (idx.tecnologie ?? []).find((t: { slug: string }) => t.slug === slug);
           if (singolo?.argomento) {
@@ -118,6 +121,10 @@ export default function TechList({ slug }: { slug: string }) {
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    if (nomeArgomento) impostaTitoloStampa(nomeArgomento);
+  }, [nomeArgomento]);
 
   const toggleStudiata = useCallback(
     (id: string) => {
